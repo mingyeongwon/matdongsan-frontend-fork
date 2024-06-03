@@ -1,6 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+
+// bootstrap 관련 js와 css 로딩
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import store from './store'
 
-createApp(App).use(store).use(store).use(router).mount('#app')
+// app 컴포넌트를 <div id="app"></div>에 내용으로 추가
+createApp(App).use(router).use(store).use(router).mount('#app')
