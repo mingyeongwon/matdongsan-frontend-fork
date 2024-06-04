@@ -43,4 +43,8 @@ const myQnaBoards = ref([
 
 </script>
 
-<style scoped></style>
+<style scoped>
+p {
+  margin: 0px;
+}
+</style>

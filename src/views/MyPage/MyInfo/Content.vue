@@ -1,7 +1,10 @@
 <template>
-  <div class="infoContentStyle">
+  <div class="container">
+    <div class="ContentStyle">
     <div>
-      
+      <div class="imageStyle">
+        <img class="myImage" src="https://developers.kakao.com/static/images/pc/product/homeicon/friend.png" alt="">
+      </div>
     </div>
     <div>
       <ul>
@@ -23,15 +26,25 @@
         </li>
       </ul>
     </div>
-    <div>
+    <div class="buttonStyle">
       <button class="btn">회원탈퇴</button>
     </div>
   </div>
+  </div>
+
 </template>
 
 <script setup></script>
 
 <style scoped>
+.container {
+  padding: 80px 0px 120px;
+} 
+.buttonStyle {
+  padding-top: 40px;
+  text-align: center;
+}
+
 ul {
   list-style: none;
 }
@@ -39,16 +52,34 @@ ul {
 li {
   display: flex;
   justify-content: space-between;
+  padding: 16px 0px;
 }
 
-.infoContentStyle {
+.ContentStyle {
   width: 476px;
   margin: 0px auto;
   padding: 68px;
-  border: 1px solid rgb(245, 245, 245);
+  border: 1px solid #ddd;
 }
 
 h1, p {
   font-size: 14px;
+}
+
+.myImage {
+  width: 96px;
+  height: 96px;
+}
+
+.imageStyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 68px;
+
+}
+
+h1 {
+  font-weight: 700;
 }
 </style>
