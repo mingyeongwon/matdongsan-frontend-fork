@@ -1,14 +1,19 @@
 <template>
   <div class="sidebar">
-    <button class="btn" :style="mypageSidebarButtonsColor">내 정보</button>
-    <button class="btn" :style="mypageSidebarButtonsColor">상품 문의</button>
-    <button class="btn" :style="mypageSidebarButtonsColor">서비스 조회</button>
-    <button class="btn" :style="mypageSidebarButtonsColor">
-      <RouterLink to="/MyPage/MyQna" class="nav-link"> 1:1 문의내역 </RouterLink>
-    </button>
-    <button class="btn" :style="mypageSidebarButtonsColor">
-      허위매물 신고내역
-    </button>
+    <ul class="list-group">
+      <li class="list-group-item">마이페이지</li>
+      <li class="list-group-item">
+        <RouterLink to="/MyPage/MyInfo">내 정보</RouterLink>
+      </li>
+      <li class="list-group-item">상품 문의</li>
+      <li class="list-group-item">서비스 조회</li>
+      <li class="list-group-item">
+        <RouterLink to="/MyPage/MyQna">1:1 문의내역</RouterLink>
+      </li>
+      <li class="list-group-item">
+        <RouterLink to="/MyPage/MyComplaint">허위매물 신고내역</RouterLink>
+      </li>
+    </ul>
   </div>
 </template>
 
