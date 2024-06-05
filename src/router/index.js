@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import MyPage from "./MyPage";
 import Product from "./Product";
 import Agent from "./Agent";
+import QnA from './QnA.js'
+
+
 const routes = [
   {
     path: '/',
@@ -11,6 +14,8 @@ const routes = [
   ...MyPage,
   ...Product,
   ...Agent,
+  ...QnA,
+
 ];
 
 const router = createRouter({
