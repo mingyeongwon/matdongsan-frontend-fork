@@ -1,5 +1,6 @@
 <template>
 <div>
+  <AppMenu/>
   <div>
     <nav>
       <RouterLink to="/MyPage/MyQna" class="ms-2">1:1문의</RouterLink>
@@ -15,6 +16,7 @@
 </template>
 
 <script setup>
+import AppMenu from "./components/AppMenu.vue"
 </script>
 
 <style scoped>
