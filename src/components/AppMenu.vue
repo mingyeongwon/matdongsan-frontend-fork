@@ -1,53 +1,117 @@
 <template>
-   <nav class="navbar navbar-expand-lg navbar-light bg-warning">
-  <div class="container-fluid ">
-    <RouterLink class="navbar-brand ms-3" href="#"><h2 class="nav-title mb-1"> ZIP Easy</h2><p class="sub-title">쉽게 구하는 당신의 공간</p></RouterLink>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <RouterLink class="nav-link active" aria-current="page" href="#">Home</RouterLink>
-        </li>
-        <li class="nav-item">
-          <RouterLink class="nav-link" href="#">Link</RouterLink>
-        </li>
-        <li class="nav-item dropdown">
-          <RouterLink class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </RouterLink>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><RouterLink class="dropdown-item" href="#">Action</RouterLink></li>
-            <li><RouterLink class="dropdown-item" href="#">Another action</RouterLink></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><RouterLink class="dropdown-item" href="#">Something else here</RouterLink></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <RouterLink class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</RouterLink>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+  <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+    <div class="container-fluid">
+      <RouterLink class="navbar-brand ms-3 pt-3" to="/"
+        ><h2 class="nav-title mb-1">ZIP Easy</h2>
+        <p class="sub-title g-0">쉽게 구하는 당신의 공간</p></RouterLink
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <RouterLink
+              class="nav-link dropdown-toggle fw-bold"
+              to="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              매물 검색
+            </RouterLink>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <RouterLink class="dropdown-item" to="#">원룸</RouterLink>
+              </li>
+              <li>
+                <RouterLink class="dropdown-item" to="#">투룸</RouterLink>
+              </li>
+              <li>
+                <RouterLink class="dropdown-item" to="#">고시원</RouterLink>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <RouterLink
+              class="nav-link dropdown-toggle fw-bold"
+              to="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              중개
+            </RouterLink>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <RouterLink class="dropdown-item" to="/agentList"
+                  >전체 중개인</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink class="dropdown-item" to="/agentList"
+                  >내 주변 중개인</RouterLink
+                >
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <RouterLink
+              class="nav-link dropdown-toggle fw-bold"
+              to="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              커뮤니티
+            </RouterLink>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><RouterLink class="dropdown-item" to="#">Q&A</RouterLink></li>
+              <li>
+                <RouterLink class="dropdown-item" to="#"
+                  >허위매물신고</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink class="dropdown-item" to="/about"
+                  >집이지란?</RouterLink
+                >
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link fw-bold" to="/Mypage/MyInfo"
+              >마이페이지</RouterLink
+            >
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
-  </template>
-  
-  <script setup></script>
-  
-  <style scoped>
-  .nav-title {
-    font-weight: bold;
-    margin-bottom: 0;
-  }
-  .sub-title{
-    font-size: 11px;
-    color:#fff;
-    font-weight: bold;
-  }
+  </nav>
+</template>
+
+<script setup></script>
+
+<style scoped>
+.nav-title {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+.sub-title {
+  font-size: 11px;
+  color: #fff;
+  font-weight: bold;
+}
 </style>
-  

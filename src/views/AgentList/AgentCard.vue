@@ -1,4 +1,5 @@
 <template>
+
   <div class="w-75 main-table">
     <table class="table">
       <thead>
@@ -9,6 +10,7 @@
         </tr>
       </thead>
       <tbody>
+        <RouterLink to="/agentDetail">
         <tr class="table-line">
           <td colspan="1" class="d-flex align-items-center agent-cell">
             <img
@@ -39,14 +41,19 @@
             연락드리겠습니다.
           </td>
         </tr>
+      </RouterLink>
       </tbody>
     </table>
   </div>
+
 </template>
 
 <script setup></script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .main-table {
   margin-left: auto;
   margin-right: auto;
