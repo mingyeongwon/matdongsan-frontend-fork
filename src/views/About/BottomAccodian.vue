@@ -3,7 +3,7 @@
     <div class="text-center mt-5">
       <div class="btn btn-dark btn-sm mb-3 rounded-pill">FREE</div>
       <h2 class="fw-bolder">누구나<br />무료로 방을 내놓을 수 있어요.</h2>
-      <div><img src="../../..//public/info_img1.png" alt="이미지 위치" class="mt-4 mb-3"  height="400"></div>
+      <div><img src="@/assets/info_img1.png" alt="이미지 위치" class="mt-4 mb-3"  height="400"></div>
   
     </div>
     <div class="text-center mt-5">
@@ -12,7 +12,7 @@
         >번거로운 과정 없이,<br />
         오직 주소만</h2
       >
-      <div><img src="../../..//public/info_img2.png" width="300" class="mt-2 mb-3" alt="이미지 위치" /></div>
+      <div><img src="@/assets/info_img2.png" width="300" class="mt-2 mb-3" alt="이미지 위치" /></div>
       <p class="text-muted fw-bolder">
         방을 내놓기 전에 복잡한 절차들로 힘드셨죠? <br>집이지가 직접 매물 정보를
         확인하고 매물을 등록합니다.
