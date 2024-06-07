@@ -1,8 +1,8 @@
 <template>
     <div>
-      <h2 style="text-align: center; margin-top: 20px; margin-bottom: 20px">자주 묻는 질문</h2>
+      <h2 style="text-align: center; margin-top: 50px; margin-bottom: 70px; font-weight: bold">자주 묻는 질문</h2>
       <!-- 버튼 tab -->
-      <div class="row" style="margin-left: 50px; margin-right: 50px; height: 50px;">
+      <div class="row" style="margin-left: 300px; margin-right: 300px; height: 50px;">
           <RouterLink to="/QnA/notice" class="askMenu col-4 d-flex" style="text-decoration: none;">
             <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">공지 사항</button>
           </RouterLink>
@@ -17,10 +17,10 @@
         </div>
 
 
-      <div style="margin-left: 100px; margin-right: 100px;">
-      <p style="text-align: center; margin-top: 30px;">집이지 사용자의 편의를 위해 <span style="color:#FEC83F; font-weight: bold">자주 묻는 질문과 답변</span>을 모아놓았습니다.<br>원하시는 질문을 찾아보세요!</p>
+      <div style="margin-left: 400px; margin-right: 400px;">
+      <p style="text-align: center; margin-top: 60px; margin-bottom: 50px">집이지 사용자의 편의를 위해 <span style="color:#FEC83F; font-weight: bold">자주 묻는 질문과 답변</span>을 모아놓았습니다.<br>원하시는 질문을 찾아보세요!</p>
         <!-- 아코디언 -->
-        <div class="accordion accordion-flush mt-5" id="accordionFlushExample">
+        <div class="accordion accordion-flush" id="accordionFlushExample">
           <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingOne">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">

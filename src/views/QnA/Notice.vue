@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2 style="text-align: center; margin-top: 20px; margin-bottom: 20px">공지사항</h2>
+    <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">공지사항</h2>
     <!-- 버튼 tab -->
-    <div class="row" style="margin-left: 50px; margin-right: 50px; height: 50px;">
+    <div class="row" style="margin-left: 300px; margin-right: 300px; height: 50px;">
         <RouterLink to="/QnA/notice" class="askMenu col-4 d-flex" style="background-color: #2F4858; color: white; text-decoration: none;">
           <button style="background-color: transparent; border: none; width: 100%; color: white">공지 사항</button>
         </RouterLink>
@@ -16,8 +16,8 @@
         </RouterLink>
       </div>
     <!-- 검색 및 정렬 -->
-    <div style="margin-left: 100px; margin-right: 100px;">
-      <div class="mt-5 d-flex" style="justify-content: end;">
+    <div style="margin-left: 400px; margin-right: 400px;">
+      <div class="d-flex" style="justify-content: end; margin-top: 50px">
         
         <select name="sortType" id="sortType" style="border-radius: 15px; width: 200px; height: 35px; border: 1px solid black; padding-left: 10px; margin-right: 10px; background-color: transparent;">
             <option value="sort1">카테고리</option>
