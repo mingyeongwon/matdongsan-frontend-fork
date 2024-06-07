@@ -96,13 +96,37 @@
               >마이페이지</RouterLink
             >
           </li>
+          <li class="nav-item">
+            <button @click="modalOpen">로그인</button>
+            <LoginModal id="loginModal" @closeModal="closeModal"/>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 </template>
 
-<script setup></script>
+<script setup>
+import LoginModal from './LoginModal.vue'
+import {onMounted} from "vue";
+import {Modal} from "bootstrap";
+
+let modalLogin = null;
+
+onMounted(() => {
+  modalLogin = new Modal(document.querySelector("#loginModal"));
+});
+
+function modalOpen(){
+  modalLogin.show();
+}
+
+function closeModal(){
+  modalLogin.hide();
+}
+
+
+</script>
 
 <style scoped>
 .nav-title {

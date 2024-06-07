@@ -9,4 +9,4 @@ import store from './store'
 import axiosConfig from './apis/axiosConfig'
 
 // app 컴포넌트를 <div id="app"></div>에 내용으로 추가
-createApp(App).use(router).use(store).use(router).mount('#app')
+createApp(App).use(router).use(store).mount('#app')
