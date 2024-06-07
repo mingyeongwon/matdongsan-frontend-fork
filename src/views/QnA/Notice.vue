@@ -7,11 +7,11 @@
           <button style="background-color: transparent; border: none; width: 100%; color: white">공지 사항</button>
         </RouterLink>
 
-         <RouterLink to="/QnA/ask" class="askMenu col-4 d-flex" style="text-decoration: none;">
+         <RouterLink to="/QnA/Ask" class="askMenu col-4 d-flex" style="text-decoration: none;">
           <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">1:1 문의</button>
         </RouterLink>
         
-        <RouterLink to="/QnA/notice" class="askMenu col-4 d-flex" style="text-decoration: none;">
+        <RouterLink to="/QnA/Notice" class="askMenu col-4 d-flex" style="text-decoration: none;">
           <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">자주 묻는 질문</button>
         </RouterLink>
       </div>
@@ -24,11 +24,11 @@
             <option value="sort2">정렬2</option>
             <option value="sort3">정렬3</option>
           </select>
-          <img class="col-2" src="../../../../public/search.svg" />
+          <i class="fa-solid fa-magnifying-glass"></i>
         </div>
         <input type="text" placeholder="검색어를 입력해주세요" style="border-radius: 5px; width: 250px; border: 1.5px solid grey;">
         <div class="ms-2">
-        <button style="border-radius: 100%; border:none; background-color: #FEC83F; width: 30px; height:30px; justify-content: center; align-items: center;"  class="d-flex"><img src="../../../../public/search.svg" /></button>
+        <button style="border-radius: 100%; border:none; background-color: #FEC83F; width: 30px; height:30px; justify-content: center; align-items: center;"  class="d-flex"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
       </div>  
     
