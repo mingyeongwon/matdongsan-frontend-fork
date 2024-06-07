@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-warning">
     <div class="container-fluid">
-      <RouterLink class="navbar-brand ms-3 pt-3" to="/"
+      <RouterLink class="navbar-brand ms-3" to="/"
         ><h2 class="nav-title mb-1">ZIP Easy</h2>
-        <p class="sub-title g-0">쉽게 구하는 당신의 공간</p></RouterLink
+        <p class="sub-title m-0">쉽게 구하는 당신의 공간</p></RouterLink
       >
       <button
         class="navbar-toggler"
@@ -78,7 +78,7 @@
               커뮤니티
             </RouterLink>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><RouterLink class="dropdown-item" to="#">Q&A</RouterLink></li>
+              <li><RouterLink class="dropdown-item" to="/QnA">Q&A</RouterLink></li>
               <li>
                 <RouterLink class="dropdown-item" to="#"
                   >허위매물신고</RouterLink
