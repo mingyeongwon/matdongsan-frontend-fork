@@ -13,6 +13,7 @@ import { ref } from "vue";
 import Content from "./Content.vue";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import Title from "./Title.vue";
+
 </script>
 
 <style scoped>
