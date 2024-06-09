@@ -97,32 +97,48 @@
             >
           </li>
           <li class="nav-item">
-            <button @click="modalOpen">로그인</button>
-            <LoginModal id="loginModal" @closeModal="closeModal"/>
+            <button @click="memberModalOpen">로그인 및 회원가입</button>
+          </li>
+          <li class="nav-item">
+            <div class="btn" @click="showAgentLoginModal">중개사무소 가입 및 로그인</div>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+  <!-- 모달 -->
+  <MemberLoginModal id="MemberLoginModal" @closeModal="memberModalClose"/>
+  <AgentLoginModal id="AgentLoginModal" @close="hideAgentLoginModal" /> 
 </template>
 
 <script setup>
-import LoginModal from './LoginModal.vue'
+import MemberLoginModal from './Login/MemberLoginModal.vue'
+import AgentLoginModal from './Login/AgentLoginModal.vue';
 import {onMounted} from "vue";
 import {Modal} from "bootstrap";
 
-let modalLogin = null;
+let memberModalLogin = null;
+let agentLoginModal = null;
 
 onMounted(() => {
-  modalLogin = new Modal(document.querySelector("#loginModal"));
+  memberModalLogin = new Modal(document.querySelector("#MemberLoginModal"));
+  agentLoginModal = new Modal(document.querySelector("#AgentLoginModal"));
 });
 
-function modalOpen(){
-  modalLogin.show();
+function memberModalOpen(){
+  memberModalLogin.show();
 }
 
-function closeModal(){
-  modalLogin.hide();
+function memberModalClose(){
+  memberModalLogin.hide();
+}
+
+function showAgentLoginModal(){
+  agentLoginModal.show();
+}
+
+function hideAgentLoginModal(){
+  agentLoginModal.hide();
 }
 
 
