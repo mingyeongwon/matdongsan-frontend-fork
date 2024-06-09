@@ -1,12 +1,12 @@
 const routes = [
     {
-        path: "/agentList",
+        path: "/AgentList",
         name: "AgentList",
         component: () =>
           import(/* webpackChunkName: "Agent" */ "../views/AgentList"),
       },
       {
-        path: "/agentList/AgentDetail",
+        path: "/AgentList/AgentDetail",
         name: "AgentDetail",
         component: () =>
           import(/* webpackChunkName: "Agent" */ "../views/AgentDetail"),
