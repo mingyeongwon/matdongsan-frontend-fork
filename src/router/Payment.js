@@ -1,18 +1,25 @@
 const routes = [
   {
-    path: '/Payment/Payment',
+    path: "/Payment/Payment",
     component: () =>
-    import(/* webpackChunkName: "Payment" */ "@/views/Payment/Payment")
+      import(/* webpackChunkName: "Payment" */ "@/views/Payment/Payment"),
   },
   {
-    path: '/Payment/OrderConfirmation',
+    path: "/Payment/OrderConfirmation",
     component: () =>
-    import(/* webpackChunkName: "Payment" */ "@/views/Payment/OrderConfirmation")
+      import(
+        /* webpackChunkName: "Payment" */ "@/views/Payment/OrderConfirmation"
+      ),
   },
-    {
-    path: '/Payment/PaymentInfo',
+  {
+    path: "/Payment/PaymentInfo",
     component: () =>
-    import(/* webpackChunkName: "Payment" */ "@/views/Payment/PaymentInfo")
+      import(/* webpackChunkName: "Payment" */ "@/views/Payment/PaymentInfo"),
+  },
+  {
+    path: "/Payment/PaymentResult",
+    component: () =>
+      import(/* webpackChunkName: "Payment" */ "@/views/Payment/PaymentResult"),
   },
 ];
 
