@@ -3,11 +3,11 @@
   <AppMenu/>
   <div>
     <nav>
-      <RouterLink to="/MyPage/MyQna" class="ms-2">1:1문의</RouterLink>
-      <RouterLink to="/MyPage/MyComplaint" class="ms-2">허위매물</RouterLink>
-      <RouterLink to="/MyPage/MyInfo" class="ms-2">내 정보</RouterLink>
       <RouterLink to="/Product/ProductDetail" class="ms-2">상품 상세</RouterLink>
-      <RouterLink to="/QnA/ask" class="ms-2">문의 사항</RouterLink>
+      <RouterLink to="/QnA/Ask" class="ms-2">문의 사항</RouterLink>
+      <RouterLink to="/Payment/PaymentInfo" class="ms-2">결제 정보</RouterLink>
+      <RouterLink to="/Payment/Payment" class="ms-2">결제</RouterLink>
+      <RouterLink to="/Payment/OrderConfirmation" class="ms-2">결제 완료</RouterLink>
     </nav>
   </div>
   <div>

@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import MyPage from "./MyPage";
 import Product from "./Product";
 import Agent from "./Agent";
-import QnA from './QnA.js'
+import QnA from "./QnA.js";
+import Payment from "./Payment.js";
 
 
 const routes = [
@@ -15,6 +16,7 @@ const routes = [
   ...Product,
   ...Agent,
   ...QnA,
+  ...Payment
 
 ];
 

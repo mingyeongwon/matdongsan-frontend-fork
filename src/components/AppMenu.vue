@@ -100,7 +100,7 @@
             <button @click="memberModalOpen">로그인 및 회원가입</button>
           </li>
           <li class="nav-item">
-            <div class="btn" @click="showAgentLoginModal">중개사무소 가입 및 로그인</div>
+            <button class="btn" @click="showAgentLoginModal">중개사무소 가입 및 로그인</button>
           </li>
         </ul>
       </div>
