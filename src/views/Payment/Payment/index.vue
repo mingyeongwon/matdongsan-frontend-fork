@@ -28,6 +28,10 @@
               <th scope="row">광고수량</th>
               <td colspan="2">3건</td>
             </tr>
+            <tr v-if="option !== 'ad'">
+              <th scope="row">등록개수</th>
+              <td colspan="2">3건</td>
+            </tr>
             <tr v-if="option === 'ad'">
               <th scope="row">광고기간</th>
               <td colspan="2">
