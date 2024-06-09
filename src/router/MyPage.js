@@ -2,17 +2,17 @@ const routes = [
   {
     path: '/MyPage/MyQna',
     component: () =>
-    import("@/views/MyPage/MyQna")
+    import(/* webpackChunkName: "MyPage" */ "@/views/MyPage/MyQna")
   },
   {
     path: '/MyPage/MyComplaint',
     component: () =>
-    import("@/views/MyPage/MyComplaint")
+    import(/* webpackChunkName: "MyPage" */ "@/views/MyPage/MyComplaint")
   },
   {
     path: '/MyPage/MyInfo',
     component: () =>
-    import("@/views/MyPage/MyInfo")
+    import(/* webpackChunkName: "MyPage" */ "@/views/MyPage/MyInfo")
   },
 ];
 
