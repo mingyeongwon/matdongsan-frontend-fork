@@ -27,14 +27,34 @@
       </ul>
     </div>
     <div class="buttonStyle">
-      <button class="btn">회원탈퇴</button>
+      <div class="btn" @click="showDeleteModal">회원탈퇴</div>
     </div>
   </div>
   </div>
+  <DeleteModal id="DeleteModal" @close="hideDeleteModal" />
 
 </template>
 
-<script setup></script>
+<script setup>
+import {onMounted} from "vue";
+import {Modal} from "bootstrap";
+import DeleteModal from "./DeleteModal.vue";
+
+let deleteModal = null;
+
+onMounted(() => {
+  deleteModal = new Modal(document.querySelector("#DeleteModal"));
+});
+
+function showDeleteModal() {
+  deleteModal.show();
+}
+
+function hideDeleteModal() {
+  deleteModal.hide();
+}
+
+</script>
 
 <style scoped>
 .container {
