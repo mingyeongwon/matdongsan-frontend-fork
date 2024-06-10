@@ -1,11 +1,7 @@
 const routes = [
     {
-        path: "/QnA",
-        component: () =>  import(/* webpackChunkName: "QnA" */ '@/views/QnA')
-    },
-    {
         path: "/QnA/ask",
-        component: () =>  import(/* webpackChunkName: "QnA" */ '@/views/QnA/Ask.vue')
+        component: () =>  import(/* webpackChunkName: "QnA" */ '@/views/QnA/AskForm.vue')
     },
     {
         path: "/QnA/FAQ",
@@ -14,6 +10,10 @@ const routes = [
     {
         path: "/QnA/notice",
         component: () =>  import(/* webpackChunkName: "QnA" */ '@/views/QnA/Notice.vue')
+    },
+    {
+        path: "/QnA/noticeform",
+        component: () =>  import(/* webpackChunkName: "QnA" */ '@/views/QnA/NoticeForm.vue')
     },
     
    

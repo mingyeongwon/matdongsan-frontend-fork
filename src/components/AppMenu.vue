@@ -78,7 +78,7 @@
               커뮤니티
             </RouterLink>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><RouterLink class="dropdown-item" to="/QnA">Q&A</RouterLink></li>
+              <li><RouterLink class="dropdown-item" to="/QnA/ask">Q&A</RouterLink></li>
               <li>
                 <RouterLink class="dropdown-item" to="#"
                   >허위매물신고</RouterLink

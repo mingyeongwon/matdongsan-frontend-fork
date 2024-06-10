@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h2 style="text-align: center; margin-top: 50px; margin-bottom: 70px; font-weight: bold">자주 묻는 질문</h2>
+      <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">자주 묻는 질문</h2>
       <!-- 버튼 tab -->
       <div class="row" style="margin-left: 300px; margin-right: 300px; height: 50px;">
           <RouterLink to="/QnA/notice" class="askMenu col-4 d-flex" style="text-decoration: none;">

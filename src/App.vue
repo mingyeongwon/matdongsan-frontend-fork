@@ -8,6 +8,7 @@
       <RouterLink to="/Payment/PaymentInfo" class="ms-2">결제 정보</RouterLink>
       <RouterLink to="/Payment/Payment" class="ms-2">결제</RouterLink>
       <RouterLink to="/Payment/OrderConfirmation" class="ms-2">결제 완료</RouterLink>
+      <RouterLink to="/QnA/noticeform" class="ms-2">공지사항 폼</RouterLink>
     </nav>
   </div>
   <div>
