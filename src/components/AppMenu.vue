@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-warning">
     <div class="container-fluid">
-      <RouterLink class="navbar-brand ms-3 pt-3" to="/"
+      <RouterLink class="navbar-brand ms-3" to="/"
         ><h2 class="nav-title mb-1">ZIP Easy</h2>
-        <p class="sub-title g-0">쉽게 구하는 당신의 공간</p></RouterLink
+        <p class="sub-title m-0">쉽게 구하는 당신의 공간</p></RouterLink
       >
       <button
         class="navbar-toggler"
@@ -78,7 +78,7 @@
               커뮤니티
             </RouterLink>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><RouterLink class="dropdown-item" to="#">Q&A</RouterLink></li>
+              <li><RouterLink class="dropdown-item" to="/QnA/ask">Q&A</RouterLink></li>
               <li>
                 <RouterLink class="dropdown-item" to="#"
                   >허위매물신고</RouterLink
@@ -97,32 +97,48 @@
             >
           </li>
           <li class="nav-item">
-            <button @click="modalOpen">로그인</button>
-            <LoginModal id="loginModal" @closeModal="closeModal"/>
+            <button @click="memberModalOpen">로그인 및 회원가입</button>
+          </li>
+          <li class="nav-item">
+            <button class="btn" @click="showAgentLoginModal">중개사무소 가입 및 로그인</button>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+  <!-- 모달 -->
+  <MemberLoginModal id="MemberLoginModal" @closeModal="memberModalClose"/>
+  <AgentLoginModal id="AgentLoginModal" @close="hideAgentLoginModal" /> 
 </template>
 
 <script setup>
-import LoginModal from './LoginModal.vue'
+import MemberLoginModal from './Login/MemberLoginModal.vue'
+import AgentLoginModal from './Login/AgentLoginModal.vue';
 import {onMounted} from "vue";
 import {Modal} from "bootstrap";
 
-let modalLogin = null;
+let memberModalLogin = null;
+let agentLoginModal = null;
 
 onMounted(() => {
-  modalLogin = new Modal(document.querySelector("#loginModal"));
+  memberModalLogin = new Modal(document.querySelector("#MemberLoginModal"));
+  agentLoginModal = new Modal(document.querySelector("#AgentLoginModal"));
 });
 
-function modalOpen(){
-  modalLogin.show();
+function memberModalOpen(){
+  memberModalLogin.show();
 }
 
-function closeModal(){
-  modalLogin.hide();
+function memberModalClose(){
+  memberModalLogin.hide();
+}
+
+function showAgentLoginModal(){
+  agentLoginModal.show();
+}
+
+function hideAgentLoginModal(){
+  agentLoginModal.hide();
 }
 
 
