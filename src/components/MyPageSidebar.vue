@@ -5,13 +5,17 @@
       <li class="list-group-item">
         <RouterLink to="/MyPage/MyInfo">내 정보</RouterLink>
       </li>
-      <li class="list-group-item">상품 문의</li>
-      <li class="list-group-item">서비스 조회</li>
       <li class="list-group-item">
-        <RouterLink to="/MyPage/MyQna">1:1 문의내역</RouterLink>
+        <RouterLink to="/MyPage/ManageMyProperty">매물 관리</RouterLink>
       </li>
       <li class="list-group-item">
-        <RouterLink to="/MyPage/MyComplaint">허위매물 신고내역</RouterLink>
+        <RouterLink to="/MyPage/ReportFalseListing">허위매물 신고</RouterLink>
+      </li>
+      <li class="list-group-item">
+        <RouterLink to="/MyPage/CustomerInquiry">1:1 문의내역</RouterLink>
+      </li>
+      <li class="list-group-item">
+        <RouterLink to="/MyPage/DeleteAccount">회원 탈퇴</RouterLink>
       </li>
     </ul>
   </div>

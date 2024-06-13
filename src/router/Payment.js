@@ -1,6 +1,6 @@
 const routes = [
   {
-    path: "/Payment/Payment",
+    path: "/Payment",
     component: () =>
       import(/* webpackChunkName: "Payment" */ "@/views/Payment/Payment"),
   },

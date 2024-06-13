@@ -15,15 +15,15 @@
           </div>
           <div style="text-align: center;">
             <div style="margin-bottom: 30px;">
-              <h1 style="color: #FEC83F;"><strong>ZIP Easy</strong></h1>
-              <span style="font-size: 0.7rem;">쉽게 구하는 당신의 공간</span>
+              <h1 style="color: #FEC83F;"><strong>Matdongsan</strong></h1>
+              <span style="font-size: 0.7rem;">부동산 맛집</span>
             </div>
             <div>
-              <h1>아이디</h1>
+              <h4>아이디</h4>
               <input type="text" name="email" placeholder="이메일 주소 입력">
             </div>
-            <div>
-              <h1>비밀번호</h1>
+            <div class="d-flex" >
+              <h4>비밀번호</h4>
               <input type="text" name="email" placeholder="비밀번호 입력">
             </div>
             <div class="d-flex flex-column" style="align-items: center">

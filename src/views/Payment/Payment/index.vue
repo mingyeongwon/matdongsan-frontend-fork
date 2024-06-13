@@ -66,7 +66,7 @@
             </tr>
           </tbody>
         </table>
-        <button class="btn btn-warning btn-lg w-50 text-center">구매하기</button>
+        <RouterLink to="/Payment/PaymentResult" class="btn btn-warning btn-lg w-50 text-center">구매하기</RouterLink>
       </div>
     </div>
   </form>

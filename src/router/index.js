@@ -1,23 +1,36 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MyPage from "./MyPage";
 import Product from "./Product";
-import Agent from "./Agent";
-import QnA from "./QnA.js";
-import Payment from "./Payment.js";
-
+import MainService from "./MainService";
+import Qna from "./Qna";
+import Payment from "./Payment";
+import MainPage from "@/views/Mainpage";
+import FavoriteProperty from "@/views/FavoriteProperty";
+import PropertyForm from "@/views/PropertyForm";
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: MyPage
+    path: "/",
+    name: "home",
+    component: MainPage,
+  },
+  {
+    path: "/FavoriteProperty",
+    component: () =>
+      import(
+        /* webpackChunkName: "FavoriteProperty" */ "@/views/FavoriteProperty"
+      ),
+  },
+  {
+    path: "/PropertyForm",
+    component: () =>
+      import(/* webpackChunkName: "PropertyForm" */ "@/views/PropertyForm"),
   },
   ...MyPage,
   ...Product,
-  ...Agent,
-  ...QnA,
-  ...Payment
-
+  ...MainService,
+  ...Qna,
+  ...Payment,
 ];
 
 const router = createRouter({

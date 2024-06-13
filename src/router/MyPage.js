@@ -1,18 +1,29 @@
 const routes = [
   {
-    path: '/MyPage/MyQna',
+    path: '/MyPage/CustomerInquiry',
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/MyPage/MyQna")
+    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/CustomerInquiry")
   },
   {
-    path: '/MyPage/MyComplaint',
+    path: '/MyPage/ManageMyProperty',
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/MyPage/MyComplaint")
+    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/ManageMyProperty")
+  },
+
+  {
+    path: '/MyPage/ReportFalseListing',
+    component: () =>
+    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/ReportFalseListing")
+  },
+  {
+    path: '/MyPage/DeleteAccount',
+    component: () =>
+    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/DeleteAccount")
   },
   {
     path: '/MyPage/MyInfo',
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/MyPage/MyInfo")
+    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/MyInfomation")
   },
 ];
 

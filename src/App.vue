@@ -1,24 +1,17 @@
 <template>
 <div>
   <AppMenu/>
-  <div>
-    <nav>
-      <RouterLink to="/Product/ProductDetail" class="ms-2">상품 상세</RouterLink>
-      <RouterLink to="/QnA/Ask" class="ms-2">문의 사항</RouterLink>
-      <RouterLink to="/Payment/PaymentInfo" class="ms-2">결제 정보</RouterLink>
-      <RouterLink to="/Payment/Payment" class="ms-2">결제</RouterLink>
-      <RouterLink to="/Payment/OrderConfirmation" class="ms-2">결제 완료</RouterLink>
-      <RouterLink to="/QnA/noticeform" class="ms-2">공지사항 폼</RouterLink>
-    </nav>
-  </div>
+
   <div>
     <router-view />
   </div>
+  <CommonFooter/>
 </div>
 </template>
 
 <script setup>
 import AppMenu from "./components/AppMenu.vue";
+import CommonFooter from "./components/CommonFooter.vue";
 </script>
 
 <style scoped></style>

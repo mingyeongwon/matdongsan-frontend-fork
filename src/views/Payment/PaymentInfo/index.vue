@@ -31,7 +31,7 @@
                         <h1 class="card-title">일반 상품</h1>
                         <p class="card-text">매물 3개 등록 가능</p>
                         <p class="card-text">30,000</p>
-                        <button class="btn btn-warning">구매하기</button>
+                        <RouterLink class="btn btn-warning" to="/Payment">구매하기</RouterLink>
                     </div>
                 </li>
                 <li>
@@ -39,7 +39,7 @@
                         <h1 class="card-title">광고 상품</h1>
                         <p class="card-text">3개월 광고 가능</p>
                         <p class="card-text">90,000</p>
-                        <button class="btn btn-warning">구매하기</button>
+                        <RouterLink class="btn btn-warning" to="/Payment">구매하기</RouterLink>
                     </div>
                 </li>
             </ul>
