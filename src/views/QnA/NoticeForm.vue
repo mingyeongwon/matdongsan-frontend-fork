@@ -2,7 +2,7 @@
     <div>
       <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">공지사항</h2>
     <div style="margin-left: 400px; margin-right: 400px;">
-      <hr>
+      <!-- <hr>
       <div class="row me-5">
         <span class="col-2" style="text-align: center;">카테고리</span>
         <select class="col-10" name="sortType" id="sortType" style="border-radius: 15px; height: 35px; border: 1px solid black; padding-left: 10px; background-color: transparent;">
@@ -10,7 +10,7 @@
           <option value="sort2">정렬2</option>
           <option value="sort3">정렬3</option>
         </select>
-      </div>
+      </div> -->
       <hr>
       <div class="row me-5">
         <span class="col-2" style="text-align: center;">제목</span>

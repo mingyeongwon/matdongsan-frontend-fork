@@ -2,7 +2,7 @@
     <div>
       <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">자주 묻는 질문</h2>
       <!-- 버튼 tab -->
-      <div class="row" style="margin-left: 300px; margin-right: 300px; height: 50px;">
+      <div class="row" style="margin-left: 400px; margin-right: 400px; height: 50px;">
           <RouterLink to="/QnA/notice" class="askMenu col-4 d-flex" style="text-decoration: none;">
             <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">공지 사항</button>
           </RouterLink>
@@ -17,30 +17,29 @@
         </div>
 
 
-      <div style="margin-left: 400px; margin-right: 400px;">
-      <p style="text-align: center; margin-top: 60px; margin-bottom: 50px">집이지 사용자의 편의를 위해 <span style="color:#FEC83F; font-weight: bold">자주 묻는 질문과 답변</span>을 모아놓았습니다.<br>원하시는 질문을 찾아보세요!</p>
+      <div style="margin-left: 500px; margin-right: 500px;">
+      <p style="text-align: center; margin-top: 60px; margin-bottom: 50px">맛동산 사용자의 편의를 위해 <span style="color:#FEC83F; font-weight: bold">자주 묻는 질문과 답변</span>을 모아놓았습니다.<br>원하시는 질문을 찾아보세요!</p>
         <!-- 아코디언 -->
         <div class="accordion accordion-flush" id="accordionFlushExample">
           <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingOne">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                Q. 집이지는 어떤 서비스인가요?
+                Q. 맛동산은 어떤 서비스인가요?
               </button>
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne">
-              <div class="accordion-body"><p>A. 국내 최초 직거래 부동산 플랫폼 ‘집이지’에서 살고 싶은 집을 만나보세요. <br>
+              <div class="accordion-body"><p>A. 국내 최고 직거래 부동산 플랫폼 ‘맛동산’에서 살고 싶은 집을 만나보세요. <br>
             <br>
-            ▶ 대한민국 모든 방! 다 있다.<br>
-            원룸, 투∙쓰리룸, 오피스텔은 물론! 아파트까지!<br>
-            다~있는 집이지에서 easy하게 원하는 방을 찾고 찜 하세요!<br><br>
+            ▶ 대한민국 모든 원룸! 다 있다.<br>
+            다~있는 맛동산에서 쉽게 원하는 방을 찾고 찜 하세요!<br><br>
 
             ▶ 방 주변의 안전 정보, 한 눈에!<br>
             방 주변의 cctv, 치안센터 등 안전 시설들이 어떻게 분포되어 있는지 확인할 수 있습니다.<br>
-            집이지를 통해 보다 안전한 방을 찾아보세요.<br><br>
+            맛동산을 통해 보다 안전한 방을 찾아보세요.<br><br>
 
             ▶ 분양 정보를 한눈에 ‘분양 정보관’<br>
             전국 모든 지역의 분양 정보가 다 있다!<br>
-            분양 뉴스, 분양 일정, 청약 가이드까지 집이지가 꼼꼼하게 전달해드려요.</p></div>
+            분양 뉴스, 분양 일정, 청약 가이드까지 맛동산이 꼼꼼하게 전달해드려요.</p></div>
             </div>
           </div>
           <div class="accordion-item">
@@ -54,10 +53,7 @@
                 <p>A. 개인회원의 경우 직거래 매물 1건에 대해 무료 광고가 가능합니다. <br>
                     광고는 30일 간 공개 되며 기간이 지날 경우 비공개처리됩니다. <br>
                     비공개된 매물은 수정하여 다시 노출할 수 있습니다.<br><br>
-
-                    ▶ 다방앱의 '더보기'메뉴에서 ‘방 내놓기’ 버튼을 탭한 후 매물의 위치 정보, 방 종류, 거래 종류(전세∙월세) 등의 매물 기본 정보와 관리비, 옵션 사항 등 추가 정보를 상세히 입력하시면 됩니다. <br><br>
-
-                    ▶ 매물 광고 시 방 사진 3장은 필수 사항이며, 제목과 상세설명을 정성껏 작성해 주시면 광고 효과가 증대됩니다.</p></div>
+                </p></div>
             </div>
           </div>
           <div class="accordion-item">
@@ -67,7 +63,7 @@
               </button>
             </h2>
             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" >
-              <div class="accordion-body"><p>A. 허위매물 신고 접수와 다방의 허위매물 전담팀이 수시로 매물을 살펴보고 필터링하고 있습니다. <br><br>
+              <div class="accordion-body"><p>A. 허위매물 신고 접수와 맛동산 의 허위매물 전담팀이 수시로 매물을 살펴보고 필터링하고 있습니다. <br><br>
 
                 ▶ 지역구별 평균 시세를 파악해 시세에 비해 확연히 저렴한 매물이나 실사진이 아닌 사진이 포함된 경우 직접 연락을 취해 정보 수정을 요청합니다. <br><br>
 
@@ -91,13 +87,14 @@
       .askMenu{
       background-color: transparent;
       color: black;
-      border: none;
+      border: 1px solid lightgrey;
+
     }
   
       .askMenu:hover{
         background-color: #2F4858;
         color: white;
-        border: 2px solid black;
+        /* border: 2px solid black; */
     }
   
     .askMenuBtn:hover{

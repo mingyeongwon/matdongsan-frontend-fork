@@ -2,7 +2,7 @@
   <div>
     <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">공지사항</h2>
     <!-- 버튼 tab -->
-    <div class="row" style="margin-left: 300px; margin-right: 300px; height: 50px;">
+    <div class="row" style="margin-left: 400px; margin-right: 400px; height: 50px;">
         <RouterLink to="/QnA/notice" class="askMenu col-4 d-flex" style="background-color: #2F4858; color: white; text-decoration: none;">
           <button style="background-color: transparent; border: none; width: 100%; color: white">공지 사항</button>
         </RouterLink>
@@ -16,8 +16,8 @@
         </RouterLink>
       </div>
     <!-- 검색 및 정렬 -->
-    <div style="margin-left: 400px; margin-right: 400px;">
-      <div class="d-flex" style="justify-content: end; margin-top: 50px">
+    <div style="margin-left: 500px; margin-right: 500px;">
+      <div class="d-flex" style="justify-content: end; margin-top: 60px">
         
         <select name="sortType" id="sortType" style="border-radius: 15px; width: 200px; height: 35px; border: 1px solid black; padding-left: 10px; margin-right: 10px; background-color: transparent;">
             <option value="sort1">카테고리</option>
@@ -39,7 +39,7 @@
         <tbody>
           <tr>
             <td style="text-align: center;">[공지사항]</td>
-            <td >집이지 개인정보 처리방침 개정 안내</td>
+            <td >맛동산 개인정보 처리방침 개정 안내</td>
             <td style="text-align: center;">2024-06-01</td>
           </tr>
           <tr>
@@ -49,7 +49,7 @@
           </tr>
           <tr>
             <td style="text-align: center;">[공지사항]</td>
-            <td >[공지사항] 집이지 '간편문의' 서비스 종료 예정 (12월5일)</td>
+            <td >[공지사항] 맛동산 '간편문의' 서비스 종료 예정 (12월5일)</td>
             <td style="text-align: center;">2024-06-01</td>
           </tr>
         </tbody>
@@ -67,13 +67,14 @@
     .askMenu{
     background-color: transparent;
     color: black;
-    border: none;
+    border: 1px solid lightgrey;
+
   }
 
     .askMenu:hover{
       background-color: #2F4858;
       color: white;
-      border: 2px solid black;
+      /* border: 2px solid black; */
   }
 
   .askMenuBtn:hover{
