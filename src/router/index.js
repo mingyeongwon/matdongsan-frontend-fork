@@ -5,8 +5,6 @@ import MainService from "./MainService";
 import Qna from "./Qna";
 import Payment from "./Payment";
 import MainPage from "@/views/Mainpage";
-import FavoriteProperty from "@/views/FavoriteProperty";
-import PropertyForm from "@/views/PropertyForm";
 
 const routes = [
   {
