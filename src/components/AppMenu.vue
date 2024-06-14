@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-warning">
-    <div class="container-fluid">
+    <div class="container-fluid ms-3">
       <RouterLink class="navbar-brand ms-3 d-flex" to="/"
         ><img class="col me-3" src="../../public/matdongsan_logo.png" width="60" />
         <div>
