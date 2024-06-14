@@ -1,13 +1,13 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-warning">
     <div class="container-fluid ms-3">
-      <RouterLink class="navbar-brand ms-3 d-flex" to="/"
-        ><img class="col me-3" src="../../public/matdongsan_logo.png" width="60" />
+      <RouterLink class="navbar-brand ms-3 d-flex" to="/">
+        <img class="col me-3" src="../../public/matdongsan_logo.png" width="60" />
         <div>
           <h2 class="nav-title mb-1">Matdongsan</h2>
           <p class="sub-title m-0 text-center">부동산 맛집</p>
-        </div></RouterLink
-      >
+        </div>
+      </RouterLink>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -33,8 +33,8 @@
           </li>
          
           <li class="nav-item">
-            <button class="btn btn-info btn-sm mt-2" @click="showAgentLoginModal">
-             중개사무소 가입 및 로그인
+            <button class="btn btn-info btn-sm mt-2" @click="showLoginModal">
+             가입 및 로그인
             </button>
           </li>
           <li class="nav-item ">
@@ -47,27 +47,27 @@
     </div>
   </nav>
   <!-- 모달 -->
-  <AgentLoginModal id="AgentLoginModal" @close="hideAgentLoginModal" />
+  <LoginModal id="LoginModal" @close="hideLoginModal" />
 </template>
 
 <script setup>
-import AgentLoginModal from "./Login/AgentLoginModal.vue";
+import LoginModal from "./Login/LoginModal.vue";
 import { onMounted } from "vue";
 import { Modal } from "bootstrap";
 
-let agentLoginModal = null;
+let loginModal = null;
 
 onMounted(() => {
-  agentLoginModal = new Modal(document.querySelector("#AgentLoginModal"));
+  loginModal = new Modal(document.querySelector("#LoginModal"));
 });
 
 
-function showAgentLoginModal() {
-  agentLoginModal.show();
+function showLoginModal() {
+  loginModal.show();
 }
 
-function hideAgentLoginModal() {
-  agentLoginModal.hide();
+function hideLoginModal() {
+  loginModal.hide();
 }
 </script>
 
