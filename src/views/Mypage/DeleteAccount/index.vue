@@ -5,7 +5,7 @@
       <h2 class="fw-bold">회원탈퇴</h2>
       <hr />
       <div class="">
-        <p>
+        <p class="w-75 mx-auto">
           <b
             >회원 탈퇴를 신청하기 전에 아래 안내 사항을 한번 더 확인해주세요.</b
           >
@@ -29,32 +29,52 @@
             복구되지 않습니다.
           </ol>
         </ul>
-
-        <form action="#" class="deleteUserForm w-75 mx-auto mt-4" novalidate>
-          <div class="form-group mt-3">
-            <h4 class->비밀번호</h4>
-            <input class="form-control w-50 mx-auto border border-secondary" type="password" />
+        <hr />
+        <form action="#" class="deleteUserForm w-75 mx-auto mt-5" novalidate>
+          <div class="mx-auto form-group mt-5 w-50">
+            <h6>비밀번호</h6>
+            <input
+              class="form-control mx-auto border border-secondary"
+              type="password"
+            />
           </div>
-          <div class="form-group mt-3">
-            <h4>탈퇴를 하는 이유가 뭔가요?</h4>
-            <select class="form-select form-select-lg mb-3 w-50 mx-auto border border-secondary" aria-label=".form-select-lg example">
+          <div class="form-group mt-3 w-50 mx-auto">
+            <h6>탈퇴를 하는 이유가 뭔가요?</h6>
+            <select
+              class="form-select form-select mb-3 mx-auto border border-secondary "
+              aria-label=".form-select-lg example" 
+            >
               <option selected>사용이 불편함</option>
               <option value="1">One</option>
               <option value="2">Two</option>
               <option value="3">Three</option>
             </select>
           </div>
-          <div class="form-group mt-3">
+          <div class="form-group mt-3 mx-auto w-50">
             <h6>다른 이유가 있다면 알려주세요</h6>
-            <textarea name="reasonForDeleteAccount" id="reasonForDeleteAccount" class="w-50 mx-auto form-control border border-secondary"></textarea>
+            <textarea
+              name="reasonForDeleteAccount"
+              id="reasonForDeleteAccount"
+              class="mx-auto form-control border border-secondary"
+            ></textarea>
           </div>
-          <div class="form-group mt-3">
-            <input type="checkbox" name="deleteAgreement" id="deleteAgreement" />
-            <label for="deleteAgreement" class="ms-2"><b> 유의 사항에 동의 </b></label>
+          <div class="form-group mt-3 mx-auto w-50">
+            <input
+              type="checkbox"
+              name="deleteAgreement"
+              id="deleteAgreement"
+            />
+            <label for="deleteAgreement" class="ms-2"
+              ><b> 유의 사항에 동의 </b></label
+            >
           </div>
           <div class="form-group mt-3 text-center">
-            <button type="button" class="btn btn-dark btn-lg w-25">돌아가기</button>
-            <button type="button" class="ms-3 btn btn-warning btn-lg w-25">탈퇴하기</button>
+            <button type="button" class="btn btn-dark w-25">
+              돌아가기
+            </button>
+            <button type="button" class="ms-3 btn btn-warning w-25">
+              탈퇴하기
+            </button>
           </div>
         </form>
       </div>
@@ -72,5 +92,6 @@ import MyPageSideBar from "@/components/MyPageSidebar.vue";
   margin-right: auto;
   margin-left: auto;
 }
-
+.ps {
+}
 </style>
