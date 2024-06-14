@@ -48,8 +48,12 @@
             </div>
             <div class="d-grid gap-2 w-75 mx-auto mt-3 joinMemberBtn">
               <p class="mb-0">회원이 아니신가요?</p>
-              <button class="btn btn-secondary">일반 회원 가입하기</button>
-              <button class="btn btn-secondary">업체 회원 가입하기</button>
+              <router-link to="/Signup/SignupAgreement">
+                <button class="btn btn-secondary w-100">일반 회원 가입하기</button>
+              </router-link>
+              <router-link to="/Signup/SignupAgreement">
+                <button class="btn btn-secondary w-100">업체 회원 가입하기</button>
+              </router-link>
             </div>
           </div>
         </div>
