@@ -1,7 +1,7 @@
 <template>
 <div>
-    <div class="agreementCheck-title text-center ">
-        <h2 class="fw-bold">회원가입</h2>
+    <div class="agreementCheck-title">
+        <h2 class="fw-bold text-center">회원가입</h2>
     </div>
     <div class="agreementCheck-box border-top">
         <h3 class="border-bottom border-dark">약관 동의</h3>
@@ -430,7 +430,6 @@
 }
 
 .agreementCheck-box button {
-    border-radius: 0;
     width: 254px;
 }
 
