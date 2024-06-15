@@ -4,8 +4,8 @@
     <div class="titleNcontent">
       <h4>내 정보</h4>
       <hr />
-      <form action="">
-        <div class="d-flex">
+      <form action="" class="w-75 mx-auto">
+        <div class="d-flex justify-content-evenly">
           <h6 class="text-muted fw-bold align-self-center me-5">프로필 사진</h6>
           <div>
             <div type="button" class="btn position-relative">
@@ -25,16 +25,63 @@
             </div>
           </div>
 
-          <h6 class="align-self-center ms-5">남은 개수</h6>
-
-          <img src="" alt="집 이미지" class="rounded-circle" />
+          <h6 class="align-self-center ms-5 me-5 fw-bold text-muted">
+            남은 개수
+          </h6>
+          <div>
+            <img
+              src="@/assets/house-img.png"
+              alt="집 이미지"
+              width="60"
+              height="60"
+              class="bg-warning rounded align-self-center p-2"
+            />
+            <h6 class="text-center mt-3">4개 남음</h6>
+          </div>
         </div>
         <hr />
-        *이름
-        <input type="text" />
-        <hr />
+        <div>
+          *이름
+          <input type="text" value="원민경" />
+        </div>
+        <hr class="mb-4" />
         *전화번호
-        <input type="text" />
+        <input
+          type="text"
+          class="me-3 bg-body-secondary"
+          value="010"
+          readonly
+        />
+        <input type="text" class="me-3 bg-body-secondary" value="1234" />
+        <input type="text" class="bg-body-secondary" value="5678" />
+        <hr class="mb-4" />
+        이메일 주소
+        <input type="email" value="text@email.com" />
+        <h4 class="mt-5 fw-bold">비밀번호 변경</h4>
+        <hr class="border border-black border-2" />
+        <table class="table table-lg">
+          <tbody>
+            <tr>
+              <th scope="row">현재 비밀번호</th>
+              <td><input type="password" /></td>
+            </tr>
+            <tr>
+              <th scope="row">새 비밀번호</th>
+              <td><input type="password"></td>
+            </tr>
+            <tr>
+              <th scope="row">새 비밀번호 확인</th>
+              <td colspan="2"><input type="password"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="text-end">
+          <button button="button" class="btn btn-warning btn-lg">
+            수정완료
+          </button>
+          <button type="button" class="btn btn-outline-warning btn-lg text-dark ms-3">취소</button>
+        </div>
       </form>
     </div>
   </div>
