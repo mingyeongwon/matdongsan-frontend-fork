@@ -2,7 +2,7 @@
   <div>
     <section class="main-container text-center p-5">
         <div class="h-100 align-content-center">
-            <h2 class="text-light fw-bold">어떤 집을 찾고 게신가요?</h2>
+            <h2 class="text-light fw-bold">어떤 집을 찾고 계신가요?</h2>
             <div class="input-group mb-3 w-50 mt-4">
               <input
                 type="text"
