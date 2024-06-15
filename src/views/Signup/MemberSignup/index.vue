@@ -7,7 +7,7 @@
             <form>
                 <div class="d-flex mb-4">
                     <div class="d-flex col-2 pt-1">
-                        <span>아이디</span>
+                        <span>이메일</span>
                         <span class="text-danger fs-5 fw-bold">*</span>
                     </div>
                     <div class="memberEmail-box">
