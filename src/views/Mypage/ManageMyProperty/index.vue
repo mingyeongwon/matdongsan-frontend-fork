@@ -2,7 +2,19 @@
   <div class="d-flex">
     <MyPageSideBar />
     <div class="w-75 mx-auto">
-      <table class="table">
+      <div class="d-flex justify-content-betwwen">
+        <h4 class="col h4 mt-5 fw-bold">매물관리</h4>
+        <div class="mt-5">
+          <select class="form-select" name="filter" id="">
+            <option value="날짜순" selected>최신순</option>
+            <option value="날짜순" >오래된순</option>
+            <option value="날짜순" >거래완료</option>
+            <option value="날짜순" >거래중</option>
+          </select>
+        </div>
+      </div>
+      <hr />
+      <table class="table mt-5">
         <thead>
           <tr>
             <th scope="col" class="text-center">매물번호</th>
