@@ -18,7 +18,7 @@
             </div>
         </div>
     </section>
-    <div class="d-flex p-3 justify-content-around">
+    <div class="d-flex p-3 justify-content-around mx-auto w-75">
       <div class="align-self-center col-4">
         <h2 class="fw-bold text-center">당신의 집을 직접 팔거나 <br> 직접 거래를 해보세요</h2>
         <p class="text-center mt-3 text-muted">가입을 하고 더 많은 정보를 얻으세요</p>
