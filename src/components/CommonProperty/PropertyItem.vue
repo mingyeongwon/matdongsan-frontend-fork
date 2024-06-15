@@ -1,6 +1,6 @@
 <template>
   <RouterLink to="#" class="row text-decoration-none me-3">
-    <div class="col-sm-1 card border border-0 w-" style="width: 18rem">
+    <div class="col-sm-1 card border border-0" style="width: 18rem">
       <img
         :src="require('@/assets/test.png')"
         class="card-img"

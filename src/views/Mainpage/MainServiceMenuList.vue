@@ -1,25 +1,64 @@
 <template>
-    <div class="w-75">
-        <h4 class="fw-bold">인기매물</h4>
-        <div class="d-flex">
-            <div v-for="item in dataList" :key="item.title">
-                <CardItem :propertyData="item"/>
-            </div>
+  <div class="mt-5 container">
+    <h4 class="fw-bold ms-3 mb-4">메인 서비스</h4>
+    <div class="d-flex justify-content-evenly mx-auto">
+      <div class="card border border-2" style="width: 18rem">
+        <img
+          src="@/assets/main-service1.png"
+          class="card-img pt-2 ps-5 pe-5"
+          alt="..."
+        />
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">원룸</h5>
+          <p class="card-text text-muted">
+            집이지가 선정한 <br />
+            원룸 리스트 정보를 찾아보세요.
+          </p>
+          <RouterLink to="#" class="btn text-light ps-5 pe-5"
+            >보러가기</RouterLink
+          >
         </div>
+      </div>
+      <div class="card border border-2" style="width: 18rem">
+        <img
+          src="@/assets/main-service2.png"
+          class="card-img pt-2 ps-5 pe-5"
+          alt="..."
+        />
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">전/월세</h5>
+          <p class="card-text text-muted">
+            집이지를 통해 타 사이트보다 <br />
+            저렴한 등록비로 집을 홍보하세요.
+          </p>
+          <RouterLink to="#" class="btn text-light ps-5 pe-5"
+            >집내놓기</RouterLink
+          >
+        </div>
+      </div>
+      <div class="card border border-2" style="width: 18rem">
+        <img
+          src="@/assets/main-service3.png"
+          class="card-img pt-2 ps-5 pe-5"
+          alt="..."
+        />
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">부동산</h5>
+          <p class="card-text text-muted">
+            집이지와 같이 일을 하는 <br />
+            중개업자에게 연락해보세요.
+          </p>
+          <RouterLink to="#" class="btn text-light ps-5 pe-5"
+            >중개인 목록보기</RouterLink
+          >
+        </div>
+      </div>
     </div>
+  </div>
 </template>
-
-<script setup>
-import CardItem from "@/components/CommonProperty/PropertyItem.vue";
-
-// 임시 데이터 배열
-let dataList = [
-    { title: "2000/ 월세 20", floor: 3, size: 20.97, maintenance: 8, detailInfo: "너무 넓음" },
-    { title: "1500/ 월세 15", floor: 2, size: 15.75, maintenance: 5, detailInfo: "적당히 넓음" },
-    { title: "1000/ 월세 10", floor: 1, size: 10.50, maintenance: 3, detailInfo: "좁음" },
-    { title: "500/ 월세 5", floor: 4, size: 5.25, maintenance: 2, detailInfo: "매우 좁음" }
-];
-</script>
-
+<script setup></script>
 <style scoped>
+.btn {
+  background-color: #2f4858;
+}
 </style>
