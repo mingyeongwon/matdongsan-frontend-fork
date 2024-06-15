@@ -42,7 +42,7 @@
             <td class="fw-bold align-middle">
               <div class="d-flex flex-column">
                 <button class="btn btn-warning btn-sm fw-bold mb-3">수정</button
-                ><button class="soldOutBtn btn btn-sm fw-bold mb-3">
+                ><button class="soldOutBtn btn btn-sm fw-bold mb-3" @click="showModal">
                   거래완료</button
                 ><button class="btn btn-danger btn-sm fw-bold">비활성화</button>
               </div>
@@ -51,11 +51,28 @@
         </tbody>
       </table>
     </div>
+    <TransactionModal id="TransactionModal" @close="hideTransactionModal"/>
   </div>
 </template>
 
 <script setup>
 import MyPageSideBar from "@/components/MyPageSidebar.vue";
+import TransactionModal from "./TransactionCompleted.vue";
+import { onMounted } from "vue";
+import { Modal } from "bootstrap";
+
+let transactionModal = null;
+
+onMounted(() => {
+  transactionModal = new Modal(document.querySelector("#TransactionModal"));
+});
+function showModal () {
+  transactionModal.show();
+}
+
+function hideLoginModal() {
+  transactionModal.hide();
+}
 </script>
 
 <style scoped>
