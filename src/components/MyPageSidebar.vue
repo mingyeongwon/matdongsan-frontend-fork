@@ -1,21 +1,21 @@
 <template>
   <div class="sidebar">
     <ul class="list-group">
-      <li class="list-group-item">마이페이지</li>
+      <li class="list-group-item fw-bold">마이페이지</li>
       <li class="list-group-item">
-        <RouterLink to="/MyPage/MyInfo">내 정보</RouterLink>
+        <RouterLink to="/MyPage/MyInfo" class="text-decoration-none text-dark">내 정보</RouterLink>
       </li>
       <li class="list-group-item">
-        <RouterLink to="/MyPage/ManageMyProperty">매물 관리</RouterLink>
+        <RouterLink to="/MyPage/ManageMyProperty" class="text-decoration-none text-dark">매물 관리</RouterLink>
       </li>
       <li class="list-group-item">
-        <RouterLink to="/MyPage/ReportFalseListing">허위매물 신고</RouterLink>
+        <RouterLink to="/MyPage/ReportFalseListing" class="text-decoration-none text-dark">허위매물 신고</RouterLink>
       </li>
       <li class="list-group-item">
-        <RouterLink to="/MyPage/CustomerInquiry">1:1 문의내역</RouterLink>
+        <RouterLink to="/MyPage/CustomerInquiry" class="text-decoration-none text-dark">1:1 문의내역</RouterLink>
       </li>
       <li class="list-group-item">
-        <RouterLink to="/MyPage/DeleteAccount">회원 탈퇴</RouterLink>
+        <RouterLink to="/MyPage/DeleteAccount" class="text-decoration-none text-dark">회원 탈퇴</RouterLink>
       </li>
     </ul>
   </div>
