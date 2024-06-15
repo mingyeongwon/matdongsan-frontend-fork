@@ -23,6 +23,8 @@
         <h2 class="fw-bold text-center">당신의 집을 직접 팔거나 <br> 직접 거래를 해보세요</h2>
         <p class="text-center mt-3 text-muted">가입을 하고 더 많은 정보를 얻으세요</p>
         <div class="text-center">
+
+            <!-- 후에 여기에 주소 추가 해야함 -->
             <RouterLink to="#" class="btn btn-warning fw-bold mt-3">가입하기</RouterLink>
         </div>
       </div>
