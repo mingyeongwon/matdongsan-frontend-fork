@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import LoginModal from "./Login/LoginModal.vue";
+import LoginModal from "./LoginModal.vue";
 import { onMounted } from "vue";
 import { Modal } from "bootstrap";
 

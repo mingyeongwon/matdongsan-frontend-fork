@@ -15,7 +15,7 @@
     import NoticeList from "./NoticeList";
     import NoticeListFilter from "./NoticeListFilter";
     import NoticeHeader from "@/components/NoticeHeader";
-    import Pagination from "@/components/CommonProperty/Pagination"
+    import Pagination from "@/components/Pagination"
     </script>
     
     <style scoped>

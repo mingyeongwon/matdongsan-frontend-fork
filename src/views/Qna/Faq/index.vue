@@ -64,7 +64,7 @@
     
   <script setup>
     import NoticeHeader from "@/components/NoticeHeader";
-    import Pagination from "@/components/CommonProperty/Pagination"
+    import Pagination from "@/components/Pagination"
   
   </script>
   
