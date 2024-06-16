@@ -3,10 +3,7 @@
     <MyPageSidebar />
     <div class="titleNcontent">
       <div class="border-bottom border-dark d-flex justify-content-between mt-5 mb-3">
-        <h2 class="fw-bold">허위매물 신고</h2>
-        <div>
-          <button type="button" class="btn btn-warning">1:1 문의하기</button>
-        </div>
+        <h2 class="fw-bold ps-1">허위매물 신고</h2>
       </div>
       <table class="table">
         <thead class="text-center">
