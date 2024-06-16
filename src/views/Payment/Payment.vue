@@ -1,13 +1,13 @@
 <template>
   <form action="">
-    <div class="w-75 text-center mt-5">
+    <div class="text-center mt-5" style="margin-left: 400px; margin-right: 400px">
   <h2 style="font-weight: bold; margin-bottom: 30px;">상품 서비스 구매</h2>
 
-      <div class="row">
+      <div class="row" style="margin-left: 150px; margin-right: 150px;">
         <div class="col">
         <div class="option-box me-3" style="height: 250px">
-          <div class="mt-5" >
-          <img class="" src="@/assets/home.png" width="140" alt="" />
+          <div style="margin-top: 77px" >
+          <img class="" src="@/assets/home.png" width="110" alt="" />
           </div>
           <div class="mt-3 fw-bold mb-3">매물 등록권 X 1</div>
         </div>
