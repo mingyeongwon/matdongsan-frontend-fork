@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex vh-100">
     <MyPageSidebar />
     <div class="titleNcontent">
       <div class="border-bottom border-dark d-flex justify-content-between mt-5 mb-3">
-        <h2 class="fw-bold ps-1">허위매물 신고</h2>
+        <h2 class="fw-bold">허위매물 신고</h2>
       </div>
       <table class="table">
         <thead class="text-center">

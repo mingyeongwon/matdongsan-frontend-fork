@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex vh-100">
     <MyPageSideBar />
     <div class="w-75 mx-auto">
       <div class="d-flex justify-content-betwwen">

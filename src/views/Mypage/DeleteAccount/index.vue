@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex w-100">
+  <div class="d-flex w-100 vh-100">
     <MyPageSideBar />
     <div class="vh-100 p-5 w-100">
       <h2 class="fw-bold">회원탈퇴</h2>

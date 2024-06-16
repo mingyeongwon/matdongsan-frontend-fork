@@ -5,7 +5,7 @@
       <h4>내 정보</h4>
       <hr />
       <form action="" class="w-75 mx-auto">
-        <div class="d-flex justify-content-evenly">
+        <div class="d-flex justify-content-between">
           <h6 class="text-muted fw-bold align-self-center me-5">프로필 사진</h6>
           <div>
             <div type="button" class="btn position-relative">
@@ -41,22 +41,22 @@
         </div>
         <hr />
         <div>
-          *이름
-          <input type="text" value="원민경" />
+          이름
+          <input class="ms-5" type="text" value="원민경" readonly>
         </div>
         <hr class="mb-4" />
-        *전화번호
+        전화번호
         <input
           type="text"
-          class="me-3 bg-body-secondary"
+          class="me-3 ms-4 bg-body-secondary"
           value="010"
           readonly
         />
-        <input type="text" class="me-3 bg-body-secondary" value="1234" />
-        <input type="text" class="bg-body-secondary" value="5678" />
+        <input type="text" class="me-3 bg-body-secondary" value="1234" readonly/>
+        <input type="text" class="bg-body-secondary" value="5678" readonly/>
         <hr class="mb-4" />
         이메일 주소
-        <input type="email" value="text@email.com" />
+        <input type="email" value="text@email.com" readonly/>
         <h4 class="mt-5 fw-bold">비밀번호 변경</h4>
         <hr class="border border-black border-2" />
         <table class="table table-lg">

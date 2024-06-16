@@ -1,11 +1,11 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex vh-100">
     <MyPageSidebar />
     <div class="titleNcontent">
       <div class="border-bottom border-dark d-flex justify-content-between mt-5 mb-3">
         <h2 class="fw-bold">1:1 문의</h2>
         <div>
-          <button type="button" class="btn btn-warning">1:1 문의하기</button>
+          <button type="button" class="btn btn-warning me-1">1:1 문의하기</button>
         </div>
       </div>
       <table class="table">
