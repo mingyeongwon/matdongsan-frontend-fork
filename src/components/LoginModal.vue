@@ -15,7 +15,7 @@
           </div>
           <div>
             <div class="d-flex w-75 mx-auto justify-content-center align-items-center">
-              <img class="col-3 me-3" src="../../../public/matdongsan_logo.png" width="50"/>
+              <img class="col-3 me-3" src="../../public/matdongsan_logo.png" width="50"/>
               <div class="mt-4 logo-box">
                 <h2 class="nav-title mb-1 fw-bold text-warning fs-2">Matdongsan</h2>
                 <p class="sub-title m-0 text-center fw-bold">부동산 맛집</p>

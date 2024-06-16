@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import CardItem from "@/components/CommonProperty/PropertyItem.vue";
+import CardItem from "@/components/PropertyItem.vue";
 
 // 임시 데이터 배열
 let dataList = [

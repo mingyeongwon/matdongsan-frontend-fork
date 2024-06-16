@@ -1,51 +1,47 @@
 <template>
   <form action="">
     <div class="w-75 text-center mt-5">
-      <div class="d-flex">
-        <div
-          class="option-box col border border-dark border-2 border-end-0 p-5"
-        >
-          <img class="" src="@/assets/ad_icon.jpg" width="100" alt="" />
-          <div class="mt-3 fw-bold">집 등록하기</div>
+  <h2 style="font-weight: bold; margin-bottom: 30px;">상품 서비스 구매</h2>
+
+      <div class="row">
+        <div class="col">
+        <div class="option-box me-3" style="height: 250px">
+          <div class="mt-5" >
+          <img class="" src="@/assets/home.png" width="140" alt="" />
+          </div>
+          <div class="mt-3 fw-bold mb-3">매물 등록권 X 1</div>
         </div>
-        <div class="option-box col border border-dark border-2 p-5">
-          <img class="" src="@/assets/house_icon.jpg" width="100" alt="" />
-          <div class="mt-3 fw-bold">광고 구매하기</div>
-        </div>
+        <p class="mt-3">가격<br> 5,500원</p>
       </div>
-      <div class="mt-5 section2">
-        <table class="table w-50 table-borderless">
-          <tbody>
-            <tr>
-              <th scope="row">주소</th>
-              <td>경기도 용인시 처인구 역삼동(처인구)</td>
-            </tr>
-            <tr>
-              <th scope="row">가격</th>
-              <td>198,000</td>
-            </tr>
-            <tr v-if="option === 'ad'">
-              <th scope="row">광고수량</th>
-              <td colspan="2">3건</td>
-            </tr>
-            <tr v-if="option !== 'ad'">
-              <th scope="row">등록개수</th>
-              <td colspan="2">3건</td>
-            </tr>
-            <tr v-if="option === 'ad'">
-              <th scope="row">광고기간</th>
-              <td colspan="2">
-                <select
-                  class="form-select-sm mb-3"
-                  aria-label=".form-select-lg example"
-                >
-                  <option selected>3개월(90일)</option>
-                </select>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <hr class="border-2" />
+      <div class="col">
+        <div class="option-box me-2" style="height: 250px">
+          <div class="mt-5 pt-5">
+          <img class="" src="@/assets/home.png" width="90" alt="" />
+          <img class="" src="@/assets/home.png" width="90" alt="" />
+          <img class="" src="@/assets/home.png" width="90" alt="" />
+          </div>
+          <div class="mt-3 fw-bold mb-3">매물 등록권 X 3</div>
+        </div>
+        <p class="mt-3">가격<br> 15,500원</p>
+        </div>        
+        <div class="col">
+        <div class="option-box me-2 pt-4" style="height: 250px">
+          <div class="mt-3">
+          <img class="" src="@/assets/home.png" width="70" alt="" />
+          <img class="" src="@/assets/home.png" width="70" alt="" /><br>
+          <img class="" src="@/assets/home.png" width="70" alt="" />
+          <img class="" src="@/assets/home.png" width="70" alt="" />
+          <img class="" src="@/assets/home.png" width="70" alt="" />
+          </div>
+          <div class="mt-3 fw-bold mb-3">매물 등록권 X 5</div>
+        </div>
+        <p class="mt-3">가격<br> 25,000원</p>
+      </div>
+      </div>
+      <hr class="border-2" />
+
+      <div class="mt-5 section2 ms-5">
+        
         <table class="table w-75 mb-5 table-borderless">
           <thead>
             <tr>
@@ -58,15 +54,18 @@
           </thead>
           <tbody>
             <tr>
-              <th scope="row">594,000원</th>
+              <th scope="row">0원</th>
               <th scope="row" >-</th>
-              <td class="text-danger fw-bold">237,600원</td>
+              <td class="text-danger fw-bold">0원</td>
               <td>=</td>
-              <td  class="fw-bold">237,600원</td>
+              <td  class="fw-bold">0원</td>
             </tr>
           </tbody>
         </table>
-        <RouterLink to="/Payment/PaymentResult" class="btn btn-warning btn-lg w-50 text-center">구매하기</RouterLink>
+        <div class="ms-5 me-5">
+        <RouterLink to="/Payment/PaymentResult" class="btn btn-warning text-center me-5 pt-1" style="height: 40px; width: 300px; font-weight: bold;">결제하기</RouterLink>
+        <RouterLink to="/" class="btn text-center" style="border: 2px solid grey; height: 40px; width: 300px; font-weight: bold;" >취소</RouterLink>
+      </div>
       </div>
     </div>
   </form>
@@ -83,9 +82,7 @@ let option = "ad";
 }
 .option-box {
   cursor: pointer;
+  border-radius: 20px; border: 2px solid black;
 }
-table {
-  margin-left: auto;
-  margin-right: auto;
-}
+
 </style>
