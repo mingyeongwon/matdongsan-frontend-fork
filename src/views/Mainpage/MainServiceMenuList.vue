@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 container">
+  <div class="mt-5 container mb-5">
     <h4 class="fw-bold ms-3 mb-4">메인 서비스</h4>
     <div class="d-flex justify-content-evenly mx-auto">
       <div class="card border border-2" style="width: 18rem">
@@ -8,7 +8,7 @@
           class="card-img pt-2 ps-5 pe-5"
           alt="..."
         />
-        <div class="card-body text-center">
+        <div class="card-body text-center mb-5">
           <h5 class="card-title fw-bold">원룸</h5>
           <p class="card-text text-muted">
             집이지가 선정한 <br />
