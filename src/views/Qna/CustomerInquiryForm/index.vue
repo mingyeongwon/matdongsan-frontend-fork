@@ -1,20 +1,12 @@
 <template>
     <div>
-      <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">문의하기</h2>
-      <!-- 버튼 tab -->
-    <div class="row" style="margin-left: 400px; margin-right: 400px; height: 50px;">
-      <RouterLink to="/QnA/notice" class="askMenu col-4 d-flex" style="text-decoration: none;">
-        <button class="askMenuBtn" style="background-color: transparent; border:none; width: 100%;">공지 사항</button>
-      </RouterLink>
-
-       <RouterLink to="/QnA/Ask" class="askMenu col-4 d-flex" style="background-color: #2F4858; color: white; text-decoration: none;">
-        <button style="background-color: transparent; border: none; width: 100%; color: white">1:1 문의</button>
-      </RouterLink>
-      
-      <RouterLink to="/QnA/FAQ" class="askMenu col-4 d-flex" style="text-decoration: none;">
-        <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">자주 묻는 질문</button>
-      </RouterLink>
-    </div>
+      <!-- 공용 컴포넌트 -->
+      <NoticeHeader>
+        <template v-slot:header>
+         문의하기
+        </template>
+      </NoticeHeader>
+    
     <p style="text-align: center; margin-top: 60px; margin-bottom: 50px;">맛동산에 궁금하신 점을 문의해주세요 <br>
       문의 내용과 답변은 <span style="color:#FEC83F; font-weight: bold">'1:1 문의 내역'</span>에서 확인하실 수 있습니다.</p>
     <div style="margin-left: 500px; margin-right: 500px;">
@@ -65,24 +57,11 @@
 </template>
 
 <script setup>
+    import NoticeHeader from "@/components/NoticeHeader";
 
 </script>
 
 <style scoped>
-.askMenu{
-  background-color: transparent;
-  color: black;
-  border: 1px solid lightgrey;
-}
 
-.askMenu:hover{
-  background-color: #2F4858;
-  color: white;
-  /* border: 1px solid black; */
-}
-
-.askMenuBtn:hover{
-  color: white;
-}
 
 </style>
