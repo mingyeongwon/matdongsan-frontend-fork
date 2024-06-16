@@ -25,6 +25,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="container">
             <div class="row">
                 <div class="col-8">
@@ -215,59 +216,6 @@
                     </div>
                 </section>
             </div>
-            <aside class="col-4">
-                <div>
-                    <div>
-                        <div class="productNum"><p>매물번호 43995011</p></div>
-                        <div>
-                            <p>전세 1억5000</p>
-                            <p>최근 7일 매물 조회 수 340회</p>
-                        </div>
-                        <ul>
-                            <li  class="listGrid">
-                                <div>
-                                    <img width="24" height="24" src="https://cdn-icons-png.flaticon.com/512/510/510965.png" alt="">
-                                    <span>오피스텔</span>
-                                </div>
-                                <div>
-                                    <img width="24" height="24" src="https://cdn.icon-icons.com/icons2/1491/PNG/512/ruler_102796.png" alt="">
-                                    <span>20.98m2</span>
-                                </div>
-                            </li>
-                            <li class="listGrid">
-                                <div>
-                                    <img width="24" height="24" src="https://cdn-icons-png.flaticon.com/256/637/637209.png" alt="">
-                                    <span>8층/17층</span>
-                                </div>
-                                <div>
-                                    <img width="24" height="24" src="https://cdn-icons-png.flaticon.com/512/2693/2693796.png" alt="">
-                                    <span>19만 원</span>
-                                </div>
-                            </li>
-                            <li class="listGrid">
-                                <div>
-                                    <p>방/욕실</p>
-                                    <p>2개/1개</p>
-                                </div>
-                            </li>
-                            <li class="listGrid">
-                                <div>
-                                    <p>위치 및 주변시설</p>
-                                    <p>서울특별시 강서구 방화동</p>
-                                </div>
-                            </li>
-                        </ul>
-                        <div></div>
-                        <div><p>티에스태양공인중개사</p></div>
-                        <div>
-                            <div class="btn">연락처 보기</div>
-                            <div class="btn">
-                                <img src="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
             </div>
         </div>
     </div>
