@@ -21,7 +21,7 @@ const routes = [
     import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/DeleteAccount")
   },
   {
-    path: '/MyPage/MyInfo',
+    path: '/MyPage/MyInfomation',
     component: () =>
     import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/MyInfomation")
   },
