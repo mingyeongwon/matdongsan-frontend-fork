@@ -1,5 +1,5 @@
 <template>
-    <div class="AgentMap-container">
+    <div class="AgentMap-container w-75 mx-auto">
       <div class=" h-100">
         <div class="d-flex p-3 h-100" >
             <div class="property-list-box w-25 border border-1 border-dark h-100 p-3 row row-cols-2 overflow-auto">

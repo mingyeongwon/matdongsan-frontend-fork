@@ -25,14 +25,20 @@
         <div class="text-center">
 
             <!-- 후에 여기에 주소 추가 해야함 -->
-            <RouterLink to="#" class="btn btn-warning fw-bold mt-3">가입하기</RouterLink>
+            <RouterLink to="/Signup" class="btn btn-warning fw-bold mt-3 me-3">일반 회원</RouterLink>
+            <RouterLink to="/Signup" class="btn btn-warning fw-bold mt-3 ms-3">업체 회원</RouterLink>
         </div>
       </div>
       <img src="@/assets/page-info-img.png" width="600" alt="" />
     </div>
   </div>
+
+  <LoginModal />
+
 </template>
-<script setup></script>
+<script setup>
+
+</script>
 <style scoped>
 .main-container {
   background-image: url("@/assets/main_page_banner.png");
