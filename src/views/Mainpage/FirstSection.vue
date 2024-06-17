@@ -24,8 +24,7 @@
         <p class="text-center mt-3 text-muted">가입을 하고 더 많은 정보를 얻으세요</p>
         <div class="text-center">
 
-            <!-- 후에 여기에 주소 추가 해야함 -->
-            <RouterLink to="/Signup" class="btn btn-warning fw-bold mt-3 me-3">일반 회원</RouterLink>
+            <RouterLink to="/Signup/SignupAgreement" class="btn btn-warning fw-bold mt-3 me-3">일반 회원</RouterLink>
             <RouterLink to="/Signup" class="btn btn-warning fw-bold mt-3 ms-3">업체 회원</RouterLink>
         </div>
       </div>

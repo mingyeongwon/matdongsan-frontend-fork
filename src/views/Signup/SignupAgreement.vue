@@ -393,8 +393,8 @@
                             <RouterLink to="/" class="text-decoration-none text-dark"><button class="btn btn-lg fw-bold text-dark ms-4 cancelBtn" type="submit">돌아가기</button></RouterLink>
                         </slot>
                     </div>
-        </form>
-    </div>
+            </form>
+        </div>
     </div>
 </template>
 

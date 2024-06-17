@@ -153,20 +153,42 @@
             <PropertyItem class="col" />
           </div>
         </section>
-        <section class="text-center w-75 mt-5">
-          <div class="btn btn-danger btn-sm me-5">허위매물 신고하기</div>
-        </section>
+
+        <section class="col-7 ps-4 mt-5">
+          <button class="reportBtn p-3 w-100 text-start fw-bold" @click="showReportFalseModal">허위매물 신고하기</button>
+        </section>        
       </div>
     </div>
   </div>
+  <ReportFalseModal id="ReportFalseModal"/>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import {Modal} from "bootstrap";
+
 import PropertyItem from "@/components/PropertyItem.vue";
+import ReportFalseModal from "@/views/MainService/Property/ReportFalseModal.vue";
+
+let reportFalseModal = null;
+
+onMounted(() => {
+  reportFalseModal = new Modal(document.querySelector("#ReportFalseModal"))
+});
+
+function showReportFalseModal() {
+  reportFalseModal.show();
+}
 </script>
 
 <style scoped>
+
+.reportBtn {
+  background-color: rgb(250, 250, 250);
+  border: none;
+  font-size: 14px;
+}
+
 .detailInfo {
   background-color: rgb(250, 250, 250);
   padding: 32px 24px;

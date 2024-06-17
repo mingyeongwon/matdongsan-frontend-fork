@@ -40,7 +40,7 @@
     </table>
     <span class="btn btn-dark position-absolute bottom-0 end-0 m-3 opacity-75" @click="showDetailPhotosModal">사진 모두 보기</span>
   </div>
-  <DetailPhotosModal id="DetailPhotosModal" @close="hideDetailPhotosModal" />
+  <DetailPhotosModal id="DetailPhotosModal"/>
 </template>
 
 <script setup>
@@ -58,10 +58,6 @@ onMounted(() => {
 
 function showDetailPhotosModal() {
   detailPhotosModal.show();
-}
-
-function hideDetailPhotosModal() {
-  detailPhotosModal.hide();
 }
 
 </script>
