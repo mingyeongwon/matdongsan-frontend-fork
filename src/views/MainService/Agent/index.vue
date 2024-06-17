@@ -80,7 +80,7 @@
                   height="100"
                   class="rounded-circle me-3"
                 />
-                <span class="fw-bold">희망하는 공인중개사 사무소</span>
+                <span class="fw-bold">나를 그대의 중개사로 사무소</span>
               </div>
             </div>
 

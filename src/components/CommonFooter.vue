@@ -12,7 +12,7 @@
               </div></RouterLink
             >
           </div>
-          <div class="col-1 w-50">
+          <div class="col-5 w-75">
             <div class="d-flex flex-row footer-parabox">
               <div class="mb-2 me-5">
                 <RouterLink to="/about" class="nav-link p-0 fw-bolder">회사소개</RouterLink>
