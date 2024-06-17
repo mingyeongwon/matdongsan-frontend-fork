@@ -3,7 +3,7 @@
      <div class="agentSignup-title">
          <h2 class="fw-bold text-center">중개인 회원가입</h2>
      </div>
-     <div class="agentSignup-box border-top">
+     <div class="agentSignup-box border-top ">
          <form>
              <div class="d-flex mb-4">
                  <div class="d-flex col-2 pt-1">
@@ -11,9 +11,9 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div class="agentEmail-box">
-                     <input class="ps-2 me-3" type="text" placeholder="영대소문자, 숫자, 언더바(_) 혼용 4~12자 가능합니다.">
-                     <button class="agentSignupPassword-btn text-light w-25">중복확인</button>
-                 </div>
+                     <input class="ps-2 me-3 border border-dark rounded mb-2 w-100" type="text" placeholder="영대소문자, 숫자, 언더바(_) 혼용 4~12자 가능합니다.">
+                    </div>
+                    <button class="ms-2 btn btn-sm agentSignupPassword-btn text-light">중복확인</button>
              </div>
              <div class="d-flex mb-4">
                  <div class="d-flex col-2  pt-1">
@@ -21,8 +21,8 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div class="agentPassword-box d-flex flex-column">
-                     <input class="mb-2 ps-2" type="password" placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다.">
-                     <input class="ps-2" type="password" placeholder="비밀번호를 재입력하세요.">
+                     <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다.">
+                     <input class="ps-2 border border-dark rounded" type="password" placeholder="비밀번호를 재입력하세요.">
                  </div>
              </div>
              <div class="d-flex mb-4 agentPhone-box">
@@ -32,7 +32,7 @@
                  </div>
                     
                  <div>
-                     <input class="ps-2" type="text" placeholder="숫자만 10~11자 가능합니다.">
+                     <input class="ps-2 border border-dark rounded" type="text" placeholder="숫자만 10~11자 가능합니다.">
                  </div>
              </div>                
              <div class="d-flex mb-4 agentBrandName-box">
@@ -41,7 +41,7 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div>
-                     <input class="ps-2" type="text">
+                     <input class="ps-2 border border-dark rounded" type="text">
                  </div>
              </div>                
              <div class="d-flex mb-4 agentBrandName-box">
@@ -50,16 +50,16 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div>
-                  <input class="ps-2" type="text" placeholder="숫자만 10자 가능합니다.">
+                  <input class="ps-2 border border-dark rounded" type="text" placeholder="숫자만 10자 가능합니다.">
                  </div>
              </div>                
              <div class="d-flex mb-4 agentProfile-box">
                  <span class="col-2 agentInputTitle">대표 사진</span>
                  <div>
                      <input type="file" id="agentProfile">
-                     <label class="agentProfile-label" for="agentProfile">
-                         <div class="x"></div>
-                         <div class="y"></div>
+                     <label class="agentProfile-label border border-1 border-secondary rounded" for="agentProfile">
+                         <div class="x border border-1 border-secondary"></div>
+                         <div class="y border border-1 border-secondary"></div>
                      </label>
                  </div>
              </div> 
@@ -70,11 +70,11 @@
                  </div>
                  <div class="agentPassword-box d-flex flex-column">
                     <div>
-                      <input class="mb-2 ps-2" type="password" placeholder="우편번호">
+                      <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="우편번호">
                       <button type="button" class="btn btn-dark btn-sm ms-2 ">주소검색</button>
                     </div>
-                     <input class="mb-2 ps-2" type="password" placeholder="주소">
-                     <input class="ps-2" type="password" placeholder="상세주소">
+                     <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="주소">
+                     <input class="ps-2 border border-dark rounded" type="password" placeholder="상세주소">
                  </div>
              </div>  
              <div class="d-flex mb-5 agentProfile-box">
@@ -84,21 +84,21 @@
                  </div>
                  <div>
                      <input type="file" id="agentProfile">
-                     <label class="agentProfile-label" for="agentProfile">
-                         <div class="x"></div>
-                         <div class="y"></div>
+                     <label class="agentProfile-label border border-1 border-secondary me-5" for="agentProfile">
+                         <div class="x border border-1 border-secondary"></div>
+                         <div class="y border border-1 border-secondary"></div>
                      </label>
                  </div>
                  <div>
                      <input type="file" id="agentProfile">
-                     <label class="agentProfile-label" for="agentProfile">
-                         <div class="x"></div>
-                         <div class="y"></div>
+                     <label class="agentProfile-label border border-1 border-secondary" for="agentProfile">
+                         <div class="x border border-1 border-secondary"></div>
+                         <div class="y border border-1 border-secondary"></div>
                      </label>
                  </div>
              </div>                         
              <div class="text-center agentSignupBtn-box">
-                 <button class="btn btn-warning fw-bold h-100" type="submit">회원 가입</button>
+                 <button class="btn btn-warning fw-bold h-100" type="button" @click="goHome">회원 가입</button>
              </div>               
          </form>
      </div>
@@ -199,7 +199,12 @@
   </div> -->
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from "vue-router";
+const router = useRouter();
+function goHome() {
+    router.push("/")
+}</script>
 
 <style scoped>
   .agentInputTitle {

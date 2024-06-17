@@ -51,7 +51,7 @@
               <router-link to="/Signup/SignupAgreement">
                 <button class="btn btn-secondary w-100">일반 회원 가입하기</button>
               </router-link>
-              <router-link to="/Signup/SignupAgreement">
+              <router-link to="/Signup">
                 <button class="btn btn-secondary w-100">업체 회원 가입하기</button>
               </router-link>
             </div>

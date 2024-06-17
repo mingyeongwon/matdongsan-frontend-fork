@@ -14,7 +14,7 @@
             집이지가 선정한 <br />
             원룸 리스트 정보를 찾아보세요.
           </p>
-          <RouterLink to="#" class="btn text-light ps-5 pe-5"
+          <RouterLink to="/Property" class="btn text-light ps-5 pe-5"
             >보러가기</RouterLink
           >
         </div>
@@ -31,7 +31,7 @@
             집이지를 통해 타 사이트보다 <br />
             저렴한 등록비로 집을 홍보하세요.
           </p>
-          <RouterLink to="#" class="btn text-light ps-5 pe-5"
+          <RouterLink to="/PropertyForm" class="btn text-light ps-5 pe-5"
             >집내놓기</RouterLink
           >
         </div>
@@ -48,7 +48,7 @@
             집이지와 같이 일을 하는 <br />
             중개업자에게 연락해보세요.
           </p>
-          <RouterLink to="#" class="btn text-light ps-5 pe-5"
+          <RouterLink to="/Agent" class="btn text-light ps-5 pe-5"
             >중개인 목록보기</RouterLink
           >
         </div>
@@ -60,5 +60,8 @@
 <style scoped>
 .btn {
   background-color: #2f4858;
+}
+.btn:hover {
+  background-color: #8d8f91;
 }
 </style>
