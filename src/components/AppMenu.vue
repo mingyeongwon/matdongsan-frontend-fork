@@ -1,14 +1,30 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+  <nav
+    class="navbar navbar-expand-lg navbar-light bg-warning justify-content-between"
+  >
     <div class="container-fluid ms-3">
       <RouterLink class="navbar-brand ms-3 d-flex" to="/">
-        <img class="col me-3" src="../../public/matdongsan_logo.png" width="60" />
+        <img
+          class="col me-3 align-self-center"
+          src="../../public/matdongsan_logo.png"
+          width="50" height="50"
+        />
         <div>
           <h2 class="nav-title mb-1">Matdongsan</h2>
           <p class="sub-title m-0 text-center">부동산 맛집</p>
         </div>
       </RouterLink>
-
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -17,9 +33,7 @@
             >
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link fw-bold" to="/Agent"
-              >부동산</RouterLink
-            >
+            <RouterLink class="nav-link fw-bold" to="/Agent">부동산</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link fw-bold" to="/FavoriteProperty"
@@ -31,21 +45,28 @@
               >마이페이지</RouterLink
             >
           </li>
-         
+        </ul>
+        <ul class="navbar-nav pe-5 mb-2 mb-lg-0">
           <li class="nav-item">
-            <button class="btn btn-info btn-sm mt-2" @click="showLoginModal">
-             가입 및 로그인
+            <button
+              class="signup-btn btn mt-2 me-2 text-light fw-bold"
+              @click="showLoginModal"
+            >
+              가입 / 로그인
             </button>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item">
             <RouterLink class="nav-link fw-bold" to="/Payment/PaymentInfo"
-              ><div class="btn btn-success btn-sm">등록하기</div></RouterLink
+              ><div class="btn1 btn btn-success fw-bold">
+                등록하기
+              </div></RouterLink
             >
           </li>
         </ul>
       </div>
     </div>
   </nav>
+
   <!-- 모달 -->
   <LoginModal id="LoginModal" @close="hideLoginModal" />
 </template>
@@ -60,7 +81,6 @@ let loginModal = null;
 onMounted(() => {
   loginModal = new Modal(document.querySelector("#LoginModal"));
 });
-
 
 function showLoginModal() {
   loginModal.show();
@@ -80,5 +100,17 @@ function hideLoginModal() {
   font-size: 11px;
   color: #fff;
   font-weight: bold;
+}
+.signup-btn {
+  background-color: #5f9cc2;
+}
+.signup-btn:hover {
+  background-color: #84acc5;
+}
+.btn1 {
+  background-color: #2f4858;
+}
+.btn1:hover {
+  background-color: #636668;
 }
 </style>

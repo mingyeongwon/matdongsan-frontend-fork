@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5 container mb-5">
-    <h4 class="fw-bold ms-3 mb-4">메인 서비스</h4>
+    <h4 class="fw-bold mb-4">메인 서비스</h4>
     <div class="d-flex justify-content-evenly mx-auto">
       <div class="card border border-2" style="width: 18rem">
         <img

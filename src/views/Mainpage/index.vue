@@ -1,8 +1,8 @@
 <template>
   <div class="">
     <FirstSection />
-    <MainServiceList class="mx-auto" />
-    <MainService />
+    <MainServiceList class="mx-auto w-75" />
+    <MainService class="mx-auto w-75"/>
   </div>
 </template>
 

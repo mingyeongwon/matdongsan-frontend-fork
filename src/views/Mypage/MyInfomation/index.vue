@@ -5,7 +5,7 @@
       <h4>내 정보</h4>
       <hr />
       <form action="" class="w-75 mx-auto">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between w-75">
           <h6 class="text-muted fw-bold align-self-center me-5">프로필 사진</h6>
           <div>
             <div type="button" class="btn position-relative">
@@ -48,7 +48,7 @@
         전화번호
         <input
           type="text"
-          class="me-3 ms-4 bg-body-secondary"
+          class="me-3 ms-4 bg-body-secondary "
           value="010"
           readonly
         />
@@ -78,7 +78,7 @@
 
         <div class="text-end">
           <button button="button" class="btn btn-warning btn-lg">
-            수정완료
+            변경하기
           </button>
           <button type="button" class="btn btn-outline-warning btn-lg text-dark ms-3">취소</button>
         </div>

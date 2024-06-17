@@ -1,5 +1,5 @@
 <template>
-    <div class="w-75">
+    <div class="mt-5 container mb-5">
         <h4 class="fw-bold">인기매물</h4>
         <div class="d-flex justify-content-evenly">
             <div v-for="item in dataList" :key="item.title">
