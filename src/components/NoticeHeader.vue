@@ -1,8 +1,8 @@
 <template>
-<div>
+<div class="container w-75">
     <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold"><slot name="header">Qna 헤더 내용</slot></h2>
       <!-- 버튼 tab -->
-      <div class="row" style="margin-left: 400px; margin-right: 400px; height: 50px;">
+      <div class="row" style="height: 50px;">
           <RouterLink to="/QNA/Notice" class="askMenu col-4 d-flex" style="text-decoration: none;">
             <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">공지 사항</button>
           </RouterLink>

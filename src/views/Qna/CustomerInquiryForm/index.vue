@@ -9,7 +9,7 @@
     
     <p style="text-align: center; margin-top: 60px; margin-bottom: 50px;">맛동산에 궁금하신 점을 문의해주세요 <br>
       문의 내용과 답변은 <span style="color:#FEC83F; font-weight: bold">'1:1 문의 내역'</span>에서 확인하실 수 있습니다.</p>
-    <div style="margin-left: 500px; margin-right: 500px;">
+    <div class="w-50 container">
       <hr>
       <div class="row me-5">
         <span class="col-2" style="text-align: center;">문의 유형</span>

@@ -1,6 +1,6 @@
 <template>
     <!-- 리스트(table) -->
-     <div style="margin-left: 500px; margin-right: 500px;">
+     <div class="w-50 container">
     <table style="width: 100%; margin-top: 20px; ">
         <thead>
         <th>카테고리</th><th>제목</th><th>날짜</th>

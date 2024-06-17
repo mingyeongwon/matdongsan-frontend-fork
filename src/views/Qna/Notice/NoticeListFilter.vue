@@ -1,6 +1,6 @@
 <template>
 <!-- 검색 및 정렬 -->
-<div style="margin-left: 500px; margin-right: 500px;">
+<div class="w-75">
         <div class="d-flex" style="justify-content: end; margin-top: 60px">
           
           <select name="sortType" id="sortType" style="border-radius: 15px; width: 200px; height: 35px; border: 1px solid black; padding-left: 10px; margin-right: 10px; background-color: transparent;">

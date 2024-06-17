@@ -1,13 +1,13 @@
 <template>
   <form action="">
-    <div class="text-center mt-5" style="margin-left: 400px; margin-right: 400px">
+    <div class="text-center mt-5 w-75">
   <h2 style="font-weight: bold; margin-bottom: 30px;">상품 서비스 구매</h2>
 
-      <div class="row" style="margin-left: 150px; margin-right: 150px;">
+      <div class="row w-75">
         <div class="col">
         <div class="option-box me-3" style="height: 250px">
-          <div style="margin-top: 77px" >
-          <img class="" src="@/assets/home.png" width="110" alt="" />
+          <div style="margin-top: 110px" >
+          <img class="w-25" src="@/assets/home.png" alt="" />
           </div>
           <div class="mt-3 fw-bold mb-3">매물 등록권 X 1</div>
         </div>
@@ -15,10 +15,10 @@
       </div>
       <div class="col">
         <div class="option-box me-2" style="height: 250px">
-          <div class="mt-5 pt-5">
-          <img class="" src="@/assets/home.png" width="90" alt="" />
-          <img class="" src="@/assets/home.png" width="90" alt="" />
-          <img class="" src="@/assets/home.png" width="90" alt="" />
+          <div class="pt-5" style="margin-top: 65px;">
+          <img class="w-25" src="@/assets/home.png" alt="" />
+          <img class="w-25" src="@/assets/home.png" alt="" />
+          <img class="w-25" src="@/assets/home.png" alt="" />
           </div>
           <div class="mt-3 fw-bold mb-3">매물 등록권 X 3</div>
         </div>
@@ -26,12 +26,12 @@
         </div>        
         <div class="col">
         <div class="option-box me-2 pt-4" style="height: 250px">
-          <div class="mt-3">
-          <img class="" src="@/assets/home.png" width="70" alt="" />
-          <img class="" src="@/assets/home.png" width="70" alt="" /><br>
-          <img class="" src="@/assets/home.png" width="70" alt="" />
-          <img class="" src="@/assets/home.png" width="70" alt="" />
-          <img class="" src="@/assets/home.png" width="70" alt="" />
+          <div class="">
+          <img class="w-25" src="@/assets/home.png" width="70" alt="" />
+          <img class="w-25" src="@/assets/home.png" width="70" alt="" /><br>
+          <img class="w-25" src="@/assets/home.png" width="70" alt="" />
+          <img class="w-25" src="@/assets/home.png" width="70" alt="" />
+          <img class="w-25" src="@/assets/home.png" width="70" alt="" />
           </div>
           <div class="mt-3 fw-bold mb-3">매물 등록권 X 5</div>
         </div>
@@ -83,6 +83,9 @@ let option = "ad";
 .option-box {
   cursor: pointer;
   border-radius: 20px; border: 2px solid black;
+}
+.option-box:hover{
+  border: 4px solid #FEC83F;
 }
 
 </style>

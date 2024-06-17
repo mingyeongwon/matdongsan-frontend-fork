@@ -5,7 +5,7 @@
          자주 묻는 질문
         </template>
       </NoticeHeader>
-      <div style="margin-left: 500px; margin-right: 500px;">
+      <div class="w-50 container">
       <p style="text-align: center; margin-top: 60px; margin-bottom: 50px">맛동산 사용자의 편의를 위해 <span style="color:#FEC83F; font-weight: bold">자주 묻는 질문과 답변</span>을 모아놓았습니다.<br>원하시는 질문을 찾아보세요!</p>
         <!-- 아코디언 -->
         <div class="accordion accordion-flush" id="accordionFlushExample">
