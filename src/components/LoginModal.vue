@@ -1,6 +1,6 @@
 <template>
   <!--  -->
-  <div class="modal">
+  <div class="modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-body">

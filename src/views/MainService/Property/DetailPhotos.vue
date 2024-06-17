@@ -38,8 +38,31 @@
         </tr>
       </tbody>
     </table>
-    <span class="btn btn-dark position-absolute bottom-0 end-0 m-3 disabled">사진 모두 보기</span>
+    <span class="btn btn-dark position-absolute bottom-0 end-0 m-3 opacity-75" @click="showDetailPhotosModal">사진 모두 보기</span>
   </div>
+  <DetailPhotosModal id="DetailPhotosModal" @close="hideDetailPhotosModal" />
 </template>
-<script setup></script>
+
+<script setup>
+
+import {onMounted} from "vue";
+import {Modal} from "bootstrap";
+
+import DetailPhotosModal from "./DetailPhotosModal.vue";
+
+let detailPhotosModal = null;
+
+onMounted(() => {
+  detailPhotosModal = new Modal(document.querySelector("#DetailPhotosModal"))
+});
+
+function showDetailPhotosModal() {
+  detailPhotosModal.show();
+}
+
+function hideDetailPhotosModal() {
+  detailPhotosModal.hide();
+}
+
+</script>
 <style scoped></style>
