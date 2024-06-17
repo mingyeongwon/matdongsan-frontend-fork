@@ -35,7 +35,7 @@
                     <div class="card">
                         <img style="margin-left: 108px; padding-top: 50px" src="@/assets/home.png" width="70" alt="" />
 
-                        <p class="card-text mt-3" style="font-weight: bold; font-size: 1.rem;">등록 건 3개</p>
+                        <p class="card-text mt-3" style="font-weight: bold; font-size: 1.5rem;">등록 건 3개</p>
                         <hr>
                         <p style="font-weight: bold; font-size: 1.7rem; color: #326CF9;">15,000원</p>
                         <RouterLink class="btn btn-warning w-50" style="margin-left: 70px; margin-bottom: 20px;" to="/Payment">구매하기</RouterLink>
@@ -67,7 +67,7 @@
     <div class="info-box">
         <h1 style="font-weight: bold; margin-bottom: 30px">궁금한 부분이 있으신가요?</h1>
         <p>광고 상품 및 이용에 대한 문의는 언제든지 고객센터에 문의해 주세요.</p>
-        <button class="btn  btn-outline-secondary mt-5">고객센터 바로가기</button>
+        <RouterLink to="/QNA/CustomerInquiryForm"><button class="btn  btn-outline-secondary mt-5">고객센터 바로가기</button></RouterLink>
     </div>
 </div>
 </template>
