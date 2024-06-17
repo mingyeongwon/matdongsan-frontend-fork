@@ -3,7 +3,7 @@
     <ul class="list-group">
       <li class="list-group-item fw-bold">마이페이지</li>
       <li class="list-group-item">
-        <RouterLink to="/MyPage/MyInfo" class="text-decoration-none text-dark">내 정보</RouterLink>
+        <RouterLink to="/MyPage/MyInfomation" class="text-decoration-none text-dark">내 정보</RouterLink>
       </li>
       <li class="list-group-item">
         <RouterLink to="/MyPage/ManageMyProperty" class="text-decoration-none text-dark">매물 관리</RouterLink>
