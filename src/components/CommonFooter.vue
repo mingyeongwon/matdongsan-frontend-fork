@@ -1,59 +1,68 @@
 <template>
   <div>
     <div class="container-fluid mt-5">
-      <footer class="py-5">
-        <div class="row w-100">
-          <div class="col-2 offset-1">
-            <RouterLink class="navbar-brand ms-3 d-flex" to="/"
-              ><img src="../../public/matdongsan_logo.png" width="40" />
-              <div class="ms-2 logo-box">
-                <h2 class="nav-title mb-1 fw-bold h4">Matdongsan</h2>
-                <p class="sub-title m-0 text-center fw-bold h6">부동산 맛집</p>
-              </div></RouterLink
-            >
-          </div>
-          <div class="col-5 w-75">
-            <div class="d-flex flex-row footer-parabox">
-              <div class="mb-2 me-5">
-                <RouterLink to="/about" class="nav-link p-0 fw-bolder">회사소개</RouterLink>
-              </div>
-              <div class="mb-2 me-5">
-                <RouterLink to="/QNA/Notice" class="nav-link p-0 fw-bold">공지사항</RouterLink>
-              </div>
-              <div class="mb-2 me-5">
-                <RouterLink to="#" class="nav-link p-0 fw-bold">이용약관</RouterLink>
-              </div>
-              <div class="mb-2 me-5">
-                <RouterLink to="#" class="nav-link p-0 fw-bold"
-                  >개인정보 처리방침</RouterLink
-                >
-              </div>
-              <div class="mb-2 me-5">
-                <RouterLink to="#" class="nav-link p-0"
-                  >위치기반 서비스 이용약관</RouterLink
-                >
-              </div>
+      <footer class="footer-01">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-3 mb-4 mb-md-0 align-self-center">
+              <RouterLink class="row navbar-brand d-flex" to="/"
+                ><h4 class="footer-heading fw-bold">
+                  <img
+                    src="../../public/matdongsan_logo.png"
+                    width="40"
+                  />Matdongsan
+                </h4>
+              </RouterLink>
             </div>
-            <div class="d-flex flex-row">
-              <div class="mb-2 me-5">
-                <p class="mt-4">
-                  상호: (주) 맛동산 | 대표 : 원민경 | 사업자등록번호:
-                  123-45-67890
-                </p>
-                <p class="mt-2">
-                  주소 : 서울특별시 송파구 중대로 135 아이티벤처타워
-                </p>
-                <p class="mt-2">서비스 이용문의: 1234-5678</p>
-                <p class="mt-2">
-                  서비스 제휴문의: matdongsan@matdongsan.com | 분양광고 문의
-                  mat@matdongsan.com
-                </p>
-                <p class="mt-2">
-                  © 2024 Matdongsan Company, Inc. All rights reserved.
-                </p>
-              </div>
+
+            <div class="col-md-6 col-lg-3 pl-lg-5 mb-4 mb-md-0 d-flex justify-content-center mt-5">
+              <ul class="list-unstyled text-start">
+                <li>
+                  <RouterLink to="/QNA/Notice" class="py-2 d-block"
+                    >공지사항</RouterLink
+                  >
+                </li>
+                <li>
+                  <RouterLink to="/QNA/FAQ" class="py-2 d-block"
+                    >FAQs</RouterLink
+                  >
+                </li>
+                <li>
+                  <RouterLink to="#" class="py-2 d-block">회사소개</RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="#" class="py-2 d-block">이용약관</RouterLink>
+                </li>
+                <li>
+                  <RouterLink to="#" class="py-2 d-block"
+                    >위치 서비스</RouterLink
+                  >
+                </li>
+                <li>
+                  <RouterLink to="#" class="py-2 d-block"
+                    >개인정보 처리방침</RouterLink
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4 mb-md-0 align-self-center">
+              <p class="mt-4">
+                상호: (주) 맛동산 | 대표 : 원민경 | 사업자등록번호: 123-45-67890
+              </p>
+              <p class="mt-2">
+                주소 : 서울특별시 송파구 중대로 135 아이티벤처타워
+              </p>
+              <p class="mt-2">서비스 이용문의: 1234-5678</p>
+              <p class="mt-2">
+                서비스 제휴문의: matdongsan@matdongsan.com | 분양광고 문의
+                mat@matdongsan.com
+              </p>
+              <p class="mt-2">
+                © 2024 Matdongsan Company, Inc. All rights reserved.
+              </p>
             </div>
           </div>
+        
         </div>
       </footer>
     </div>
@@ -84,7 +93,6 @@ a {
   margin-right: auto;
   margin-left: auto;
 }
-.footer-parabox{
-
+.footer-parabox {
 }
 </style>

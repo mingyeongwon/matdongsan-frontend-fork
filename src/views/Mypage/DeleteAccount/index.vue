@@ -1,8 +1,8 @@
 <template>
-  <div class="d-flex w-100 vh-100">
+  <div class="d-flex vh-100 w-100 mx-auto">
     <MyPageSideBar />
-    <div class="vh-100 p-5 w-100">
-      <h2 class="fw-bold">회원탈퇴</h2>
+    <div class="titleNcontent mt-2 w-75 mx-auto">
+      <h4 class="fw-bold mb-4">회원탈퇴</h4>
       <hr />
       <div class="">
         <p class="w-75 mx-auto">
@@ -87,6 +87,10 @@ import MyPageSideBar from "@/components/MyPageSidebar.vue";
 </script>
 
 <style scoped>
+.titleNcontent {
+  width: 80%;
+  padding: 20px;
+}
 .deleteUserForm,
 .delete-user-info {
   margin-right: auto;

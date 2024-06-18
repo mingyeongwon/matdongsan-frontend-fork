@@ -1,10 +1,11 @@
 <template>
-  <div class="d-flex vh-100">
+  <div class="d-flex vh-100 w-100">
     <MyPageSidebar />
-    <div class="titleNcontent">
-      <div class="border-bottom border-dark d-flex justify-content-between mt-5 mb-3">
-        <h2 class="fw-bold">허위매물 신고</h2>
+    <div class="titleNcontent w-75 mx-auto">
+      <div class="d-flex justify-content-between mb-3 mt-2">
+        <h4 class="fw-bold">허위매물 신고</h4>
       </div>
+      <hr>
       <table class="table">
         <thead class="text-center">
           <tr>

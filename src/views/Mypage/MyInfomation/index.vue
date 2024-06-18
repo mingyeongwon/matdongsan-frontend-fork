@@ -1,9 +1,11 @@
 <template>
-  <div class="d-flex vh-100">
+  <div class="d-flex vh-100 w-100 mx-auto">
     <MyPageSidebar />
-    <div class="titleNcontent">
-      <h4>내 정보</h4>
-      <hr />
+    <div class="titleNcontent w-75 mx-auto">
+      <div class="d-flex justify-content-between mb-3">
+        <h4 class="fw-bold mt-2 ">내 정보</h4>
+      </div>
+      <hr>
       <form action="" class="w-75 mx-auto">
         <div class="d-flex justify-content-between w-75">
           <h6 class="text-muted fw-bold align-self-center me-5">프로필 사진</h6>
@@ -28,7 +30,7 @@
           <h6 class="align-self-center ms-5 me-5 fw-bold text-muted">
             남은 개수
           </h6>
-          <div>
+          <div class="align-self-center mt-4">
             <img
               src="@/assets/house-img.png"
               alt="집 이미지"
@@ -36,7 +38,7 @@
               height="60"
               class="bg-warning rounded align-self-center p-2"
             />
-            <h6 class="text-center mt-3">4개 남음</h6>
+            <h6 class="text-center">4개 남음</h6>
           </div>
         </div>
         <hr />
@@ -48,12 +50,13 @@
         전화번호
         <input
           type="text"
-          class="me-3 ms-4 bg-body-secondary "
+          class="me-3 ms-4 ps-2"
           value="010"
           readonly
+          size="1"
         />
-        <input type="text" class="me-3 bg-body-secondary" value="1234" readonly/>
-        <input type="text" class="bg-body-secondary" value="5678" readonly/>
+        <input type="text" class="me-3 ps-2" value="1234" size="2" readonly/>
+        <input type="text" class="ps-2" value="5678"  size="2" readonly/>
         <hr class="mb-4" />
         이메일 주소
         <input type="email" value="text@email.com" readonly/>

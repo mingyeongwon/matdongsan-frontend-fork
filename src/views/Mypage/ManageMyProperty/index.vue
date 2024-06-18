@@ -1,10 +1,10 @@
 <template>
-  <div class="d-flex vh-100">
+  <div class="d-flex vh-100 w-100 mx-auto">
     <MyPageSideBar />
-    <div class="w-75 mx-auto">
-      <div class="d-flex justify-content-betwwen">
-        <h4 class="col h4 mt-5 fw-bold">매물관리</h4>
-        <div class="mt-5">
+    <div class="titleNcontent w-75 mx-auto">
+      <div class="d-flex justify-content-between ">
+        <h4 class="col h4 mt-2 fw-bold">매물관리</h4>
+        <div class="align-self-center">
           <select class="form-select" name="filter" id="">
             <option value="날짜순" selected>최신순</option>
             <option value="날짜순">오래된순</option>
@@ -14,7 +14,7 @@
         </div>
       </div>
       <hr />
-      <table class="table mt-5">
+      <table class="table mt-2">
         <thead>
           <tr>
             <th scope="col" class="text-center">매물번호</th>
@@ -106,5 +106,9 @@ function hideLoginModal() {
 .soldOutBtn {
   background-color: #2f4858;
   color: #fff;
+}
+.titleNcontent {
+  width: 80%;
+  padding: 20px;
 }
 </style>

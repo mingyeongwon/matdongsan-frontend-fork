@@ -1,13 +1,16 @@
 <template>
-  <div class="d-flex vh-100">
+  <div class="d-flex vh-100 w-100 mx-auto">
     <MyPageSidebar />
-    <div class="titleNcontent">
-      <div class="border-bottom border-dark d-flex justify-content-between mt-5 mb-3">
-        <h2 class="fw-bold">1:1 문의</h2>
+    <div class="titleNcontent w-75 mx-auto">
+      <div class="d-flex justify-content-between mt-2 mb-3">
+        <h4 class="fw-bold">1:1 문의</h4>
         <div>
-          <button type="button" class="btn btn-warning me-1">1:1 문의하기</button>
+          <button type="button" class="btn btn-warning me-1">
+            1:1 문의하기
+          </button>
         </div>
       </div>
+      <hr>
       <table class="table">
         <thead class="text-center">
           <tr>
@@ -21,14 +24,18 @@
           <AccordionRow
             v-for="(item, index) in items"
             :key="index"
-            :rowData="{ index, item, isOpen: isOpen(index), toggle: () => toggle(index) }"
+            :rowData="{
+              index,
+              item,
+              isOpen: isOpen(index),
+              toggle: () => toggle(index),
+            }"
           />
         </tbody>
       </table>
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { ref } from "vue";
