@@ -50,8 +50,42 @@
               </div>
             </div>
 
-            <DetailInfos />
-            <IndividualProductList />
+            <DetailInfo />
+
+            <ul class="nav nav-pills mt-5 ms-4">
+              <li class="nav-item">
+                <RouterLink
+                  class="btn btn-sm text-dark fw-bold nav-link border-bottom border-4 border-info rounded-0"
+                  aria-current="page"
+                  to="#"
+                  >전체 매물</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link fw-bold text-dark" to="/Agent"
+                  >후기</RouterLink>
+              </li>
+            </ul>
+
+            <div>
+              <div class="d-flex ps-3 pe-3 pb-3">
+                <div class="property-list-box w-25 h-100">
+                  <div class="col mt-3" @click="backToPropertyList">
+                    <IndividualProductList />
+                  </div>
+                </div>
+                <div class="right-box ms-4 col vh-100" v-if="status">
+                  <AgentReview />
+                </div>
+                <div class="right-box ms-4 col vh-100 p-3" v-if="!status">
+                  <DetailPhotos />
+                  <DetailInfos />
+                </div>
+              </div>
+            </div>  
+
+
+
+            
           </div>
         </div>
       </div>
@@ -62,8 +96,13 @@
 <script setup>
 import PropertyList from "@/components/Property/PropertyList.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
-import DetailInfos from "./DetailInfo.vue";
-import IndividualProductList from './AgentProperty'
+import DetailInfo from "./DetailInfo.vue";
+import IndividualProductList from './AgentProperty';
+import AgentReview from './AgentReview';
+
+import { ref } from "vue";
+
+let status = ref(true);
 </script>
 
 <style scoped>
@@ -71,6 +110,5 @@ import IndividualProductList from './AgentProperty'
     width:800px;
 } */
 
-.AgentMap-container {
-}
+
 </style>

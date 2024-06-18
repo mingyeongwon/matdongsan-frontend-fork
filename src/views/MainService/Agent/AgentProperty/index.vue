@@ -1,8 +1,8 @@
 <template>
   <div class="list-box mt-5 w-100">
     <div class="justify-content-center">
-      <h5 class="fw-bold">전체매물</h5>
-      <hr />
+      <!-- <h5 class="fw-bold">전체매물</h5>
+      <hr /> -->
       <div class="row row-cols-4 justify-content-start mb-5 mx-auto ms-3 w-100">
         <RouterLink class="col-3 text-decoration-none text-dark me-4 w-auto" to="/Property">
           <img
