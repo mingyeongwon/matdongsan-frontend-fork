@@ -1,5 +1,55 @@
 <template>
   <div class="overflow-hidden w-75 mx-auto">
+    <div>
+      <form class="mt-2 w-100">
+        <div class="d-flex justify-content-between px-4">
+          <div class="d-flex">
+            <input
+              class="form-control me-2 w-auto"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </div>
+          <div class="d-flex">
+            <div>
+              <select
+                class="form-select w-auto ms-2"
+                aria-label="Default select example"
+              >
+                <option selected>거래유형</option>
+                <option value="1">월세</option>
+                <option value="2">전세</option>
+              </select>
+            </div>
+            <div>
+              <select
+                class="form-select w-auto ms-2"
+                aria-label="Default select example"
+              >
+                <option selected>층수</option>
+                <option value="1">반지하</option>
+                <option value="2">지상</option>
+                <option value="2">옥탑방</option>
+              </select>
+            </div>
+            <div>
+              <select
+                class="form-select w-auto ms-2"
+                aria-label="Default select example"
+              >
+                <option selected>가격</option>
+                <option value="1">낮은순</option>
+                <option value="2">높은순</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
     <ul class="nav nav-pills mt-5 ms-4">
       <li class="nav-item">
         <RouterLink
@@ -14,14 +64,14 @@
           >주변 부동산</RouterLink
         >
       </li>
-          <!-- 아이콘들 -->
-    <div class="col pe-4 ms-3 me-3 text-end align-self-center" v-if="!status">
-      <i
-        class="fa-solid fa-arrow-left fa-xl me-3"
-        @click="backToPropertyList"
-      ></i>
-      <i class="fa-regular fa-heart fa-xl" style="color: #ff0000"></i>
-    </div>
+      <!-- 아이콘들 -->
+      <div class="col pe-4 ms-3 me-3 text-end align-self-center" v-if="!status">
+        <i
+          class="fa-solid fa-arrow-left fa-xl me-3"
+          @click="backToPropertyList"
+        ></i>
+        <i class="fa-regular fa-heart fa-xl" style="color: #ff0000"></i>
+      </div>
     </ul>
 
     <div>

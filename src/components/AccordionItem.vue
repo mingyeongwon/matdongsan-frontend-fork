@@ -1,5 +1,5 @@
 <template>
-  <tr @click="rowData.toggle" style="cursor: pointer">
+  <tr @click="rowData.toggle" style="cursor: pointer" >
     <td>{{ rowData.index + 1 }}</td>
     <td class="fw-bold">{{ rowData.item.title }}</td>
     <td class="text-muted">{{ rowData.item.date }}</td>
