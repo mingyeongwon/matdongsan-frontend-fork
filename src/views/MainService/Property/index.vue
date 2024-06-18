@@ -33,7 +33,7 @@
         </div>
         <!-- 카카오맵 -->
         <div class="right-box ms-4 col vh-100" v-if="status">
-          <KakaoMap class="" />
+          <KakaoMap />
         </div>
         <div class="right-box ms-4 col vh-100 p-3" v-if="!status">
           <DetailPhotos />

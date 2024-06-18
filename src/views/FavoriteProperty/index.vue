@@ -1,67 +1,40 @@
 <template>
-    <div class="AgentMap-container w-75 mx-auto">
-      <div class=" h-100">
-        <div class="d-flex p-3 h-100" >
-            <div class="property-list-box w-25 border border-1 border-dark h-100 p-3 row row-cols-2 overflow-auto">
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-              <div class="col w-50 mt-3">
-                  <PropertyItem/>
-              </div>
-            </div>
-            <div class="right-box ms-4 col border border-1 border-dark p-3">
-              <KakaoMap class="w-100 h-100" />
+    <div class=" overflow-hidden w-75 mx-auto">
+        <div>
+            <div class="d-flex ps-3 pe-3 pb-3">
+                <div class="property-list-box w-25 h-100">
+                <div class="col mt-3" @click="backToPropertyList">
+                    <PropertyList />
+                </div>
+                </div>
+                <!-- 카카오맵 -->
+                <div class="right-box ms-4 col vh-100" v-if="status">
+                    <KakaoMap />
+                </div>
             </div>
         </div>
-      </div>
     </div>
   </template>
   
   <script setup>
-  import PropertyItem from "@/components/Property/PropertyListItem.vue";
+  import PropertyList from "@/components/Property/PropertyList.vue";
   import KakaoMap from "@/components/KakaoMap.vue";
+  import { ref } from "vue";
+
+    let status = ref(true);
+
+    function backToPropertyList() {
+    status.value = !status.value;
+    }
   </script>
   
   <style scoped>
   
   
-  /* .right-box{
-      width:800px;
-  } */
+  .right-box {
+    width: 800px;
+    }
   
-  .AgentMap-container {
-    height: 800px;
-  }
+
   </style>
   

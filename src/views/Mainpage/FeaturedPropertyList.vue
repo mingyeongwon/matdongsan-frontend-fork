@@ -2,15 +2,18 @@
     <div class="mt-5 container mb-5">
         <h4 class="fw-bold">인기 매물</h4>
         <div class="d-flex w-100">
+            
                 <div v-for="(item) in dataList" :key="item.detailInfo" class="w-25 m-2">
-                    <div>
-                        <img class="" width="230" height="230" :src="item.imgSrc" alt="">
-                    </div>
-                    <div class="featuredlistInfo-box">
-                        <p class="featuredlist-title mb-2 mt-2"><b>{{ item.title }}</b></p>
-                        <p class="featuredlist-info">{{ item.floor }}층, {{ item.size }}m<sup>2</sup>, 관리비 {{ item.maintenance }}만</p>
-                        <p class="featuredlist-info">{{ item.detailInfo }}</p>
-                    </div>
+                    <router-link to="/Property" class="text-decoration-none text-dark">
+                        <div>
+                            <img class="" width="230" height="230" :src="item.imgSrc" alt="">
+                        </div>
+                        <div class="featuredlistInfo-box">
+                            <p class="featuredlist-title mb-2 mt-2"><b>{{ item.title }}</b></p>
+                            <p class="featuredlist-info">{{ item.floor }}층, {{ item.size }}m<sup>2</sup>, 관리비 {{ item.maintenance }}만</p>
+                            <p class="featuredlist-info">{{ item.detailInfo }}</p>
+                        </div>
+                    </router-link>
                 </div>
         </div>
     </div>
