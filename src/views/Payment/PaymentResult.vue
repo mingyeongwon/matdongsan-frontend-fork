@@ -1,8 +1,8 @@
 <template>
   <div style="justify-content: center; display: flex;">
   <div class="text-center w-50">
-    <img style="margin-top: 70px; height: 50px" src="@/assets/confetti.png">
-    <h2 class="fw-bold mt-5" style="font-size: 2.5rem;">결제가 완료되었습니다.</h2>
+    <img style="margin-top: 70px; height: 40px" src="@/assets/confetti.png">
+    <h3 class="fw-bold mt-5">결제가 완료되었습니다.</h3>
 
     <!-- 사용할 까봐 남겨 둠 -->
     <!-- <h3 class="mt-3">{{ productName }}를 구매하셨습니다.</h3>
@@ -12,10 +12,10 @@
       사용가능 횟수 : {{ count }} 남음
     </h3>
     <h3 class="mt-3" v-else>광고 마감 일자 : {{ expireDate }}</h3> -->
-    <h2 class="mt-5">매물을 등록할 수 있습니다.</h2>
-    <RouterLink class="btn btn-warning btn-lg w-25 mt-5 me-4" to="/PropertyForm">등록하러 가기</RouterLink>
-    <RouterLink class="btn btn-dark btn-lg w-25 mt-5" to="/">홈으로 돌아가기</RouterLink>
-    <p class="info fw-semibold mt-5">
+    <h5 class="mt-5">매물을 등록할 수 있습니다.</h5>
+    <RouterLink class="btn btn-warning btn-lg mt-5 me-4" style="width: 17%; font-size: 1rem;" to="/PropertyForm">등록하러 가기</RouterLink>
+    <RouterLink class="btn btn-dark btn-lg mt-5" style="width: 17%; font-size: 1rem;" to="/">홈으로 돌아가기</RouterLink>
+    <p class="info fw-semibold mt-5" style="font-size: small;">
       *구매하신 내역은 마이페이지에서 확인하실 수 있습니다.
     </p>
   </div>
