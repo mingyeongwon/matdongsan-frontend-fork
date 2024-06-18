@@ -51,11 +51,11 @@
       </div>
       <hr>
       <div class="row d-flex" style=" justify-content: center; align-items: center; ">
-        <button type="button" style="background-color: #2F4858; color: white; width: 216px; height: 52px;">문의하기</button>
+        <button type="button" style="background-color: #2F4858; color: white; width: 216px; height: 52px; border: none; border-radius: 10px;">문의하기</button>
       </div>
-      <div class="row d-flex" style="border: 1px solid gray; margin-left: 150px; margin-right: 150px; margin-top: 20px">
-        <p style="text-align: center; margin-top: 10px">고객센터: 02-1899-6840</p><br>
-        <span style="text-align: center; margin-bottom: 10px;">평일 10:00 ~ 18:30 (토, 일요일, 공휴일 휴무)</span>
+      <div class="row d-flex" style="border: 1px solid gray; border-radius: 10px; margin-left: 150px; margin-right: 150px; margin-top: 20px">
+        <p style="text-align: center; margin-top: 15px">고객센터: 02-1899-6840</p><br>
+        <span style="text-align: center; margin-bottom: 15px;">평일 10:00 ~ 18:30 (토, 일요일, 공휴일 휴무)</span>
       </div>
       </div>
       <!-- 컴포넌트 삽입 -->
@@ -92,9 +92,16 @@
         width: 44px;
     }
 
-    .agentProfile-label .y {
-        transform: translateY(-50%);
-        height: 44px;
-    }   
+  .agentProfile-label .y {
+      transform: translateY(-50%);
+      height: 44px;
+  }
+
+  input, textarea,label, select {
+    border-radius: 10px;
+    border: transparent;
+    border:1px solid black;
+    padding: 5px;
+  }
 
 </style>

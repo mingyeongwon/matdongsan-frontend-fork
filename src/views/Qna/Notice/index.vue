@@ -7,6 +7,7 @@
       </NoticeHeader>
       <NoticeListFilter/>
       <NoticeList/>
+      <Pagination/>
     
     </div>
   </template>
