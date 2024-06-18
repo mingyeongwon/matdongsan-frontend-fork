@@ -29,15 +29,21 @@
       </div>
       <hr>
       <div class="row me-5">
-        <span class="col-2" style="line-height: 300px; height: 100%; text-align: center">문의 내용</span>
-        <textarea class="col-10" type="text" name="askContent" style="height: 20rem; resize: none;"></textarea>
+        <span class="col-2" style="line-height: 200px; height: 100%; text-align: center">문의 내용</span>
+        <textarea class="col-10" type="text" name="askContent" style="height: 15rem; resize: none;"></textarea>
       </div>
       <hr>
       <div class="row me-5">
         <span class="col-2" style="text-align: center;">사진</span>
         <div class="col-10">
-          <div name="askAttach" style="border: 1px solid gray; height: 106px; width:106px; justify-content: center; align-items: center;" class="d-flex flex-column"><i class="fa-solid fa-camera"></i><span>사진첨부</span></div>
           <div>
+            <input type="file" id="agentProfile">
+            <label class="agentProfile-label border border-1 border-secondary me-5" for="agentProfile">
+                <div class="x border border-1 border-secondary"></div>
+                <div class="y border border-1 border-secondary"></div>
+            </label>
+        </div>
+          <div style="margin-top: 10px">
             <span>- 사진 용량은 사진 한 장당 10MB가지 등록이 가능합니다.</span><br>
             <span>- 사진은 최대 3장까지 등록이 가능합니다.</span>
           </div>
@@ -62,6 +68,33 @@
 </script>
 
 <style scoped>
+.agentProfile-label {
+        width: 125px;
+        height: 125px;
+        cursor: pointer;
+        display: block;
+        border: 1px solid rgb(233, 236, 239);
+        position: relative;
+    }
 
+#agentProfile {
+    display: none;
+}
+.agentProfile-label .x, .agentProfile-label .y{
+    border: 1px solid rgb(222, 226, 230);
+    position: absolute;
+    top: 50%;
+    left: 50%; 
+}
+
+.agentProfile-label .x {
+        transform: translateX(-50%);
+        width: 44px;
+    }
+
+    .agentProfile-label .y {
+        transform: translateY(-50%);
+        height: 44px;
+    }   
 
 </style>
