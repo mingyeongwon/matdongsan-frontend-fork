@@ -18,7 +18,7 @@
             </div>
         </div>
     </section>
-    <div class="d-flex p-3 justify-content-around mx-auto w-75">
+    <div class="d-flex p-3 justify-content-around mx-auto w-75 mainFirstSection-second">
       <div class="align-self-center col-4">
         <h2 class="fw-bold text-center">당신의 집을 직접 팔거나 <br> 직접 거래를 해보세요</h2>
         <p class="text-center mt-3 text-muted">가입을 하고 더 많은 정보를 얻으세요</p>
@@ -28,7 +28,7 @@
             <RouterLink to="/Signup" class="btn btn-warning fw-bold mt-3 ms-3">업체 회원</RouterLink>
         </div>
       </div>
-      <img src="@/assets/page-info-img.png" width="600" alt="" />
+      <img src="@/assets/page-info-img.png" width="600" height="400" alt="" />
     </div>
   </div>
 
@@ -39,13 +39,20 @@
 
 </script>
 <style scoped>
+.mainFirstSection-second {
+  height: 450px;
+}
+
 .main-container {
   background-image: url("@/assets/main_page_banner.png");
   background-size: cover;
-  height: 380px;
+  height: 330px;
 }
+
 .input-group {
   margin-left: auto;
   margin-right: auto;
 }
+
+
 </style>
