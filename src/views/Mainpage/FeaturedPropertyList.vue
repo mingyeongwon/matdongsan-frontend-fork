@@ -35,6 +35,7 @@ let dataList = ref([
 .featuredlistInfo-box {
     width: 230px;
 }
+
 p {
     white-space: nowrap;
     text-overflow: ellipsis;
