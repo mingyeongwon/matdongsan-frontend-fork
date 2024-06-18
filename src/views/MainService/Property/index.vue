@@ -26,25 +26,16 @@
 
     <div>
       <div class="d-flex ps-3 pe-3 pb-3">
-        <div class="property-list-box w-25 h-100 p-3 row row-cols-2">
-          <div class="col w-50 mt-3" @click="backToPropertyList">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
+        <div class="property-list-box w-25 h-100">
+          <div class="col mt-3" @click="backToPropertyList">
+            <PropertyList />
           </div>
         </div>
         <!-- 카카오맵 -->
         <div class="right-box ms-4 col vh-100" v-if="status">
-          <KakaoMap class="w-100" />
+          <KakaoMap class="" />
         </div>
-        <div class="right-box ms-4 col h-100 p-3" v-if="!status">
+        <div class="right-box ms-4 col vh-100 p-3" v-if="!status">
           <DetailPhotos />
           <DetailInfos />
         </div>
@@ -54,7 +45,7 @@
 </template>
 
 <script setup>
-import PropertyItem from "@/components/PropertyItem.vue";
+import PropertyList from "@/components/Property/PropertyList.vue";
 import DetailPhotos from "./DetailPhotos.vue";
 import DetailInfos from "./DetailInfos.vue";
 import KakaoMap from "@/components/KakaoMap.vue";

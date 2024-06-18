@@ -31,43 +31,9 @@
       </ul>
       <div class="d-flex p-3 h-100">
         <div
-          class="property-list-box w-25 h-100 p-3 row row-cols-2 overflow-auto"
-        >
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
-          </div>
-          <div class="col w-50 mt-3">
-            <PropertyItem />
+          class="property-list-box w-25 h-100">
+          <div class="col mt-3" @click="backToPropertyList">
+            <PropertyList />
           </div>
         </div>
         <div class="right-box ms-4 col p-3 w-75">
@@ -94,7 +60,7 @@
 </template>
 
 <script setup>
-import PropertyItem from "@/components/PropertyItem.vue";
+import PropertyList from "@/components/Property/PropertyList.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
 import DetailInfos from "./DetailInfos.vue";
 import IndividualProductList from './AgentProperty'

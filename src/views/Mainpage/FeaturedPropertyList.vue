@@ -1,6 +1,6 @@
 <template>
     <div class="mt-5 container mb-5">
-        <h4 class="fw-bold">인기매물</h4>
+        <h4 class="fw-bold">인기 매물</h4>
         <div class="d-flex justify-content-evenly">
             <div v-for="item in dataList" :key="item.title">
                 <CardItem :propertyData="item"/>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import CardItem from "@/components/PropertyItem.vue";
+import CardItem from "@/components/Property/PropertyListItem.vue";
 
 // 임시 데이터 배열
 let dataList = [
@@ -22,4 +22,5 @@ let dataList = [
 </script>
 
 <style scoped>
+
 </style>

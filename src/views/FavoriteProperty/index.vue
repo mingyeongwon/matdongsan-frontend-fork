@@ -49,7 +49,7 @@
   </template>
   
   <script setup>
-  import PropertyItem from "@/components/PropertyItem.vue";
+  import PropertyItem from "@/components/Property/PropertyListItem.vue";
   import KakaoMap from "@/components/KakaoMap.vue";
   </script>
   
