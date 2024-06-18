@@ -1,10 +1,23 @@
 <template>
     <div class="mt-5 container mb-5">
         <h4 class="fw-bold">인기 매물</h4>
-        <div class="d-flex justify-content-evenly">
+        <!-- <div class="d-flex justify-content-evenly">
             <div v-for="item in dataList" :key="item.title">
                 <CardItem :propertyData="item"/>
             </div>
+        </div> -->
+        <div>
+            <div>
+                <div>
+                    <img width="230" height="230" src="https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/projects/168441958098622710.jpg?w=960&h=960&c=c" alt="">
+                </div>
+                <div>
+                    <p></p>
+                </div>
+            </div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
     </div>
 </template>

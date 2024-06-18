@@ -38,9 +38,9 @@
         </tr>
       </tbody>
     </table>
-    <span class="btn btn-dark position-absolute bottom-0 end-0 m-3 opacity-75" @click="showDetailPhotosModal">사진 모두 보기</span>
+    <span class="btn btn-dark position-absolute bottom-0 end-0 m-3 opacity-75" @click="showDetailPhotoModal">사진 모두 보기</span>
   </div>
-  <DetailPhotosModal id="DetailPhotosModal"/>
+  <DetailPhotoModal id="DetailPhotoModal"/>
 </template>
 
 <script setup>
@@ -48,16 +48,16 @@
 import {onMounted} from "vue";
 import {Modal} from "bootstrap";
 
-import DetailPhotosModal from "./DetailPhotosModal.vue";
+import DetailPhotoModal from "./DetailPhotoModal.vue";
 
-let detailPhotosModal = null;
+let detailPhotoModal = null;
 
 onMounted(() => {
-  detailPhotosModal = new Modal(document.querySelector("#DetailPhotosModal"))
+  detailPhotoModal = new Modal(document.querySelector("#DetailPhotoModal"))
 });
 
-function showDetailPhotosModal() {
-  detailPhotosModal.show();
+function showDetailPhotoModal() {
+  detailPhotoModal.show();
 }
 
 </script>

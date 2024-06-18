@@ -46,8 +46,8 @@
 
 <script setup>
 import PropertyList from "@/components/Property/PropertyList.vue";
-import DetailPhotos from "./DetailPhotos.vue";
-import DetailInfos from "./DetailInfos.vue";
+import DetailPhotos from "./DetailPhoto.vue";
+import DetailInfos from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
 import { ref } from "vue";
 

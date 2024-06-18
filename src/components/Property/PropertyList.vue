@@ -1,9 +1,9 @@
 <template>
-  <ul class="p-0">
+  <div class="p-0">
     <PropertyListItem />
     <PropertyListItem />
     <PropertyListItem />
-  </ul>
+  </div>
 </template>
 
 <script setup>

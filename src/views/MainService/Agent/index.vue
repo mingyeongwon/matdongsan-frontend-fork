@@ -62,7 +62,7 @@
 <script setup>
 import PropertyList from "@/components/Property/PropertyList.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
-import DetailInfos from "./DetailInfos.vue";
+import DetailInfos from "./DetailInfo.vue";
 import IndividualProductList from './AgentProperty'
 </script>
 

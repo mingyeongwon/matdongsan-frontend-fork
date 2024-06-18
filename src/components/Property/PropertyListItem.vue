@@ -15,7 +15,7 @@
         </p>
       </div>
     </div> -->
-    <li class="border-bottom p-0">
+    <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
         <div class="">
           <img class="" width="140" height="140" src="https://cdn.ggumim.co.kr/cache/star/600/4f88ed25-b172-4ed7-b1cc-8e959c33d786.jpg" alt="">
@@ -26,7 +26,7 @@
           <p class="listInfo">{{ propertyData.title }}</p>
         </div>
       </div>
-    </li>
+    </div>
   </RouterLink>
 </template>
 
@@ -59,8 +59,5 @@ const props = defineProps({
   font-size: 14px;
 }
 
-li {
-  list-style: none;
-}
 
 </style>
