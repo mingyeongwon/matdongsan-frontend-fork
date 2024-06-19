@@ -6,9 +6,10 @@
 import { ref, onMounted } from "vue";
 
 const map = ref(null);
+const cluster = ref(null);
 const markers = ref([]);
-const latitude = ref(0);
-const longitude = ref(0);
+const userLatitude = ref(0);
+const userLongitude = ref(0);
 const exampleProperties = [
   // 사용자 위치 주변의 임의 위치들
   { lat: 37.5072528, lng: 127.0294288 },
@@ -17,14 +18,27 @@ const exampleProperties = [
 ];
 const initMap = () => {
   const container = document.getElementById("map");
-  const options = {
-    center: new kakao.maps.LatLng(latitude.value, longitude.value),
+  const mapOptions = {
+    center: new kakao.maps.LatLng(userLatitude.value, userLongitude.value),
     level: 5,
+    maxLevel: 7,
   };
-  map.value = new kakao.maps.Map(container, options);
+  const clusterOptions = {
+    map: map.value, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+    markers: markers,
+  };
+
+  map.value = new kakao.maps.Map(container, mapOptions);
+
   displayMarker(
     exampleProperties.map((property) => [property.lat, property.lng])
   );
+  cluster.value = new kakao.maps.MarkerClusterer(clusterOptions);
+  cluster.value.addMarkers(exampleProperties[0]);
+  cluster.value.addMarkers(exampleProperties[1]);
+  cluster.value.addMarkers(exampleProperties[2]);
+  console.log(cluster.value);
 };
 
 const displayMarker = (markerPositions) => {
@@ -44,13 +58,6 @@ const displayMarker = (markerPositions) => {
           position,
         })
     );
-
-    const bounds = positions.reduce(
-      (bounds, latlng) => bounds.extend(latlng),
-      new kakao.maps.LatLngBounds()
-    );
-
-    map.value.setBounds(bounds);
   }
 };
 
@@ -62,8 +69,8 @@ onMounted(() => {
 
   navigator.geolocation.getCurrentPosition(
     (pos) => {
-      latitude.value = pos.coords.latitude;
-      longitude.value = pos.coords.longitude;
+      userLatitude.value = pos.coords.latitude;
+      userLongitude.value = pos.coords.longitude;
 
       if (window.kakao && window.kakao.maps) {
         initMap();
