@@ -6,7 +6,7 @@
         <h4 class="fw-bold mt-2 ">내 정보</h4>
       </div>
       <hr>
-      <form action="" class="w-75 mx-auto">
+      <form action="" class="w-75 mx-auto" v-on:submit.prevent="handleSubmit">
         <div class="d-flex justify-content-between w-75">
           <h6 class="text-muted fw-bold align-self-center me-5">프로필 사진</h6>
           <div>
@@ -66,21 +66,21 @@
           <tbody>
             <tr>
               <th scope="row">현재 비밀번호</th>
-              <td><input type="password" /></td>
+              <td><input type="password" v-model="changePassword.oldPassword"/></td>
             </tr>
             <tr>
               <th scope="row">새 비밀번호</th>
-              <td><input type="password"></td>
+              <td><input type="password" v-model="changePassword.newPassword1"></td>
             </tr>
             <tr>
               <th scope="row">새 비밀번호 확인</th>
-              <td colspan="2"><input type="password"></td>
+              <td colspan="2"><input type="password" v-model="changePassword.newPassword2"></td>
             </tr>
           </tbody>
         </table>
 
         <div class="text-end">
-          <button button="button" class="btn btn-warning btn-lg">
+          <button button="button" class="btn btn-warning btn-lg" :disabled="!checkChangePasswordData">
             변경하기
           </button>
           <button type="button" class="btn btn-outline-warning btn-lg text-dark ms-3">취소</button>
@@ -92,6 +92,23 @@
 
 <script setup>
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
+import { ref, computed } from "vue";
+
+let changePassword = ref({
+  oldPassword: "",
+  newPassword1: "",
+  newPassword2: "",
+});
+
+const checkChangePasswordData = computed(() => {
+  var result = changePassword.value.oldPassword !== "" && changePassword.value.newPassword1 !== "" && changePassword.value.newPassword2 !== ""
+              && changePassword.value.newPassword1 === changePassword.value.newPassword2;
+  return result;
+});
+
+function handleSubmit() {
+  console.log(JSON.parse(JSON.stringify(changePassword.value)));
+}
 </script>
 
 <style scoped>

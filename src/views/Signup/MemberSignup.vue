@@ -4,7 +4,7 @@
       <h2 class="fw-bold text-center">일반 회원가입</h2>
     </div>
     <div class="memberSignup-box border-top">
-      <form>
+      <form v-on:submit.prevent="handleSubmit">
         <div class="d-flex mb-4">
           <div class="d-flex col-2 pt-1">
             <span>이메일</span>
@@ -13,8 +13,9 @@
           <div class="memberEmail-box">
             <input
               class="ps-2 me-3 border border-1 border-secondary rounded w-100"
-              type="text"
+              type="email"
               placeholder="영대소문자, 숫자, 언더바(_) 혼용 4~12자 가능합니다."
+              v-model="memberSignup.memberEmail"
             />
           </div>
           <button
@@ -34,11 +35,13 @@
               class="mb-2 ps-2 border border-1 border-secondary rounded"
               type="password"
               placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."
+              v-model="memberSignup.memberPassword1"
             />
             <input
               class="ps-2 border border-1 border-secondary rounded"
               type="password"
               placeholder="비밀번호를 재입력하세요."
+              v-model="memberSignup.memberPassword2"
             />
           </div>
         </div>
@@ -53,6 +56,7 @@
               class="ps-2 border border-1 border-secondary rounded"
               type="text"
               placeholder="숫자만 10~11자 가능합니다."
+              v-model="memberSignup.memberPhone"
             />
           </div>
         </div>
@@ -70,9 +74,9 @@
           </div>
         </div>
         <div class="text-center memberSignupBtn-box">
-          <div class="btn btn-warning fw-bold h-100" @click="goHome">
+          <button type="submit" class="btn btn-warning fw-bold h-100" @click="goHome" :disabled="!checkMemberSignupData">
             회원 가입
-          </div>
+          </button>
         </div>
       </form>
     </div>
@@ -81,6 +85,25 @@
 
 <script setup>
 import { useRouter } from "vue-router";
+import {ref, computed} from "vue";
+
+let memberSignup = ref({
+  memberEmail: "",
+  memberPassword1: "",
+  memberPassword2: "",
+  memberPhone: ""
+});
+
+const checkMemberSignupData = computed(() => {
+  var result = memberSignup.value.memberEmail !== "" && memberSignup.value.memberPhone !== "" && memberSignup.value.memberPassword1 !== "" 
+              && memberSignup.value.memberPassword2 !== "" && memberSignup.value.memberPassword1 === memberSignup.value.memberPassword2;
+  return result;
+});
+
+function handleSubmit() {
+  console.log(JSON.parse(JSON.stringify(memberSignup.value)));
+}
+
 const router = useRouter();
 function goHome() {
     router.push("/")

@@ -6,15 +6,13 @@
         <div>
             <img width="80" height="80" class="rounded-circle" src="https://i.pinimg.com/564x/88/62/af/8862af46f4eef3f44b35d446d135dcf4.jpg" alt="">
             <input type="text" placeholder="댓글을 입력해주세요...">
-            <button class="btn btn-sm btn-secondary">작성</button>
+            <button class="btn btn-sm btn-secondary">작성하기</button>
         </div>
         <div>
             <p>정렬</p>
             <select class="form-select" aria-label="Default select example">
                 <option selected>최신순</option>
                 <option value="1">오래된순</option>
-                <option value="2">별점높은순</option>
-                <option value="3">별점낮은순</option>
             </select>
         </div>
         <div>
