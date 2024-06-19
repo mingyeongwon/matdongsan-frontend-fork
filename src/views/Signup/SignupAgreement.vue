@@ -1,21 +1,36 @@
 <template>
-<div>
+  <div>
     <div class="agreementCheck-title">
-        <h2 class="fw-bold text-center">회원가입</h2>
+      <h2 class="fw-bold text-center">회원가입</h2>
     </div>
     <div class="agreementCheck-box border-top">
-        <h3 class="border-bottom border-dark">약관 동의</h3>
-        <form v-on:submit.prevent="handleSubmit">
-            <div class="border-bottom all-box d-flex justify-content-between">
-                <label for="all-agreement">회원가입 약관에 모두 동의합니다</label>
-                <input type="radio" id="all-agreement" name="agreement" value="all-agreement" v-model="signupAgreement.allAgreement"/>
-            </div>
-            <section>
-                <div class="termsOfUse-box d-flex justify-content-between">
-                    <label for="termsOfUse-agreement">이용약관 동의 <span class="text-danger">(필수)</span></label>
-                    <input type="radio" id="termsOfUse-agreement" name="termsOfUse-agreement" value="termsOfUse-agreement" v-model="signupAgreement.termsOfUseAgreement"/>
-                </div>
-                <textarea readonly class="w-100 p-4">제1조(목적) 이 약관은 업체 회사(전자상거래 사업자)가 운영하는 업체 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
+      <h3 class="border-bottom border-dark">약관 동의</h3>
+      <form v-on:submit.prevent="handleSubmit">
+        <div class="border-bottom all-box d-flex justify-content-between">
+          <label for="all-agreement">회원가입 약관에 모두 동의합니다</label>
+          <input
+            type="checkbox"
+            id="all-agreement"
+            name="agreement"
+            value="all-agreement"
+            v-model="allAgreementCheckbox"
+          />
+        </div>
+        <section>
+          <div class="termsOfUse-box d-flex justify-content-between">
+            <label for="termsOfUse-agreement"
+              >이용약관 동의 <span class="text-danger">(필수)</span></label
+            >
+            <input
+              type="checkbox"
+              id="termsOfUse-agreement"
+              name="termsOfUse-agreement"
+              value="termsOfUse-agreement"
+              v-model="checkedAgreements"
+            />
+          </div>
+          <textarea readonly class="w-100 p-4">
+제1조(목적) 이 약관은 업체 회사(전자상거래 사업자)가 운영하는 업체 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
                     
 ※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다.」
                     
@@ -241,14 +256,24 @@
 ① “몰”과 이용자 간에 발생한 전자상거래 분쟁에 관한 소송은 제소 당시의 이용자의 주소에 의하고, 주소가 없는 경우에는 거소를 관할하는 지방법원의 전속관할로 합니다. 다만, 제소 당시 이용자의 주소 또는 거소가 분명하지 않거나 외국 거주자의 경우에는 민사소송법상의 관할법원에 제기합니다.
                     
 ② “몰”과 이용자 간에 제기된 전자상거래 소송에는 한국법을 적용합니다.        
-                    </textarea>
-                    </section>
-                    <section>
-                        <div class="privacyPolicy-box d-flex justify-content-between">
-                            <label for="privacyPolicy-agreement">개인정보 수집 및 이용 동의 <span class="text-danger">(필수)</span></label>
-                            <input type="radio" id="privacyPolicy-agreement" name="privacyPolicy-agreement" value="privacyPolicy-agreement" v-model="signupAgreement.privacyPolicyAgreement"/>
-                        </div>
-                        <textarea readonly class="w-100 p-4">
+                    </textarea
+          >
+        </section>
+        <section>
+          <div class="privacyPolicy-box d-flex justify-content-between">
+            <label for="privacyPolicy-agreement"
+              >개인정보 수집 및 이용 동의
+              <span class="text-danger">(필수)</span></label
+            >
+            <input
+              type="checkbox"
+              id="privacyPolicy-agreement"
+              name="privacyPolicy-agreement"
+              value="privacyPolicy-agreement"
+              v-model="checkedAgreements"
+            />
+          </div>
+          <textarea readonly class="w-100 p-4">
 개인정보처리방침
 
 [차례]
@@ -385,74 +410,104 @@
 현 개인정보처리방침은 2017년 9월 22일에 제정되었으며, 정부 및 회사의 정책 또는 보안기술의 변경에 따라 내용의 추가, 삭제 및 수정이 있을 경우에는 개정 최소 7일 전부터 ‘공지사항’란을 통해 고지하며, 본 정책은 시행 일자에 시행됩니다.
 1) 공고일자 : 2018년 05월 01일
 2) 시행일자 : 2018년 05월 01일 
-                        </textarea>  
-                    </section>
-                    <div class="d-flex justify-content-between mt-5">
-                        <slot name="buttons">
-                            <RouterLink to="/Signup/MemberSignup" class="text-decoration-none text-dark"><button class="btn btn-lg btn-warning fw-bold me-4" type="submit" :disabled="!checkSignupAgreementData">다음</button></RouterLink>
-                            <RouterLink to="/" class="text-decoration-none text-dark"><button class="btn btn-lg fw-bold text-dark ms-4 cancelBtn" type="submit">돌아가기</button></RouterLink>
-                        </slot>
-                    </div>
-            </form>
+                        </textarea
+          >
+        </section>
+        <div class="d-flex justify-content-between mt-5">
+          <slot name="buttons">
+            <RouterLink
+              to="/Signup/MemberSignup"
+              class="text-decoration-none text-dark"
+              ><button
+                class="btn btn-lg btn-warning fw-bold me-4"
+                type="submit"
+              >
+                다음
+              </button></RouterLink
+            >
+            <RouterLink to="/" class="text-decoration-none text-dark"
+              ><button
+                class="btn btn-lg fw-bold text-dark ms-4 cancelBtn"
+                type="submit"
+              >
+                돌아가기
+              </button></RouterLink
+            >
+          </slot>
         </div>
+      </form>
     </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 
-let signupAgreement = ref({
-  allAgreement: "",
-  termsOfUseAgreement: "",
-  privacyPolicyAgreement: "",
-});
+// let signupAgreement = ref({
 
-const checkSignupAgreementData = computed(() => {
-  var result = signupAgreement.value.allAgreement !== "" || (signupAgreement.value.termsOfUseAgreement !== "" && signupAgreement.value.privacyPolicyAgreement !== "");
-  return result;
-});
+//   termsOfUseAgreement: "",
+//   privacyPolicyAgreement: "",
+// });
 
-function handleSubmit() {
-    console.log(JSON.parse(JSON.stringify(signupAgreement.value)));
+// const checkSignupAgreementData = computed(() => {
+//   var result = signupAgreement.value.allAgreement !== "" || (signupAgreement.value.termsOfUseAgreement !== "" && signupAgreement.value.privacyPolicyAgreement !== "");
+//   return result;
+// });
+
+// 일반 선택 배열
+
+const checkedAgreements = ref([]);
+
+// // 전체 선택
+// const allAgreementCheckbox = computed(() => {
+// });
+
+function allAgreementCheckbox() {
+  console.log(checkedAgreements.value);
 }
 
+function handleSubmit() {
+  console.log(JSON.parse(JSON.stringify(checkedAgreements.value)));
+}
 </script>
 
 <style scoped>
-.all-box, .termsOfUse-box, .privacyPolicy-box {
-    line-height: 55px;
+.all-box,
+.termsOfUse-box,
+.privacyPolicy-box {
+  line-height: 55px;
 }
 
 .agreementCheck-title {
-    margin: 50px 0;
+  margin: 50px 0;
 }
 
 .agreementCheck-box label {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .agreementCheck-box h3 {
-    font-size: 16px;
-    padding: 0 0 10px 0;
+  font-size: 16px;
+  padding: 0 0 10px 0;
 }
 
 .agreementCheck-box textarea {
-    overflow: auto;
-    height: 150px;
-    font-size: 12px;
+  overflow: auto;
+  height: 150px;
+  font-size: 12px;
 }
 
 .agreementCheck-box {
-    max-width: 600px;
-    margin: 50px auto 0;
-    padding: 40px 40px;
+  max-width: 600px;
+  margin: 50px auto 0;
+  padding: 40px 40px;
 }
 
 .agreementCheck-box button {
-    width: 254px;
+  width: 254px;
 }
 
 .agreementCheck-box .cancelBtn {
-    background-color: #D9D9D9;
+  background-color: #d9d9d9;
 }
 </style>

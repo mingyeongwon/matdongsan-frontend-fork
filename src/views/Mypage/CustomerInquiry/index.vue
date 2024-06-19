@@ -5,9 +5,11 @@
       <div class="d-flex justify-content-between mt-2 mb-3">
         <h4 class="fw-bold">1:1 문의</h4>
         <div>
-          <button type="button" class="btn btn-warning me-1">
-            1:1 문의하기
-          </button>
+          <router-link to="/Qna/CustomerInquiryForm">
+            <button type="button" class="btn btn-warning me-1">
+              1:1 문의하기
+            </button>
+          </router-link>
         </div>
       </div>
       <hr>

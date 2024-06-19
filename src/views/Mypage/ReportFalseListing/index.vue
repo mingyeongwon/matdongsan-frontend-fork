@@ -32,6 +32,9 @@
 import { ref } from "vue";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionRow from "@/components/AccordionItem.vue";
+
+
+
 const items = ref([
   {
     title: "신고 1",
