@@ -4,14 +4,15 @@
          <h2 class="fw-bold text-center">중개인 회원가입</h2>
      </div>
      <div class="agentSignup-box border-top ">
-         <form>
+         <form v-on:submit.prevent="handleSubmit">
              <div class="d-flex mb-4">
                  <div class="d-flex col-2 pt-1">
                      <span class="agentInputTitle">이메일</span>
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div class="agentEmail-box">
-                     <input class="ps-2 me-3 border border-dark rounded mb-2 w-100" type="text" placeholder="영대소문자, 숫자, 언더바(_) 혼용 4~12자 가능합니다.">
+                     <input class="ps-2 me-3 border border-dark rounded mb-2 w-100" type="text" 
+                     placeholder="영대소문자, 숫자, 언더바(_) 혼용 4~12자 가능합니다." v-model="agentSignup.agentEmail">
                     </div>
                     <button class="ms-2 btn btn-sm agentSignupPassword-btn text-light">중복확인</button>
              </div>
@@ -21,8 +22,8 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div class="agentPassword-box d-flex flex-column">
-                     <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다.">
-                     <input class="ps-2 border border-dark rounded" type="password" placeholder="비밀번호를 재입력하세요.">
+                     <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."  v-model="agentSignup.agentPassword1">
+                     <input class="ps-2 border border-dark rounded" type="password" placeholder="비밀번호를 재입력하세요." v-model="agentSignup.agentPassword2">
                  </div>
              </div>
              <div class="d-flex mb-4 agentPhone-box">
@@ -32,7 +33,7 @@
                  </div>
                     
                  <div>
-                     <input class="ps-2 border border-dark rounded" type="text" placeholder="숫자만 10~11자 가능합니다.">
+                     <input class="ps-2 border border-dark rounded" type="text" placeholder="숫자만 10~11자 가능합니다." v-model="agentSignup.agentPhone">
                  </div>
              </div>                
              <div class="d-flex mb-4 agentBrandName-box">
@@ -41,7 +42,7 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div>
-                     <input class="ps-2 border border-dark rounded" type="text">
+                     <input class="ps-2 border border-dark rounded" type="text" v-model="agentSignup.agentBrandName">
                  </div>
              </div>                
              <div class="d-flex mb-4 agentBrandName-box">
@@ -50,7 +51,7 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div>
-                  <input class="ps-2 border border-dark rounded" type="text" placeholder="숫자만 10자 가능합니다.">
+                  <input class="ps-2 border border-dark rounded" type="text" placeholder="숫자만 10자 가능합니다." v-model="agentSignup.agentBrandNum">
                  </div>
              </div>                
              <div class="d-flex mb-4 agentProfile-box">
@@ -98,7 +99,7 @@
                  </div>
              </div>                         
              <div class="text-center agentSignupBtn-box">
-                 <button class="btn btn-warning fw-bold h-100" type="button" @click="goHome">회원 가입</button>
+                 <button class="btn btn-warning fw-bold h-100" type="button" @click="goHome" :disabled="!checkAgentSignupData">회원 가입</button>
              </div>               
          </form>
      </div>
@@ -107,10 +108,33 @@
 
 <script setup>
 import { useRouter } from "vue-router";
+import { ref, computed } from "vue";
+
+let agentSignup = ref({
+    agentEmail: "",
+    agentPassword1: "",
+    agentPassword2: "",
+    agentPhone: "",
+    agentBrandName: "",
+    agentBrandNum: "",
+});
+
+const checkAgentSignupData = computed(() => {
+    var result = agentSignup.value.agentEmail !== "" && agentSignup.value.agentPassword1 !== "" && agentSignup.value.agentPassword2 !== ""
+                && agentSignup.value.agentPassword1 === agentSignup.value.agentPassword2 && agentSignup.value.agentPhone !== ""
+                && agentSignup.value.agentBrandName !== "" && agentSignup.value.agentBrandNum !== "";
+    return result;
+});
+
+function handleSubmit() {
+    console.log(JSON.parse(JSON.stringify(agentSignup.value)))
+}
+
 const router = useRouter();
 function goHome() {
     router.push("/")
-}</script>
+}
+</script>
 
 <style scoped>
   .agentInputTitle {

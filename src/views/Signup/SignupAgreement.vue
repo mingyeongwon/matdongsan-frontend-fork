@@ -5,15 +5,15 @@
     </div>
     <div class="agreementCheck-box border-top">
         <h3 class="border-bottom border-dark">약관 동의</h3>
-        <form>
+        <form v-on:submit.prevent="handleSubmit">
             <div class="border-bottom all-box d-flex justify-content-between">
                 <label for="all-agreement">회원가입 약관에 모두 동의합니다</label>
-                <input type="radio" id="all-agreement" name="agreement" value="all-agreement" />
+                <input type="radio" id="all-agreement" name="agreement" value="all-agreement" v-model="signupAgreement.allAgreement"/>
             </div>
             <section>
                 <div class="termsOfUse-box d-flex justify-content-between">
-                    <label for="all-agreement">이용약관 동의 <span class="text-danger">(필수)</span></label>
-                    <input type="radio" id="termsOfUse-agreement" name="agreement" value="termsOfUse-agreement" />
+                    <label for="termsOfUse-agreement">이용약관 동의 <span class="text-danger">(필수)</span></label>
+                    <input type="radio" id="termsOfUse-agreement" name="termsOfUse-agreement" value="termsOfUse-agreement" v-model="signupAgreement.termsOfUseAgreement"/>
                 </div>
                 <textarea readonly class="w-100 p-4">제1조(목적) 이 약관은 업체 회사(전자상거래 사업자)가 운영하는 업체 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
                     
@@ -245,8 +245,8 @@
                     </section>
                     <section>
                         <div class="privacyPolicy-box d-flex justify-content-between">
-                            <label for="all-agreement">개인정보 수집 및 이용 동의 <span class="text-danger">(필수)</span></label>
-                            <input type="radio" id="privacyPolicy-agreement" name="agreement" value="privacyPolicy-agreement" />
+                            <label for="privacyPolicy-agreement">개인정보 수집 및 이용 동의 <span class="text-danger">(필수)</span></label>
+                            <input type="radio" id="privacyPolicy-agreement" name="privacyPolicy-agreement" value="privacyPolicy-agreement" v-model="signupAgreement.privacyPolicyAgreement"/>
                         </div>
                         <textarea readonly class="w-100 p-4">
 개인정보처리방침
@@ -389,7 +389,7 @@
                     </section>
                     <div class="d-flex justify-content-between mt-5">
                         <slot name="buttons">
-                            <RouterLink to="/Signup/MemberSignup" class="text-decoration-none text-dark"><button class="btn btn-lg btn-warning fw-bold me-4" type="submit">다음</button></RouterLink>
+                            <RouterLink to="/Signup/MemberSignup" class="text-decoration-none text-dark"><button class="btn btn-lg btn-warning fw-bold me-4" type="submit" :disabled="!checkSignupAgreementData">다음</button></RouterLink>
                             <RouterLink to="/" class="text-decoration-none text-dark"><button class="btn btn-lg fw-bold text-dark ms-4 cancelBtn" type="submit">돌아가기</button></RouterLink>
                         </slot>
                     </div>
@@ -399,6 +399,23 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
+
+let signupAgreement = ref({
+  allAgreement: "",
+  termsOfUseAgreement: "",
+  privacyPolicyAgreement: "",
+});
+
+const checkSignupAgreementData = computed(() => {
+  var result = signupAgreement.value.allAgreement !== "" || (signupAgreement.value.termsOfUseAgreement !== "" && signupAgreement.value.privacyPolicyAgreement !== "");
+  return result;
+});
+
+function handleSubmit() {
+    console.log(JSON.parse(JSON.stringify(signupAgreement.value)));
+}
+
 </script>
 
 <style scoped>

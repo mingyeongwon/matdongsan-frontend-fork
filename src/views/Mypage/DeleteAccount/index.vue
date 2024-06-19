@@ -30,24 +30,23 @@
           </ol>
         </ul>
         <hr />
-        <form action="#" class="deleteUserForm w-75 mx-auto mt-5" novalidate>
+        <form action="#" class="deleteUserForm w-75 mx-auto mt-5" v-on:submit.prevent="handleSubmit">
           <div class="mx-auto form-group mt-5 w-50">
             <h6>비밀번호</h6>
             <input
               class="form-control mx-auto border border-secondary"
-              type="password"
-            />
+              type="password" v-model="deleteAccount.deletePassword"/>
           </div>
           <div class="form-group mt-3 w-50 mx-auto">
             <h6>탈퇴를 하는 이유가 뭔가요?</h6>
             <select
               class="form-select form-select mb-3 mx-auto border border-secondary "
-              aria-label=".form-select-lg example" 
-            >
-              <option selected>사용이 불편함</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              aria-label=".form-select-lg example" v-model="deleteAccount.deleteOptionSelect">
+              <option value="" disabled hidden selected>이유를 선택해 주세요</option>
+              <option value="inconvenient">사용이 불편함</option>
+              <option value="tooManyTimes">너무 많이 이용함</option>
+              <option value="lackOfBenenfits">회원 혜택 부족</option>
+              <option value="etc">기타</option>
             </select>
           </div>
           <div class="form-group mt-3 mx-auto w-50">
@@ -55,14 +54,15 @@
             <textarea
               name="reasonForDeleteAccount"
               id="reasonForDeleteAccount"
-              class="mx-auto form-control border border-secondary"
-            ></textarea>
+              class="mx-auto form-control border border-secondary">
+            </textarea>
           </div>
           <div class="form-group mt-3 mx-auto w-50">
             <input
               type="checkbox"
               name="deleteAgreement"
               id="deleteAgreement"
+              v-model="deleteAccount.deleteAgreement"
             />
             <label for="deleteAgreement" class="ms-2"
               ><b> 유의 사항에 동의 </b></label
@@ -72,7 +72,7 @@
             <button type="button" class="btn btn-dark w-25">
               돌아가기
             </button>
-            <button type="button" class="ms-3 btn btn-warning w-25">
+            <button type="submit" class="ms-3 btn btn-warning w-25" :disabled="!checkDeleteAccountData">
               탈퇴하기
             </button>
           </div>
@@ -84,6 +84,22 @@
 
 <script setup>
 import MyPageSideBar from "@/components/MyPageSidebar.vue";
+import { ref, computed } from "vue";
+
+let deleteAccount = ref({
+  deletePassword: "",
+  deleteOptionSelect: "",
+  deleteAgreement: "",
+});
+
+const checkDeleteAccountData = computed(() => {
+  var result = deleteAccount.value.deletePassword !== "" && deleteAccount.value.deleteOptionSelect !== "" && deleteAccount.value.deleteAgreement !== "";
+  return result;
+});
+
+function handleSubmit() {
+  console.log(JSON.parse(JSON.stringify(deleteAccount.value)));
+}
 </script>
 
 <style scoped>
@@ -96,6 +112,5 @@ import MyPageSideBar from "@/components/MyPageSidebar.vue";
   margin-right: auto;
   margin-left: auto;
 }
-.ps {
-}
+
 </style>

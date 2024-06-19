@@ -85,9 +85,10 @@
         <div class="right-box ms-4 col vh-100" v-if="status">
           <KakaoMap @getPropertyData="getPropertyData"/>
         </div>
-        <div class="right-box ms-4 col vh-100 p-3" v-if="!status">
-          <DetailPhotos />
-          <DetailInfos />
+        <div class="right-box ms-4 col h-100 p-3" v-if="!status">
+          <DetailPhoto />
+          <DetailInfo />
+          <Comment />
         </div>
       </div>
     </div>
@@ -95,9 +96,10 @@
 </template>
 
 <script setup>
+import Comment from "./Comment.vue";
 import PropertyList from "@/components/Property/PropertyList.vue";
-import DetailPhotos from "./DetailPhoto.vue";
-import DetailInfos from "./DetailInfo.vue";
+import DetailPhoto from "./DetailPhoto.vue";
+import DetailInfo from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
 import { ref } from "vue";
 
