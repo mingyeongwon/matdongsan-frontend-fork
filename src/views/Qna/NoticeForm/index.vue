@@ -12,14 +12,15 @@
         </select>
       </div> -->
       <hr>
+      <form @submit.prevent="handleSubmit">
       <div class="row me-5">
         <span class="col-2" style="text-align: center;">제목</span>
-        <input class="col-10" type="text" name="askTitle">
+        <input class="col-10" type="text" name="askTitle" v-model="notice.title"> 
       </div>
       <hr>
       <div class="row me-5">
         <span class="col-2" style="line-height: 300px; height: 100%; text-align: center">공지 내용</span>
-        <textarea class="col-10" type="text" name="askContent" style="height: 20rem; resize: none;"></textarea>
+        <textarea class="col-10" type="text" name="askContent" style="height: 20rem; resize: none;" v-model="notice.content"></textarea>
       </div>
       <!-- <hr>
       <div class="row me-5">
@@ -35,14 +36,32 @@
       
       <hr>
       <div class="row d-flex" style=" justify-content: center; align-items: center; ">
-        <button type="button" style="background-color: #2F4858; color: white; width: 216px; height: 52px;">공지 하기</button>
+        <button type="submit" style="background-color: #2F4858; color: white; width: 216px; height: 52px;" :disabled="!checkForm">공지 하기</button>
       </div>
+    </form>
       </div>
       <!-- 컴포넌트 삽입 -->
     </div>
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
+
+const notice = ref({
+  title:"",
+  content:"",
+});
+
+function handleSubmit(){
+  console.log(JSON.parse(JSON.stringify(notice.value)));
+}
+
+// 제목, 내용이 없으면 제출버튼 비활성화
+const checkForm = computed(() => {
+  var result = notice.value.title !== "" && notice.value.content !== "";
+  console.log('result: ',result);
+  return result;
+});
 
 </script>
 
