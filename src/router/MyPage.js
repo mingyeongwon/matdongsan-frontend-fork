@@ -25,6 +25,11 @@ const routes = [
     component: () =>
     import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/MyInfomation")
   },
+  {
+    path: '/MyPage/Sidebar',
+    component: () =>
+    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/Sidebar.vue")
+  },
 ];
 
 export default routes;
