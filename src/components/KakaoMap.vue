@@ -3,14 +3,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted,defineEmits } from "vue";
+import { ref, onMounted, defineEmits, defineProps } from "vue";
 const emit = defineEmits(["getPropertyData"]);
+const props = defineProps(["page"]);
 
 let map;
 const cluster = ref(null);
 const bounds = ref(null);
 const markers = ref({});
-const propertyListData =ref([]);
+const propertyListData = ref([]);
 const userLatitude = ref(0);
 const userLongitude = ref(0);
 const exampleProperties = [
@@ -49,19 +50,42 @@ const initMap = () => {
         //지도의 영역값
         bounds.value = map.getBounds();
         //지도의 영역값 안에 마커의 좌표값이 있는가?
-        if (bounds.value.contain(pos)){
+        if (bounds.value.contain(pos)) {
           console.log("아아 여기가 판매하는 위치가 있는 곳인가? ", pos);
-          if(propertyListData.value !==null)
-          emit("getPropertyData",propertyListData.value=pos);
+          if (propertyListData.value !== null)
+            emit("getPropertyData", (propertyListData.value = pos));
         }
-     
       });
     }
   });
-  //마커 지도에 출력 함수 실행 (현재는 클러스터로 대체 하여 핀마커가 보이지 않음)
-  displayMarker(
-    exampleProperties.map((property) => [property.lat, property.lng])
-  );
+  if (props.page === "favorite") {
+    console.log("여기가 관심페이지?");
+    let imageSrc =
+      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png"; // 마커이미지의 주소입니다
+    let imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기입니다
+    let imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+    let markerImage = new kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      imageOption
+    );
+    let markerPosition = new kakao.maps.LatLng(
+      37.561110808242056,
+      126.9831268386891
+    ); // 마커가 표시될 위치입니다
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+      position: markerPosition,
+      image: markerImage, // 마커이미지 설정
+    });
+    marker.setMap(map);
+  } else {
+    //마커 지도에 출력 함수 실행 (현재는 클러스터로 대체 하여 핀마커가 보이지 않음)
+    displayMarker(
+      exampleProperties.map((property) => [property.lat, property.lng])
+    );
+  }
 
   //클러스터 옵션값
   const clusterOptions = {
@@ -124,9 +148,7 @@ onMounted(() => {
   );
 });
 
-function getPropertyData(){
-
-}
+function getPropertyData() {}
 </script>
 
 <style scoped>
