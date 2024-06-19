@@ -83,7 +83,7 @@
         </div>
         <!-- 카카오맵 -->
         <div class="right-box ms-4 col vh-100" v-if="status">
-          <KakaoMap @getPropertyData="getPropertyData"/>
+          <KakaoMap @getPropertyData="getPropertyData" />
         </div>
         <div class="right-box ms-4 col h-100 p-3" v-if="!status">
           <DetailPhoto />
@@ -101,18 +101,20 @@ import PropertyList from "@/components/Property/PropertyList.vue";
 import DetailPhoto from "./DetailPhoto.vue";
 import DetailInfo from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
-import { ref } from "vue";
+import { ref,computed } from "vue";
 
 let status = ref(true);
-let propertyData=ref([]);
-
+let propertyData = ref([]);
+console.log();
 function backToPropertyList() {
   status.value = !status.value;
 }
 
-const getPropertyData=(data)=>{
-  propertyData.value=data;
-}
+//data가 중복값이라면 넣지 말아야함
+const getPropertyData = (data) => {
+  propertyData.value.push(data);
+  console.log("전달되었음: ", propertyData.value);
+};
 </script>
 
 <style scoped>

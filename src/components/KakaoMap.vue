@@ -1,9 +1,10 @@
 <template>
-  <div id="map"></div>
+  <div id="map" @change="emit('getPropertyData', propertyListData)"></div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,defineEmits } from "vue";
+const emit = defineEmits(["getPropertyData"]);
 
 let map;
 const cluster = ref(null);
@@ -37,33 +38,46 @@ const initMap = () => {
   map = new kakao.maps.Map(container, mapOptions);
   //카카오맵 이벤트 설정 영역이 변경이 되면 자동으로 함수가 실행이 됨
   kakao.maps.event.addListener(map, "bounds_changed", function () {
+    //영역값 불러오기
     bounds.value = map.getBounds();
+    //마커가 1개 이상인 경우에 실행
     if (markers.value.length > 0) {
+      //마커들이 여러개일 경우 map으로 하나씩 값 확인
       markers.value.map((marker) => {
+        //마커의 좌표값
         let pos = marker.getPosition();
+        //지도의 영역값
         bounds.value = map.getBounds();
-        if (bounds.value.contain(pos))
+        //지도의 영역값 안에 마커의 좌표값이 있는가?
+        if (bounds.value.contain(pos)){
           console.log("아아 여기가 판매하는 위치가 있는 곳인가? ", pos);
+          if(propertyListData.value !==null)
+          emit("getPropertyData",propertyListData.value=pos);
+        }
+     
       });
     }
   });
+  //마커 지도에 출력 함수 실행 (현재는 클러스터로 대체 하여 핀마커가 보이지 않음)
   displayMarker(
     exampleProperties.map((property) => [property.lat, property.lng])
   );
 
+  //클러스터 옵션값
   const clusterOptions = {
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
     averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
   };
 
+  //클러스터 초기 설정
   cluster.value = new kakao.maps.MarkerClusterer(clusterOptions);
 
   // 마커를 클러스터러에 추가
   cluster.value.addMarkers(markers.value);
   cluster.value.setMinClusterSize(1);
-  console.log(cluster.value);
 };
 
+//마커 출력 함수 설정
 const displayMarker = (markerPositions) => {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => marker.setMap(null));
@@ -82,7 +96,7 @@ const displayMarker = (markerPositions) => {
     );
   }
 };
-
+//Mounted 이후 설정해야하는 작업들
 onMounted(() => {
   if (!("geolocation" in navigator)) {
     alert("Geolocation is not supported by this browser.");
@@ -109,6 +123,10 @@ onMounted(() => {
     }
   );
 });
+
+function getPropertyData(){
+
+}
 </script>
 
 <style scoped>
