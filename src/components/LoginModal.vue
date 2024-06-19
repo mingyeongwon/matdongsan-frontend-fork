@@ -61,6 +61,18 @@
                 </div>
               </div>
               <div class="mt-3">
+                <div>
+                  <h4 class="fs-6 fw-bold">중개업자 여부</h4>
+                </div>
+                <div class="loginInputBox ">
+                  <select v-model="user.type">
+                    <option value="" disabled hidden selected>회원 타입을 선택해 주세요</option>
+                    <option value="Agent">중개업자 회원</option>
+                    <option value="Member">일반 회원</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mt-3">
                 <button
                   type="submit"
                   class="w-100 btn btn-warning"
@@ -137,6 +149,18 @@
                     placeholder="전화번호 입력"
                     v-model="user.phone"
                   />
+                </div>
+              </div>
+              <div class="mt-3">
+                <div>
+                  <h4 class="fs-6 fw-bold">중개업자 여부</h4>
+                </div>
+                <div class="loginInputBox ">
+                  <select v-model="user.type">
+                    <option value="" disabled hidden selected>회원 타입을 선택해 주세요</option>
+                    <option value="Agent">중개업자 회원</option>
+                    <option value="Member">일반 회원</option>
+                  </select>
                 </div>
               </div>
               <div class="mt-3">
@@ -221,6 +245,18 @@
                 </div>
               </div>
               <div class="mt-3">
+                <div>
+                  <h4 class="fs-6 fw-bold">중개업자 여부</h4>
+                </div>
+                <div class="loginInputBox ">
+                  <select v-model="user.type">
+                    <option value="" disabled hidden selected>회원 타입을 선택해 주세요</option>
+                    <option value="Agent">중개업자 회원</option>
+                    <option value="Member">일반 회원</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mt-3">
                 <button
                   type="submit"
                   class="w-100 btn btn-warning"
@@ -253,20 +289,21 @@ let user = ref({
   email: "",
   password: "",
   phone: "",
+  type: "",
 });
 function handleSubmit() {
   console.log(JSON.parse(JSON.stringify(user.value)));
 }
 const checkData = computed(() => {
-  var result = user.value.email !== "" && user.value.password !== "";
+  var result = user.value.email !== "" && user.value.password !== "" && user.value.type !== "";
   return result;
 });
 const checkFindEmailData = computed(() => {
-  var result = user.value.name !== "" && user.value.phone !== "";
+  var result = user.value.name !== "" && user.value.phone !== "" && user.value.type !== "";
   return result;
 });
 const checkUpdatePasswordData = computed(() => {
-  var result = user.value.name !== "" && user.value.phone !== "" && user.value.email !== "";
+  var result = user.value.name !== "" && user.value.phone !== "" && user.value.email !== "" && user.value.type !== "";
   return result;
 });
 function checkUserEmail() {
@@ -301,5 +338,13 @@ input {
 
 .findIdPassword > span {
   color: rgb(151, 151, 151);
+}
+
+select  {
+  border: 1px solid rgb(237, 237, 237);
+  width: 100%;
+  height: 100%;
+  padding-left: 13px;
+  color: grey;
 }
 </style>
