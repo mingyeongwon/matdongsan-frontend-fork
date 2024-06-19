@@ -83,7 +83,7 @@
         </div>
         <!-- 카카오맵 -->
         <div class="right-box ms-4 col vh-100" v-if="status">
-          <KakaoMap />
+          <KakaoMap @getPropertyData="getPropertyData"/>
         </div>
         <div class="right-box ms-4 col vh-100 p-3" v-if="!status">
           <DetailPhotos />
@@ -102,9 +102,14 @@ import KakaoMap from "@/components/KakaoMap.vue";
 import { ref } from "vue";
 
 let status = ref(true);
+let propertyData=ref([]);
 
 function backToPropertyList() {
   status.value = !status.value;
+}
+
+const getPropertyData=(data)=>{
+  propertyData.value=data;
 }
 </script>
 

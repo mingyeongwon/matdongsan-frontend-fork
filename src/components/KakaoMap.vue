@@ -7,14 +7,22 @@ import { ref, onMounted } from "vue";
 
 let map;
 const cluster = ref(null);
-const markers = ref([]);
+const bounds = ref(null);
+const markers = ref({});
+const propertyListData =ref([]);
 const userLatitude = ref(0);
 const userLongitude = ref(0);
 const exampleProperties = [
   // 사용자 위치 주변의 임의 위치들
-  { lat: 37.5072528, lng: 127.0294288 },
-  { lat: 37.5052528, lng: 127.0274288 },
-  { lat: 37.5067528, lng: 127.0289288 },
+  { title: "num1", lat: 37.5072528, lng: 127.0294288 },
+  { title: "num2", lat: 37.5052528, lng: 127.0274288 },
+  { title: "num3", lat: 37.5067528, lng: 127.0289288 },
+  { title: "num4", lat: 37.27943075229118, lng: 127.01763998406159 },
+  { title: "num5", lat: 37.55915668706214, lng: 126.92536526611102 },
+  { title: "num6", lat: 35.13854258261161, lng: 129.1014781294671 },
+  { title: "num7", lat: 37.55518388656961, lng: 126.92926237742505 },
+  { title: "num8", lat: 35.20618517638034, lng: 129.07944301057026 },
+  { title: "num9", lat: 37.561110808242056, lng: 126.9831268386891 },
 ];
 
 const initMap = () => {
@@ -25,8 +33,20 @@ const initMap = () => {
     maxLevel: 7,
   };
 
+  //Map 초기 설정 및 불러올 위치 태그
   map = new kakao.maps.Map(container, mapOptions);
-
+  //카카오맵 이벤트 설정 영역이 변경이 되면 자동으로 함수가 실행이 됨
+  kakao.maps.event.addListener(map, "bounds_changed", function () {
+    bounds.value = map.getBounds();
+    if (markers.value.length > 0) {
+      markers.value.map((marker) => {
+        let pos = marker.getPosition();
+        bounds.value = map.getBounds();
+        if (bounds.value.contain(pos))
+          console.log("아아 여기가 판매하는 위치가 있는 곳인가? ", pos);
+      });
+    }
+  });
   displayMarker(
     exampleProperties.map((property) => [property.lat, property.lng])
   );
@@ -40,6 +60,7 @@ const initMap = () => {
 
   // 마커를 클러스터러에 추가
   cluster.value.addMarkers(markers.value);
+  cluster.value.setMinClusterSize(1);
   console.log(cluster.value);
 };
 
