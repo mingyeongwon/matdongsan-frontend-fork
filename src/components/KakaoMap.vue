@@ -11,7 +11,7 @@ let map;
 let cluster = null;
 const bounds = ref(null);
 const markers = ref({});
-const propertyListData = ref([]);
+
 const userLatitude = ref(0);
 const userLongitude = ref(0);
 const exampleProperties = [
@@ -45,12 +45,14 @@ const initMap = () => {
     //마커가 1개 이상인 경우에 실행
     if (markers.value.length > 0) {
       //마커들이 여러개일 경우 map으로 하나씩 값 확인
+      const propertyListData = ref([]);
       markers.value.map((marker) => {
         //마커의 좌표값
         let pos = marker.getPosition();
         //지도의 영역값
         bounds.value = map.getBounds();
         //지도의 영역값 안에 마커의 좌표값이 있는가?
+
         if (bounds.value.contain(pos) && propertyListData.value !== null) {
           // 중복 체크를 위해서 새로운 데이터와 기존 데이터의 좌표를 비교
           const isDataDifferent = !propertyListData.value.some(
@@ -63,11 +65,12 @@ const initMap = () => {
             propertyListData.value.push(pos);
             emit("getPropertyData", propertyListData.value);
           }
-        }
+        } 
       });
     }
   });
 
+  //관심목록 컴포넌트에서 접근시 아래 코드들 실행
   if (props.page === "favorite") {
     let imageSrc =
       "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; // 마커이미지의 주소
@@ -84,7 +87,7 @@ const initMap = () => {
       126.9831268386891
     );
 
-    // 마커를 생성합니다
+    // 즐겨찾기 마커를 생성
     var marker = new kakao.maps.Marker({
       position: markerPosition,
       image: markerImage, // 마커이미지 설정
@@ -101,7 +104,7 @@ const initMap = () => {
   const clusterOptions = {
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
     averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-    disableClickZoom: true,
+    disableClickZoom: true, //더블클릭 줌 방지
   };
 
   //클러스터 초기 설정
@@ -110,19 +113,22 @@ const initMap = () => {
   // 마커를 클러스터러에 추가
   cluster.addMarkers(markers.value);
 
+  //클러스터로 만들 마커의 최소 수
   cluster.setMinClusterSize(1);
+
+  //클러스터 클릭 이벤트
   kakao.maps.event.addListener(cluster, "clusterclick", function (cluster) {
     //클러스터에 존재하는 마커들 정보
     const markers = cluster.getMarkers();
     // 클러스터 마커 좌표 배열
-    const markerPositions=[];
+    const markerPositions = [];
     // 클러스터 마커를 배열에 push
-    markers.map((marker)=> {
+    markers.map((marker) => {
       markerPositions.push(marker.getPosition());
       console.log(markerPositions);
 
-    //저장된 좌표 배열을 가지고 정보 불러와야함
-    })
+      //저장된 좌표 배열을 가지고 정보 불러와야함
+    });
   });
 };
 
@@ -135,7 +141,7 @@ const displayMarker = (markerPositions) => {
   const positions = markerPositions.map(
     (position) => new kakao.maps.LatLng(...position)
   );
-
+  //마커의 좌표가 1개이상 존재할 때 마커를 지도에 표시
   if (positions.length > 0) {
     markers.value = positions.map(
       (position) =>
@@ -145,6 +151,7 @@ const displayMarker = (markerPositions) => {
     );
   }
 };
+
 //Mounted 이후 설정해야하는 작업들
 onMounted(() => {
   if (!("geolocation" in navigator)) {
@@ -152,6 +159,7 @@ onMounted(() => {
     return;
   }
 
+  //사용자의 현재 위치 좌표를 중심으로 지도 설정
   navigator.geolocation.getCurrentPosition(
     (pos) => {
       userLatitude.value = pos.coords.latitude;
