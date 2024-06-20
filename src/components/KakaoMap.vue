@@ -3,12 +3,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineEmits, defineProps } from "vue";
+import { ref, onMounted, defineEmits, defineProps, watch } from "vue";
 const emit = defineEmits(["getPropertyData"]);
 const props = defineProps(["page"]);
 
 let map;
-const cluster = ref(null);
+let cluster = null;
 const bounds = ref(null);
 const markers = ref({});
 const propertyListData = ref([]);
@@ -33,12 +33,13 @@ const initMap = () => {
     center: new kakao.maps.LatLng(userLatitude.value, userLongitude.value),
     level: 5,
     maxLevel: 7,
+    disableDoubleClickZoom: true,
   };
 
   //Map 초기 설정 및 불러올 위치 태그
   map = new kakao.maps.Map(container, mapOptions);
   //카카오맵 이벤트 설정 영역이 변경이 되면 자동으로 함수가 실행이 됨
-  kakao.maps.event.addListener(map, "bounds_changed", function () {
+  kakao.maps.event.addListener(map, "dragend", function () {
     //영역값 불러오기
     bounds.value = map.getBounds();
     //마커가 1개 이상인 경우에 실행
@@ -50,29 +51,38 @@ const initMap = () => {
         //지도의 영역값
         bounds.value = map.getBounds();
         //지도의 영역값 안에 마커의 좌표값이 있는가?
-        if (bounds.value.contain(pos)) {
-          console.log("아아 여기가 판매하는 위치가 있는 곳인가? ", pos);
-          if (propertyListData.value !== null)
-            emit("getPropertyData", (propertyListData.value = pos));
+        if (bounds.value.contain(pos) && propertyListData.value !== null) {
+          // 중복 체크를 위해서 새로운 데이터와 기존 데이터의 좌표를 비교
+          const isDataDifferent = !propertyListData.value.some(
+            (existingData) =>
+              existingData.Ma === pos.Ma && existingData.La === pos.La
+          );
+
+          // 새로운 데이터가 기존 데이터와 다를 경우에만 추가
+          if (isDataDifferent) {
+            propertyListData.value.push(pos);
+            emit("getPropertyData", propertyListData.value);
+          }
         }
       });
     }
   });
+
   if (props.page === "favorite") {
-    console.log("여기가 관심페이지?");
     let imageSrc =
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png"; // 마커이미지의 주소입니다
-    let imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기입니다
-    let imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; // 마커이미지의 주소
+    let imageSize = new kakao.maps.Size(34, 45); // 마커이미지의 크기
+    let imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정.
     let markerImage = new kakao.maps.MarkerImage(
       imageSrc,
       imageSize,
       imageOption
     );
+    // 마커가 표시될 임시 위치입니다
     let markerPosition = new kakao.maps.LatLng(
       37.561110808242056,
       126.9831268386891
-    ); // 마커가 표시될 위치입니다
+    );
 
     // 마커를 생성합니다
     var marker = new kakao.maps.Marker({
@@ -91,14 +101,29 @@ const initMap = () => {
   const clusterOptions = {
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
     averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+    disableClickZoom: true,
   };
 
   //클러스터 초기 설정
-  cluster.value = new kakao.maps.MarkerClusterer(clusterOptions);
+  cluster = new kakao.maps.MarkerClusterer(clusterOptions);
 
   // 마커를 클러스터러에 추가
-  cluster.value.addMarkers(markers.value);
-  cluster.value.setMinClusterSize(1);
+  cluster.addMarkers(markers.value);
+
+  cluster.setMinClusterSize(1);
+  kakao.maps.event.addListener(cluster, "clusterclick", function (cluster) {
+    //클러스터에 존재하는 마커들 정보
+    const markers = cluster.getMarkers();
+    // 클러스터 마커 좌표 배열
+    const markerPositions=[];
+    // 클러스터 마커를 배열에 push
+    markers.map((marker)=> {
+      markerPositions.push(marker.getPosition());
+      console.log(markerPositions);
+
+    //저장된 좌표 배열을 가지고 정보 불러와야함
+    })
+  });
 };
 
 //마커 출력 함수 설정
@@ -106,7 +131,7 @@ const displayMarker = (markerPositions) => {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => marker.setMap(null));
   }
-
+  // 지도 마커 좌표
   const positions = markerPositions.map(
     (position) => new kakao.maps.LatLng(...position)
   );
@@ -147,8 +172,6 @@ onMounted(() => {
     }
   );
 });
-
-function getPropertyData() {}
 </script>
 
 <style scoped>

@@ -33,7 +33,7 @@
                 <option selected>층수</option>
                 <option value="1">반지하</option>
                 <option value="2">지상</option>
-                <option value="2">옥탑방</option>
+                <option value="3">옥탑방</option>
               </select>
             </div>
             <div>
@@ -64,7 +64,6 @@
           >주변 부동산</RouterLink
         >
       </li>
-      <!-- 아이콘들 -->
       <div class="col pe-4 ms-3 me-3 text-end align-self-center" v-if="!status">
         <i
           class="fa-solid fa-arrow-left fa-xl me-3"
@@ -81,7 +80,6 @@
             <PropertyList />
           </div>
         </div>
-        <!-- 카카오맵 -->
         <div class="right-box ms-4 col vh-100" v-if="status">
           <KakaoMap @getPropertyData="getPropertyData" />
         </div>
@@ -101,19 +99,18 @@ import PropertyList from "@/components/Property/PropertyList.vue";
 import DetailPhoto from "./DetailPhoto.vue";
 import DetailInfo from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
-import { ref,computed } from "vue";
+import { ref, computed } from "vue";
 
 let status = ref(true);
-let propertyData = ref([]);
-console.log();
+const propertyData = ref([]);
+
 function backToPropertyList() {
   status.value = !status.value;
 }
 
-//data가 중복값이라면 넣지 말아야함
 const getPropertyData = (data) => {
-  propertyData.value.push(data);
-  console.log("전달되었음: ", propertyData.value);
+  propertyData.value = data;
+  console.log(propertyData.value);
 };
 </script>
 
