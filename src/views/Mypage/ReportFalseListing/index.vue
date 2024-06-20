@@ -25,6 +25,7 @@
       </table>
     </div>
   </div>
+  <DeleteReport />
 </template>
 
 
@@ -32,7 +33,7 @@
 import { ref } from "vue";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionRow from "@/components/AccordionItem.vue";
-
+import DeleteReport from "./DeleteReport.vue"
 
 
 const items = ref([

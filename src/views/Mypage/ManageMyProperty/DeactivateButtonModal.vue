@@ -31,7 +31,7 @@
   </template>
   
   <script setup>
-  import MyPropertyModal from './MyPropertyModal.vue';
+  import MyPropertyModal from './TransactionCompleted.vue';
   import { defineProps, defineEmits } from 'vue';
   
   const props = defineProps({

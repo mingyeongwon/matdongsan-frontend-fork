@@ -9,6 +9,6 @@
   </MyPropertyModal>
 </template>
 <script setup>
-import MyPropertyModal from "./MyPropertyModal.vue";
+import MyPropertyModal from "./TransactionCompleted.vue";
 </script>
 <style scoped></style>
