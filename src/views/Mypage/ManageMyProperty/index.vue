@@ -20,8 +20,8 @@
             <th scope="col" class="text-center">매물번호</th>
             <th scope="col" class="text-center">대표사진</th>
             <th scope="col" class="text-center">제목 / 내용</th>
-            <th scope="col" class="text-center">매물 상태</th>
             <th scope="col" class="text-center">등록한 날짜</th>
+            <th scope="col" class="text-center">매물 상태</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -44,13 +44,14 @@
             <td class="fw-bold align-middle text-center">2024/06/12</td>
             <td class="fw-bold align-middle">
               <div class="d-flex flex-column">
-                <button class="btn btn-warning btn-sm fw-bold mb-3">
+                <button class="btn btn-warning btn-sm fw-bold mb-3" 
+                v-if="checkTransactionCompletedData"> <!-- 거래 완료 버튼 누르면 버튼 안 보임 -->
                   수정
                 </button>
                 <button
                   class="soldOutBtn btn btn-sm fw-bold mb-3"
-                  @click="showTransactionModal"
-                >
+                  @click="showTransactionModal" 
+                  :disabled="!checkTransactionCompletedData"> <!-- 거래 완료 버튼 누르면 버튼 비활성화 -->
                   거래완료
                 </button>
                 <button
@@ -58,7 +59,7 @@
                     'btn btn-sm fw-bold',
                     property.isActive ? 'btn-danger' : 'btn-success',
                   ]"
-                  @click="toggleActive(property)"
+                  @click="toggleActive(property)" v-if="checkTransactionCompletedData"
                 >
                   {{ property.isActive ? "비활성화" : "활성화" }}
                 </button>
@@ -75,7 +76,7 @@
 <script setup>
 import MyPageSideBar from "@/components/MyPageSidebar.vue";
 import TransactionModal from "./TransactionCompleted.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { Modal } from "bootstrap";
 
 let transactionModal = null;
@@ -83,23 +84,29 @@ let transactionModal = null;
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
 });
+
 function toggleActive(property) {
   property.isActive = !property.isActive;
 }
+
 const properties = ref([
   { id: 1, isActive: true },
   { id: 2, isActive: false },
   // 추가 매물 데이터
 ]);
+
 function showTransactionModal() {
   transactionModal.show();
 }
-function showDeactivateModal() {
-  transactionModal.show();
-}
-function hideLoginModal() {
+
+const checkTransactionCompletedData = ref(true);
+
+function hideTransactionModal() { // 거래 완료 확인 모달에서 거래 완료 버튼 클릭 시 실행되는 함수
   transactionModal.hide();
+  checkTransactionCompletedData.value = false;
 }
+
+
 </script>
 
 <style scoped>
