@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineEmits, defineProps, watch } from "vue";
+import { ref, onMounted, defineEmits, defineProps } from "vue";
 const emit = defineEmits(["getPropertyData"]);
 const props = defineProps(["page"]);
 
@@ -38,38 +38,8 @@ const initMap = () => {
 
   //Map 초기 설정 및 불러올 위치 태그
   map = new kakao.maps.Map(container, mapOptions);
-  //카카오맵 이벤트 설정 영역이 변경이 되면 자동으로 함수가 실행이 됨
-  kakao.maps.event.addListener(map, "dragend", function () {
-    //영역값 불러오기
-    bounds.value = map.getBounds();
-    //마커가 1개 이상인 경우에 실행
-    if (markers.value.length > 0) {
-      //마커들이 여러개일 경우 map으로 하나씩 값 확인
-      const propertyListData = ref([]);
-      markers.value.map((marker) => {
-        //마커의 좌표값
-        let pos = marker.getPosition();
-        //지도의 영역값
-        bounds.value = map.getBounds();
-        //지도의 영역값 안에 마커의 좌표값이 있는가?
-
-        if (bounds.value.contain(pos) && propertyListData.value !== null) {
-          // 중복 체크를 위해서 새로운 데이터와 기존 데이터의 좌표를 비교
-          const isDataDifferent = !propertyListData.value.some(
-            (existingData) =>
-              existingData.Ma === pos.Ma && existingData.La === pos.La
-          );
-
-          // 새로운 데이터가 기존 데이터와 다를 경우에만 추가
-          if (isDataDifferent) {
-            propertyListData.value.push(pos);
-            emit("getPropertyData", propertyListData.value);
-          }
-        } 
-      });
-    }
-  });
-
+  kakao.maps.event.addListener(map, "dragend", updateMarkersInView);
+  kakao.maps.event.addListener(map, "zoom_changed", updateMarkersInView);
   //관심목록 컴포넌트에서 접근시 아래 코드들 실행
   if (props.page === "favorite") {
     let imageSrc =
@@ -116,6 +86,7 @@ const initMap = () => {
   //클러스터로 만들 마커의 최소 수
   cluster.setMinClusterSize(1);
 
+  updateMarkersInView();
   //클러스터 클릭 이벤트
   kakao.maps.event.addListener(cluster, "clusterclick", function (cluster) {
     //클러스터에 존재하는 마커들 정보
@@ -152,6 +123,19 @@ const displayMarker = (markerPositions) => {
   }
 };
 
+const updateMarkersInView = () => {
+  bounds.value = map.getBounds();
+  const propertyListData = [];
+
+  markers.value.forEach(marker => {
+    const pos = marker.getPosition();
+    if (bounds.value.contain(pos)) {
+      propertyListData.push({ Ma: pos.Ma, La: pos.La });
+    }
+  });
+
+  emit("getPropertyData", propertyListData);
+};
 //Mounted 이후 설정해야하는 작업들
 onMounted(() => {
   if (!("geolocation" in navigator)) {

@@ -1,35 +1,22 @@
 <template>
   <quill-editor
-    v-model:value="state.content"
+    v-model:value="content"
     :options="state.editorOption"
-    @change="onEditorChange($event)"
+    @change="onEditorChange"
   />
-  <div>
-    <button
-      type="button"
-      style="
-        border: none;
-        border-radius: 7px;
-        width: 100px;
-        height: 35px;
-        font-size: 23px;
-        margin-top: 30px;
-        background-color: rgb(209, 209, 209);
-        color: #2c3e50;
-      "
-      @click="submit(state)"
-    >
-      버튼
-    </button>
-  </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, watch } from "vue";
+
+const props = defineProps({
+  modelValue: String,
+});
+
+const emit = defineEmits(['update:modelValue']);
 
 const state = reactive({
-  content: "",
-  _content: "",
+  content: props.modelValue,
   editorOption: {
     placeholder: "내용을 입력해주세요...", // placeholder 설정
     modules: {
@@ -51,33 +38,17 @@ const state = reactive({
     },
     // more options
   },
-  disabled: false,
 });
 
-// const onEditorBlur = (quill) => {
-//   console.log("editor blur!", quill);
-// };
-// const onEditorFocus = (quill) => {
-//   console.log("editor focus!", quill);
-// };
-// const onEditorReady = (quill) => {
-//   console.log("editor ready!", quill);
-// };
-// const onEditorChange = ({ quill, html, text }) => {
-//   console.log("editor change!", quill, html, text);
-//   state._content = html;
-// };
-
-setTimeout(() => {
-  state.disabled = true;
-}, 2000);
-
-const props = defineProps({ title: { type: String } });
-
-function submit(state) {
-  console.log("content는 ",state._content);
+function onEditorChange({ quill, html, text }) {
+  emit('update:modelValue', html);
 }
+
+watch(() => props.modelValue, (newValue) => {
+  state.content = newValue;
+});
 </script>
+
 <style scoped>
 .ql-container {
   height: 400px;
