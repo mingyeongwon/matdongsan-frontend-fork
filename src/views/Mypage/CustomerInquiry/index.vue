@@ -25,6 +25,7 @@
         <tbody class="text-center">
           <AccordionRow
             v-for="(item, index) in items"
+            kindOf="qna"
             :key="index"
             :rowData="{
               index,

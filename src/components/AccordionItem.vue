@@ -25,16 +25,49 @@
         <p class="fw-bold">내용:</p>
         <p class="text-muted">{{ rowData.item.details }}</p>
         <button class="btn btn-outline-secondary btn-sm me-2">수정</button>
-        <button class="btn btn-outline-danger btn-sm">삭제</button>
+        <button class="btn btn-outline-danger btn-sm" @click="showModal">삭제</button>
       </div>
     </td>
   </tr>
+  <DeleteReportModal id="DeleteReportModal" @close="hideDeleteReportModal" />
+  <DeleteQnaModal id="DeleteQnaModal" @close="hideDeleteQnaModal" />
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, onMounted } from "vue";
+import DeleteReportModal from "../views/Mypage/ReportFalseListing/DeleteReportModal.vue"
+import DeleteQnaModal from "../views/Mypage/CustomerInquiry/DeleteQnaModal.vue"
+import { Modal } from "bootstrap";
 
 const props = defineProps({
+  kindOf: String,
   rowData: Object,
 });
+
+let deleteReportModal = null;
+let deleteQnaModal = null;
+
+onMounted(() => {
+  deleteReportModal = new Modal(document.querySelector("#DeleteReportModal"));
+  deleteQnaModal = new Modal(document.querySelector("#DeleteQnaModal"));
+});
+
+function showModal() {
+  if(props.kindOf === "report") {
+    deleteReportModal.show();
+  } else if (props.kindOf === "qna") {
+    deleteQnaModal.show();
+  }
+}
+
+function hideDeleteReportModal() { 
+  deleteReportModal.hide();
+}
+
+function hideDeleteQnaModal() { 
+  deleteReportModal.hide();
+}
+
+
+
 </script>

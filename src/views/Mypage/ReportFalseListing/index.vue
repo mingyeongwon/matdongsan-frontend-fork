@@ -16,25 +16,23 @@
           </tr>
         </thead>
         <tbody class="text-center">
-          <AccordionRow
+          <AccordionItem
             v-for="(item, index) in items"
+            kindOf="report"
             :key="index"
-            :rowData="{ index, item, isOpen: isOpen(index), toggle: () => toggle(index) }"
-          />
+            :rowData="{ index, item, isOpen: isOpen(index), toggle: () => toggle(index) }" />
         </tbody>
       </table>
     </div>
   </div>
-  <DeleteReport />
+  
 </template>
 
 
 <script setup>
 import { ref } from "vue";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
-import AccordionRow from "@/components/AccordionItem.vue";
-import DeleteReport from "./DeleteReport.vue"
-
+import AccordionItem from "@/components/AccordionItem.vue";
 
 const items = ref([
   {
