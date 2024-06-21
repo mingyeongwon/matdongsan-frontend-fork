@@ -33,7 +33,7 @@
         <div
           class="property-list-box w-25 h-100">
           <div class="col mt-3" @click="backToPropertyList">
-            <PropertyList />
+            <PropertyList type="agent"/>
           </div>
         </div>
         <div class="right-box ms-4 col p-3 w-75">

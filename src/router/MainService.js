@@ -5,7 +5,7 @@ const routes = [
           import(/* webpackChunkName: "MainService" */ "../views/MainService/Property"),
       },
       {
-        path: "/Agent",
+        path: "/Agent/:id?",
         component: () =>
           import(/* webpackChunkName: "MainService" */ "../views/MainService/Agent"),
       },
