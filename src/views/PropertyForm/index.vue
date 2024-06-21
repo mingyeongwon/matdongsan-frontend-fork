@@ -9,7 +9,7 @@
     <DetailDescription :propertyInfo="propertyInfo" />
     <button
       type="submit"
-      class="mt-4 btn btn-warning btn-lg w-100 fw-bold"
+      class="mt-4 btn btn-warning btn-lg w-75 fw-bold"
       @click="handleSubmit"
     >
       등록하기
@@ -37,7 +37,7 @@ const propertyInfo = reactive({
   maintenanceCost: "",
   moveIn: "",
   moveInDate: "",
-  floor: "",
+  floor: "지상",
   totalFloor: "",
   elevator: "",
   parkingLot: "",

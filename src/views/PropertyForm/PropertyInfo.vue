@@ -78,7 +78,6 @@ function openPostSearch() {
       propertyInfo.value.postcode = data.zonecode;
       propertyInfo.value.address = data.address;
       emitUpdate();
-      console.log(propertyInfo.value);
       showMap(data.address); // 주소 검색 완료 후 지도에 표시
     },
   }).open();
@@ -127,6 +126,8 @@ onMounted(() => {
       const mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
         level: 3,
+        draggable: false,
+        disableDoubleClickZoom: true,
       };
       new kakao.maps.Map(mapContainer, mapOption);
     });

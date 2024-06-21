@@ -126,13 +126,14 @@ const displayMarker = (markerPositions) => {
 const updateMarkersInView = () => {
   bounds.value = map.getBounds();
   const propertyListData = [];
-
-  markers.value.forEach(marker => {
-    const pos = marker.getPosition();
-    if (bounds.value.contain(pos)) {
-      propertyListData.push({ Ma: pos.Ma, La: pos.La });
-    }
-  });
+  if (markers.value.length > 0) {
+    markers.value.forEach((marker) => {
+      const pos = marker.getPosition();
+      if (bounds.value.contain(pos)) {
+        propertyListData.push({ Ma: pos.Ma, La: pos.La });
+      }
+    });
+  }
 
   emit("getPropertyData", propertyListData);
 };

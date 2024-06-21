@@ -28,7 +28,7 @@
                         <label class="col-11" for="checkbox1" style="font-size: small;">2020년 2월 21일부터, 정당한 이유 없이 시세에 영향을 주기 위해 공인중개사 등의 광고를 방해하면 3년 이하 징역 또는 3,000만원 이하 벌금에 처해집니다. 신고 시 명확한 사실을 기재해 주세요.</label>
                     </div>
                     <div class="row mt-5">
-                        <button class="col btn btn-sm me-5" style="background-color: grey; color: white" data-bs-dismiss="modal"> 취소</button>
+                        <button type="button" class="col btn btn-sm me-5" style="background-color: grey; color: white" data-bs-dismiss="modal" > 취소</button>
                         <button type="submit" class="col btn btn-sm btn-warning" :disabled="!checkReportFalseData">신고하기</button>
                     </div>
                 </form>
@@ -91,21 +91,9 @@ console.log(editReportDetail.value);
   .findIdPassword > span {
     color: rgb(151, 151, 151);
   }
-
-  /* .modalDialog{
-    width: 70%;
-    height: 70%;
-    margin: 0;
-    padding: 0;
-  }
-
-  .modalContent{
-    height: auto;
-    min-height: 70%;
-  } */
-
   .modal{
     --bs-modal-width:30%;
+    --bs-modal-height:30%;
   }
 
   input[type=checkbox] {
