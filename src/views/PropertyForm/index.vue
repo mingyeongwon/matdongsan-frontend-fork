@@ -7,7 +7,11 @@
     <FacilityInfo :propertyInfo="propertyInfo" />
     <PhotoUpload @fileUpload="handleFileUpload" />
     <DetailDescription :propertyInfo="propertyInfo" />
-    <button type="submit" class="mt-4 btn btn-warning btn-lg w-100 fw-bold" @click="handleSubmit">
+    <button
+      type="submit"
+      class="mt-4 btn btn-warning btn-lg w-100 fw-bold"
+      @click="handleSubmit"
+    >
       등록하기
     </button>
   </div>
@@ -41,7 +45,9 @@ const propertyInfo = reactive({
   cooling: "",
   utility: [],
   title: "",
-  content: ""
+  content: "",
+  lat: "",
+  lon: "",
 });
 
 function handleSubmit() {
