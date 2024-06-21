@@ -30,7 +30,7 @@
             </div>
             <form
               class="d-flex flex-column w-75 mx-auto mt-4"
-              v-on:submit.prevent="handleSubmit"
+              v-on:submit.prevent="loginHandleSubmit"
             >
               <div class="">
                 <div>
@@ -42,8 +42,11 @@
                     type="text"
                     name="email"
                     placeholder="이메일 주소 입력"
-                    v-model="user.email"
+                    v-model ="user.email"
                   />
+                </div>
+                <div>
+                  <span :style="emailValidStyle ? 'color:green': 'color:red'">{{ checkVaild.emailVaild }}</span>
                 </div>
               </div>
               <div class="mt-3">
@@ -56,8 +59,11 @@
                     type="password"
                     name="email"
                     placeholder="비밀번호 입력"
-                    v-model="user.password"
+                    v-model ="user.password"
                   />
+                </div>
+                <div>
+                  <span :style="passwordValidStyle ? 'color:green': 'color:red'">{{ checkVaild.passwordVaild }}</span>
                 </div>
               </div>
               <div class="mt-3">
@@ -65,7 +71,7 @@
                   <h4 class="fs-6 fw-bold">중개업자 여부</h4>
                 </div>
                 <div class="loginInputBox ">
-                  <select v-model="user.type">
+                  <select v-model ="user.type">
                     <option value="" disabled hidden selected>회원 타입을 선택해 주세요</option>
                     <option value="Agent">중개업자 회원</option>
                     <option value="Member">일반 회원</option>
@@ -281,8 +287,23 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 let checkStatus = ref(null);
+let checkVaild = ref({
+  emailVaild:"",
+  passwordVaild:"",
+});
+
+let tempUser = {
+  email: "user@gmail.com",
+  password: "user123"
+}
+
+
 
 let user = ref({
   name: "",
@@ -291,9 +312,33 @@ let user = ref({
   phone: "",
   type: "",
 });
-function handleSubmit() {
+
+var emailValidStyle = ref(false);
+var passwordValidStyle = ref(false);
+
+
+// 제출하면 실행하는 함수
+function loginHandleSubmit() {
+  console.log("제출 함수 실행");
+  if(user.value.email !== tempUser.email){
+    checkVaild.value.emailVaild = "가입한 회원이 아닙니다.";
+    emailValidStyle.value = false;
+  }else if(user.value.password !== tempUser.password){
+    checkVaild.value.emailVaild = "알맞은 이메일 입니다.";
+    checkVaild.value.passwordVaild = "비밀번호가 틀렸습니다.";
+    emailValidStyle.value = true;
+    passwordValidStyle.value = false;
+  } else{
+    checkVaild.value.passwordVaild = "알맞은 비밀번호 입니다.";
+    passwordValidStyle.value = true;
+
+
+    router.push("/"); // 유효성 검사를 통과하면 홈으로 가기 -> 모달이 안 없어지는 문제 발생
+  }
   console.log(JSON.parse(JSON.stringify(user.value)));
+
 }
+// 로그인 할때 빈 값이 있으면 제출 버튼 비활성화
 const checkData = computed(() => {
   var result = user.value.email !== "" && user.value.password !== "" && user.value.type !== "";
   return result;
@@ -306,6 +351,7 @@ const checkUpdatePasswordData = computed(() => {
   var result = user.value.name !== "" && user.value.phone !== "" && user.value.email !== "" && user.value.type !== "";
   return result;
 });
+// v-if 사용을 위한 설정 함수
 function checkUserEmail() {
   checkStatus.value = "email";
 }
@@ -315,6 +361,7 @@ function checkUserPassword(){
 function cancelUserData() {
   checkStatus.value = null;
 }
+
 </script>
 
 <style scoped>
