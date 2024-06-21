@@ -31,7 +31,8 @@
       <hr>
       <div class="row me-5">
         <span class="col-2" style="line-height: 200px; height: 100%; text-align: center">문의 내용</span>
-        <textarea class="col-10" type="text" name="askContent" style="height: 15rem; resize: none;" v-model="customerInquiry.content"></textarea>
+        <textarea class="col-10" type="text" name="askContent" style="height: 15rem; resize: none;" v-model="customerInquiry.content">
+        </textarea>
       </div>
       <hr>
       <div class="row me-5">
@@ -67,6 +68,9 @@
 <script setup>
 import NoticeHeader from "@/components/NoticeHeader";
 import { ref, computed } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 const customerInquiry = ref({
   type:"",
@@ -102,6 +106,8 @@ function handleSubmit(){
   }
 
   console.log("customerInquiry: ", customerInquiry.value);
+
+  
 
 
   // 고객문의 insert 요청

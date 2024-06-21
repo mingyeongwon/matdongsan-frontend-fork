@@ -44,14 +44,17 @@
 import { ref } from "vue";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionRow from "@/components/AccordionItem.vue";
+
 const items = ref([
   {
+    id:1,
     title: "문의 1",
     status: "답변 완료",
     date: "2024/06/18",
     details: "문의 1에 대한 상세한 답변 내용입니다.",
   },
   {
+    id:2,
     title: "문의 2",
     status: "처리 중",
     date: "2024/06/18",

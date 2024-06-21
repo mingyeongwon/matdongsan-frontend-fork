@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-between mb-3 mt-2">
         <h4 class="fw-bold">허위매물 신고</h4>
       </div>
-      <hr>
+      <hr />
       <table class="table">
         <thead class="text-center">
           <tr>
@@ -20,14 +20,20 @@
             v-for="(item, index) in items"
             kindOf="report"
             :key="index"
-            :rowData="{ index, item, isOpen: isOpen(index), toggle: () => toggle(index) }" />
+            :rowData="{
+              index,
+              item,
+              isOpen: isOpen(index),
+              toggle: () => {
+                toggle(index, item);
+              },
+            }"
+          />
         </tbody>
       </table>
     </div>
   </div>
-  
 </template>
-
 
 <script setup>
 import { ref } from "vue";
@@ -36,12 +42,28 @@ import AccordionItem from "@/components/AccordionItem.vue";
 
 const items = ref([
   {
+    id: 1,
     title: "신고 1",
     status: "처리완료",
     date: "2024/06/18",
     details: "신고 1에 대한 상세한 답변 내용입니다.",
   },
   {
+    id: 2,
+    title: "신고 2",
+    status: "처리 중",
+    date: "2024/06/18",
+    details: "신고 2에 대한 처리 중인 상태입니다.",
+  },
+  {
+    id: 2,
+    title: "신고 2",
+    status: "처리 중",
+    date: "2024/06/18",
+    details: "신고 2에 대한 처리 중인 상태입니다.",
+  },
+  {
+    id: 2,
     title: "신고 2",
     status: "처리 중",
     date: "2024/06/18",
@@ -51,8 +73,9 @@ const items = ref([
 
 const openIndex = ref(null);
 
-function toggle(index) {
+function toggle(index, item) {
   openIndex.value = openIndex.value === index ? null : index;
+  console.log("detail: ", item.details);
 }
 
 function isOpen(index) {
