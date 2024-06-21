@@ -24,50 +24,50 @@
       <div class="p-3 text-start ps-5">
         <p class="fw-bold">내용:</p>
         <p class="text-muted">{{ rowData.item.details }}</p>
-        <button class="btn btn-outline-secondary btn-sm me-2">수정</button>
-        <button class="btn btn-outline-danger btn-sm" @click="showModal">삭제</button>
+        <div v-if="!(rowData.item.status == '답변 완료' || rowData.item.status == '처리완료')">
+          <button class="btn btn-outline-secondary btn-sm me-2" @click="editInquiry">수정</button>
+          <button class="btn btn-outline-danger btn-sm" @click="showModal">삭제</button>
+        </div>
       </div>
-    </td>
+    </td> 
   </tr>
-  <DeleteReportModal id="DeleteReportModal" @close="hideDeleteReportModal" />
-  <DeleteQnaModal id="DeleteQnaModal" @close="hideDeleteQnaModal" />
+ 
+  
 </template>
 
 <script setup>
-import { defineProps, onMounted } from "vue";
-import DeleteReportModal from "../views/Mypage/ReportFalseListing/DeleteReportModal.vue"
-import DeleteQnaModal from "../views/Mypage/CustomerInquiry/DeleteQnaModal.vue"
-import { Modal } from "bootstrap";
+import { computed, defineProps, defineEmits } from "vue";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const props = defineProps({
   kindOf: String,
   rowData: Object,
 });
 
-let deleteReportModal = null;
-let deleteQnaModal = null;
+const emit = defineEmits(["edit-inquiry", "show-deleteQnaModal", "show-deleteReportModal"]);
 
-onMounted(() => {
-  deleteReportModal = new Modal(document.querySelector("#DeleteReportModal"));
-  deleteQnaModal = new Modal(document.querySelector("#DeleteQnaModal"));
-});
 
 function showModal() {
   if(props.kindOf === "report") {
-    deleteReportModal.show();
+    emit("show-deleteReportModal"); // ReportFalseListing 부모로 보냄 
   } else if (props.kindOf === "qna") {
-    deleteQnaModal.show();
+    emit("show-deleteQnaModal"); // CustomerInquiry 부모로 보냄 
   }
 }
 
-function hideDeleteReportModal() { 
-  deleteReportModal.hide();
+
+// 마이페이지에서 수정 시 1:1 문의 내역과 허위 내역 신고 구분
+function editInquiry() {
+  if(props.kindOf === "report") {
+    emit("edit-inquiry", props.rowData.item.details); // ReportFalseListing 부모로 보냄 
+  } else if (props.kindOf === "qna") {
+    router.push({
+      path: "/Qna/CustomerInquiryForm",
+      query: {id: props.rowData.item.id}
+    });
+  }
 }
-
-function hideDeleteQnaModal() { 
-  deleteReportModal.hide();
-}
-
-
 
 </script>

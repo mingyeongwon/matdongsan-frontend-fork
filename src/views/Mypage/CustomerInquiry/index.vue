@@ -33,17 +33,33 @@
               isOpen: isOpen(index),
               toggle: () => toggle(index),
             }"
+            @show-deleteQnaModal="showDeleteQnaModal" 
           />
         </tbody>
       </table>
     </div>
   </div>
+  <DeleteQnaModal id="DeleteQnaModal"/>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { Modal } from "bootstrap";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionRow from "@/components/AccordionItem.vue";
+import DeleteQnaModal from "../../../views/Mypage/CustomerInquiry/DeleteQnaModal.vue"
+
+let deleteQnaModal = null;
+
+onMounted(() => {
+  deleteQnaModal = new Modal(document.querySelector("#DeleteQnaModal"));
+});
+
+// 삭제 버튼 클릭 시 실행되는 함수
+function showDeleteQnaModal() {
+  deleteQnaModal.show();
+}
+
 
 const items = ref([
   {

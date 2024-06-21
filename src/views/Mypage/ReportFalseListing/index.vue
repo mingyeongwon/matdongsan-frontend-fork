@@ -28,17 +28,47 @@
                 toggle(index, item);
               },
             }"
+            @edit-inquiry="showReportFalseModal(item.details)" 
+            @show-deleteReportModal="showDeleteReportModal" 
           />
+          <!-- accordionItem한테 해당 details 받음 -->
         </tbody>
       </table>
     </div>
   </div>
+  <ReportFalseModal id="ReportFalseModal" :itemDetails="itemDetails"/> <!-- 전달받은 details를 modal에 보냄 -->
+  <DeleteReportModal id="DeleteReportModal" />
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { Modal } from "bootstrap";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionItem from "@/components/AccordionItem.vue";
+import ReportFalseModal from "@/components/ReportFalseModal.vue";
+import DeleteReportModal from "../../../views/Mypage/ReportFalseListing/DeleteReportModal.vue"
+
+let reportFalseModal = null;
+let deleteReportModal = null;
+
+onMounted(() => {
+  reportFalseModal = new Modal(document.querySelector("#ReportFalseModal"));
+  deleteReportModal = new Modal(document.querySelector("#DeleteReportModal"));
+});
+
+const itemDetails = ref("");
+
+// 수정 버튼 클릭 시 실행되는 함수
+function showReportFalseModal(details) {
+  itemDetails.value = details;
+  reportFalseModal.show();
+  console.log(itemDetails.value);
+}
+
+// 삭제 버튼 클릭 시 실행되는 함수
+function showDeleteReportModal() {
+  deleteReportModal.show();
+}
 
 const items = ref([
   {
@@ -56,18 +86,18 @@ const items = ref([
     details: "신고 2에 대한 처리 중인 상태입니다.",
   },
   {
-    id: 2,
-    title: "신고 2",
+    id: 3,
+    title: "신고 3",
     status: "처리 중",
     date: "2024/06/18",
-    details: "신고 2에 대한 처리 중인 상태입니다.",
+    details: "신고 3에 대한 처리 중인 상태입니다.",
   },
   {
-    id: 2,
-    title: "신고 2",
+    id: 4,
+    title: "신고 4",
     status: "처리 중",
     date: "2024/06/18",
-    details: "신고 2에 대한 처리 중인 상태입니다.",
+    details: "신고 4에 대한 처리 중인 상태입니다.",
   },
 ]);
 
