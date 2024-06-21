@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { defineProps, onMounted } from "vue";
+import { onMounted } from "vue";
 import DeleteReportModal from "../views/Mypage/ReportFalseListing/DeleteReportModal.vue"
 import DeleteQnaModal from "../views/Mypage/CustomerInquiry/DeleteQnaModal.vue"
 import { Modal } from "bootstrap";
