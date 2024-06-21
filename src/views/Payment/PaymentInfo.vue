@@ -1,41 +1,39 @@
 <template>
     <div class="root container w-50">
         <div>
-            <h3 style="font-weight: bold; text-align: center; margin-bottom: 30px; margin-top: 60px">매물 등록하기</h3>
+            <h3 class="fw-bold text-center mt-5 mb-2">매물 등록하기</h3>
         </div>
         <hr>
-        <div class="row mt-5 mb-5" style="margin-left: 50px; height: 280px">
+        <div class="row mt-5 mb-5 justify-content-around" style="margin-left: 50px; height: 280px">
             <div class="col-5 mt-5">
-                <p style="font-size: 1.7rem; font-weight: bold;">원하는 매물을<br> 등록할 수 있는 상품</p>
+                <p class="fw-bold h3" >원하는 매물을<br> 등록할 수 있는 상품</p>
                 <span style="font-size: 1rem;">원하는 매물을 등록할 수 있습니다.<br>
                 월 300만명이 부동산을 검색하는 맛동산에<br> 매물을 노출하세요</span>
             </div>
             <div class="col-6">
-                <img src="@/assets/paymentInfo.svg" class="card-img-top img-fluid" alt="..." style="margin-left: 50px; max-width: 100%;" />
+                <img src="@/assets/paymentInfo.svg" class="card-img-top img-fluid mt-5 mt-3" alt="..."/>
             </div>
         </div>
-        
     
         <!-- 상품 종류 -->
         <div class="products-box">
             <div>
-                <h3>상품 종류</h3>
+                <h3 class="mb-3">상품 종류</h3>
                 <ul class="row" style="padding-right: 32px">
-                    <li class="col">
-                        <div class="card" style="height: 330px" >
-                            <div style="margin-top: 64px; padding-top: 30px" >
+                    <li class="col p-0 px-2">
+                        <div class="card h-100" >
+                            <div style="margin-top: 64px; padding-top: 35px" >
                             <img style="width: 22%;" src="@/assets/home.png" alt="" />
                             </div>
     
                             <p class="card-text mt-3 mb-0" style="font-weight: bold; font-size: 1.2rem;">등록 건 1개</p>
                             <hr>
                             <p style="font-weight: bold; font-size: 1.5rem; color: #326CF9;">5,500원</p>
-                            <RouterLink class="btn btn-warning w-50 container" style="margin-bottom: 20px; font-size: 0.9rem" to="/Payment">구매하기</RouterLink>
                         </div>
                     </li>
-                    <li class="col">
-                        <div class="card"  style="height: 330px">
-                            <div style="margin-top: 65px; padding-top: 30px;">
+                    <li class="col p-0 px-2">
+                        <div class="card h-100">
+                            <div style="margin-top: 65px; padding-top: 35px;">
                                 <img style="width: 22%;" src="@/assets/home.png" alt="" />
                                 <img style="width: 22%;" src="@/assets/home.png" alt="" />
                                 <img style="width: 22%;" src="@/assets/home.png" alt="" />
@@ -44,12 +42,11 @@
                             <p class="card-text mt-3 mb-0" style="font-weight: bold; font-size: 1.2rem;">등록 건 3개</p>
                             <hr>
                             <p style="font-weight: bold; font-size: 1.5rem; color: #326CF9;">15,000원</p>
-                            <RouterLink class="btn btn-warning w-50 container" style="margin-bottom: 20px; font-size: 0.9rem" to="/Payment">구매하기</RouterLink>
                         </div> 
                     </li>
-                    <li class="col">
-                        <div class="card"  style="height: 330px">
-                            <div style="margin-top: 40px;">
+                    <li class="col p-0 px-2">
+                        <div class="card h-100 justify-content-end" >
+                            <div style="margin-top: 40px; ">
                                 <img style="width: 22%;" src="@/assets/home.png" alt="" />
                                 <img style="width: 22%;" src="@/assets/home.png" alt="" /><br>
                                 <img style="width: 22%;" src="@/assets/home.png" alt="" />
@@ -60,10 +57,11 @@
                             <p class="card-text mt-3 mb-0" style="font-weight: bold; font-size: 1.2rem;">등록 건 5개</p>
                             <hr>
                             <p style="font-weight: bold; font-size: 1.5rem; color: #326CF9;">25,000원</p>
-                            <RouterLink class="btn btn-warning w-50 container" style="margin-bottom: 20px; font-size: 0.9rem;" to="/Payment">구매하기</RouterLink>
+                          
                         </div>
                     </li>
                 </ul>
+                <RouterLink class="btn btn-warning btn-lg w-50 container fw-bold mt-3" style=" font-size: 0.9rem;" to="/Payment">구매하기</RouterLink>
             </div>
         </div>
         <div class="row mt-5 mb-5" style="margin-left: 50px; height: 260px">
@@ -88,37 +86,6 @@
     </script>
     
     <style scoped>
-    /* .product-Form-box {
-        width: 100%;
-        height: 540px;
-        border-top: 1px solid rgb(228, 228, 228);
-    }
-    
-    
-    .product-Form-box > div {
-        background-image: url("https://pro.dabangapp.com/static/media/intro.8e198009.png");
-        background-size: 394px 442px;
-        background-position: 700px 98px;
-        background-repeat: no-repeat;
-        width: 1200px;
-        height: 100%;
-        margin: 0px auto;
-    }
-    
-    .product-advertisement-box {
-        width: 100%;
-        height: 540px;
-    }
-    
-    .product-advertisement-box > div {
-        background-image: url("https://pro.dabangapp.com/static/media/intro.197da0ec.png");
-        background-size: 394px 442px;
-        background-position: 700px 98px;
-        background-repeat: no-repeat;
-        width: 1200px;
-        height: 100%;
-        margin: 0px auto;
-    } */
     
     .products-box {
         background-color: rgb(243, 246, 251);

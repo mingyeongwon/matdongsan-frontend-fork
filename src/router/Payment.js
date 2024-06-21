@@ -10,7 +10,7 @@ const routes = [
       import(/* webpackChunkName: "Payment" */ "@/views/Payment/PaymentInfo"),
   },
   {
-    path: "/Payment/PaymentResult",
+    path: "/Payment/PaymentResult/:product?",
     component: () =>
       import(/* webpackChunkName: "Payment" */ "@/views/Payment/PaymentResult"),
   },
