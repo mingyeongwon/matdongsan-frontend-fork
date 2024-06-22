@@ -1,6 +1,6 @@
 const routes = [
     {
-        path: "/Property",
+        path: "/Property/:id?",
         component: () =>
           import(/* webpackChunkName: "MainService" */ "../views/MainService/Property"),
       },

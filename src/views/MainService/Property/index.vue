@@ -64,7 +64,7 @@
           >주변 부동산</RouterLink
         >
       </li>
-      <div class="col pe-4 ms-3 me-3 text-end align-self-center" v-if="!status">
+      <div class="col pe-4 ms-3 me-3 text-end align-self-center" v-if="route.params.id">
         <i
           class="fa-solid fa-arrow-left fa-xl me-3"
           @click="backToPropertyList"
@@ -76,14 +76,14 @@
     <div>
       <div class="d-flex ps-3 pe-3 pb-3">
         <div class="property-list-box w-25 h-100">
-          <div class="col mt-3" @click="backToPropertyList">
-            <PropertyList type="property"/>
+          <div class="col mt-3">
+            <PropertyList type="property" />
           </div>
         </div>
-        <div class="right-box ms-4 col vh-100" v-if="status">
+        <div class="right-box ms-4 col vh-100" v-if="!route.params.id">
           <KakaoMap @getPropertyData="getPropertyData" />
         </div>
-        <div class="right-box ms-4 col h-100 p-3" v-if="!status">
+        <div class="right-box ms-4 col h-100 p-3" v-if="route.params.id">
           <DetailPhoto />
           <DetailInfo />
           <Comment />
@@ -99,15 +99,17 @@ import PropertyList from "@/components/Property/PropertyList.vue";
 import DetailPhoto from "./DetailPhoto.vue";
 import DetailInfo from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
-import { ref, computed } from "vue";
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-let status = ref(true);
+const props = defineProps(["type"]);
 const propertyData = ref([]);
-
+let status = ref(true);
+const route = useRoute();
+const router = useRouter();
 function backToPropertyList() {
-  status.value = !status.value;
+ router.push('/Property')
 }
-
 const getPropertyData = (data) => {
   propertyData.value = data;
   console.log(propertyData.value);

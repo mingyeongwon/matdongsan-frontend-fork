@@ -1,6 +1,6 @@
 <template>
   <RouterLink
-    to="#"
+    :to="{path:`/Property/${propertyData.id}`}"
     class="row text-decoration-none me-3 text-dark"
     v-if="props.propertyData.type == 'property'"
   >
@@ -40,7 +40,7 @@
     </div>
   </RouterLink>
   <RouterLink
-    :to="{path:`/Agent/${id}`}"
+    :to="{path:`/Agent/${agentData.id}`}"
     class="row text-decoration-none me-3 text-dark"
     v-if="props.agentData.type == 'agent'"
   >
@@ -80,6 +80,7 @@ const props = defineProps({
   propertyData: {
     type: Object,
     default: () => ({
+      id:0,
       pcategory: "월세",
       pdeposite: 3000,
       prentalfee: 20,
@@ -94,6 +95,7 @@ const props = defineProps({
   agentData: {
     type: Object,
     default: () => ({
+      id:0,
       company: "검은소와 중개소 ",
       pdeposite: 3000,
       prentalfee: 20,

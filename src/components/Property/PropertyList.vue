@@ -9,11 +9,7 @@
     </div>
   </div>
   <div v-if="props.type == 'agent'">
-    <div
-      class="p-0"
-      v-for="exampleAgent in exampleAgents"
-      :key="exampleAgent"
-    >
+    <div class="p-0" v-for="exampleAgent in exampleAgents" :key="exampleAgent">
       <PropertyListItem :agentData="exampleAgent" />
     </div>
   </div>
@@ -50,7 +46,7 @@ const exampleProperties = [
     detailInfo: "",
   },
   {
-    id: 2,
+    id: 3,
     type: "property",
     pcategory: "월세",
     pdeposite: 3000,
@@ -62,7 +58,7 @@ const exampleProperties = [
     detailInfo: "",
   },
   {
-    id: 2,
+    id: 4,
     type: "property",
     pcategory: "월세",
     pdeposite: 3000,
@@ -74,7 +70,7 @@ const exampleProperties = [
     detailInfo: "",
   },
   {
-    id: 2,
+    id: 5,
     type: "property",
     pcategory: "월세",
     pdeposite: 3000,
@@ -87,38 +83,40 @@ const exampleProperties = [
   },
 ];
 
-
 const exampleAgents = [
   // 사용자 위치 주변의 임의 위치들
   {
+    id: 1,
     type: "agent",
     company: "검은소와 중개소",
-   name:"김철수",
-   phone:"010-1111-1111",
+    name: "김철수",
+    phone: "010-1111-1111",
     detailInfo: "",
   },
   {
+    id: 2,
     type: "agent",
     company: "흰소와 중개소",
-   name:"김춘자",
-   phone:"010-1234-1234",
+    name: "김춘자",
+    phone: "010-1234-1234",
     detailInfo: "",
   },
   {
+    id: 3,
     type: "agent",
     company: "얼룩소와 중개소",
-   name:"박광배",
-   phone:"010-4321-4321",
+    name: "박광배",
+    phone: "010-4321-4321",
     detailInfo: "",
   },
   {
+    id: 4,
     type: "agent",
     company: "황소와 중개소",
-   name:"이정웅",
-   phone:"010-5678-5678",
+    name: "이정웅",
+    phone: "010-5678-5678",
     detailInfo: "",
   },
- 
 ];
 </script>
 
