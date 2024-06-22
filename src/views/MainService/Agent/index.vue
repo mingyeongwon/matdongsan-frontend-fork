@@ -1,7 +1,7 @@
 <template>
-  <div class="AgentMap-container w-75 mx-auto">
+  <div class="AgentMap-container w-100">
     <div class="h-100">
-      <ul class="nav nav-pills mt-5 ms-4">
+      <ul class="nav nav-pills mt-5">
         <li class="nav-item">
           <RouterLink
             class="btn btn-sm text-dark fw-bold nav-link"
@@ -19,25 +19,22 @@
         </li>
         <!-- 아이콘들 -->
         <div
-          class="col pe-4 ms-3 me-3 text-end align-self-center"
-          v-if="!status"
+          class="col-8 pe-4 ms-3 me-3 text-end align-self-center"
+          v-if="route.params.id"
         >
           <i
             class="fa-solid fa-arrow-left fa-xl me-3"
-            @click="backToPropertyList"
+            @click="backToAgentList"
           ></i>
-          <i class="fa-regular fa-heart fa-xl" style="color: #ff0000"></i>
         </div>
       </ul>
-      <div class="d-flex p-3 h-100">
-        <div
-          class="property-list-box w-25 h-100">
+      <div class="d-flex p-3 h-100 w-100 mx-auto">
+        <div class="property-list-box w-25 h-100">
           <div class="col mt-3" @click="backToPropertyList">
-            <PropertyList type="agent"/>
+            <PropertyList type="agent" />
           </div>
         </div>
-        <div class="right-box ms-4 col p-3 w-75">
-          <!-- <KakaoMap class="w-100 h-100" /> -->
+        <div class="right-box ms-4 col p-3 w-75" v-if="route.params.id">
           <div class="w-75">
             <div class="text-start test">
               <div class="">
@@ -49,44 +46,49 @@
                 <span class="fw-bold">김덕배의 러브하우스 중개소</span>
               </div>
             </div>
-
-            <DetailInfo />
-
-            <ul class="nav nav-pills mt-5 ms-4">
+            <div class="">
+              <DetailInfo />
+            </div>
+            <ul class="nav nav-pills ms-4">
               <li class="nav-item">
-                <RouterLink
-                  class="btn btn-sm text-dark fw-bold nav-link border-bottom border-4 border-info rounded-0"
-                  aria-current="page"
-                  to="#"
-                  >전체 매물</RouterLink>
+                <div
+                  class="btn btn-sm text-dark fw-bold nav-link rounded-0"
+                  :class="isCommentMenu ? selected : ''"
+                  @click="subMenuCheck(true)"
+                >
+                  전체 매물
+                </div>
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link fw-bold text-dark" to="/Agent"
-                  >후기</RouterLink>
+                <div
+                  class="btn btn-sm nav-link fw-bold text-dark rounded-0"
+                  :class="isCommentMenu ? '' : selected"
+                  @click="subMenuCheck(false)"
+                >
+                  후기
+                </div>
               </li>
             </ul>
 
             <div>
-              <div class="d-flex ps-3 pe-3 pb-3">
-                <div class="property-list-box w-25 h-100">
-                  <div class="col mt-3" @click="backToPropertyList">
+              <div class="d-flex pe-3 pb-3">
+                <div class="property-list-box w-25 h-100" v-if="isCommentMenu">
+                  <div class="col mt-3">
                     <IndividualProductList />
                   </div>
                 </div>
-                <div class="right-box ms-4 col vh-100" v-if="status">
+                <div class="right-box col vh-100" v-if="!isCommentMenu">
                   <AgentReview />
                 </div>
-                <div class="right-box ms-4 col vh-100 p-3" v-if="!status">
-                  <DetailPhotos />
-                  <DetailInfos />
-                </div>
               </div>
-            </div>  
-
-
-
-            
+            </div>
           </div>
+        </div>
+        <div
+          v-if="!route.params.id"
+          class="right-box col p-3 w-75 mx-auto"
+        >
+          <KakaoMap page="agent" :position="agentPosition" />
         </div>
       </div>
     </div>
@@ -97,18 +99,29 @@
 import PropertyList from "@/components/Property/PropertyList.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
 import DetailInfo from "./DetailInfo.vue";
-import IndividualProductList from './AgentProperty';
-import AgentReview from './AgentReview';
+import IndividualProductList from "./AgentProperty";
+import AgentReview from "./AgentReview";
 
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-let status = ref(true);
+const route = useRoute();
+const router = useRouter();
+let isCommentMenu = ref(true);
+const selected = "border-bottom border-4 border-warning ";
+
+function backToAgentList() {
+  console.log("clicked");
+  router.push("/Agent");
+}
+
+function subMenuCheck(check) {
+  isCommentMenu.value = check;
+}
 </script>
 
 <style scoped>
 /* .right-box{
     width:800px;
 } */
-
-
 </style>

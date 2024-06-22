@@ -20,24 +20,29 @@
         </div>
       </div>
 
-      <div class="h5 fw-bold mt-5 w-100 text-center">
+      <div class="h5 fw-bold mt-5 w-100 text-center agentPosition">
         <h5 class="text-start fw-bold">부동산 위치</h5>
         <hr />
-        <img
-          src="https://t1.daumcdn.net/roughmap/imgmap/32c02a6918295568d950c0a1a03969a11f62e4674cec9a988d017796b66c132c"
-          height="300"
-          class="w-75"
-        />
+        <div class="h-100">
+          <KakaoMap :position="agentPosition"/>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import KakaoMap from "@/components/KakaoMap.vue";
+</script>
 
 <style scoped>
 .main-box {
   margin-left: auto;
   margin-right: auto;
 }
+.agentPosition{
+  height: 300px;
+  margin-bottom: 70px;
+}
+
 </style>
