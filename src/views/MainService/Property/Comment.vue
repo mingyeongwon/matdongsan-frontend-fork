@@ -1,31 +1,88 @@
 <template>
-<div>
     <div>
-        <img width="80" height="80" class="rounded-circle" src="https://i.pinimg.com/564x/88/62/af/8862af46f4eef3f44b35d446d135dcf4.jpg" alt="">
-        <input type="text" placeholder="댓글을 입력해주세요...">
-        <button class="btn btn-sm btn-warning">작성하기</button>
-    </div>
-    <div>
-        <div class="d-flex">
-            <div class="d-flex">
-                <img width="80" height="80" class="rounded-circle" src="https://i.pinimg.com/564x/88/62/af/8862af46f4eef3f44b35d446d135dcf4.jpg" alt="">
-                <p>원민경</p>
-                <p>2024/11/07</p>
-            </div>
-            <div>
-                <button class="btn btn-info">답글달기</button>
-                <button class="btn btn-secondary">삭제하기</button>
-            </div>
+      <div class="d-flex mb-4">
+        <img
+          width="60"
+          height="60"
+          class="rounded-circle"
+          src="https://i.pinimg.com/564x/88/62/af/8862af46f4eef3f44b35d446d135dcf4.jpg"
+          alt=""
+        />
+        <div class="ms-3 w-100 align-self-center">
+          <input
+            class="w-75 p-2 rounded align-middle me-2"
+            v-model="propertyComment"
+            type="text"
+            placeholder="댓글을 입력해주세요..."
+          />
+          <button class="btn py-2 btn-sm btn-secondary" @click="submitPropertyComment">
+            작성하기
+          </button>
         </div>
+      </div>
+      <div>
         <div>
-            <p>계약을 하고 싶은데 언제 시간이 되나요?</p>
+          <div>
+            <hr />
+            <div class="d-flex justify-content-between">
+              <div class="d-flex">
+                <img
+                  width="40"
+                  height="40"
+                  class="align-self-center rounded-circle"
+                  src="https://i.pinimg.com/564x/88/62/af/8862af46f4eef3f44b35d446d135dcf4.jpg"
+                  alt=""
+                />
+                <p class="align-self-center fw-bold ms-2 h6 m-0">권성환</p>
+              </div>
+              <span class="align-self-center">2024/11/07</span>
+            </div>
+            <div class="ms-5 justify-content-between d-flex">
+              <div>
+                <div class="btn btn-sm text-decoration-underline">답글달기</div>
+                <div class="btn btn-sm btn-danger">삭제하기</div>
+              </div>
+            </div>
+            <div></div>
+            <div class="ms-5 mt-3">
+              <p class="mt-3 fw-bold">
+                정말 친절하게 다 알려줬어요. 사장님이 친절하고 서비스가 최고예요.
+              </p>
+            </div>
+          </div>
         </div>
-    </div>    
-</div>
-</template>
-
-<script setup>
-</script>
-
-<style scoped>
-</style>
+      </div>
+      <div class="mt-5">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </template>
+  
+  <script setup>
+  import { ref } from "vue";
+  
+  const propertyComment = ref("");
+  function submitPropertyComment() {
+    console.log(JSON.parse(JSON.stringify(propertyComment.value)));
+    propertyComment.value = "";
+  }
+  </script>
+  
+  <style scoped></style>
+  
