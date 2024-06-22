@@ -11,8 +11,10 @@
                 aria-label="search-bar"
                 aria-describedby="button-addon2"
                 style="--bs-focus-ring-color: none"
+                v-model="searchKeyword"
+                @keyup.enter="searchInMain"
               />
-              <button class="btn btn-warning btn-lg" type="button" id="button-addon2">
+              <button class="btn btn-warning btn-lg" type="button" id="button-addon2" @click="searchInMain">
                 검색
               </button>
             </div>
@@ -36,8 +38,25 @@
 
 </template>
 <script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+const store = useStore();
+
+// 검색
+const searchKeyword = ref("");
+
+function searchInMain() { // vuex
+  store.dispatch("search/updateSearchKeyword", {searchKeyword : searchKeyword.value});
+  router.push({
+    path: "/Property",
+    query: {keyword: searchKeyword.value}
+  })
+}
 </script>
+
 <style scoped>
 .mainFirstSection-second {
   height: 450px;

@@ -9,8 +9,14 @@
               type="search"
               placeholder="Search"
               aria-label="Search"
+              v-model="searchKeyword"
+              @keyup.enter="searchInProperty"
             />
-            <button class="btn btn-outline-success" type="submit">
+            <button
+              class="btn btn-outline-success"
+              type="button"
+              @click="searchInProperty"
+            >
               Search
             </button>
           </div>
@@ -64,7 +70,10 @@
           >주변 부동산</RouterLink
         >
       </li>
-      <div class="col pe-4 ms-3 me-3 text-end align-self-center" v-if="route.params.id">
+      <div
+        class="col pe-4 ms-3 me-3 text-end align-self-center"
+        v-if="route.params.id"
+      >
         <i
           class="fa-solid fa-arrow-left fa-xl me-3"
           @click="backToPropertyList"
@@ -100,6 +109,7 @@ import DetailPhoto from "./DetailPhoto.vue";
 import DetailInfo from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
 import { ref } from "vue";
+import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps(["type"]);
@@ -107,8 +117,25 @@ const propertyData = ref([]);
 let status = ref(true);
 const route = useRoute();
 const router = useRouter();
+const store = useStore();
+
+
+// 검색 
+const searchKeyword = ref("");
+
+function searchInProperty() { // vuex
+  store.dispatch("search/updateSearchKeyword", {
+    searchKeyword: searchKeyword.value,
+  });
+  router.push({
+    path: "/Property",
+    query: { keyword: searchKeyword.value },
+  });
+  searchKeyword.value = ""; // 검색 버튼에서 내용 사라지게 
+}
+
 function backToPropertyList() {
- router.push('/Property')
+  router.push("/Property");
 }
 const getPropertyData = (data) => {
   propertyData.value = data;
