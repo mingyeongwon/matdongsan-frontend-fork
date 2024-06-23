@@ -72,13 +72,17 @@
       </li>
       <div
         class="col pe-4 ms-3 me-3 text-end align-self-center"
-        v-if="route.params.id"
-      >
-        <i
-          class="fa-solid fa-arrow-left fa-xl me-3"
-          @click="backToPropertyList"
-        ></i>
-        <i class="fa-regular fa-heart fa-xl" style="color: #ff0000"></i>
+        v-if="route.params.id">
+
+        <!-- 뒤로가기 아이콘 -->
+        <i class="fa-solid fa-arrow-left fa-xl me-3" @click="backToPropertyList"></i> 
+
+        <!-- 찜하기 아이콘 -->
+        <i class="fa-regular fa-heart fa-xl" style="color: #ff0000;" @click="liked(propertyData.id)"></i>
+        
+        <!-- 찜하기 취소 -->
+        <!-- <i class="fa-solid fa-heart" style="color: #ff0000;" @click="unlike"></i> -->
+        
       </div>
     </ul>
 
@@ -112,12 +116,13 @@ import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
-const props = defineProps(["type"]);
-const propertyData = ref([]);
-let status = ref(true);
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
+
+const props = defineProps(["type", "propertyData"]);
+const propertyData = ref([]);
+let status = ref(true);
 
 
 // 검색 
@@ -137,9 +142,16 @@ function searchInProperty() { // vuex
 function backToPropertyList() {
   router.push("/Property");
 }
+
 const getPropertyData = (data) => {
   propertyData.value = data;
   console.log(propertyData.value);
+};
+
+const liked = (productId) => {
+  console.log("productId : " + productId);
+  console.log(route.params.id);
+  store.dispatch("like/addToWishList", { productId });
 };
 </script>
 
