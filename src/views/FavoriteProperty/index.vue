@@ -4,8 +4,10 @@
             <div class="d-flex ps-3 pe-3 pb-3">
                 <div class="property-list-box w-25 h-100">
                 <div class="col mt-3" @click="backToPropertyList">
-                    <PropertyList />
+                    <PropertyList type="favorite" />
                 </div>
+                
+                
                 </div>
                 <!-- 카카오맵 -->
                 <div class="right-box ms-4 col vh-100" v-if="status">

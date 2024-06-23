@@ -1,21 +1,21 @@
 <template>
-  <div id="map" @change="emit('getPropertyData', propertyListData)"></div>
+  <div id="map"></div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 const emit = defineEmits(["getPropertyData"]);
-const props = defineProps(["page"]);
+const props = defineProps(["position", "page"]);
 
 let map;
 let cluster = null;
 const bounds = ref(null);
-const markers = ref({});
+const markers = ref([]);
+const agentMarker = ref(null);
 
 const userLatitude = ref(0);
 const userLongitude = ref(0);
 const exampleProperties = [
-  // 사용자 위치 주변의 임의 위치들
   { title: "num1", lat: 37.5072528, lng: 127.0294288 },
   { title: "num2", lat: 37.5052528, lng: 127.0274288 },
   { title: "num3", lat: 37.5067528, lng: 127.0289288 },
@@ -26,125 +26,118 @@ const exampleProperties = [
   { title: "num8", lat: 35.20618517638034, lng: 129.07944301057026 },
   { title: "num9", lat: 37.561110808242056, lng: 126.9831268386891 },
 ];
+const exampleFavorites = [
+  { title: "num1", lat: 37.5072528, lng: 127.0294288 },
+  { title: "num9", lat: 37.561110808242056, lng: 126.9831268386891 },
+];
 
+// 지도 초기화 함수
 const initMap = () => {
   const container = document.getElementById("map");
   const mapOptions = {
-    center: new kakao.maps.LatLng(userLatitude.value, userLongitude.value),
+    center: new kakao.maps.LatLng(userLatitude.value, userLongitude.value), // 초기 중심 좌표
     level: 5,
     maxLevel: 7,
     disableDoubleClickZoom: true,
   };
 
-  //Map 초기 설정 및 불러올 위치 태그
   map = new kakao.maps.Map(container, mapOptions);
-  kakao.maps.event.addListener(map, "dragend", updateMarkersInView);
-  kakao.maps.event.addListener(map, "zoom_changed", updateMarkersInView);
-  //관심목록 컴포넌트에서 접근시 아래 코드들 실행
-  if (props.page === "favorite") {
-    let imageSrc =
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; // 마커이미지의 주소
-    let imageSize = new kakao.maps.Size(34, 45); // 마커이미지의 크기
-    let imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정.
-    let markerImage = new kakao.maps.MarkerImage(
-      imageSrc,
-      imageSize,
-      imageOption
-    );
-    // 마커가 표시될 임시 위치입니다
-    let markerPosition = new kakao.maps.LatLng(
-      37.561110808242056,
-      126.9831268386891
-    );
+  kakao.maps.event.addListener(map, "dragend", updateMarkersInView); // 지도 드래그 이벤트
+  kakao.maps.event.addListener(map, "zoom_changed", updateMarkersInView); // 줌 변경 이벤트
 
-    // 즐겨찾기 마커를 생성
-    var marker = new kakao.maps.Marker({
-      position: markerPosition,
-      image: markerImage, // 마커이미지 설정
+  if (props.page === "favorite") {
+    // 페이지가 favorite인 경우 이미지 마커 표시
+    let imageSrc =
+      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; // 마커 이미지의 주소
+    let imageSize = new kakao.maps.Size(34, 45); // 마커 이미지의 크기
+    let imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커 이미지 옵션
+    let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+    exampleFavorites.forEach(property => {
+      let markerPosition = new kakao.maps.LatLng(property.lat, property.lng); // 마커 위치
+
+      // 즐겨찾기 마커 생성
+      let marker = new kakao.maps.Marker({
+        position: markerPosition,
+        image: markerImage, // 마커 이미지 설정
+      });
+      marker.setMap(map);
     });
-    marker.setMap(map);
   } else {
-    //마커 지도에 출력 함수 실행 (현재는 클러스터로 대체 하여 핀마커가 보이지 않음)
+    // 페이지가 favorite가 아닌 경우 예제 마커와 클러스터 표시
     displayMarker(
       exampleProperties.map((property) => [property.lat, property.lng])
     );
+
+    if (props.page !== "agent") {
+      const clusterOptions = {
+        map: map,
+        averageCenter: true,
+        disableClickZoom: true,
+      };
+
+      cluster = new kakao.maps.MarkerClusterer(clusterOptions);
+      cluster.addMarkers(markers.value);
+      cluster.setMinClusterSize(1);
+
+      // 클러스터 클릭 이벤트
+      kakao.maps.event.addListener(cluster, "clusterclick", function (cluster) {
+        const markers = cluster.getMarkers();
+        const markerPositions = markers.map((marker) => marker.getPosition());
+        console.log(markerPositions);
+      });
+    }
   }
 
-  //클러스터 옵션값
-  const clusterOptions = {
-    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-    disableClickZoom: true, //더블클릭 줌 방지
-  };
-
-  //클러스터 초기 설정
-  cluster = new kakao.maps.MarkerClusterer(clusterOptions);
-
-  // 마커를 클러스터러에 추가
-  cluster.addMarkers(markers.value);
-
-  //클러스터로 만들 마커의 최소 수
-  cluster.setMinClusterSize(1);
-
-  updateMarkersInView();
-  //클러스터 클릭 이벤트
-  kakao.maps.event.addListener(cluster, "clusterclick", function (cluster) {
-    //클러스터에 존재하는 마커들 정보
-    const markers = cluster.getMarkers();
-    // 클러스터 마커 좌표 배열
-    const markerPositions = [];
-    // 클러스터 마커를 배열에 push
-    markers.map((marker) => {
-      markerPositions.push(marker.getPosition());
-      console.log(markerPositions);
-
-      //저장된 좌표 배열을 가지고 정보 불러와야함
+  // 에이전트 위치 마커 추가
+  if (props.position) {
+    const agentLatLng = new kakao.maps.LatLng(props.position.lat, props.position.lng);
+    agentMarker.value = new kakao.maps.Marker({
+      position: agentLatLng,
+      map: map,
     });
-  });
+    map.setCenter(agentLatLng); // 에이전트 위치로 중심 이동
+  }
 };
 
-//마커 출력 함수 설정
+// 마커 표시 함수
 const displayMarker = (markerPositions) => {
-  if (markers.value.length > 0) {
-    markers.value.forEach((marker) => marker.setMap(null));
-  }
-  // 지도 마커 좌표
-  const positions = markerPositions.map(
-    (position) => new kakao.maps.LatLng(...position)
+  markers.value.forEach((marker) => marker.setMap(null)); // 기존 마커 제거
+  markers.value = markerPositions.map(
+    (position) =>
+      new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(...position),
+      })
   );
-  //마커의 좌표가 1개이상 존재할 때 마커를 지도에 표시
-  if (positions.length > 0) {
-    markers.value = positions.map(
-      (position) =>
-        new kakao.maps.Marker({
-          position,
-        })
-    );
+  markers.value.forEach((marker) => marker.setMap(map)); // 새 마커 추가
+  if (cluster) {
+    cluster.clear(); // 클러스터 초기화
+    cluster.addMarkers(markers.value); // 클러스터에 마커 추가
   }
 };
 
+// 현재 뷰에 있는 마커 업데이트 함수
 const updateMarkersInView = () => {
-  bounds.value = map.getBounds();
-  const propertyListData = [];
-  if (markers.value.length > 0) {
-    markers.value.forEach((marker) => {
-      const pos = marker.getPosition();
-      if (bounds.value.contain(pos)) {
-        propertyListData.push({ Ma: pos.Ma, La: pos.La });
-      }
-    });
-  }
+  if (props.page === "favorite") return; // favorite 페이지에서는 업데이트하지 않음
 
-  emit("getPropertyData", propertyListData);
+  bounds.value = map.getBounds();
+  const propertyListData = markers.value
+    .filter((marker) => bounds.value.contain(marker.getPosition()))
+    .map((marker) => {
+      const pos = marker.getPosition();
+      return { Ma: pos.Ma, La: pos.La };
+    });
+
+  emit("getPropertyData", propertyListData); // 현재 뷰에 있는 마커 데이터 전달
 };
-//Mounted 이후 설정해야하는 작업들
+
+// 컴포넌트 마운트 시 지도 초기화
 onMounted(() => {
   if (!("geolocation" in navigator)) {
     alert("Geolocation is not supported by this browser.");
     return;
   }
 
-  //사용자의 현재 위치 좌표를 중심으로 지도 설정
   navigator.geolocation.getCurrentPosition(
     (pos) => {
       userLatitude.value = pos.coords.latitude;
@@ -154,7 +147,6 @@ onMounted(() => {
         initMap();
       } else {
         const script = document.createElement("script");
-        /* global kakao */
         script.onload = () => kakao.maps.load(initMap);
         script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_API_KEY}`;
         document.head.appendChild(script);
@@ -165,6 +157,23 @@ onMounted(() => {
     }
   );
 });
+
+// props.position이 변경될 때마다 에이전트 마커 위치 업데이트
+watch(() => props.position, (newPosition) => {
+  if (map && newPosition) {
+    const newCenter = new kakao.maps.LatLng(newPosition.lat, newPosition.lng);
+    if (agentMarker.value) {
+      agentMarker.value.setPosition(newCenter);
+    } else {
+      agentMarker.value = new kakao.maps.Marker({
+        position: newCenter,
+        map: map,
+      });
+    }
+    map.setCenter(newCenter); // 지도 중심을 에이전트 위치로 변경
+  }
+});
+const kakao = window.kakao;
 </script>
 
 <style scoped>

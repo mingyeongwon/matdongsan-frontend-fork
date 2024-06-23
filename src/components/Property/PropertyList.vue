@@ -13,6 +13,11 @@
       <PropertyListItem :agentData="exampleAgent" />
     </div>
   </div>
+  <div v-if="props.type == 'favorite'">
+    <div class="p-0" v-for="exampleFavorite in exampleFavorites" :key="exampleFavorite">
+      <PropertyListItem :favoriteData="exampleFavorite" /> favorite
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -82,7 +87,34 @@ const exampleProperties = [
     detailInfo: "",
   },
 ];
-
+const exampleFavorites = [
+  // 사용자 찜하기 임의 위치들
+  {
+    id: 1,
+    type: "favorite",
+    pcategory: "전세",
+    pdeposite: 12000,
+    prentalfee: 50,
+    title: "O강남역 5분거리O",
+    floor: 5,
+    size: 18,
+    maintenance: 10,
+    detailInfo: "",
+  },
+  {
+    id: 2,
+    type: "favorite",
+    pcategory: "월세",
+    pdeposite: 3000,
+    prentalfee: 20,
+    title: "O성북천변 신축급 풀옵션원룸O성신여대역도보4분거리O",
+    floor: 1,
+    size: 25,
+    maintenance: 8,
+    detailInfo: "",
+  },
+  
+];
 const exampleAgents = [
   // 사용자 위치 주변의 임의 위치들
   {

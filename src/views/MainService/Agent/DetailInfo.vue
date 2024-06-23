@@ -24,7 +24,7 @@
         <h5 class="text-start fw-bold">부동산 위치</h5>
         <hr />
         <div class="h-100">
-          <KakaoMap :position="agentPosition"/>
+          <KakaoMap :position="agentPosition" page="agent"/>
         </div>
       </div>
     </div>
@@ -32,7 +32,10 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import KakaoMap from "@/components/KakaoMap.vue";
+
+const agentPosition = ref({ lat: 37.561110808242056, lng: 126.9831268386891 }); // 실제 좌표로 변경
 </script>
 
 <style scoped>
@@ -40,7 +43,7 @@ import KakaoMap from "@/components/KakaoMap.vue";
   margin-left: auto;
   margin-right: auto;
 }
-.agentPosition{
+.agentPosition {
   height: 300px;
   margin-bottom: 70px;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="AgentMap-container w-100">
+  <div class="AgentMap-container w-75 mx-auto">
     <div class="h-100">
       <ul class="nav nav-pills mt-5">
         <li class="nav-item">
@@ -77,7 +77,7 @@
                     <IndividualProductList />
                   </div>
                 </div>
-                <div class="right-box col vh-100" v-if="!isCommentMenu">
+                <div class="right-box col" v-if="!isCommentMenu">
                   <AgentReview />
                 </div>
               </div>
@@ -88,7 +88,7 @@
           v-if="!route.params.id"
           class="right-box col p-3 w-75 mx-auto"
         >
-          <KakaoMap page="agent" :position="agentPosition" />
+          <KakaoMap page="agent" :position="agentPosition" class="h-100" />
         </div>
       </div>
     </div>

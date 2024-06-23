@@ -1,5 +1,45 @@
 <template>
   <RouterLink
+    :to="{path:`/Property/${favoriteData.id}`}"
+    class="row text-decoration-none me-3 text-dark"
+    v-if="props.favoriteData.type == 'favorite'"
+  >
+    <div class="border-bottom p-0">
+      <div class="w-100 d-flex justify-content-center p-3">
+        <div class="w-50">
+          <img
+            class=""
+            width="140"
+            height="140"
+            src="https://cdn.ggumim.co.kr/cache/star/600/4f88ed25-b172-4ed7-b1cc-8e959c33d786.jpg"
+            alt=""
+          />
+        </div>
+        <div class="w-50">
+          <div class="listInfo-box ms-2">
+            <p class="listPrice mb-2 mt-2">
+              <b
+                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}/{{
+                  favoriteData.prentalfee
+                }}</b
+              >
+            </p>
+            <p class="listInfo">
+              {{ favoriteData.floor }}층, {{ favoriteData.size }}m<sup>2</sup>,
+              관리비 {{ favoriteData.maintenance }}만
+            </p>
+            <p class="listInfo">{{ favoriteData.title }}</p>
+            <p
+              class="listMemberType text-center border border-danger text-danger mt-2 p-1"
+            >
+              방주인
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </RouterLink>
+  <RouterLink
     :to="{path:`/Property/${propertyData.id}`}"
     class="row text-decoration-none me-3 text-dark"
     v-if="props.propertyData.type == 'property'"
@@ -78,6 +118,20 @@
 
 const props = defineProps({
   propertyData: {
+    type: Object,
+    default: () => ({
+      id:0,
+      pcategory: "월세",
+      pdeposite: 3000,
+      prentalfee: 20,
+      title: "O성북천변 신축급 풀옵션원룸O성신여대역도보4분거리O",
+      floor: 1,
+      size: 25,
+      maintenance: 8,
+      detailInfo: "",
+    }),
+  },
+  favoriteData: {
     type: Object,
     default: () => ({
       id:0,
