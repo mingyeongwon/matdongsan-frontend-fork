@@ -52,6 +52,7 @@ const propertyInfo = reactive({
 
 function handleSubmit() {
   console.log(propertyInfo);
+  JSON.parse(JSON.stringify(propertyInfo));
   // 여기에서 폼 데이터를 서버에 전송하거나 다른 로직을 처리
 }
 
