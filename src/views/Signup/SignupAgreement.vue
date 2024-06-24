@@ -415,38 +415,39 @@
           >
         </section>
         <div class="d-flex justify-content-between mt-5">
-          <slot name="buttons">
             <button
               class="btn btn-lg btn-warning fw-bold me-4"
               type="button"
               @click="moveToSignupPage"
-              :disabled="!checkSignupAgreementData"
-            >
+              :disabled="!checkSignupAgreementData">
               다음
             </button>
-            <RouterLink to="/" class="text-decoration-none text-dark"
-              ><button
-                class="btn btn-lg fw-bold text-dark ms-4 cancelBtn"
-                type="submit"
-              >
+            <RouterLink to="/" class="text-decoration-none text-dark">
+              <button class="btn btn-lg fw-bold text-dark ms-4 cancelBtn" 
+                type="submit">
                 돌아가기
-              </button></RouterLink
-            >
-          </slot>
+              </button>
+            </RouterLink>
         </div>
       </form>
     </div>
   </div>
+  <LoginModal @moveTo-MemberSignup="moveToMemberSignup"
+              @moveTo-AgentSignup="moveToAgentSignup" />
 </template>
 
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
+import LoginModal from "@/components/LoginModal.vue";
+
+const typeOfSignup = ref(""); // 회원 가입 구분
 
 // 일반 선택
 const checkedAgreements = ref([]);
 const allAgreementCheckbox = ref("");
 const router = useRouter();
+
 // 일반 선택 모두 동의 또는 체크 해제 시 전체 선택 상태 변화를 위한 watch
 watch(checkedAgreements, (newCheckedAgreements, oldCheckedAgreements) => {
   if (newCheckedAgreements.length == 2) {
@@ -481,8 +482,23 @@ const checkSignupAgreementData = computed(() => {
   var result = allAgreementCheckbox.value === true;
   return result;
 });
+
+// loginModal로부터 타입 받아옴
+function moveToMemberSignup(type) {
+  typeOfSignup.value = type;
+  console.log(typeOfSignup.value);
+}
+function moveToAgentSignup(type) {
+  typeOfSignup.value = type;
+  console.log(typeOfSignup.value);
+}
+// 타입에 따라 회원가입 페이지 구분
 function moveToSignupPage() {
-  router.push("/Signup/MemberSignup");
+  if(typeOfSignup.value === "member") {
+    router.push("/Signup/MemberSignup");
+  } else {
+    router.push("/Signup/AgentSignup");
+  }
 }
 </script>
 
