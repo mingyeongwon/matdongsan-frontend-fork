@@ -120,7 +120,6 @@ const route = useRoute();
 const router = useRouter();
 const store = useStore();
 
-const props = defineProps(["type", "propertyData"]);
 const propertyData = ref([]);
 let status = ref(true);
 

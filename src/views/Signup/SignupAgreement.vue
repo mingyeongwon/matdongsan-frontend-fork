@@ -416,10 +416,13 @@
         </section>
         <div class="d-flex justify-content-between mt-5">
           <slot name="buttons">
-            <button class="btn btn-lg btn-warning fw-bold me-4" type="button" :disabled="!checkSignupAgreementData">
-              <RouterLink to="/Signup/MemberSignup" class="text-decoration-none text-dark">
-                다음
-              </RouterLink>
+            <button
+              class="btn btn-lg btn-warning fw-bold me-4"
+              type="button"
+              @click="moveToSignupPage"
+              :disabled="!checkSignupAgreementData"
+            >
+              다음
             </button>
             <RouterLink to="/" class="text-decoration-none text-dark"
               ><button
@@ -438,29 +441,37 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import { useRouter } from "vue-router";
 
 // 일반 선택
 const checkedAgreements = ref([]);
 const allAgreementCheckbox = ref("");
-
+const router = useRouter();
 // 일반 선택 모두 동의 또는 체크 해제 시 전체 선택 상태 변화를 위한 watch
 watch(checkedAgreements, (newCheckedAgreements, oldCheckedAgreements) => {
-  if(newCheckedAgreements.length == 2) {
+  if (newCheckedAgreements.length == 2) {
     allAgreementCheckbox.value = true;
-    flag.value = true; 
+    flag.value = true;
   } else {
     allAgreementCheckbox.value = false;
-    flag.value = false; 
+    flag.value = false;
   }
-  console.log("newCheckedAgreements  : " + JSON.parse(JSON.stringify(newCheckedAgreements)));
+  console.log(
+    "newCheckedAgreements  : " +
+      JSON.parse(JSON.stringify(newCheckedAgreements))
+  );
 });
 
 // 전체 선택
 const flag = ref(false); // 체크 여부
-function clickAllCheckbox() { // 전체 선택 클릭 시 일반 선택 전체 체크 또는 전체 해제
-  flag.value = !flag.value; 
+function clickAllCheckbox() {
+  // 전체 선택 클릭 시 일반 선택 전체 체크 또는 전체 해제
+  flag.value = !flag.value;
   if (flag.value) {
-    checkedAgreements.value.push("termsOfUse-agreement", "privacyPolicy-agreement");
+    checkedAgreements.value.push(
+      "termsOfUse-agreement",
+      "privacyPolicy-agreement"
+    );
   } else {
     checkedAgreements.value.splice(0); // 전체 해제
   }
@@ -470,7 +481,9 @@ const checkSignupAgreementData = computed(() => {
   var result = allAgreementCheckbox.value === true;
   return result;
 });
-
+function moveToSignupPage() {
+  router.push("/Signup/MemberSignup");
+}
 </script>
 
 <style scoped>

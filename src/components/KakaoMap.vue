@@ -12,9 +12,10 @@ let cluster = null;
 const bounds = ref(null);
 const markers = ref([]);
 const agentMarker = ref(null);
-
+const kakao = window.kakao;
 const userLatitude = ref(0);
 const userLongitude = ref(0);
+
 const exampleProperties = [
   { title: "num1", lat: 37.5072528, lng: 127.0294288 },
   { title: "num2", lat: 37.5052528, lng: 127.0274288 },
@@ -173,7 +174,7 @@ watch(() => props.position, (newPosition) => {
     map.setCenter(newCenter); // 지도 중심을 에이전트 위치로 변경
   }
 });
-const kakao = window.kakao;
+
 </script>
 
 <style scoped>
