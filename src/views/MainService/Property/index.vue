@@ -87,13 +87,13 @@
     </ul>
 
     <div>
-      <div class="d-flex ps-3 pe-3 pb-3">
+      <div class="d-flex ps-3 pe-3 pb-3 pt-3">
         <div class="property-list-box w-25 h-100">
           <div class="col mt-3">
             <PropertyList type="property" />
           </div>
         </div>
-        <div class="right-box ms-4 col vh-100" v-if="!route.params.id">
+        <div class="right-box ms-4 col vh-100 p-3" v-if="!route.params.id">
           <KakaoMap @getPropertyData="getPropertyData" />
         </div>
         <div class="right-box ms-4 col h-100 p-3" v-if="route.params.id">

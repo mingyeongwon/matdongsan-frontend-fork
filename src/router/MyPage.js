@@ -1,34 +1,39 @@
 const routes = [
   {
-    path: '/MyPage/CustomerInquiry',
+    path: "/MyPage/CustomerInquiry",
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/CustomerInquiry")
+      import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/CustomerInquiry"),
   },
   {
-    path: '/MyPage/ManageMyProperty',
+    path: "/MyPage/ManageMyProperty",
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/ManageMyProperty")
+      import(
+        /* webpackChunkName: "MyPage" */ "@/views/Mypage/ManageMyProperty"
+      ),
   },
 
   {
-    path: '/MyPage/ReportFalseListing',
+    path: "/MyPage/ReportFalseListing",
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/ReportFalseListing")
+      import(
+        /* webpackChunkName: "MyPage" */ "@/views/Mypage/ReportFalseListing"
+      ),
   },
   {
-    path: '/MyPage/DeleteAccount',
+    path: "/MyPage/DeleteAccount",
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/DeleteAccount")
+      import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/DeleteAccount"),
   },
   {
-    path: '/MyPage/MyInfomation',
+    path: "/MyPage/MyInfomation",
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/MyInfomation")
+      import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/MyInfomation"),
   },
+  //아래 틀로 나중에 바꿀수 있음 후에 안쓰이면 삭제 해야함
   {
-    path: '/MyPage/Sidebar',
+    path: "/MyPage/Sidebar",
     component: () =>
-    import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/Sidebar.vue")
+      import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/Sidebar.vue"),
   },
 ];
 

@@ -1,7 +1,29 @@
 <template>
   <div class="AgentMap-container w-75 mx-auto">
     <div class="h-100">
-      <ul class="nav nav-pills mt-5">
+      <form class="mt-2 w-100">
+        <div class="d-flex justify-content-between px-4">
+          <div class="d-flex">
+            <input
+              class="form-control me-2 w-auto"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              v-model="searchKeywordForAgent"
+              @keyup.enter="searchInAgent"
+            />
+            <button
+              class="btn btn-outline-success"
+              type="button"
+              @click="searchInAgent"
+            >
+              Search
+            </button>
+          </div>
+         
+        </div>
+      </form>
+      <ul class="nav nav-pills ms-4 mt-5">
         <li class="nav-item">
           <RouterLink
             class="btn btn-sm text-dark fw-bold nav-link"
@@ -109,6 +131,7 @@ const route = useRoute();
 const router = useRouter();
 let isCommentMenu = ref(true);
 const selected = "border-bottom border-4 border-warning ";
+const searchKeywordForAgent = ref("");
 
 function backToAgentList() {
   console.log("clicked");
@@ -118,6 +141,10 @@ function backToAgentList() {
 function subMenuCheck(check) {
   isCommentMenu.value = check;
 }
+function searchInAgent() {
+  console.log(searchKeywordForAgent.value);
+}
+
 </script>
 
 <style scoped>
