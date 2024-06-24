@@ -67,15 +67,26 @@
           <tbody>
             <tr>
               <th scope="row">현재 비밀번호</th>
-              <td><input type="password" v-model="changePassword.oldPassword"/></td>
+              <td>
+                <input type="password" v-model.trim="changePassword.oldPassword"/>
+                <div class="text-danger">{{ errorMessage.oldPassword }}</div>
+              </td>
+              
             </tr>
             <tr>
               <th scope="row">새 비밀번호</th>
-              <td><input type="password" v-model="changePassword.newPassword1"></td>
+              <td>
+                <input type="password" v-model.trim="changePassword.newPassword1">
+                <div :class="passwordValidStyle? 'text-success':'text-danger'">{{ errorMessage.newPassword1 }}</div>
+              </td>
             </tr>
             <tr>
               <th scope="row">새 비밀번호 확인</th>
-              <td colspan="2"><input type="password" v-model="changePassword.newPassword2"></td>
+              <td colspan="2">
+                <input type="password" v-model.trim="changePassword.newPassword2">
+                <div :class="passwordValidStyle? 'text-success':'text-danger'">{{ errorMessage.newPassword2 }}</div>
+              </td>
+
             </tr>
           </tbody>
         </table>
@@ -101,15 +112,69 @@ let changePassword = ref({
   newPassword2: "",
 });
 
+let errorMessage = ref({
+  oldPassword: "",
+  newPassword1: "",
+  newPassword2: "",
+});
+
+var passwordValidStyle = ref(false);
+
+const tempPassword = "user123";
+
+// 변경을 할 때 빈 값이 있으면 제출 버튼 비활성화
 const checkChangePasswordData = computed(() => {
-  var result = changePassword.value.oldPassword !== "" && changePassword.value.newPassword1 !== "" && changePassword.value.newPassword2 !== ""
-              && changePassword.value.newPassword1 === changePassword.value.newPassword2;
+  var result = changePassword.value.oldPassword !== "" && changePassword.value.newPassword1 !== "" && changePassword.value.newPassword2 !== "";
   return result;
 });
 
+var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
+var passwordResult = ref(null);
+
+
 function handleSubmit() {
+  console.log("제출 함수 실행");
+  // 비밀번호 유효성 검사
+  if(changePassword.value.oldPassword !== tempPassword) {
+    errorMessage.value.oldPassword = "비밀번호가 틀렸습니다.";
+    passwordValidStyle.value = false;
+    console.log("비밀번호 틀림 여부",passwordValidStyle.value);
+  } else {
+    errorMessage.value.oldPassword = "";
+  }
+  
+  // 바꿀 비밀번호 유효성 검사
+  if(!passwordResult.value){
+    passwordResult.value = passwordPattern.test(changePassword.value.newPassword1);
+    errorMessage.value.newPassword1 = "유효하지 않은 비밀번호 입니다.";
+    passwordValidStyle.value = false;
+    console.log("비밀번호 패턴 틀림 여부",passwordValidStyle.value);
+
+  } else if(changePassword.value.newPassword1 !== changePassword.value.newPassword2){
+    errorMessage.value.newPassword2 = "비밀번호와 비밀번호 확인이 다릅니다.";
+    errorMessage.value.newPassword1 = "";
+    passwordValidStyle.value = false;
+    console.log("비밀번호 다름 여부",passwordValidStyle.value);
+
+  } else{
+    errorMessage.value.newPassword2 = "알맞은 비밀번호 입니다.";
+    errorMessage.value.newPassword1 = "";
+    passwordValidStyle.value = true;
+    console.log("비밀번호 맞음",passwordValidStyle.value);
+  }
+
+  // 유효성 검사를 모두 통과하면 실행
+  if(passwordValidStyle.value){
+    // 검사 완료한 폼을 스프링 부트에 보내기
+
+
+    // 변경되었다는 모달 창 띄우기
+
+  }
+
   console.log(JSON.parse(JSON.stringify(changePassword.value)));
 }
+
 </script>
 
 <style scoped>

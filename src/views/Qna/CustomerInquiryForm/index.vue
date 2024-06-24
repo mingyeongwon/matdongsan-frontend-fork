@@ -30,9 +30,10 @@
       </div>
       <hr>
       <div class="row me-5">
-        <span class="col-2" style="line-height: 200px; height: 100%; text-align: center">문의 내용</span>
-        <textarea class="col-10" type="text" name="askContent" style="height: 15rem; resize: none;" v-model="customerInquiry.content">
-        </textarea>
+        <span class="col-2 mb-3 text-center" >문의 내용</span>
+      </div>
+      <div class="row me-5 container ms-2">
+        <VueQuillEditor class="col " v-model="customerInquiry.content" />
       </div>
       <hr>
       <div class="row me-5">
@@ -63,12 +64,15 @@
       </div>
       <!-- 컴포넌트 삽입 -->
     </div>
+
 </template>
 
 <script setup>
 import NoticeHeader from "@/components/NoticeHeader";
-import { ref, computed } from "vue";
+import { ref, computed, createApp, reactive } from "vue";
 import { useRoute } from "vue-router";
+import VueQuillEditor from "@/components/VueQuillEditor.vue";
+
 
 const route = useRoute();
 
@@ -89,7 +93,7 @@ const checkForm = computed(() => {
 });
 
 function handleSubmit(){
-  // multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
+  //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
   const formData = new FormData();
 
   // 문자 데이터 formData에 넣기
@@ -100,9 +104,10 @@ function handleSubmit(){
   const elAttach = attach.value;
 
   // 파일 데이터 formData에 넣기
-  if(elAttach.value != null){
-    console.log("attach에 파일 들어옴", attach.value);
+  if(elAttach != null){
+    console.log("attach에 파일 들어옴", attach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
     formData.append("attach", elAttach.files[0])
+    customerInquiry.value.attach = elAttach.files[0];
   }
 
   console.log("customerInquiry: ", customerInquiry.value);
@@ -122,6 +127,8 @@ function handleSubmit(){
 function changeAttach(){
 
 }
+
+
 
 </script>
 
@@ -162,4 +169,5 @@ function changeAttach(){
     padding: 5px;
   }
 
+ 
 </style>

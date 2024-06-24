@@ -109,6 +109,7 @@ function showMap(address) {
 
 function emitUpdate() {
   emit("update:propertyInfo", { propertyInfo });
+  console.log(propertyInfo.value);
 }
 
 watch(

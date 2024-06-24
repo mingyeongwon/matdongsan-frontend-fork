@@ -15,6 +15,10 @@ const routes = [
         path: "/QNA/noticeform",
         component: () =>  import(/* webpackChunkName: "Qna" */ '@/views/Qna/NoticeForm')
     },
+    {
+        path: "/QNA/temp",
+        component: () =>  import(/* webpackChunkName: "Qna" */ '@/views/Qna/CustomerInquiryForm/temp.vue')
+    },
     
    
     

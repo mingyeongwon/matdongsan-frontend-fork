@@ -12,7 +12,7 @@
                  </div>
                  <div class="agentEmail-box">
                      <input class="ps-2 me-3 border border-dark rounded mb-2 w-100" type="text" 
-                     placeholder="영대소문자, 숫자, 언더바(_) 혼용 4~12자 가능합니다." v-model="agentSignup.agentEmail">
+                     placeholder="영대소문자, 숫자, 언더바(_) 혼용 4~12자 가능합니다." v-model.trim="agentSignup.agentEmail">
               <span :style="emailValidStyle ? 'color:green': 'color:red'">{{ errorMessage.emailValid }}</span>
 
                     </div>
@@ -24,12 +24,24 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div class="agentPassword-box d-flex flex-column">
-                     <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."  v-model="agentSignup.agentPassword1">
-                     <input class="ps-2 border border-dark rounded" type="password" placeholder="비밀번호를 재입력하세요." v-model="agentSignup.agentPassword2">
+                     <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."  v-model.trim="agentSignup.agentPassword1">
+                     <input class="ps-2 border border-dark rounded" type="password" placeholder="비밀번호를 재입력하세요." v-model.trim="agentSignup.agentPassword2">
               <span :style="passwordValidStyle ? 'color:green': 'color:red'">{{ errorMessage.passwordValid }}</span>
 
                  </div>
              </div>
+             <div class="d-flex mb-4 agentName-box">
+                 <div class="d-flex col-2 pt-1">
+                     <span class="agentInputTitle">이름</span>
+                     <span class="text-danger fs-5 fw-bold">*</span>
+                 </div>
+                    
+                 <div class="agentPassword-box d-flex flex-column">
+                     <input class="ps-2 border border-dark rounded" type="text" placeholder="본명을 작성하세요." v-model.trim="agentSignup.agentName">
+                      <span :style="nameValidStyle ? 'color:green': 'color:red'">{{ errorMessage.nameValid }}</span>
+
+                 </div>
+             </div>     
              <div class="d-flex mb-4 agentPhone-box">
                  <div class="d-flex col-2 pt-1">
                      <span class="agentInputTitle">핸드폰번호</span>
@@ -37,18 +49,18 @@
                  </div>
                     
                  <div class="agentPassword-box d-flex flex-column">
-                     <input class="ps-2 border border-dark rounded" type="text" placeholder="숫자만 10~11자 가능합니다." v-model="agentSignup.agentPhone">
+                     <input class="ps-2 border border-dark rounded" type="text" placeholder="하이픈을 포함하여 작성하세요." v-model.trim="agentSignup.agentPhone">
                       <span :style="phoneValidStyle ? 'color:green': 'color:red'">{{ errorMessage.phoneValid }}</span>
 
                  </div>
-             </div>                
+             </div>             
              <div class="d-flex mb-4 agentBrandName-box">
                  <div class="d-flex col-2 pt-1">
                      <span class="agentInputTitle">중개사무소 명칭</span>
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div>
-                     <input class="ps-2 border border-dark rounded" type="text" v-model="agentSignup.agentBrandName">
+                     <input class="ps-2 border border-dark rounded" type="text" v-model.trim="agentSignup.agentBrandName">
                  </div>
              </div>                
              <div class="d-flex mb-4 agentBrandName-box">
@@ -57,7 +69,7 @@
                      <span class="text-danger fs-5 fw-bold">*</span>
                  </div>
                  <div class="agentPassword-box d-flex flex-column">
-                  <input class="ps-2 border border-dark rounded" type="text" placeholder="하이픈을 포함하여 작성하세요." v-model="agentSignup.agentBrandNum">
+                  <input class="ps-2 border border-dark rounded" type="text" placeholder="하이픈을 포함하여 작성하세요." v-model.trim="agentSignup.agentBrandNum">
                   <span :style="brandNumValidStyle ? 'color:green': 'color:red'">{{ errorMessage.brandNumValid }}</span>
 
                  </div>
@@ -126,6 +138,7 @@ let agentSignup = ref({
     agentPhone: "",
     agentBrandName: "",
     agentBrandNum: "",
+    agentName: "",
 });
 
 let errorMessage = ref({
@@ -133,6 +146,7 @@ let errorMessage = ref({
   passwordValid:"",
   phoneValid:"",
   brandNumValid:"",
+  nameValid:"",
 });
 
 let tempEmail = "user@gmail.com"
@@ -140,11 +154,14 @@ var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
 var phonePattern = /^(01[016789])-(\d{3,4})-(\d{4})$/;
 var brandNumPattern = /^\d{3}-\d{2}-\d{5}$/;
+var namePattern = /^[가-힣]{2,17}$/;
+
 
 // 비어있는 필수 값이 있다면 제출 버튼을 비활성화
 const checkAgentSignupData = computed(() => {
     var result = agentSignup.value.agentEmail !== "" && agentSignup.value.agentPassword1 !== "" && agentSignup.value.agentPassword2 !== ""
-                && agentSignup.value.agentPhone !== "" && agentSignup.value.agentBrandName !== "" && agentSignup.value.agentBrandNum !== "";
+                && agentSignup.value.agentPhone !== "" && agentSignup.value.agentBrandName !== "" && agentSignup.value.agentBrandNum !== ""
+                && agentSignup.value.agentName !== "";
     return result;
 });
 
@@ -152,11 +169,18 @@ var emailValidStyle = ref(false);
 var phoneValidStyle = ref(false);
 var passwordValidStyle = ref(false);
 var brandNumValidStyle = ref(false);
+var nameValidStyle = ref(false);
+
+var emailResult = ref(false);
+var phoneResult = ref(false);
+var brandNumResult = ref(false);
+var passwordResult = ref(false);
+var nameResult = ref(false);
 
 function uniqueCheck(){
   // 중복 확인을 하면서 전체적인 이메일 유효성 검사도 실행
-  var emailResult = emailPattern.test(agentSignup.value.agentEmail);
-  if(!emailResult){
+  emailResult.value = emailPattern.test(agentSignup.value.agentEmail);
+  if(!emailResult.value){
     errorMessage.value.emailValid = "유효하지 않은 이메일 입니다.";
     emailValidStyle.value = false;
   }else if(agentSignup.value.agentEmail === tempEmail){
@@ -169,15 +193,17 @@ function uniqueCheck(){
 //   console.log("출력",emailValidStyle.value);
 }
 
+// 중복 확인을 아예 하지 않았을 경우와, 비밀번호와 휴대폰 번호, 사업자 번호, 이름 정규식 검사
 function handleSubmit() {
-    // 중복 확인을 아예 하지 않았을 경우와, 비밀번호와 휴대폰 번호, 사업자 번호 정규식 검사
+  // 중복 확인 여부
   if(errorMessage.value.emailValid===""){
     errorMessage.value.emailValid = "중복 확인을 해주세요";
     emailValidStyle.value = false;
   }
 
-  var phoneResult = phonePattern.test(agentSignup.value.agentPhone);
-  if(!phoneResult){
+  // 휴대폰 번호 유효성 검사
+  phoneResult.value = phonePattern.test(agentSignup.value.agentPhone);
+  if(!phoneResult.value){
     errorMessage.value.phoneValid = "유효하지 않은 휴대폰 번호 입니다.";
     phoneValidStyle.value = false;
   } else {
@@ -185,8 +211,9 @@ function handleSubmit() {
     phoneValidStyle.value = true;
   }
   
-  var brandNumResult = brandNumPattern.test(agentSignup.value.agentBrandNum);
-  if(!brandNumResult){
+  // 사업자 번호 유효성 검사
+  brandNumResult.value = brandNumPattern.test(agentSignup.value.agentBrandNum);
+  if(!brandNumResult.value){
     errorMessage.value.brandNumValid = "유효하지 않은 사업자 번호 입니다.";
     brandNumValidStyle.value = false;
   } else {
@@ -194,8 +221,9 @@ function handleSubmit() {
     brandNumValidStyle.value = true;
   }
 
-  var passwordResult = passwordPattern.test(agentSignup.value.agentPassword1);
-  if(!passwordResult){
+  // 비밀번호 유효성 검사
+  passwordResult.value = passwordPattern.test(agentSignup.value.agentPassword1);
+  if(!passwordResult.value){
     errorMessage.value.passwordValid = "유효하지 않은 비밀번호 입니다.";
     passwordValidStyle.value = false;
   } else if(agentSignup.value.agentPassword1 !== agentSignup.value.agentPassword2){
@@ -206,10 +234,20 @@ function handleSubmit() {
     passwordValidStyle.value = true;
   }
 
+   // 이름 유효성 검사
+   nameResult.value = namePattern.test(agentSignup.value.agentName);
+  if(!nameResult.value){
+    errorMessage.value.nameValid = "유효하지 않은 이름 입니다.";
+    nameValidStyle.value = false;
+  } else {
+    errorMessage.value.nameValid = "사용 가능한 이름 입니다.";
+    nameValidStyle.value = true;
+  }
+
     console.log(JSON.parse(JSON.stringify(agentSignup.value)))
 
       // 유효성 검사가 모두 통과되면
-  if(emailValidStyle.value && passwordValidStyle.value && phoneValidStyle.value && brandNumValidStyle.value){
+  if(emailValidStyle.value && passwordValidStyle.value && phoneValidStyle.value && brandNumValidStyle.value && nameValidStyle.value){
     // axios로 통신하여 폼 보내고
 
     // 홈으로 돌아가기
@@ -241,12 +279,12 @@ function handleSubmit() {
 
     }
 
-    .agentPassword-box, .agentEmail-box, .agentPhone-box input, .agentBrandName-box input, .agentProfile-box input {
+    .agentPassword-box, .agentEmail-box, .agentPhone-box input, .agentBrandName-box input, .agentProfile-box input, .agentName-box input {
         width: 438px;
         
     }
 
-    .agentPassword-box input, .agentEmail-box input, .agentPhone-box input, .agentBrandName-box input, .agentProfile-box input {
+    .agentPassword-box input, .agentEmail-box input, .agentPhone-box input, .agentBrandName-box input, .agentProfile-box input, .agentName-box input  {
         height: 40px;
         font-size: 14px;
         border: 1px solid rgb(233, 236, 239);

@@ -14,13 +14,15 @@
       <hr>
       <form @submit.prevent="handleSubmit">
       <div class="row me-5">
-        <span class="col-2" style="text-align: center;">제목</span>
+        <span class="col-2 text-center">제목</span>
         <input class="col-10" type="text" name="askTitle" v-model="notice.title"> 
       </div>
       <hr>
       <div class="row me-5">
-        <span class="col-2" style="line-height: 300px; height: 100%; text-align: center">공지 내용</span>
-        <textarea class="col-10" type="text" name="askContent" style="height: 20rem; resize: none;" v-model="notice.content"></textarea>
+        <span class="col-2 mb-3 text-center" >공지 내용</span>
+      </div>
+      <div class="row me-5 container ms-2">
+        <VueQuillEditor class="col " v-model="notice.content" />
       </div>
       <!-- <hr>
       <div class="row me-5">
@@ -46,6 +48,8 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import VueQuillEditor from "@/components/VueQuillEditor.vue";
+
 
 const notice = ref({
   title:"",

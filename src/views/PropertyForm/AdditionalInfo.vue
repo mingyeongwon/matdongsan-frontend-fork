@@ -4,13 +4,14 @@
     <hr />
     <div class="d-flex">
       <span class="me-5">층수 *</span>
-      <div class="col-1">
+      <div class="col-2">
         <small class="">전체 층수</small>
         <select
           class="form-select form-select-sm mb-3 border bodrer-1 border-secondary"
           aria-label=".form-select-sm example"
           v-model="propertyInfo.floor"
         >
+          <option value="" disabled hidden selected>선택하세요</option>
           <option value="지상" >지상</option>
           <option value="지하">지하</option>
           <option value="옥탑방">옥탑방</option>
