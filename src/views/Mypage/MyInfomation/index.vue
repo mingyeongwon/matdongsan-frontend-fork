@@ -76,14 +76,14 @@
             <tr>
               <th scope="row">새 비밀번호</th>
               <td>
-                <input type="password" v-model.trim="changePassword.newPassword1">
+                <input type="password" v-model.trim="changePassword.newPassword1" placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다.">
                 <div :class="passwordValidStyle? 'text-success':'text-danger'">{{ errorMessage.newPassword1 }}</div>
               </td>
             </tr>
             <tr>
               <th scope="row">새 비밀번호 확인</th>
               <td colspan="2">
-                <input type="password" v-model.trim="changePassword.newPassword2">
+                <input type="password" v-model.trim="changePassword.newPassword2" placeholder="새 비밀번호과 같은 비밀번호를 적어주세요.">
                 <div :class="passwordValidStyle? 'text-success':'text-danger'">{{ errorMessage.newPassword2 }}</div>
               </td>
 
@@ -185,5 +185,9 @@ function handleSubmit() {
 .badge {
   left: 80px;
   top: 72px;
+}
+
+input[type="password"] {
+    width:70%
 }
 </style>
