@@ -2,7 +2,7 @@
   <div class="product-container w-75">
     <h3 class="text-center fw-bold mt-3 mb-3">방내놓기</h3>
     <PropertyInfo :propertyInfo="propertyInfo" />
-    <TradeInfo :propertyInfo="propertyInfo" @change="handleMaintenanceChange" />
+    <TradeInfo :propertyInfo="propertyInfo" @maintenanceChange="handleMaintenanceChange" @paymentTypeChange="handlePaymentTypeChange" @moveInChange="handleMoveInChange"/>
     <AdditionalInfo :propertyInfo="propertyInfo" />
     <FacilityInfo :propertyInfo="propertyInfo" />
     <PhotoUpload @fileUpload="handleFileUpload" />
@@ -46,6 +46,7 @@ const propertyInfo = reactive({
   addressDetail: "",
   postcode: "",
   paymentType: "",
+  deposite: "",
   price: "",
   maintenance: "",
   maintenanceCost: "", // 빈 값 존재 가능하여 기본값 넣어줌
@@ -71,10 +72,14 @@ function handleSubmit() {
     propertyInfo.maintenanceCost ="none";
   }
 
-  if(propertyInfo.moveIn == "today"){
+  if(propertyInfo.moveIn === "today"){
     propertyInfo.moveInDate = "none";
   }
-
+  
+  // paymentType이 전세이면, price(월세)는 0 값을 넣는다.
+  if(propertyInfo.paymentType === "전세"){
+    propertyInfo.price = 0;
+  }
 
   // 필수 값이 빈값이 아닌지 검사
   for(let key in propertyInfo){
@@ -105,7 +110,6 @@ function handleSubmit() {
   console.log(validForm.value, "폼 유효성 결과");
   // 여기에서 폼 데이터를 서버에 전송하거나 다른 로직을 처리
 
-  
 }
 
 function handleFileUpload(event) {
@@ -115,11 +119,25 @@ function handleFileUpload(event) {
 }
 
 function handleMaintenanceChange() {
-  if (propertyInfo.maintenance === "Yes") {
-    propertyInfo.maintenanceCost = ""; // 관리비 입력 가능
-  } else {
-    propertyInfo.maintenanceCost = ""; // 관리비 입력 불가능
-  }
+  // if (propertyInfo.maintenance === "Yes") {
+  //   propertyInfo.maintenanceCost = ""; // 관리비 입력 가능
+  // } else {
+  //   propertyInfo.maintenanceCost = ""; // 관리비 입력 불가능
+  // }
+  propertyInfo.maintenanceCost = "";
+}
+
+function handlePaymentTypeChange(){
+  // if (propertyInfo.paymentType === "전세") {
+  //   propertyInfo.price = ""; // 월세 입력 가능
+  // } else {
+  //   propertyInfo.price = ""; // 월세 입력 불가능
+  // }
+  propertyInfo.price = ""; // 월세 입력 불가능
+}
+
+function handleMoveInChange(){
+  propertyInfo.moveInDate = "";
 }
 </script>
 
