@@ -5,6 +5,14 @@
       <div class="row me-2">
         <div class="col text-end">게시일 : {{ reportFalse.date }}</div>
       </div>
+      <div class="row me-2">
+        <div class="col text-end">작성자 : {{ reportFalse.user }}</div>
+      </div>
+      <hr>
+      <div class="row me-5">
+        <span class="col-2 text-center">매물 번호</span>
+        <div class="col-10">{{ reportFalse.propertyNumber }}</div>
+      </div>
       <hr>
       <div class="row me-5">
         <span class="col-2 text-center">제목</span>
@@ -17,10 +25,10 @@
       </div>
       
       <hr>
-      <!-- <div class="row d-flex me-4" style=" justify-content: end; align-items: center; ">
+      <div class="row d-flex me-4" style=" justify-content: end; align-items: center; ">
         <button type="button btn-sm" @click="goBack">뒤로 가기</button>
-      </div> -->
-      <form @submit.prevent="hanndleSubmit">
+      </div>
+      <!-- <form @submit.prevent="hanndleSubmit">
         <div class="row me-5">
           <span class="col-2 mb-3 text-center mt-3" >답변</span>
           <div class="col-10">
@@ -35,7 +43,7 @@
         <div class="row me-5">
           <span class="mt-3 ms-2 text-center" >{{errorMessage}}</span>
         </div>
-      </form>
+      </form> -->
       </div>
       <!-- 컴포넌트 삽입 -->
     </div>
@@ -50,10 +58,17 @@ import { error } from "jquery";
 const router = useRouter();
 
 const reportFalse = ref({
+  user: "abc123@gmail.com",
   title:"허위매물신고 제목 test",
   content:"허위매물신고 내용 test 허위매물신고 내용 test 허위매물신고 내용 test 허위매물신고 내용 test 허위매물신고 내용 test 허위매물신고 내용 test 허위매물신고 내용 test 허위매물신고 내용 test 허위매물신고 내용 test ",
   date : "2024-04-23",
+  propertyNumber: 8,
 });
+
+// 추가 정보 필요한가?
+const falseProperty = ref({
+  propertyTitle :"경찰병원 역 1번 출구 5분거리 오피스텔",
+})
 
 const answer = ref("");
 

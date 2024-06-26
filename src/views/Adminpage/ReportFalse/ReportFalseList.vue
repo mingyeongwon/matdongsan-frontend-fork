@@ -4,7 +4,8 @@
     <table style="width: 100%; margin-top: 20px; ">
         <thead>
         <!-- <th>카테고리</th> -->
-        <th>제목</th><th>날짜</th><th>답변 여부</th>
+        <th>제목</th><th>날짜</th>
+        <!-- <th>답변 여부</th> -->
         </thead>
         <tbody>
             <tr v-for="(item, index) in noticeList" :key="index">
@@ -13,17 +14,13 @@
                     <td class="ps-3"><RouterLink class="routerLink" to="/Adminpage/ReportFalseDetail">{{ item.title }}</RouterLink></td>
                 
                     <td style="text-align: center;">{{ item.date }}</td>
-                    <td style="text-align: center;" class="ps-5 pe-5">{{ item.status }}</td>
+                    <!-- <td style="text-align: center;" class="ps-5 pe-5">{{ item.status }}</td> -->
 
                 </tr>
         
         </tbody>
     </table>
-    <RouterLink class="routerLink" to="/QNA/noticeform">
-        <div class="d-flex justify-content-end">
-            <div class="btn btn-sm mt-3 me-3" style="background-color: #2F4858; color: white;">글 쓰기</div>
-        </div>
-    </RouterLink>
+
 </div>
 </template>
 

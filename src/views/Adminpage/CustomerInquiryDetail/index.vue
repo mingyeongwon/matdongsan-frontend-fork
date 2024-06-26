@@ -5,6 +5,9 @@
     <div class="row me-2">
       <div class="col text-end">게시일 : {{ customerInquiry.date }}</div>
     </div>
+    <div class="row me-2">
+      <div class="col text-end">작성자 : {{ customerInquiry.user }}</div>
+    </div>
     <hr>
     <div class="row me-5">
       <span class="col-2 text-center">제목</span>
@@ -49,9 +52,10 @@ import VueQuillEditor from "@/components/VueQuillEditor.vue";
 const router = useRouter();
 
 const customerInquiry = ref({
-title:"고객문의 제목 test",
-content:"고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test ",
-date : "2024-04-23",
+  user:"abc123@gmail.com",
+  title:"고객문의 제목 test",
+  content:"고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test 고객문의 내용 test ",
+  date : "2024-04-23",
 });
 
 const answer = ref("");

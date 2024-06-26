@@ -19,11 +19,7 @@
         
         </tbody>
     </table>
-    <RouterLink class="routerLink" to="/QNA/noticeform">
-        <div class="d-flex justify-content-end">
-            <div class="btn btn-sm mt-3 me-3" style="background-color: #2F4858; color: white;">글 쓰기</div>
-        </div>
-    </RouterLink>
+
 </div>
 </template>
 
