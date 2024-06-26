@@ -18,19 +18,25 @@
       
       <hr>
       <div class="row d-flex me-4" style=" justify-content: end; align-items: center; ">
+        <button type="button btn-sm" @click="updateNotice">수정</button>
+        <button type="button btn-sm" @click="deleteNotice">삭제</button>
         <button type="button btn-sm" @click="goBack">뒤로 가기</button>
       </div>
       </div>
       <!-- 컴포넌트 삽입 -->
     </div>
+    <DeleteNoticeModal id="DeleteNoticeModal" @close="realdelete"/>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { Modal } from "bootstrap";
 import { useRouter } from "vue-router";
+import DeleteNoticeModal from "./DeleteNoticeModal.vue"
 const router = useRouter();
 
 const notice = ref({
+  nnumber:3,
   title:"공지사항 제목 test",
   content:"공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test ",
   date : "2024-04-23",
@@ -39,6 +45,30 @@ const notice = ref({
 function goBack(){
   router.back();
 }
+
+function updateNotice(){
+  router.push({
+    path:"/QNA/Noticeform",
+    query:{nnumber: notice.value.nnumber}
+  });
+}
+
+let deleteNoticeModal = null;
+
+onMounted(() => {
+  deleteNoticeModal = new Modal(document.querySelector("#DeleteNoticeModal"));
+});
+
+// 삭제 버튼 클릭 시 확인하는 모달 켜짐
+function deleteNotice() {
+  deleteNoticeModal.show();
+}
+
+// 모달에서도 최종적으로 삭제버튼을 누를 경우
+function realdelete(){
+  // 삭제 하는 axios 작성
+}
+
 
 </script>
 
@@ -71,5 +101,6 @@ button, input, textarea{
 button {
   background-color: #2F4858;
   color: white;
+  margin-right: 10px;
 }
 </style>
