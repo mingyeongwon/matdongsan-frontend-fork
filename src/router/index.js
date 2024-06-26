@@ -6,6 +6,7 @@ import Qna from "./Qna";
 import Payment from "./Payment";
 import MainPage from "@/views/Mainpage";
 import Signup from "./Signup";
+import Adminpage from "./Adminpage";
 
 const routes = [
   {
@@ -30,7 +31,8 @@ const routes = [
   ...MainService,
   ...Qna,
   ...Payment,
-  ...Signup
+  ...Signup,
+  ...Adminpage
 ];
 
 const router = createRouter({
