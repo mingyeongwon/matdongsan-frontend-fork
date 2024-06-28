@@ -97,15 +97,19 @@
               >
               <span class="find-password-btn" @click="checkUserPassword">비밀번호 찾기</span>
             </div>
+
+            <!-- 가입 -->
             <div class="d-grid gap-2 w-75 mx-auto mt-3 joinMemberBtn">
               <p class="mb-0">회원이 아니신가요?</p>
               <router-link to="/Signup/SignupAgreement">
-                <button class="btn btn-secondary w-100" data-bs-dismiss="modal">
+                <button class="btn btn-secondary w-100" data-bs-dismiss="modal"
+                  @click="moveToMemberSignup">
                   일반 회원 가입하기
                 </button>
               </router-link>
-              <router-link to="/Signup">
-                <button class="btn btn-secondary w-100" data-bs-dismiss="modal">
+              <router-link to="/Signup/SignupAgreement">
+                <button class="btn btn-secondary w-100" data-bs-dismiss="modal"
+                  @click="moveToAgentSignup">
                   업체 회원 가입하기
                 </button>
               </router-link>
@@ -485,6 +489,7 @@ import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const emit = defineEmits(["moveToMemberSignup", "moveToAgentSignup"])
 
 let checkStatus = ref(null);
 let checkValid = ref({
@@ -649,6 +654,14 @@ function checkUserPassword(){
 // 모달 닫으면 v-if 사용을 위한 설정 초기화
 function cancelUserData() {
   checkStatus.value = null;
+}
+
+// 일반 가입과 agent 가입 구분 
+function moveToMemberSignup() {
+  emit("moveTo-MemberSignup", "member");
+}
+function moveToAgentSignup() {
+  emit("moveTo-AgentSignup", "agent");
 }
 
 </script>

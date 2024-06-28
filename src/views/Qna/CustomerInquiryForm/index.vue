@@ -47,8 +47,8 @@
             </label>
         </div>
           <div style="margin-top: 10px">
-            <span>- 사진 용량은 사진 한 장당 10MB가지 등록이 가능합니다.</span><br>
-            <span>- 사진은 최대 3장까지 등록이 가능합니다.</span>
+            <span>- 사진 용량은 최대 10MB까지 등록이 가능합니다.</span><br>
+            <span>- 사진은 1장만 등록 가능합니다.</span>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ const customerInquiry = ref({
   type:"",
   title:"",
   content:"",
-  attach:"",
+  attach:[],
 });
 
 const attach = ref(null);
@@ -97,19 +97,22 @@ function handleSubmit(){
   const formData = new FormData();
 
   // 문자 데이터 formData에 넣기
-  formData.append("type", customerInquiry.value.type);
-  formData.append("title", customerInquiry.value.title);
-  formData.append("content", customerInquiry.value.content);
+  formData.append("qcategory", customerInquiry.value.type);
+  formData.append("qtitle", customerInquiry.value.title);
+  formData.append("qcontent", customerInquiry.value.content);
 
   const elAttach = attach.value;
 
   // 파일 데이터 formData에 넣기
   if(elAttach != null){
-    console.log("attach에 파일 들어옴", attach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
-    formData.append("attach", elAttach.files[0])
-    customerInquiry.value.attach = elAttach.files[0];
-  }
 
+    for(var i=0; i<attach.value.files.length; i++){
+      formData.append("attach", elAttach.files[i]);
+      customerInquiry.value.attach.push(elAttach.files[i]);
+    }
+    console.log("attach에 파일 들어옴", attach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
+  }
+  console.log("FileList로 나옴",attach.value.files.length);
   console.log("customerInquiry: ", customerInquiry.value);
 
   

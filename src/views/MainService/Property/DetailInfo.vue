@@ -142,7 +142,8 @@
           </div>
         </section>
         
-        <section class="col-8 mt-5">
+        <!-- 다른 방 더보기 넣지 않기 -->
+        <!-- <section class="col-8 mt-5">
           <div>
             <h4 class="fw-bold mb-5">다른 방 더보기</h4>
           </div>
@@ -152,9 +153,9 @@
             <PropertyItem class="col" />
             <PropertyItem class="col" />
           </div>
-        </section>
+        </section> -->
 
-        <section class="col-7 ps-4 mt-5">
+        <section class="col-7 ps-4 mt-5 mb-3">
           <button class="reportBtn p-3 w-100 text-start fw-bold" @click="showReportFalseModal">허위매물 신고하기</button>
         </section>        
       </div>

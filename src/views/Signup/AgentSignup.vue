@@ -91,11 +91,41 @@
                  </div>
                  <div class="agentPassword-box d-flex flex-column">
                     <div>
-                      <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="우편번호" >
-                      <button type="button" class="btn btn-dark btn-sm ms-2 ">주소검색</button>
+                        <input
+                            type="text"
+                            name="address1"
+                            class="address me-2"
+                            placeholder="예) 서울시 강남구 봉은사로 1길 12,1층"
+                            size="40"
+                            v-model="agentSignup.address"
+                            readonly
+                            />
+                            <div
+                            type="button"
+                            class="address-search-btn btn btn-dark btn-sm"
+                            @click="openPostSearch"
+                            >
+                            검색
+                            </div>
                     </div>
-                     <input class="mb-2 ps-2 border border-dark rounded" type="password" placeholder="주소">
-                     <input class="ps-2 border border-dark rounded" type="password" placeholder="상세주소">
+                    <input
+                        type="text"
+                        class="row ms-0 mt-3 postcode"
+                        placeholder="우편번호"
+                        size="20"
+                        v-model="agentSignup.postcode"
+                        readonly
+                    />
+                    <input
+                        type="text"
+                        class="row ms-0 mt-3"
+                        placeholder="상세주소 입력"
+                        v-model="agentSignup.addressDetail"
+                        size="20"
+                        @input="emitUpdate"
+                    />
+                    <!-- <span :style="phoneValidStyle ? 'color:green': 'color:red'">{{ errorMessage.addressValid }}</span> -->
+
                  </div>
              </div>  
              <div class="d-flex mb-5 agentProfile-box">
@@ -106,13 +136,6 @@
                  <div>
                      <input type="file" id="agentProfile">
                      <label class="agentProfile-label border border-1 border-secondary me-5" for="agentProfile">
-                         <div class="x border border-1 border-secondary"></div>
-                         <div class="y border border-1 border-secondary"></div>
-                     </label>
-                 </div>
-                 <div>
-                     <input type="file" id="agentProfile">
-                     <label class="agentProfile-label border border-1 border-secondary" for="agentProfile">
                          <div class="x border border-1 border-secondary"></div>
                          <div class="y border border-1 border-secondary"></div>
                      </label>
@@ -139,6 +162,9 @@ let agentSignup = ref({
     agentBrandName: "",
     agentBrandNum: "",
     agentName: "",
+    address: "",
+    postcode: "",
+    addressDetail: "",
 });
 
 let errorMessage = ref({
@@ -147,6 +173,7 @@ let errorMessage = ref({
   phoneValid:"",
   brandNumValid:"",
   nameValid:"",
+//   addressValid:"",
 });
 
 let tempEmail = "user@gmail.com"
@@ -161,7 +188,7 @@ var namePattern = /^[가-힣]{2,17}$/;
 const checkAgentSignupData = computed(() => {
     var result = agentSignup.value.agentEmail !== "" && agentSignup.value.agentPassword1 !== "" && agentSignup.value.agentPassword2 !== ""
                 && agentSignup.value.agentPhone !== "" && agentSignup.value.agentBrandName !== "" && agentSignup.value.agentBrandNum !== ""
-                && agentSignup.value.agentName !== "";
+                && agentSignup.value.agentName !== ""  && agentSignup.value.address !== "" && agentSignup.value.postcode !== "" && agentSignup.value.addressDetail !== "";
     return result;
 });
 
@@ -255,6 +282,15 @@ function handleSubmit() {
 }
 }
 
+function openPostSearch() {
+  new window.daum.Postcode({
+    oncomplete: (data) => {
+        agentSignup.value.postcode = data.zonecode;
+        agentSignup.value.address = data.address;
+    },
+  }).open();
+}
+
 
 </script>
 
@@ -335,6 +371,12 @@ function handleSubmit() {
     .agentSignupBtn-box button {
         width: 400px;
         font-size: 17px;
-    }    
+    }
+
+    .postcode,
+    .address {
+        background-color: #dfdfdf;
+        cursor: default;
+    }
 
 </style>

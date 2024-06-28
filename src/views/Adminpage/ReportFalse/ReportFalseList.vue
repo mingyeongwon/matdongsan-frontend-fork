@@ -5,23 +5,22 @@
         <thead>
         <!-- <th>카테고리</th> -->
         <th>제목</th><th>날짜</th>
+        <!-- <th>답변 여부</th> -->
         </thead>
         <tbody>
             <tr v-for="(item, index) in noticeList" :key="index">
                     
                     <!-- <td style="text-align: center;">[공지사항]</td> -->
-                    <td class="ps-5"><RouterLink class="routerLink" to="/QNA/noticedetail">{{ item.title }}</RouterLink></td>
+                    <td class="ps-3"><RouterLink class="routerLink" to="/Adminpage/ReportFalseDetail">{{ item.title }}</RouterLink></td>
                 
                     <td style="text-align: center;">{{ item.date }}</td>
+                    <!-- <td style="text-align: center;" class="ps-5 pe-5">{{ item.status }}</td> -->
+
                 </tr>
         
         </tbody>
     </table>
-    <RouterLink class="routerLink" to="/QNA/noticeform">
-        <div class="d-flex justify-content-end">
-            <div class="btn btn-sm mt-3 me-3" style="background-color: #2F4858; color: white;">글 쓰기</div>
-        </div>
-    </RouterLink>
+
 </div>
 </template>
 
@@ -29,13 +28,14 @@
 import { ref } from 'vue';
 
 let noticeList = ref([
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
+    { title: "IT 벤처 타워 시티뷰 허위 입니다.", date: "2024-06-01", status:"답변 완료" },
+    { title: "IT 벤처 타워 시티뷰 허위 입니다.", date: "2024-06-01", status:"답변 완료" },
+    { title: "IT 벤처 타워 시티뷰 허위 입니다.", date: "2024-06-01", status:"답변 완료" },
+    { title: "IT 벤처 타워 시티뷰 허위 입니다.", date: "2024-06-01", status:"답변 완료" },
+    { title: "IT 벤처 타워 시티뷰 허위 입니다.", date: "2024-06-01", status:"답변 완료" },
+    { title: "IT 벤처 타워 시티뷰 허위 입니다.", date: "2024-06-01", status:"답변 완료" },
+    { title: "IT 벤처 타워 시티뷰 허위 입니다.", date: "2024-06-01", status:"답변 완료" },
+    { title: "IT 벤처 타워 시티뷰 허위 입니다.", date: "2024-06-01", status:"답변 완료" },
 ]);
 
 
