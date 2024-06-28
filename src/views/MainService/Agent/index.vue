@@ -7,7 +7,7 @@
             <input
               class="form-control me-2 w-auto"
               type="search"
-              placeholder="Search"
+              placeholder="부동산 검색"
               aria-label="Search"
               v-model="searchKeywordForAgent"
               @keyup.enter="searchInAgent"
@@ -20,7 +20,6 @@
               Search
             </button>
           </div>
-         
         </div>
       </form>
       <ul class="nav nav-pills ms-4 mt-5">
@@ -106,11 +105,8 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="!route.params.id"
-          class="right-box col p-3 w-75 mx-auto"
-        >
-          <KakaoMap page="agent" :position="agentPosition" class="h-100" />
+        <div v-if="!route.params.id" class="map-box right-box col p-3 ms-4 w-75 mx-auto">
+          <KakaoMap page="agent" :position="agentPosition" class="" />
         </div>
       </div>
     </div>
@@ -142,13 +138,17 @@ function subMenuCheck(check) {
   isCommentMenu.value = check;
 }
 function searchInAgent() {
-  console.log(searchKeywordForAgent.value);
-}
 
+  router.push({
+    path: "/Agent",
+    query: { keyword: searchKeywordForAgent.value },
+  });
+  searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
+}
 </script>
 
 <style scoped>
-/* .right-box{
-    width:800px;
-} */
+.map-box{
+  height: 708px;
+}
 </style>

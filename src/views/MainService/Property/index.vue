@@ -93,7 +93,7 @@
             <PropertyList type="property" />
           </div>
         </div>
-        <div class="right-box ms-4 col vh-100 p-3" v-if="!route.params.id">
+        <div class="map-box right-box ms-4 col p-3" v-if="!route.params.id">
           <KakaoMap @getPropertyData="getPropertyData" />
         </div>
         <div class="right-box ms-4 col h-100 p-3" v-if="route.params.id">
@@ -157,5 +157,8 @@ const liked = (productId) => {
 <style scoped>
 .right-box {
   width: 800px;
+}
+.map-box{
+  height: 708px;
 }
 </style>
