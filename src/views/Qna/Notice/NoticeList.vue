@@ -26,17 +26,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 
-let noticeList = ref([
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-    { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-]);
+const props = defineProps({
+    noticeList: Object,
+});
+
+const { noticeList } = toRefs(props);
 
 
 </script>

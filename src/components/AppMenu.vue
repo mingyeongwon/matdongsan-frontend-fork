@@ -77,7 +77,7 @@
             </RouterLink>
             <ul class="dropdown-menu" aria-labelledby="navbarSubDropdown">
               <li>
-                <RouterLink class="dropdown-item" to="/Mypage/MyInfomation"
+                <RouterLink class="dropdown-item" to="/Mypage/MyInfomation/Member"
                   >내 정보</RouterLink
                 >
               </li>
@@ -131,6 +131,7 @@ function showLoginModal() {
 function hideLoginModal() {
   loginModal.hide();
 }
+
 </script>
 
 <style scoped>
