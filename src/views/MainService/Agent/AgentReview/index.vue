@@ -47,7 +47,9 @@
             <span class="align-self-center">2024/11/07</span>
           </div>
           <div class="ms-5 justify-content-between d-flex">
-            <span>5.0</span>
+            <div>
+              <span class="me-1">5.0</span><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star-half-stroke" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+            </div>
             <div>
               <div
                 class="btn btn-sm text-decoration-underline"

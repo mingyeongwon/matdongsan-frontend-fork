@@ -58,7 +58,7 @@
               가입 / 로그인
             </button>
           </li>
-          <li class="nav-item dropdown me-3 rounded align-self-center">
+          <li class="nav-item dropdown me-3 rounded align-self-start">
             <RouterLink
               class="nav-link dropdown-toggle fw-bold px-1"
               to="#"
@@ -73,7 +73,7 @@
                 class="me-1 rounded-circle align-self-center"
                 width="35"
               />
-              <span class="align-middle"> User1 </span>
+              <span class="align-start"> User1 </span>
             </RouterLink>
             <ul class="dropdown-menu" aria-labelledby="navbarSubDropdown">
               <li>
@@ -157,27 +157,5 @@ function hideLoginModal() {
   background-color: #636668;
 }
 
-@media (max-width: 992px) {
-  .navbar-collapse {
-    display: flex !important;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .navbar-nav {
-    width: 100%;
-  }
-  .navbar-nav .nav-item {
-    width: 100%;
-    text-align: left;
-  }
-  .navbar-nav .nav-item.dropdown {
-    width: auto; /* Ensure the dropdown item does not expand to full width */
-    align-self: flex-start !important;
-  }
-}
 
-.nav-item.dropdown {
-  width: auto; /* Ensure the width is automatically adjusted based on content */
-  max-width: 200px; /* Optional: Set a maximum width to prevent excessive growth */
-}
 </style>
