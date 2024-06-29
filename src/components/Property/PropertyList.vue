@@ -15,7 +15,7 @@
   </div>
   <div v-if="props.type == 'favorite'">
     <div class="p-0" v-for="exampleFavorite in exampleFavorites" :key="exampleFavorite">
-      <PropertyListItem :favoriteData="exampleFavorite" /> favorite
+      <PropertyListItem :favoriteData="exampleFavorite" />
     </div>
   </div>
 </template>

@@ -1,142 +1,133 @@
 <template>
   <div class="product-container w-75">
     <h3 class="text-center fw-bold mt-3 mb-3">방내놓기</h3>
+    <!-- 각 섹션 컴포넌트들 -->
     <PropertyInfo :propertyInfo="propertyInfo" />
     <TradeInfo :propertyInfo="propertyInfo" @maintenanceChange="handleMaintenanceChange" @paymentTypeChange="handlePaymentTypeChange" @moveInChange="handleMoveInChange"/>
     <AdditionalInfo :propertyInfo="propertyInfo" />
     <FacilityInfo :propertyInfo="propertyInfo" />
-    <PhotoUpload @fileUpload="handleFileUpload" />
+    <!-- 이미지 업로드 컴포넌트 -->
+    <PhotoUpload @updateImages="handleImageUpdate" />
     <DetailDescription :propertyInfo="propertyInfo" />
-    <button
-      type="submit"
-      class="mt-4 btn btn-warning btn-lg w-75 fw-bold"
-      @click="handleSubmit"
-    >
+    <!-- 폼 제출 버튼 -->
+    <button type="submit" class="mt-4 btn btn-warning btn-lg w-75 fw-bold" @click="handleSubmit">
       등록하기
     </button>
   </div>
+  <!-- 필수 정보 입력 안내 모달 -->
   <CommonModal id="requiredInfo">필수 정보를 모두 입력하세요</CommonModal>
-
 </template>
 
 <script setup>
+import { reactive, ref } from "vue";
 import PropertyInfo from "./PropertyInfo.vue";
 import TradeInfo from "./TradeInfo.vue";
 import AdditionalInfo from "./AdditionalInfo.vue";
 import FacilityInfo from "./FacilityInfo.vue";
 import PhotoUpload from "./PhotoUpload.vue";
 import DetailDescription from "./DetailDescription.vue";
-import CommonModal from "@/components/CommonModal.vue"
+import CommonModal from "@/components/CommonModal.vue";
 import { onMounted } from "vue";
 import { Modal } from "bootstrap";
 
 let requiredInfoModal = null;
 
+// 컴포넌트가 마운트될 때 모달 초기화
 onMounted(() => {
   requiredInfoModal = new Modal(document.querySelector("#requiredInfo"));
 });
 
+// 필수 정보 입력 안내 모달 표시 함수
 function showLoginModal() {
   requiredInfoModal.show();
 }
-import { reactive, ref } from "vue";
 
+// 부동산 정보 객체
 const propertyInfo = reactive({
   address: "",
-  addressDetail: "",
+  addressDetail: "",// 디테일 부분은 빈 값이 들어와도 제출이 되어야함
   postcode: "",
   paymentType: "",
   deposite: "",
   price: "",
   maintenance: "",
-  maintenanceCost: "", // 빈 값 존재 가능하여 기본값 넣어줌
+  maintenanceCost: "",
   moveIn: "",
-  moveInDate: "", // 빈 값 존재 가능하여 기본값 넣어줌
+  moveInDate: "",
   floor: "",
   totalFloor: "",
   elevator: "",
   parkingLot: "",
   heating: "",
   cooling: "",
-  utility: [], // 빈 값 존재 가능
+  utility: [],
+  thumbnail: [],  // 썸네일 이미지를 저장할 배열
+  detailImages: [],  // 디테일 이미지를 저장할 배열
   title: "",
   content: "",
   lat: "",
   lon: "",
 });
 
-var validForm = ref([]);
+const validForm = ref([]);
+
+// 이미지 업데이트 핸들러
+function handleImageUpdate({ single, multi }) {
+  console.log("Received image data:", { single, multi });
+  propertyInfo.thumbnail = single; // 썸네일 이미지 업데이트
+  propertyInfo.detailImages = multi; // 디테일 이미지 업데이트
+  console.log("Updated propertyInfo:", { thumbnail: propertyInfo.thumbnail, detailImages: propertyInfo.detailImages });
+}
+
+// 폼 제출 핸들러
 function handleSubmit() {
-  // 공용 관리비와 입주 가능 일자가 없으면 maintenanceCost, moveInDate는 none값을 넣어준다.
-  if(propertyInfo.maintenance ==="No"){
-    propertyInfo.maintenanceCost ="none";
+  // 공용 관리비와 입주 가능 일자가 없으면 기본값 설정
+  if (propertyInfo.maintenance === "No") {
+    propertyInfo.maintenanceCost = "none";
   }
 
-  if(propertyInfo.moveIn === "today"){
+  if (propertyInfo.moveIn === "today") {
     propertyInfo.moveInDate = "none";
   }
-  
-  // paymentType이 전세이면, price(월세)는 0 값을 넣는다.
-  if(propertyInfo.paymentType === "전세"){
+
+  if (propertyInfo.paymentType === "전세") {
     propertyInfo.price = 0;
   }
 
   // 필수 값이 빈값이 아닌지 검사
-  for(let key in propertyInfo){
+  for (let key in propertyInfo) {
     let value = propertyInfo[key];
-
-    // propertyInfo의 속성 값이 배열이 아니면서 빈값이면 false반환
-    if( !Array.isArray(value) && value === ""){
+    if (!Array.isArray(value) && value === "") {
       validForm.value = false;
       console.log("false 반환");
       break;
-    } else{
-      validForm.value=true;
+    } else {
+      validForm.value = true;
       console.log("모두 반환 됨");
     }
-    console.log("들어가니",validForm.value);
-
-    // 사진 들어와야 함
-
   }
 
-  // 필수 값이 모두 들어오지 않으면
-  if(!validForm.value){
-    // 필수 값 입력하라는 모달 띄우기
+  // 필수 값이 모두 들어오지 않으면 모달 표시
+  if (!validForm.value) {
     showLoginModal();
   }
 
   console.log("제출버튼", JSON.parse(JSON.stringify(propertyInfo)));
   console.log(validForm.value, "폼 유효성 결과");
-  // 여기에서 폼 데이터를 서버에 전송하거나 다른 로직을 처리
-
 }
 
-function handleFileUpload(event) {
-  const files = event.target.files;
-  console.log(files);
-  // 여기에서 파일 업로드 로직을 처리
-}
-
+// 관리비 변경 핸들러
 function handleMaintenanceChange() {
-  // if (propertyInfo.maintenance === "Yes") {
-  //   propertyInfo.maintenanceCost = ""; // 관리비 입력 가능
-  // } else {
-  //   propertyInfo.maintenanceCost = ""; // 관리비 입력 불가능
-  // }
   propertyInfo.maintenanceCost = "";
 }
 
-function handlePaymentTypeChange(){
-  // if (propertyInfo.paymentType === "전세") {
-  //   propertyInfo.price = ""; // 월세 입력 가능
-  // } else {
-  //   propertyInfo.price = ""; // 월세 입력 불가능
-  // }
-  propertyInfo.price = ""; // 월세 입력 불가능
+// 결제 유형 변경 핸들러
+function handlePaymentTypeChange() {
+  propertyInfo.price = "";
 }
 
-function handleMoveInChange(){
+// 입주 변경 핸들러
+function handleMoveInChange() {
   propertyInfo.moveInDate = "";
 }
 </script>
