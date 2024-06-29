@@ -15,7 +15,8 @@ const routes = [
       import(/* webpackChunkName: "Signup" */ "@/views/Signup/MemberSignup"),
   },
   {
-    path: "/Signup/SignupAgreement",
+    path: "/Signup/SignupAgreement/:signupType?",
+    name:'SignupAgreement',
     component: () =>
       import(/* webpackChunkName: "Signup" */ "@/views/Signup/SignupAgreement"),
   },

@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="agreementCheck-title">
-      <h2 class="fw-bold text-center">회원가입</h2>
+      <h2 v-if="route.params.signupType== 'member' " class="fw-bold text-center">일반 회원가입</h2>
+      <h2 v-else class="fw-bold text-center">업체 회원가입</h2>
     </div>
     <div class="agreementCheck-box border-top">
       <h3 class="border-bottom border-dark">약관 동의</h3>
@@ -432,21 +433,17 @@
       </form>
     </div>
   </div>
-  <LoginModal @moveTo-MemberSignup="moveToMemberSignup"
-              @moveTo-AgentSignup="moveToAgentSignup" />
 </template>
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import { useRouter } from "vue-router";
-import LoginModal from "@/components/LoginModal.vue";
-
-const typeOfSignup = ref(""); // 회원 가입 구분
+import { useRouter,useRoute } from "vue-router";
 
 // 일반 선택
 const checkedAgreements = ref([]);
 const allAgreementCheckbox = ref("");
 const router = useRouter();
+const route = useRoute();
 
 // 일반 선택 모두 동의 또는 체크 해제 시 전체 선택 상태 변화를 위한 watch
 watch(checkedAgreements, (newCheckedAgreements, oldCheckedAgreements) => {
@@ -462,6 +459,15 @@ watch(checkedAgreements, (newCheckedAgreements, oldCheckedAgreements) => {
       JSON.parse(JSON.stringify(newCheckedAgreements))
   );
 });
+
+watch(
+  () => route.params.signupType,
+  () => {
+    allAgreementCheckbox.value = false;
+    checkedAgreements.value = [];
+    flag.value = false;
+  }
+);
 
 // 전체 선택
 const flag = ref(false); // 체크 여부
@@ -483,18 +489,10 @@ const checkSignupAgreementData = computed(() => {
   return result;
 });
 
-// loginModal로부터 타입 받아옴
-function moveToMemberSignup(type) {
-  typeOfSignup.value = type;
-  console.log(typeOfSignup.value);
-}
-function moveToAgentSignup(type) {
-  typeOfSignup.value = type;
-  console.log(typeOfSignup.value);
-}
+
 // 타입에 따라 회원가입 페이지 구분
 function moveToSignupPage() {
-  if(typeOfSignup.value === "member") {
+  if(route.params.signupType === "member") {
     router.push("/Signup/MemberSignup");
   } else {
     router.push("/Signup/AgentSignup");
