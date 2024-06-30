@@ -1,60 +1,75 @@
 <template>
   <div>
     <NoticeHeader>
-      <template v-slot:header>
-        공지사항
-      </template>
+      <template v-slot:header> 공지사항 </template>
     </NoticeHeader>
-    <NoticeListFilter :noticeFilter="noticeFilter"/>
-    <NoticeList :noticeList="noticeList"/>
-    <Pagination :pageNo = "pageNo"/>
-  
+    <NoticeListFilter :noticeFilter="noticeFilter" />
+    <NoticeList :noticeList="noticeList" />
+    <Pagination
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      page="notice"
+      @update:currentPage="handlePageChange"
+    />
   </div>
 </template>
-  
+
 <script setup>
-import { ref, toRefs, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import NoticeList from "./NoticeList";
 import NoticeListFilter from "./NoticeListFilter";
 import NoticeHeader from "@/components/NoticeHeader";
-import Pagination from "@/components/Pagination"
+import Pagination from "@/components/Pagination";
 
-// 검색어와 필터를 통해 리스트를 조회하고 불러와서 NoticeList 컴포넌트에 전달?
+// 현재 페이지 변경 핸들러
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
 
-// 리스트 가져온거 공지사항 리스트에 보내기
+// 필터 변경 핸들러
+const handleFilterChange = (newFilter) => {
+  noticeFilter.value = newFilter;
+  currentPage.value = 1; // 필터 변경 시 첫 페이지로 이동
+};
+
+// 공지사항 리스트 (예제 데이터)
 let noticeList = ref([
-  { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-  { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-  { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-  { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-  { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-  { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
-  { title: "맛동산 개인정보 처리방침 개정 안내", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내1", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내2", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내3", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내4", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내5", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내6", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내7", date: "2024-06-01" },
 ]);
 
-// 공지사항 필터에서 가져오기
+const currentPage = ref(1);
+const itemsPerPage = 7;
+
+const totalPages = computed(() =>
+  Math.ceil(noticeList.value.length / itemsPerPage)
+);
+
+const paginatedItems = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return noticeList.value.slice(start, end);
+});
+
+// 공지사항 필터 초기 값
 let noticeFilter = ref({
-  searchKeyword:"",
-  sort:"desc"
-})
+  searchKeyword: "",
+  sort: "desc",
+});
 
-// 페이지네이션 컴포넌트에서 가져오기
-let pageNo = ref(1);
-
-watch(noticeFilter, (newNoticeFilter, oldNoticeFilter) => {
-  // notice 필터의 속성 값이 바뀌면 바뀔 때마다 리스트 불러와야 함
-  // 리스트를 불러오려면 페이저가 있어야 함... pageNo받아와서 같이 넘겨야 한다.
-  console.log(noticeFilter.value);
-
-}, {deep : true});
-
-
-
-
+watch(
+  noticeFilter,
+  (newNoticeFilter) => {
+    // noticeFilter 변경 시 필요한 동작 수행
+    console.log("필터 변경:", noticeFilter.value);
+  },
+  { deep: true }
+);
 </script>
 
-<style scoped>
-
-
-</style>
-    
+<style scoped></style>
