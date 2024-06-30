@@ -17,9 +17,9 @@
               placeholder="이메일 형식으로 입력하세요."
               v-model.trim="memberSignup.memberEmail"
             />
-          <span :style="emailValidStyle ? 'color:green': 'color:red'">{{ errorMessage.emailValid }}</span>
-
-
+            <span :style="emailValidStyle ? 'color:green': 'color:red'">
+              <small>{{ errorMessage.emailValid }}</small>
+            </span>
           </div>
           <button
             type="button"
@@ -48,7 +48,9 @@
               placeholder="비밀번호를 재입력하세요."
               v-model.trim="memberSignup.memberPassword2"
             />
-          <span :style="passwordValidStyle ? 'color:green': 'color:red'">{{ errorMessage.passwordValid }}</span>
+            <span :style="passwordValidStyle ? 'color:green': 'color:red'">
+              {{ errorMessage.passwordValid }}
+            </span>
           </div>
         </div>
         <div class="d-flex mb-4 memberName-box">
@@ -64,8 +66,9 @@
               placeholder="본명을 입력하세요."
               v-model.trim="memberSignup.memberName"
             />
-          <span :style="nameValidStyle ? 'color:green': 'color:red'">{{ errorMessage.nameValid }}</span>
-
+            <span :style="nameValidStyle ? 'color:green': 'color:red'">
+              {{ errorMessage.nameValid }}
+            </span>
           </div>
         </div>
         <div class="d-flex mb-4 memberPhone-box">
@@ -81,21 +84,15 @@
               placeholder="하이픈을 포함하여 입력하세요."
               v-model.trim="memberSignup.memberPhone"
             />
-          <span :style="phoneValidStyle ? 'color:green': 'color:red'">{{ errorMessage.phoneValid }}</span>
-
+            <span :style="phoneValidStyle ? 'color:green': 'color:red'">
+              {{ errorMessage.phoneValid }}
+            </span>
           </div>
         </div>
         <div class="d-flex mb-5 memberProfile-box">
-          <span class="col-2">프로필 사진</span>
-          <div>
-            <input type="file" id="memberProfile" />
-            <label
-              class="memberProfile-label border border-1 border-secondary rounded"
-              for="memberProfile"
-            >
-              <div class="x border border-1 border-secondary"></div>
-              <div class="y border border-1 border-secondary"></div>
-            </label>
+          <span class="col-2 mt-1">프로필 사진</span>
+          <div class="w-100">
+            <ImagePreview imagePurpose="single" @update:image="handleImageUpdate" />
           </div>
         </div>
         <div class="text-center memberSignupBtn-box">
@@ -110,7 +107,8 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import {ref, computed} from "vue";
+import { ref, computed } from "vue";
+import ImagePreview from "@/components/ImagePreview.vue";
 
 let memberSignup = ref({
   memberEmail: "",
@@ -118,16 +116,17 @@ let memberSignup = ref({
   memberPassword2: "",
   memberPhone: "",
   memberName: "",
+  profileImage: null,  // 프로필 이미지를 저장할 필드 추가
 });
 
 let errorMessage = ref({
-  emailValid:"",
-  passwordValid:"",
-  phoneValid:"",
-  nameValid:"",
+  emailValid: "",
+  passwordValid: "",
+  phoneValid: "",
+  nameValid: "",
 });
 
-let tempEmail = "user@gmail.com"
+let tempEmail = "user@gmail.com";
 var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
 var phonePattern = /^(01[016789])-(\d{3,4})-(\d{4})$/;
@@ -150,35 +149,43 @@ var phoneResult = ref(null);
 var passwordResult = ref(null);
 var nameResult = ref(null);
 
-function uniqueCheck(){
+function uniqueCheck() {
   // 중복 확인을 하면서 전체적인 이메일 유효성 검사도 실행
   emailResult.value = emailPattern.test(memberSignup.value.memberEmail);
-  if(!emailResult.value){
+  if (!emailResult.value) {
     errorMessage.value.emailValid = "유효하지 않은 이메일 입니다.";
     emailValidStyle.value = false;
-  }else if(memberSignup.value.memberEmail === tempEmail){
+  } else if (memberSignup.value.memberEmail === tempEmail) {
     errorMessage.value.emailValid = "이미 사용중인 이메일 입니다.";
     emailValidStyle.value = false;
-  } else{
+  } else {
     errorMessage.value.emailValid = "사용 가능한 이메일 입니다.";
     emailValidStyle.value = true;
   }
-  console.log("출력",emailValidStyle.value);
+  console.log("출력", emailValidStyle.value);
 }
 
 const router = useRouter();
 
+function handleImageUpdate(files) {
+  if (files.length > 0) {
+    memberSignup.value.profileImage = files[0];
+  } else {
+    memberSignup.value.profileImage = null;
+  }
+}
+
 // 중복 확인을 아예 하지 않았을 경우와, 비밀번호와 휴대폰 번호의 정규식 검사
 function handleSubmit() {
   // email 중복확인을 했는가
-  if(errorMessage.value.emailValid===""){
+  if (errorMessage.value.emailValid === "") {
     errorMessage.value.emailValid = "중복 확인을 해주세요";
     emailValidStyle.value = false;
   }
 
   // 휴대폰 번호 유효성 검사
   phoneResult.value = phonePattern.test(memberSignup.value.memberPhone);
-  if(!phoneResult.value){
+  if (!phoneResult.value) {
     errorMessage.value.phoneValid = "유효하지 않은 휴대폰 번호 입니다.";
     phoneValidStyle.value = false;
   } else {
@@ -188,20 +195,20 @@ function handleSubmit() {
 
   // 비밀번호 유효성 검사
   passwordResult.value = passwordPattern.test(memberSignup.value.memberPassword1);
-  if(!passwordResult.value){
+  if (!passwordResult.value) {
     errorMessage.value.passwordValid = "유효하지 않은 비밀번호 입니다.";
     passwordValidStyle.value = false;
-  } else if(memberSignup.value.memberPassword1 !== memberSignup.value.memberPassword2){
+  } else if (memberSignup.value.memberPassword1 !== memberSignup.value.memberPassword2) {
     errorMessage.value.passwordValid = "비밀번호와 비밀번호 확인이 같지 않습니다.";
     passwordValidStyle.value = false;
-  } else{
-    errorMessage.value.passwordValid = "사용 가능한 휴대폰 번호 입니다.";
+  } else {
+    errorMessage.value.passwordValid = "사용 가능한 비밀번호 입니다.";
     passwordValidStyle.value = true;
   }
 
   // 이름 유효성 검사
   nameResult.value = namePattern.test(memberSignup.value.memberName);
-  if(!nameResult.value){
+  if (!nameResult.value) {
     errorMessage.value.nameValid = "유효하지 않은 이름 입니다.";
     nameValidStyle.value = false;
   } else {
@@ -209,19 +216,16 @@ function handleSubmit() {
     nameValidStyle.value = true;
   }
 
-
   console.log(JSON.parse(JSON.stringify(memberSignup.value)));
 
-
   // 유효성 검사가 모두 통과되면
-  if(emailValidStyle.value && passwordValidStyle.value && phoneValidStyle.value && nameValidStyle.value){
+  if (emailValidStyle.value && passwordValidStyle.value && phoneValidStyle.value && nameValidStyle.value) {
     // axios로 통신하여 폼 보내고
 
     // 홈으로 돌아가기
     router.push("/");
   }
 }
-
 </script>
 
 <style scoped>
@@ -279,7 +283,9 @@ function handleSubmit() {
 .memberName-box input {
   width: 438px;
 }
-
+.memberEmail-box{
+  height: 50px;
+}
 .memberPassword-box input,
 .memberEmail-box input,
 .memberPhone-box input,
