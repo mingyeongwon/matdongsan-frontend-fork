@@ -10,7 +10,7 @@
     <PhotoUpload @updateImages="handleImageUpdate" />
     <DetailDescription :propertyInfo="propertyInfo" />
     <!-- 폼 제출 버튼 -->
-    <button type="submit" class="mt-4 btn btn-warning btn-lg w-75 fw-bold" @click="handleSubmit">
+    <button type="submit" class="mt-4 btn btn-warning btn-lg w-75 fw-bold" @click="handleSubmit" :disabled="!validForm.value">
       등록하기
     </button>
   </div>

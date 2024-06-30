@@ -1,7 +1,8 @@
 <template>
+  
   <div>
     <div class="d-flex justify-content-between mb-3">
-      <h5 class="mt-3 fw-bold">평점 & 리뷰 (40)</h5>
+      <h4 class="mt-3 fw-bold">문의하기 (40)</h4>
       <div class="align-self-center">
         <select class="form-select" aria-label="Default select example" @change="sortComment">
           <option selected value="최신순">최신순</option>
@@ -46,24 +47,26 @@
             </div>
             <span class="align-self-center">2024/11/07</span>
           </div>
-          <div class="ms-5 justify-content-between d-flex">
-            <span>5.0</span>
-            <div>
-              <div
-                class="btn btn-sm text-decoration-underline"
-                @click="toggleReplyForm"
-              >
-                댓글달기
-              </div>
-              <div class="btn btn-sm btn-danger" @click="openDeleteModal">
-                삭제하기
+          <div class="d-flex justify-content-between">
+            <div class="ms-5">
+              <p class="mt-2 fw-bold">
+                정말 친절하게 다 알려줬어요. 사장님이 친절하고 서비스가 최고예요.
+              </p>
+            </div>
+
+            <div class="ms-5 justify-content-end d-flex">
+              <div>
+                <div
+                  class="btn btn-sm text-decoration-underline"
+                  @click="toggleReplyForm"
+                >
+                  댓글달기
+                </div>
+                <div class="btn btn-sm btn-danger" @click="openDeleteModal">
+                  삭제하기
+                </div>
               </div>
             </div>
-          </div>
-          <div class="ms-5 mt-3">
-            <p class="mt-3 fw-bold">
-              정말 친절하게 다 알려줬어요. 사장님이 친절하고 서비스가 최고예요.
-            </p>
           </div>
           <div v-if="showReplyForm" class="ms-5 mt-3">
             <input

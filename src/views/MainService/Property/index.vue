@@ -7,7 +7,7 @@
             <input
               class="form-control me-2 w-auto"
               type="search"
-              placeholder="Search"
+              placeholder="주소 검색"
               aria-label="Search"
               v-model="searchKeyword"
               @keyup.enter="searchInProperty"
