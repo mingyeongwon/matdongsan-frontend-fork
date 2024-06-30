@@ -72,17 +72,29 @@
       </li>
       <div
         class="col pe-4 ms-3 me-3 text-end align-self-center"
-        v-if="route.params.id">
-
+        v-if="route.params.id"
+      >
         <!-- 뒤로가기 아이콘 -->
-        <i class="fa-solid fa-arrow-left fa-xl me-3" @click="backToPropertyList"></i> 
+        <i
+          class="fa-solid fa-arrow-left fa-xl me-3"
+          @click="backToPropertyList"
+        ></i>
 
         <!-- 찜하기 아이콘 -->
-        <i class="fa-regular fa-heart fa-xl" style="color: #ff0000;" @click="liked(propertyData.id)"></i>
-        
+        <i
+          :class="[
+            isHovered ? 'fa-solid fa-heart' : 'fa-regular fa-heart',
+            'fa-xl',
+            'heart-icon',
+          ]"
+          style="color: #ff0000"
+          @click="liked(propertyData.id)"
+          @mouseover="toggleHover(true)"
+          @mouseleave="toggleHover(false)"
+        ></i>
+
         <!-- 찜하기 취소 -->
         <!-- <i class="fa-solid fa-heart" style="color: #ff0000;" @click="unlike"></i> -->
-        
       </div>
     </ul>
 
@@ -93,10 +105,10 @@
             <PropertyList type="property" />
           </div>
         </div>
-        <div class="map-box right-box ms-4 col p-3" v-if="!route.params.id">
+        <div class="map-box right-box col p-3" v-if="!route.params.id">
           <KakaoMap @getPropertyData="getPropertyData" />
         </div>
-        <div class="right-box ms-4 col h-100 p-3" v-if="route.params.id">
+        <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto />
           <DetailInfo />
           <Comment />
@@ -123,11 +135,11 @@ const store = useStore();
 const propertyData = ref([]);
 let status = ref(true);
 
-
-// 검색 
+// 검색
 const searchKeyword = ref("");
 
-function searchInProperty() { // vuex
+function searchInProperty() {
+  // vuex
   store.dispatch("search/updateSearchKeyword", {
     searchKeyword: searchKeyword.value,
   });
@@ -135,7 +147,7 @@ function searchInProperty() { // vuex
     path: "/Property",
     query: { keyword: searchKeyword.value },
   });
-  searchKeyword.value = ""; // 검색 버튼에서 내용 사라지게 
+  searchKeyword.value = ""; // 검색 버튼에서 내용 사라지게
 }
 
 function backToPropertyList() {
@@ -152,13 +164,33 @@ const liked = (productId) => {
   console.log(route.params.id);
   store.dispatch("like/addToWishList", { productId });
 };
+
+// 좋아요 아이콘 변경 상태
+const isHovered = ref(false);
+
+const toggleHover = (state) => {
+  isHovered.value = state;
+};
 </script>
 
 <style scoped>
 .right-box {
   width: 800px;
 }
-.map-box{
+.map-box {
   height: 708px;
+}
+.fa-arrow-left {
+  cursor: pointer;
+}
+.fa-arrow-left:hover {
+  cursor: pointer;
+  color: rgb(157, 157, 53);
+}
+.fa-heart {
+  cursor: pointer;
+}
+.heart-icon {
+  transition: all 0.3s ease;
 }
 </style>
