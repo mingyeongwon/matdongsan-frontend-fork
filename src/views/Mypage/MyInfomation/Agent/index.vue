@@ -69,50 +69,10 @@
         />-
         <input type="text" class="ms-2 me-2 ps-2" v-model="arrPhone[1]" size="2" readonly/>-
         <input type="text" class="ms-2 ps-2" v-model="arrPhone[2]"  size="2" readonly/>
-
-        <h4 class="mt-5 fw-bold">중개소 정보</h4>
-        <hr class="border border-black border-2" />
-        <div class="d-flex justify-content-between w-75">
-          <h6 class="text-muted fw-bold align-self-center">중개소 사진</h6>
-          <label class="agent-input" for="agent-input">
-            <div type="button" class="btn position-relative">
-              <img v-if="imageFilesAgent != null"
-                :src="imageFilesAgent.src"
-                width="100"
-                height="100"
-                class="rounded-circle"
-                alt=""
-              />
-              <img v-else
-                src="https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20150901_183%2F14410444107431iJ8n_JPEG%2FSUBMIT_1283497390526_13484098.jpg"
-                width="100"
-                height="100"
-                class="rounded-circle"
-                alt=""
-              />
-              <span
-                class="position-absolute badge rounded-circle bg-warning p-2"
-                ><img src="@/assets/stylus.png" width="15" alt="" /><span
-                  class="visually-hidden"
-                  >unread messages</span
-                ></span
-              >
-            </div>
-          </label>
-          <input type="file" name="agent-input" id="agent-input" ref="fileInputAgent" @change="previewImagesAgent"
-          accept="image/*" style="display: none;">
-
-
-          <h6 class="align-self-center ms-5 me-5 fw-bold text-muted">
-          </h6>
-          <div class="align-self-center mt-4">
-            <div class="align-self-center p-2"></div>
-          </div>
-        </div>
         <hr/>
         <div>
           중개소 이름
-          <input class="ms-5" type="text" v-model="agent.addressDetail" readonly>
+          <input class="ms-5" type="text" v-model="agent.brand" readonly>
         </div>
         <hr class="mb-4" />
         사업자 등록 번호
@@ -129,11 +89,10 @@
         <div class="row">
           <div class="row">
             <div class="col-2">주소</div>
-            <input class="col-10" type="text" v-model="agent.address" style="margin-right: 70px; width: 40%;" readonly>
-          </div>
-          <div class="row mt-4">
-            <div class="col-2">상세주소</div>
-            <input class="col-10" type="text" v-model="agent.addressDetail" style="width: 60%" readonly>
+            <div>
+              <input class="col-10" type="text" v-model="agent.address" style="margin-right: 70px; width: 40%;" readonly>
+              <input class="col-10 mt-2" type="text" v-model="agent.addressDetail" style="width: 60%" readonly>
+            </div>
           </div>
         </div>
 
