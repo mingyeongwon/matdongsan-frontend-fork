@@ -41,6 +41,11 @@
               >관심목록</RouterLink
             >
           </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link fw-bold" to="/Adminpage/CusomerInquiry"
+              >관리자</RouterLink
+            >
+          </li>
         </ul>
         <ul class="navbar-nav pe-5 mb-2 mb-lg-0">
           <li class="nav-item">
@@ -115,7 +120,7 @@
 
 <script setup>
 import LoginModal from "./LoginModal.vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { Modal } from "bootstrap";
 
 let loginModal = null;

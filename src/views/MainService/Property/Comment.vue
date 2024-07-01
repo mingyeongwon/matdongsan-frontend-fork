@@ -112,8 +112,7 @@
     v-if="showDeleteModal"
     class="modal fade show d-block"
     tabindex="-1"
-    role="dialog"
-  >
+    role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">

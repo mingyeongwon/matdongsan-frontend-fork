@@ -5,7 +5,7 @@
           허위매물 신고 리스트
         </template>
       </AdminHeader>
-      <ReportFalseList/>
+      <ReportFalseList class="mb-5"/>
       <Pagination/>
     
     </div>

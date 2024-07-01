@@ -31,10 +31,10 @@
             집이지를 통해 타 사이트보다 <br />
             저렴한 등록비로 집을 홍보하세요.
           </p>
-          <div v-if="user.isRegisterd"><RouterLink to="/Product/ProductForm" class="btn text-light ps-5 pe-5"
+          <div v-if="user.isRegisterd"><RouterLink to="/PropertyForm" class="btn text-light ps-5 pe-5"
             >집내놓기</RouterLink
           ></div>
-          <div v-else><RouterLink to="/Payment/PaymentInfo" class="btn text-light ps-5 pe-5"
+          <div v-else><RouterLink to="/PropertyForm" class="btn text-light ps-5 pe-5"
             >집내놓기</RouterLink
           ></div>
           

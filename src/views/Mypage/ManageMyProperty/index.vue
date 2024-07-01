@@ -44,7 +44,7 @@
             <td class="fw-bold align-middle text-center">2024/06/12</td>
             <td class="fw-bold align-middle">
               <div class="d-flex flex-column">
-                <RouterLink class="routerLink " :to="{path:'/Product/ProductForm', query:{id:property.id}}">
+                <RouterLink class="routerLink " :to="{path:'/PropertyForm', query:{id:property.id}}">
                 <button
                   class="btn btn-warning btn-sm w-100 fw-bold mb-3"
                   v-if="property.checkTransactionCompletedData"

@@ -5,7 +5,7 @@
           고객 문의 리스트
         </template>
       </AdminHeader>
-      <CustomerInquiryList/>
+      <CustomerInquiryList class="mb-5"/>
       <Pagination/>
     
     </div>

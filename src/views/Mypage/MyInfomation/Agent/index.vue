@@ -52,9 +52,6 @@
             />
             <h6 class="text-center">{{agent.hasQuantity}}개 남음</h6>
           </div>
-          <div v-if="agent.hasQuantity>0">
-            <RouterLink to="/Product/ProductForm"><div class="btn btn-sm btn-info mt-5">등록하기</div></RouterLink>
-          </div>
         </div>
         <hr />
         <div>
