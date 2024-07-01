@@ -1,16 +1,16 @@
 import axios from "axios";
 import qs from "qs";
 
-const memberJoin = (member) => {
+const memberJoin = (formData) => {
   //user Data
   // {
   //     mid: "youngzo",
   //     mname: "심기금",
   //     mpassword: "12345",
-  //     memail : "simpson@naver.com"
+  //     uemail : "simpson@naver.com"
   // }
   //POST 방식 : raw/JSON 방식으로 데이터 전달
-  return axios.post("/Signup/MemberSignup", member);
+  return axios.post("/member/Signup/MemberSignup", formData);
 };
 const agentJoin = (agent) => {
   //user Data

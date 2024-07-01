@@ -2,62 +2,31 @@
   <div class="overflow-hidden w-75 mx-auto">
     <div>
       <form class="mt-2 w-100">
-        <div class="d-flex justify-content-end px-4">
-          <div class="d-flex">
-            <!-- <input
+        <div class="d-flex justify-content-end px-4 w-100">
+          <div class="d-flex ">
+            <input
               class="form-control me-2 w-auto"
               type="search"
               placeholder="주소 검색"
               aria-label="Search"
               v-model="searchKeyword"
               @keyup.enter="searchInProperty"
-            /> -->
-            <!-- <button
+            />
+            <button
               class="btn btn-outline-success"
               type="button"
               @click="searchInProperty"
             >
               Search
-            </button> -->
+            </button> 
           </div>
           <div class="d-flex">
-            검색 & 필터
-            <!-- <div>
-              <select
-                class="form-select w-auto ms-2"
-                aria-label="Default select example"
-              >
-                <option selected>거래유형</option>
-                <option value="1">월세</option>
-                <option value="2">전세</option>
-              </select>
-            </div>
-            <div>
-              <select
-                class="form-select w-auto ms-2"
-                aria-label="Default select example"
-              >
-                <option selected>층수</option>
-                <option value="1">반지하</option>
-                <option value="2">지상</option>
-                <option value="3">옥탑방</option>
-              </select>
-            </div>
-            <div>
-              <select
-                class="form-select w-auto ms-2"
-                aria-label="Default select example"
-              >
-                <option selected>가격</option>
-                <option value="1">낮은순</option>
-                <option value="2">높은순</option>
-              </select>
-            </div> -->
+            필터
           </div>
         </div>
       </form>
     </div>
-    <PropertyFilter class="w-100"/>
+    <PropertyFilter class="w-100 mt-2"/>
     <ul class="nav nav-pills mt-5 ms-4">
       <li class="nav-item">
         <RouterLink

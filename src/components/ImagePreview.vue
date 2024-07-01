@@ -1,9 +1,13 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 // Props와 이벤트 정의
 const props = defineProps(["imagePurpose"]); // imagePurpose prop을 통해 single 또는 multi 이미지를 구분
-const emit = defineEmits(["update:image"]); // update:image 이벤트를 부모 컴포넌트로 전달
+const emit = defineEmits(["update:image", "file-input"]); // update:image 이벤트를 부모 컴포넌트로 전달
+
+onMounted(() => {
+  emit('file-input', fileInput.value);
+});
 
 // 반응형 참조 정의
 const fileInput = ref(null); // 파일 입력 필드 참조

@@ -106,13 +106,6 @@
                 </div>
             </div>
             <div class="border-top p-3 d-flex justify-content-end">
-                <input class="form-control me-2 w-25"
-                        type="search"
-                        placeholder="주소 검색"
-                        aria-label="Search"
-                        v-model="searchKeyword"
-                        @keyup.enter="searchInProperty"
-                />
                 <button class="btn btn-outline-secondary">초기화</button>
                 <button class="btn btn-warning ms-2">30개의 매물보기</button>
             </div>
@@ -128,6 +121,8 @@
 
 ul {
     list-style: none;
+    padding: 0;
+    padding-top: 10px;
 }
 
 .filter-box {
