@@ -44,13 +44,15 @@
             <td class="fw-bold align-middle text-center">2024/06/12</td>
             <td class="fw-bold align-middle">
               <div class="d-flex flex-column">
+                <RouterLink class="routerLink " :to="{path:'/Product/ProductForm', query:{id:property.id}}">
                 <button
-                  class="btn btn-warning btn-sm fw-bold mb-3"
+                  class="btn btn-warning btn-sm w-100 fw-bold mb-3"
                   v-if="property.checkTransactionCompletedData"
                 >
-                  <!-- 거래 완료 버튼 누르면 버튼 안 보임 -->
+                <!-- 거래 완료 버튼 누르면 버튼 안 보임 -->
+                <!--버튼 누르면 id값 가지고 수정페이지로 가기-->
                   수정
-                </button>
+                </button> </RouterLink>
                 <button
                   class="soldOutBtn btn btn-sm fw-bold mb-3"
                   @click="showTransactionModal(property)"
@@ -126,5 +128,13 @@ function hideTransactionModal(data) { // 거래 완료 확인 모달에서 거�
 .titleNcontent {
   width: 80%;
   padding: 20px;
+}
+
+.routerLink{
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 기본 텍스트 색상 상속 */
+  background: none; /* 배경 제거 */
+  border: none; /* 테두리 제거 */
+  cursor: pointer; /* 커서 스타일 설정 */
 }
 </style>

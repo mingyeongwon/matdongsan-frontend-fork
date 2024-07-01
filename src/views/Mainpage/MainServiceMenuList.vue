@@ -31,9 +31,13 @@
             집이지를 통해 타 사이트보다 <br />
             저렴한 등록비로 집을 홍보하세요.
           </p>
-          <RouterLink to="/Payment/PaymentInfo" class="btn text-light ps-5 pe-5"
+          <div v-if="user.isRegisterd"><RouterLink to="/Product/ProductForm" class="btn text-light ps-5 pe-5"
             >집내놓기</RouterLink
-          >
+          ></div>
+          <div v-else><RouterLink to="/Payment/PaymentInfo" class="btn text-light ps-5 pe-5"
+            >집내놓기</RouterLink
+          ></div>
+          
         </div>
       </div>
       <div class="card border border-2" style="width: 18rem">
@@ -56,7 +60,16 @@
     </div>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+
+// 등록권을 가지고 있다고 가정
+const user = ref({
+  email : "user123@naver.com",
+  isRegisterd : true,
+})
+
+</script>
 <style scoped>
 .btn {
   background-color: #2f4858;
