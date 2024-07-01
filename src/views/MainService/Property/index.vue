@@ -2,26 +2,27 @@
   <div class="overflow-hidden w-75 mx-auto">
     <div>
       <form class="mt-2 w-100">
-        <div class="d-flex justify-content-between px-4">
+        <div class="d-flex justify-content-end px-4">
           <div class="d-flex">
-            <input
+            <!-- <input
               class="form-control me-2 w-auto"
               type="search"
               placeholder="주소 검색"
               aria-label="Search"
               v-model="searchKeyword"
               @keyup.enter="searchInProperty"
-            />
-            <button
+            /> -->
+            <!-- <button
               class="btn btn-outline-success"
               type="button"
               @click="searchInProperty"
             >
               Search
-            </button>
+            </button> -->
           </div>
           <div class="d-flex">
-            <div>
+            검색 & 필터
+            <!-- <div>
               <select
                 class="form-select w-auto ms-2"
                 aria-label="Default select example"
@@ -51,11 +52,12 @@
                 <option value="1">낮은순</option>
                 <option value="2">높은순</option>
               </select>
-            </div>
+            </div> -->
           </div>
         </div>
       </form>
     </div>
+    <PropertyFilter class="w-100"/>
     <ul class="nav nav-pills mt-5 ms-4">
       <li class="nav-item">
         <RouterLink
@@ -124,6 +126,7 @@ import PropertyList from "@/components/Property/PropertyList.vue";
 import DetailPhoto from "./DetailPhoto.vue";
 import DetailInfo from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
+import PropertyFilter from "./PropertyFilter.vue";
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
