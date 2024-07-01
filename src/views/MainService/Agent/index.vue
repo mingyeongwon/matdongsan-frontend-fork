@@ -50,7 +50,7 @@
         </div>
       </ul>
       <div class="d-flex p-3 h-100 w-100 mx-auto">
-        <div class="property-list-box w-25 h-100">
+        <div class="property-list-box w-25  overflow-auto">
           <div class="col mt-3" @click="backToPropertyList">
             <PropertyList type="agent" />
           </div>
@@ -93,7 +93,7 @@
 
             <div>
               <div class="d-flex pe-3 pb-3">
-                <div class="property-list-box w-25 h-100" v-if="isCommentMenu">
+                <div class="property-list-box w-25" v-if="isCommentMenu">
                   <div class="col mt-3">
                     <IndividualProductList />
                   </div>
@@ -149,6 +149,9 @@ function searchInAgent() {
 
 <style scoped>
 .map-box{
+  height: 708px;
+}
+.property-list-box{
   height: 708px;
 }
 </style>

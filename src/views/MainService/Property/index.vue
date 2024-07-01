@@ -100,9 +100,9 @@
 
     <div>
       <div class="d-flex ps-3 pe-3 pb-3 pt-3">
-        <div class="property-list-box w-25 h-100">
+        <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3">
-            <PropertyList type="property" />
+            <PropertyList type="property" class="" />
           </div>
         </div>
         <div class="map-box right-box col p-3" v-if="!route.params.id">
@@ -192,5 +192,8 @@ const toggleHover = (state) => {
 }
 .heart-icon {
   transition: all 0.3s ease;
+}
+.property-list-box {
+  height: 708px;
 }
 </style>
