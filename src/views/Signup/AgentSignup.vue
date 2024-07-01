@@ -299,97 +299,30 @@ function uniqueCheck() {
 
 // 중복 확인을 아예 하지 않았을 경우와, 비밀번호와 휴대폰 번호, 사업자 번호, 이름 정규식 검사
 async function handleSubmit() {
-  // 중복 확인 여부
-  // if (errorMessage.value.emailValid === "") {
-  //   errorMessage.value.emailValid = "중복 확인을 해주세요";
-  //   emailValidStyle.value = false;
-  // }
-
-  // // 휴대폰 번호 유효성 검사
-  // phoneResult.value = phonePattern.test(agentSignup.value.agentPhone);
-  // if (!phoneResult.value) {
-  //   errorMessage.value.phoneValid = "유효하지 않은 휴대폰 번호 입니다.";
-  //   phoneValidStyle.value = false;
-  // } else {
-  //   errorMessage.value.phoneValid = "사용 가능한 휴대폰 번호 입니다.";
-  //   phoneValidStyle.value = true;
-  // }
-
-  // // 사업자 번호 유효성 검사
-  // brandNumResult.value = brandNumPattern.test(agentSignup.value.agentBrandNum);
-  // if (!brandNumResult.value) {
-  //   errorMessage.value.brandNumValid = "유효하지 않은 사업자 번호 입니다.";
-  //   brandNumValidStyle.value = false;
-  // } else {
-  //   errorMessage.value.brandNumValid = "사용 가능한 사업자 번호 입니다.";
-  //   brandNumValidStyle.value = true;
-  // }
-
-  // // 비밀번호 유효성 검사
-  // passwordResult.value = passwordPattern.test(agentSignup.value.agentPassword1);
-  // if (!passwordResult.value) {
-  //   errorMessage.value.passwordValid = "유효하지 않은 비밀번호 입니다.";
-  //   passwordValidStyle.value = false;
-  // } else if (
-  //   agentSignup.value.agentPassword1 !== agentSignup.value.agentPassword2
-  // ) {
-  //   errorMessage.value.passwordValid =
-  //     "비밀번호와 비밀번호 확인이 같지 않습니다.";
-  //   passwordValidStyle.value = false;
-  // } else {
-  //   errorMessage.value.passwordValid = "사용 가능한 비밀번호 입니다.";
-  //   passwordValidStyle.value = true;
-  // }
-
-  // // 이름 유효성 검사
-  // nameResult.value = namePattern.test(agentSignup.value.agentName);
-  // if (!nameResult.value) {
-  //   errorMessage.value.nameValid = "유효하지 않은 이름 입니다.";
-  //   nameValidStyle.value = false;
-  // } else {
-  //   errorMessage.value.nameValid = "사용 가능한 이름 입니다.";
-  //   nameValidStyle.value = true;
-  // }
-
-  // console.log(JSON.parse(JSON.stringify(agentSignup.value)));
-
-  // 유효성 검사가 모두 통과되면
-  //  if (
-  // emailValidStyle.value &&
-  // passwordValidStyle.value &&
-  // phoneValidStyle.value &&
-  // brandNumValidStyle.value &&
-  // nameValidStyle.value
-  //) {
-  // axios로 통신하여 폼 보내고
   const formData = new FormData();
-  formData.append(
-    "userEmail",
-    JSON.stringify({
-      uemail: agentSignup.value.agentEmail,
-      upassword: agentSignup.value.agentPassword1,
-      urole: "AGENT",
-      uremoved: false,
-    })
-  );
-  formData.append(
-    "agent",
-    JSON.stringify({
-      abrand: agentSignup.value.agentBrandName,
-      aname: agentSignup.value.agentName,
-      aphone: agentSignup.value.agentPhone,
-      aaddress: agentSignup.value.address,
-      aaddressdetail: agentSignup.value.addressDetail,
-      apostcode: agentSignup.value.postcode,
-      alatitude: "37.3952969470752",
-      alongitude: "127.110449292622",
-    })
-  );
+  formData.append("userEmail.uemail", agentSignup.value.agentEmail);
+  formData.append("userEmail.upassword", agentSignup.value.agentPassword1);
+  formData.append("userEmail.urole", "AGENT");
+  formData.append("userEmail.uremoved", false);
+  
+  formData.append("agent.abrand", agentSignup.value.agentBrandName);
+  formData.append("agent.aname", agentSignup.value.agentName);
+  formData.append("agent.aphone", agentSignup.value.agentPhone);
+  formData.append("agent.aaddress", agentSignup.value.address);
+  formData.append("agent.aaddressdetail", agentSignup.value.addressDetail);
+  formData.append("agent.apostcode", agentSignup.value.postcode);
+  formData.append("agent.alatitude", "37.3952969470752");
+  formData.append("agent.alongitude", "127.110449292622");
   formData.append("agent.aprofile", agentSignup.value.profileImage[0]);
+  
   formData.append("agentDetail.adattach", agentSignup.value.documentImage[0]);
 
+  formData.append("agentDetail.adbrandnumber", agentSignup.value.agentBrandNum);
+  for (let pair of formData.entries()) {
+    console.log(pair[0] + ": " + pair[1]);
+  }
+
   try {
-    console.log(agentSignup);
     const response = await agentAPI.signup(formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -399,11 +332,10 @@ async function handleSubmit() {
     console.log(response);
     router.back();
   } catch (error) {
-    console.log(error);
+    console.log(error.response ? error.response.data : error.message);
   }
-  // 홈으로 돌아가기
-  //router.push("/");
 }
+
 //}
 
 // 다음 주소 검색 API 사용
