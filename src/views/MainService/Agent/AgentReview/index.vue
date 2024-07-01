@@ -3,7 +3,11 @@
     <div class="d-flex justify-content-between mb-3">
       <h5 class="mt-3 fw-bold">평점 & 리뷰 (40)</h5>
       <div class="align-self-center">
-        <select class="form-select" aria-label="Default select example" @change="sortComment">
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          @change="sortComment"
+        >
           <option selected value="최신순">최신순</option>
           <option value="오래된순">오래된순</option>
         </select>
@@ -47,23 +51,26 @@
             <span class="align-self-center">2024/11/07</span>
           </div>
           <div class="ms-5 justify-content-between d-flex">
-            <div>
-              <span class="me-1">5.0</span><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star-half-stroke" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+            <div class="align-self-center">
+              <span class="me-1">5.0</span
+              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
+              ><i
+                class="fa-solid fa-star-half-stroke"
+                style="color: #ffd43b"
+              ></i
+              ><i class="fa-regular fa-star" style="color: #ffd43b"></i>
             </div>
             <div>
-              <div
-                class="btn btn-sm text-decoration-underline"
-                @click="toggleReplyForm"
-              >
-                댓글달기
+              <div class="btn btn-sm btn-success me-2" @click="editCommnet">
+                수정하기
               </div>
               <div class="btn btn-sm btn-danger" @click="openDeleteModal">
                 삭제하기
               </div>
             </div>
           </div>
-          <div class="ms-5 mt-3">
-            <p class="mt-3 fw-bold">
+          <div class="ms-5 mt-1">
+            <p class="fw-bold">
               정말 친절하게 다 알려줬어요. 사장님이 친절하고 서비스가 최고예요.
             </p>
           </div>
@@ -117,7 +124,6 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">삭제 확인</h5>
-          
         </div>
         <div class="modal-body">
           <p>정말 삭제하시겠습니까?</p>
@@ -141,7 +147,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute } from "vue-router";
 
 const data = 1;
 const comment = ref("");
@@ -157,16 +163,7 @@ function submitComment() {
   console.log(comment.value);
   comment.value = "";
 }
-//대댓글 작성 토글
-function toggleReplyForm() {
-  showReplyForm.value = !showReplyForm.value;
-}
-//대댓글 제출
-function submitReply(id) {
-  console.log(reply.value, "댓글의 아이디: ", id);
-  reply.value = "";
-  showReplyForm.value = false;
-}
+
 //삭제 모달 열기
 function openDeleteModal() {
   showDeleteModal.value = true;
@@ -175,17 +172,17 @@ function openDeleteModal() {
 function closeDeleteModal() {
   showDeleteModal.value = false;
 }
-//삭제 확인 버튼 
+//삭제 확인 버튼
 function confirmDelete() {
   console.log("삭제되었습니다.");
   closeDeleteModal();
 }
 //댓글 정렬 기능
-function sortComment(event){
+function sortComment(event) {
   const sortBy = event.target.value;
-  router.push({ 
+  router.push({
     path: route.path,
-    query: { ...route.query, sort: sortBy }
+    query: { ...route.query, sort: sortBy },
   });
 }
 </script>

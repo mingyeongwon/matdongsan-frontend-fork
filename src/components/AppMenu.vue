@@ -57,13 +57,17 @@
           </li>
           <li class="nav-item">
             <button
+              v-if="$store.getters.getUemail === ''"
               class="signup-btn btn mt-2 me-2 text-light fw-bold mb-1"
               @click="showLoginModal"
             >
               가입 / 로그인
             </button>
           </li>
-          <li class="nav-item dropdown me-3 rounded align-self-start">
+          <li
+            v-if="$store.getters.getUemail !== ''"
+            class="nav-item dropdown me-3 rounded align-self-start"
+          >
             <RouterLink
               class="nav-link dropdown-toggle fw-bold px-1"
               to="#"
@@ -78,11 +82,13 @@
                 class="me-1 rounded-circle align-self-center"
                 width="35"
               />
-              <span class="align-start"> User1 </span>
+              <span class="align-start"> {{ $store.getters.getUemail }} </span>
             </RouterLink>
             <ul class="dropdown-menu" aria-labelledby="navbarSubDropdown">
               <li>
-                <RouterLink class="dropdown-item" to="/Mypage/MyInfomation/Member"
+                <RouterLink
+                  class="dropdown-item"
+                  to="/Mypage/MyInfomation/Member"
                   >내 정보</RouterLink
                 >
               </li>
@@ -105,7 +111,7 @@
               </li>
 
               <li>
-                <RouterLink class="dropdown-item" to="#">로그아웃</RouterLink>
+                <div class="dropdown-item" @click="handleLogout">로그아웃</div>
               </li>
             </ul>
           </li>
@@ -115,14 +121,17 @@
   </nav>
 
   <!-- 모달 -->
-  <LoginModal id="LoginModal" @close="hideLoginModal" />
+  <LoginModal id="LoginModal" @close="hideLoginModal" modalStatus="null" />
 </template>
 
 <script setup>
 import LoginModal from "./LoginModal.vue";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { Modal } from "bootstrap";
-
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+const router = useRouter();
+const store = useStore();
 let loginModal = null;
 
 onMounted(() => {
@@ -136,7 +145,10 @@ function showLoginModal() {
 function hideLoginModal() {
   loginModal.hide();
 }
-
+function handleLogout() {
+  store.dispatch("deleteAuth");
+  router.push("/");
+}
 </script>
 
 <style scoped>
@@ -161,6 +173,4 @@ function hideLoginModal() {
 .btn1:hover {
   background-color: #636668;
 }
-
-
 </style>

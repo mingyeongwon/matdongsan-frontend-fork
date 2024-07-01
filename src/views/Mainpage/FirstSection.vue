@@ -34,7 +34,6 @@
     </div>
   </div>
 
-  <LoginModal />
 
 </template>
 <script setup>

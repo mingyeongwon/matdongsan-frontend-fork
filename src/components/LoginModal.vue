@@ -40,9 +40,9 @@
                   <input
                     class="h-100 w-100 p-3"
                     type="text"
-                    name="email"
+                    name="uemail"
                     placeholder="이메일 주소 입력"
-                    v-model.trim="loginUser.email"
+                    v-model.trim="loginUser.uemail"
                   />
                 </div>
                 <div>
@@ -60,9 +60,9 @@
                   <input
                     class="h-100 w-100 p-3"
                     type="password"
-                    name="email"
+                    name="upassword"
                     placeholder="비밀번호 입력"
-                    v-model.trim="loginUser.password"
+                    v-model.trim="loginUser.upassword"
                   />
                 </div>
                 <div>
@@ -72,25 +72,7 @@
                   >
                 </div>
               </div>
-              <div class="mt-3">
-                <div>
-                  <h4 class="fs-6 fw-bold">중개업자 여부</h4>
-                </div>
-                <div class="loginInputBox">
-                  <select v-model="loginUser.type">
-                    <option value="" disabled hidden selected>
-                      회원 타입을 선택해 주세요
-                    </option>
-                    <option value="Agent">중개업자 회원</option>
-                    <option value="Member">일반 회원</option>
-                  </select>
-                </div>
-                <div>
-                  <span :style="typeValidStyle ? 'color:green' : 'color:red'">{{
-                    checkValid.typeValid
-                  }}</span>
-                </div>
-              </div>
+
               <div class="mt-3">
                 <button
                   type="submit"
@@ -113,13 +95,16 @@
               <!-- 로그인 모달 내용 -->
 
               <!-- 일반 회원 가입 버튼 -->
-              <router-link 
+              <router-link
                 :to="{
                   name: 'SignupAgreement',
                   params: { signupType: 'member' },
                 }"
               >
-                <button class="btn btn-secondary w-75 mb-3 mt-4" data-bs-dismiss="modal">
+                <button
+                  class="btn btn-secondary w-75 mb-3 mt-4"
+                  data-bs-dismiss="modal"
+                >
                   일반 회원 가입하기
                 </button>
               </router-link>
@@ -131,12 +116,16 @@
                   params: { signupType: 'agent' },
                 }"
               >
-                <button class="btn btn-secondary w-75 mb-3" data-bs-dismiss="modal">
+                <button
+                  class="btn btn-secondary w-75 mb-3"
+                  data-bs-dismiss="modal"
+                >
                   업체 회원 가입하기
                 </button>
               </router-link>
             </div>
           </div>
+
           <!-- 이메일 찾기 영역 -->
           <div v-if="checkStatus === 'email'">
             <div
@@ -514,46 +503,38 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-
+import memberAPI from "@/apis/memberAPI";
+import { useStore } from "vuex";
 const router = useRouter();
-const emit = defineEmits(["moveToMemberSignup", "moveToAgentSignup"]);
-
+const emit = defineEmits(["moveToMemberSignup", "moveToAgentSignup", "close"]);
+const props = defineProps(["modalStatus"]);
 let checkStatus = ref(null);
+const store = useStore();
+const emailValidStyle = ref(false);
+const passwordValidStyle = ref(false);
+
 let checkValid = ref({
   emailValid: "",
   passwordValid: "",
-  typeValid: "",
 });
-
-// 임시 회원
-let tempUser = {
-  email: "user@gmail.com",
-  password: "user123",
-  name: "홍길동",
-  phone: "010-0000-0000",
-  type: "Agent",
-};
 
 // 로그인 폼
 let loginUser = ref({
-  email: "",
-  password: "",
-  type: "",
+  uemail: "",
+  upassword: "",
 });
 
 // 이메일 찾기 폼
 let findEmail = ref({
-  name: "",
-  phone: "",
-  type: "",
+  uname: "",
+  uphone: "",
 });
 
 // 비밀번호 찾기 폼
 let findPassword = ref({
-  email: "",
-  name: "",
-  phone: "",
-  type: "",
+  uemail: "",
+  uname: "",
+  uphone: "",
 });
 
 // 비밀번호 변경하기 폼
@@ -568,62 +549,68 @@ let errorMessage = ref({
   newPassword2: "",
 });
 
-var emailValidStyle = ref(false);
-var passwordValidStyle = ref(false);
-var typeValidStyle = ref(false);
-
 // 로그인 폼 제출하면 실행하는 함수
-function loginHandleSubmit() {
+async function loginHandleSubmit() {
   console.log("제출 함수 실행");
-  // 아이디 확인
-  if (loginUser.value.email !== tempUser.email) {
-    checkValid.value.emailValid = "가입한 회원이 아닙니다.";
-    emailValidStyle.value = false;
-  } else {
-    checkValid.value.emailValid = "";
-    emailValidStyle.value = true;
-    // 이메일이 맞으면 비밀번호와 유저타입이 맞는지 확인
+  // // 아이디 확인
+  // if (loginUser.value.email !== tempUser.email) {
+  //   checkValid.value.emailValid = "가입한 회원이 아닙니다.";
+  //   emailValidStyle.value = false;
+  // } else {
+  //   checkValid.value.emailValid = "";
+  //   emailValidStyle.value = true;
+  //   // 이메일이 맞으면 비밀번호와 유저타입이 맞는지 확인
 
-    // 비밀번호 확인
-    if (loginUser.value.password !== tempUser.password) {
-      checkValid.value.passwordValid = "비밀번호가 틀렸습니다.";
-      passwordValidStyle.value = false;
-    } else {
-      checkValid.value.passwordValid = "";
-      passwordValidStyle.value = true;
-    }
-    // 유저 타입 확인
-    if (loginUser.value.type !== tempUser.type) {
-      checkValid.value.typeValid = "해당 회원이 아닙니다.";
-      typeValidStyle.value = false;
-    } else {
-      checkValid.value.typeValid = "";
-      typeValidStyle.value = true;
-    }
-  }
+  //   // 비밀번호 확인
+  //   if (loginUser.value.password !== tempUser.password) {
+  //     checkValid.value.passwordValid = "비밀번호가 틀렸습니다.";
+  //     passwordValidStyle.value = false;
+  //   } else {
+  //     checkValid.value.passwordValid = "";
+  //     passwordValidStyle.value = true;
+  //   }
+  //   // 유저 타입 확인
+  //   if (loginUser.value.type !== tempUser.type) {
+  //     checkValid.value.typeValid = "해당 회원이 아닙니다.";
+  //   } else {
+  //     checkValid.value.typeValid = "";
+  //   }
+  // }
 
   // 로그인 정보가 맞으면 실행
-  if (
-    emailValidStyle.value &&
-    passwordValidStyle.value &&
-    typeValidStyle.value
-  ) {
-    router.push("/"); // 유효성 검사를 통과하면 홈으로 가기 -> 모달이 안 없어지는 문제 발생
+  // if (emailValidStyle.value && passwordValidStyle.value) {
+  //   router.push("/"); // 유효성 검사를 통과하면 홈으로 가기 -> 모달이 안 없어지는 문제 발생
+  // }
+  try {
+    const data = JSON.parse(JSON.stringify(loginUser.value));
+    const response = await memberAPI.login(data);
+    if (response.data.result === "success") {
+      const payload = {
+        uemail: response.data.uemail,
+        accessToken: response.data.accessToken,
+      };
+
+      store.dispatch("saveAuth", payload);
+
+      emit("close"); // 모달 닫기
+      router.push("/"); // 유효성 검사를 통과하면 홈으로 가기 -> 모달이 안 없어지는 문제 발생
+    }
+  } catch (error) {
+    console.log("에러 발생");
   }
 }
 // 비밀번호 찾기 폼 제출하면 실행하는 함수
-function findPasswordHandleSubmit() {
-  if (
-    tempUser.name === findPassword.value.name &&
-    tempUser.phone === findPassword.value.phone &&
-    tempUser.type === findPassword.value.type &&
-    tempUser.email === findPassword.value.email
-  ) {
-    checkStatus.value = "updatePassword";
-  } else {
-    checkStatus.value = "missPassword";
-  }
-}
+// function findPasswordHandleSubmit() {
+//   if (
+//     tempUser.name === findPassword.value.uname &&
+//     tempUser.phone === findPassword.value.uphone &&
+//     tempUser.email === findPassword.value.uemail
+//   ) {
+//     checkStatus.value = "updatePassword";
+//   } else {
+//     checkStatus.value = "missPassword";
+//   }
+// }
 
 var passwordPattern =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
@@ -654,40 +641,32 @@ function changePasswordHandleSubmit() {
   }
 }
 
-// 이메일 찾기 폼 제출하면 실행하는 함수
-function findEmailHandleSubmit() {
-  if (
-    tempUser.name === findEmail.value.name &&
-    tempUser.phone === findEmail.value.phone &&
-    tempUser.type === findEmail.value.type
-  ) {
-    checkStatus.value = "findEmail";
-  } else {
-    checkStatus.value = "missEmail";
-  }
-}
+// // 이메일 찾기 폼 제출하면 실행하는 함수
+// function findEmailHandleSubmit() {
+//   if (
+//     tempUser.name === findEmail.value.name &&
+//     tempUser.phone === findEmail.value.phone
+//   ) {
+//     checkStatus.value = "findEmail";
+//   } else {
+//     checkStatus.value = "missEmail";
+//   }
+// }
 
 // 로그인 할때 빈 값이 있으면 제출 버튼 비활성화
 const checkData = computed(() => {
-  var result =
-    loginUser.value.email !== "" &&
-    loginUser.value.password !== "" &&
-    loginUser.value.type !== "";
+  var result = loginUser.value.email !== "" && loginUser.value.password !== "";
   return result;
 });
 const checkFindEmailData = computed(() => {
-  var result =
-    findEmail.value.name !== "" &&
-    findEmail.value.phone !== "" &&
-    findEmail.value.type !== "";
+  var result = findEmail.value.name !== "" && findEmail.value.phone !== "";
   return result;
 });
 const checkUpdatePasswordData = computed(() => {
   var result =
     findPassword.value.name !== "" &&
     findPassword.value.phone !== "" &&
-    findPassword.value.email !== "" &&
-    findPassword.value.type !== "";
+    findPassword.value.email !== "";
   return result;
 });
 
@@ -702,14 +681,6 @@ function checkUserPassword() {
 // 모달 닫으면 v-if 사용을 위한 설정 초기화
 function cancelUserData() {
   checkStatus.value = null;
-}
-
-// 일반 가입과 agent 가입 구분
-function moveToMemberSignup() {
-  emit("moveTo-MemberSignup", "member");
-}
-function moveToAgentSignup() {
-  emit("moveTo-AgentSignup", "agent");
 }
 </script>
 
