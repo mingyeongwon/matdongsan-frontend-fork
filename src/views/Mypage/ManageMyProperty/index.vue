@@ -89,9 +89,13 @@ import MyPageSideBar from "@/components/MyPageSidebar.vue";
 import TransactionModal from "./TransactionCompleted.vue";
 import { onMounted, ref } from "vue";
 import { Modal } from "bootstrap";
+import propertyAPI from "@/apis/propertyAPI";
 
 let transactionModal = null;
 let idNumber = ref(0);
+
+const property = ref({});
+const pthumbnail = ref(null);
 
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
@@ -118,6 +122,21 @@ function hideTransactionModal(data) { // 거래 완료 확인 모달에서 거�
   transactionModal.hide();
   data[idNumber.value-1].checkTransactionCompletedData = false;
 }
+
+//유저 매물 리스트 목록을 가져오는 메소드 정의
+// async function getUserPropertyList() {
+//   try {
+//     const response = await propertyAPI.getUserPropertyList();
+//     property.value = response.data;
+//     if(property.value.pthumbnailoname != null) {
+      
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+
 </script>
 
 <style scoped>
