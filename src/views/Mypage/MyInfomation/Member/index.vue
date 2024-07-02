@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex vh-100 w-100 mx-auto">
+  <div class="d-flex h-auto w-100 mx-auto">
     <MyPageSidebar />
     <div class="titleNcontent w-75 mx-auto">
       <div class="d-flex justify-content-between mb-3">
@@ -63,7 +63,7 @@
         <hr />
         <div>
           이름
-          <input class="ms-5" type="text" v-model="user.name" readonly />
+          <input class="ms-5" type="text" v-model="agentData.aname" readonly />
         </div>
         <hr class="mb-4" />
         전화번호
@@ -90,18 +90,25 @@
         />
         <hr class="mb-4" />
         이메일 주소
-        <input type="email" v-model="user.email" readonly />
-        <div class="need-to-add-type-variable-here">
+        <input type="email" v-model="userData.uemail" readonly />
+        <div
+          v-if="userData.urole === 'AGENT'"
+          class="need-to-add-type-variable-here"
+        >
           <hr />
           <div>
             중개소 이름
-            <input class="ms-5" type="text" readonly />
+            <input
+              class="ms-5"
+              type="text"
+              v-model="agentData.abrand"
+              readonly
+            />
           </div>
           <hr class="mb-4" />
           사업자 등록 번호
-          <input type="text" class="me-2 ms-4 ps-2" readonly size="1" />-
-          <input type="text" class="ms-2 me-2 text-center" size="1" readonly />-
-          <input type="text" class="ms-2 ps-2" size="3" readonly />
+          <input type="text" class="me-2 ms-4 ps-2" v-model="agentDetailData.adbrandnumber" readonly size="30" />
+
           <hr />
           <div class="row">
             <div class="row">
@@ -110,12 +117,22 @@
                 <input
                   class="col-10"
                   type="text"
-                  style="margin-right: 70px; width: 40%"
+                  style="margin-right: 70px; width: 60%"
+                  v-model="agentData.aaddress"
+                  readonly
+                />
+                <input
+                  v-if="agentData.aaddressDetail"
+                  class="col-10 mt-2"
+                  type="text"
+                  style="width: 60%"
+                  placeholder="상세주소"
                   readonly
                 />
                 <input
                   class="col-10 mt-2"
                   type="text"
+                  v-model="agentData.apostcode"
                   style="width: 60%"
                   readonly
                 />
@@ -203,31 +220,35 @@ import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import memberAPI from "@/apis/memberAPI";
-const userData = ref({});
 const store = useStore();
+const userData = ref({});
+const agentData = ref({});
+const arrPhone = ref("");
+const agentDetailData = ref({});
 //유저 데이터를 가져오는 메소드 정의
 async function getUserData(uemail) {
   try {
     const response = await memberAPI.getUserData(uemail);
-    userData.value = response.data;
+    userData.value = response.data.userData;
+    agentData.value = response.data.agentSignupData.agent;
+    agentDetailData.value = response.data.agentSignupData.agentDetail;
+    console.log(response.data);
+    // 전화번호 하이픈을 기준으로 나누기
+    arrPhone.value = agentData.value.aphone.split("-");
   } catch (error) {
     console.log(error);
   }
 }
+
 //로그인한 유저의 이메일을 가지고 데이터 가져오는 함수
 getUserData(store.getters.getUemail);
-console.log(JSON.parse(JSON.stringify(userData)));
 const user = ref({
   name: "원민경",
   phone: "010-1234-1234",
   email: "text@email.com",
   hasQuantity: 4,
 });
-
-let arrPhone = ref(null);
-
-// 전화번호 하이픈을 기준으로 나누기
-arrPhone.value = user.value.phone.split("-");
+console.log(userData.value);
 
 let changePassword = ref({
   oldPassword: "",

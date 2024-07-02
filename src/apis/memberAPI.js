@@ -13,8 +13,8 @@ const memberJoin = (formData) => {
   return axios.post("/member/Signup/MemberSignup", formData);
 };
 const getUserData = (uemail) => {
-  return axios.get("/Mypage/MyInfomation/"+uemail);
-}
+  return axios.get("/Mypage/MyInfomation/" + uemail);
+};
 const agentJoin = (agent) => {
   //user Data
   // {
@@ -43,10 +43,11 @@ const login = (member) => {
 // 탈퇴
 const deleteAccount = (currPw) => {
   return axios.put("/MyPage/DeleteAccount", { currPw: currPw });
-}
+};
 
 export default {
   memberJoin,
   agentJoin,
   login,
+  getUserData,
 };
