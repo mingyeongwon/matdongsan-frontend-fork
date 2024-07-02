@@ -12,6 +12,9 @@ const memberJoin = (formData) => {
   //POST 방식 : raw/JSON 방식으로 데이터 전달
   return axios.post("/member/Signup/MemberSignup", formData);
 };
+const getUserData = (uemail) => {
+  return axios.get("/Mypage/MyInfomation/"+uemail);
+}
 const agentJoin = (agent) => {
   //user Data
   // {
@@ -41,4 +44,5 @@ export default {
   memberJoin,
   agentJoin,
   login,
+  getUserData
 };
