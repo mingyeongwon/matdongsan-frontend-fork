@@ -323,14 +323,10 @@ async function handleSubmit() {
   }
 
   try {
-    const response = await agentAPI.signup(formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await agentAPI.signup(formData);
 
     console.log(response);
-    router.back();
+    router.push("/");
   } catch (error) {
     console.log(error.response ? error.response.data : error.message);
   }

@@ -82,7 +82,7 @@
                 class="me-1 rounded-circle align-self-center"
                 width="35"
               />
-              <span class="align-start"> {{ $store.getters.getUemail }} </span>
+              <span class=""> {{ $store.getters.getUemail }} </span>
             </RouterLink>
             <ul class="dropdown-menu" aria-labelledby="navbarSubDropdown">
               <li>
