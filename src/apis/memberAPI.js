@@ -40,9 +40,13 @@ const login = (member) => {
   return axios.post("/login", qs.stringify(member));
 };
 
+// 탈퇴
+const deleteAccount = (currPw) => {
+  return axios.put("/MyPage/DeleteAccount", { currPw: currPw });
+}
+
 export default {
   memberJoin,
   agentJoin,
   login,
-  getUserData
 };
