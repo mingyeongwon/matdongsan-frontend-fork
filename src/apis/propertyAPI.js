@@ -20,5 +20,6 @@ const propertyAttachDownload = (pnumber) =>
 
 export default {
   getPropertyList,
+  getUserPropertyList,
   propertyAttachDownload,
 };
