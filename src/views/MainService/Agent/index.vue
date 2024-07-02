@@ -93,7 +93,7 @@
 
             <div>
               <div class="d-flex pe-3 pb-3">
-                <div class="property-list-box w-25" v-if="isCommentMenu">
+                <div class="property-list-box w-100 h-auto" v-if="isCommentMenu">
                   <div class="col mt-3">
                     <IndividualProductList />
                   </div>
@@ -153,5 +153,12 @@ function searchInAgent() {
 }
 .property-list-box{
   height: 708px;
+}
+.fa-arrow-left{
+  cursor: pointer;
+}
+.fa-arrow-left:hover{
+  color: #b8b8b8;
+  transition: 0.25s;
 }
 </style>

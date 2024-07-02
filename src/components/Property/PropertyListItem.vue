@@ -1,8 +1,8 @@
 <template>
   <RouterLink
-    :to="{path:`/Property/${favoriteData.id}`}"
+    :to="{ path: `/Property/${favoriteData.id}` }"
     class="row text-decoration-none me-3 text-dark"
-    v-if="props.favoriteData.type == 'favorite'"
+    v-if="props.favoriteData.length > 0"
   >
     <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
@@ -40,9 +40,9 @@
     </div>
   </RouterLink>
   <RouterLink
-    :to="{path:`/Property/${propertyData.id}`}"
+    :to="{ path: `/Property/${propertyData.pnumber}` }"
     class="row text-decoration-none me-3 text-dark"
-    v-if="props.propertyData.type == 'property'"
+    v-if="props.propertyData.pnumber"
   >
     <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
@@ -51,7 +51,7 @@
             class=""
             width="140"
             height="140"
-            src="https://cdn.ggumim.co.kr/cache/star/600/4f88ed25-b172-4ed7-b1cc-8e959c33d786.jpg"
+            :src="pattach"
             alt=""
           />
         </div>
@@ -65,10 +65,10 @@
               >
             </p>
             <p class="listInfo">
-              {{ propertyData.floor }}층, {{ propertyData.size }}m<sup>2</sup>,
-              관리비 {{ propertyData.maintenance }}만
+              {{ propertyData.pfloor }}층, {{ propertyData.psize }}m<sup>2</sup>,
+              관리비 {{ propertyData.pmaintenance }}만
             </p>
-            <p class="listInfo">{{ propertyData.title }}</p>
+            <p class="listInfo">{{ propertyData.ptitle }}</p>
             <p
               class="listMemberType text-center border border-danger text-danger mt-2 p-1"
             >
@@ -80,33 +80,22 @@
     </div>
   </RouterLink>
   <RouterLink
-    :to="{path:`/Agent/${agentData.id}`}"
+    :to="{ path: `/Agent/${agentData.anumber}` }"
     class="row text-decoration-none me-3 text-dark"
-    v-if="props.agentData.type == 'agent'"
+    v-if="props.agentData.anumber"
   >
     <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
         <div class="w-50">
-          <img
-            class=""
-            width="140"
-            height="140"
-            src="https://cdn.ggumim.co.kr/cache/star/600/4f88ed25-b172-4ed7-b1cc-8e959c33d786.jpg"
-            alt=""
-          />
+          <img class="" width="140" height="140" :src="aattach" alt="" />
         </div>
         <div class="w-50">
           <div class="listInfo-box ms-2">
             <p class="listPrice mb-2 mt-2 ms-2">
-              <b
-                >{{ agentData.company }} </b
-              >
+              <b>{{ agentData.abrand }} </b>
             </p>
-            <p class="listInfo ms-2">
-              {{ agentData.name }},
-            </p>
-            <p class="listInfo ms-2"> {{ agentData.phone }}</p>
-          
+            <p class="listInfo ms-2">{{ agentData.aname }},</p>
+            <p class="listInfo ms-2">{{ agentData.aphone }}</p>
           </div>
         </div>
       </div>
@@ -115,12 +104,16 @@
 </template>
 
 <script setup>
-
+import agentAPI from "@/apis/agentAPI";
+import propertyAPI from "@/apis/propertyAPI";
+import { ref } from "vue";
+const aattach = ref(null); //중개인 첨부 사진
+const pattach = ref(null); //매물 첨부 사진
 const props = defineProps({
   propertyData: {
     type: Object,
     default: () => ({
-      id:0,
+      id: 0,
       pcategory: "월세",
       pdeposite: 3000,
       prentalfee: 20,
@@ -134,7 +127,7 @@ const props = defineProps({
   favoriteData: {
     type: Object,
     default: () => ({
-      id:0,
+      id: 0,
       pcategory: "월세",
       pdeposite: 3000,
       prentalfee: 20,
@@ -149,7 +142,7 @@ const props = defineProps({
   agentData: {
     type: Object,
     default: () => ({
-      id:0,
+      id: 0,
       company: "검은소와 중개소 ",
       pdeposite: 3000,
       prentalfee: 20,
@@ -159,6 +152,32 @@ const props = defineProps({
     }),
   },
 });
+
+//중개인 첨부 사진 가져오기
+const getAttach = async (argAnumber) => {
+  try {
+    const response = await agentAPI.agentAttachDownload(argAnumber);
+    const blob = response.data;
+    aattach.value = URL.createObjectURL(blob);
+  } catch (error) {
+    console.log(error);
+  }
+};
+//중개인 첨부 사진 가져오기
+const getPttach = async (argPnumber) => {
+  try {
+    const response = await propertyAPI.propertyAttachDownload(argPnumber);
+    const blob = response.data;
+    pattach.value = URL.createObjectURL(blob);
+  } catch (error) {
+    console.log(error);
+  }
+};
+if (props.agentData.anumber) {
+  getAttach(props.agentData.anumber);
+} else if (props.propertyData.pnumber) {
+  getPttach(props.propertyData.pnumber);
+}
 </script>
 
 <style scoped>
