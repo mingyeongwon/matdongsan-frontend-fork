@@ -85,6 +85,10 @@
 <script setup>
 import MyPageSideBar from "@/components/MyPageSidebar.vue";
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import memberAPI from "@/apis/memberAPI";
+
+const router = useRouter();
 
 let deleteAccount = ref({
   deletePassword: "",
@@ -97,8 +101,16 @@ const checkDeleteAccountData = computed(() => {
   return result;
 });
 
-function handleSubmit() {
-  console.log(JSON.parse(JSON.stringify(deleteAccount.value)));
+async function handleSubmit() {
+  try {
+    const data = deleteAccount.value.deletePassword;
+    const response = await memberAPI.deleteAccount(data);
+    router.push("/");
+  } catch(error) {
+    console.log(error);
+  }
+
+
 }
 </script>
 

@@ -42,6 +42,47 @@ function showLoginModal() {
   requiredInfoModal.show();
 }
 
+// property
+const property = ref({
+  pdeposite: "",
+  prentalfee: "",
+  pfloortype: "",
+  pfloor: "",
+  psize: "",
+  pmaintenance:  "",
+  ptitle: "",
+  pcategory: "",
+  paddress: "",
+  paddressdetail: "",
+  ppostcode: "",
+  platitude: "",
+  plongitude: "",
+});
+
+const propertyDetail = ref({
+  pdcontent: "",
+  pdmonveindate: "",
+  pdbath: "",
+  pdlift: "",
+  pdbed: "",
+  pdlot: "",
+  pdheating: "",
+  pdcooling: "",
+  pdmicrowave: "",
+  pdburner: "",
+  pdfridge: "",
+  pdshoecloset: "",
+  pdtv: "",
+  pdcloset: "",
+  pddinningtable: "",
+  pdtable: "",
+  pdwasher: "",
+  pdinduction: ""
+})
+
+const pthumbnail = ref(null);
+const ppattach = ref(null);
+
 // 부동산 정보 객체
 const propertyInfo = reactive({
   address: "",
