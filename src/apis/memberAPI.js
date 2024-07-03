@@ -50,4 +50,5 @@ export default {
   agentJoin,
   login,
   getUserData,
+  deleteAccount
 };
