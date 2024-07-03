@@ -34,7 +34,6 @@
               <img v-if="pthumbnail != null" :src="pthumbnail" width="150" alt="매물 사진" />
             </td>
             <td class="align-middle text-muted">
-              <small class="text-muted"> 원룸 </small>
               <div class="fw-bold">{{ property.pcategory }} {{ property.pdeposite }} {{ property.prentalfee }}</div>
               <small>
                 {{ property.pfloortype }},{{ property.psize }}m<sup>2</sup>,관리비 {{ property.pmaintenance }}만, {{ property.ptitle }}
@@ -46,7 +45,7 @@
                 <RouterLink class="routerLink " :to="{path:'/PropertyForm', query:{pnumber:property.pnumber}}">
                 <button
                   class="btn btn-warning btn-sm w-100 fw-bold mb-3"
-                  v-if="property.checkTransactionCompletedData"
+                  v-if="property.pstatus !== 거래완료"
                 >
                 <!-- 거래 완료 버튼 누르면 버튼 안 보임 -->
                 <!--버튼 누르면 id값 가지고 수정페이지로 가기-->
@@ -55,24 +54,47 @@
                 <button
                   class="soldOutBtn btn btn-sm fw-bold mb-3"
                   @click="showTransactionModal(property)"
-                  :disabled="!property.checkTransactionCompletedData"
+                  :disabled="property.pstatus === 거래완료"
                 >
                   <!-- 거래 완료 버튼 누르면 버튼 비활성화 -->
                   거래완료
                 </button>
                 <button
                   :class="[
-                    'btn btn-sm fw-bold',
+                    'btn btn-sm fw-bold mb-3',
                     property.isActive ? 'btn-danger' : 'btn-success',
                   ]"
                   @click="toggleActive(property)"
-                  v-if="property.checkTransactionCompletedData"
+                  v-if="property.pstatus !== 거래완료"
                 >
                   {{ property.isActive ? "비활성화" : "활성화" }}
                 </button>
+                <button
+                  class="soldOutBtn btn btn-sm fw-bold"
+                  @click="showDeletePropertyModal(property.pnumber)">
+                  삭제
+                </button>                
               </div>
             </td>
           </tr>
+          <!-- 페이지네이션 -->
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav> 
         </tbody>
       </table>
     </div>
@@ -81,24 +103,33 @@
     id="TransactionModal"
     @close="hideTransactionModal(properties)"
   />
+  <DeletePropertyModal
+    id="DeletePropertyModal"
+    @close="hideDeletePropertyModal" />
+
 </template>
 
 <script setup>
 import MyPageSideBar from "@/components/MyPageSidebar.vue";
 import TransactionModal from "./TransactionCompleted.vue";
+import DeletePropertyModal from "./DeletePropertyModal.vue";
 import { onMounted, ref } from "vue";
 import { Modal } from "bootstrap";
 import propertyAPI from "@/apis/propertyAPI";
 import axios from "axios";
 
 let transactionModal = null;
+let deletePropertyModal = null;
 let idNumber = ref(0);
 
 const property = ref({});
 const pthumbnail = ref(null);
 
+const pthumbnails = ref({});
+
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
+  deletePropertyModal = new Modal(document.querySelector("#DeletePropertyModal"));
 });
 
 function toggleActive(property) {
@@ -111,16 +142,26 @@ const properties = ref([
   { id: 2, isActive: false,checkTransactionCompletedData:true },
   // 추가 매물 데이터
 ]);
+
+
+// 모달
 function showTransactionModal(data) {
   transactionModal.show();
   idNumber.value=data.id;
   console.log(idNumber.value);
 }
 
-
 function hideTransactionModal(data) { // 거래 완료 확인 모달에서 거래 완료 버튼 클릭 시 실행되는 함수
   transactionModal.hide();
   data[idNumber.value-1].checkTransactionCompletedData = false;
+}
+
+function showDeletePropertyModal(pnumber) {
+  deletePropertyModal.show();
+}
+
+function hideDeletePropertyModal() { 
+  deletePropertyModal.hide();
 }
 
 //유저 매물 리스트 목록을 가져오는 메소드 정의
