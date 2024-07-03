@@ -19,14 +19,15 @@
             <th>#</th>
             <th>항목</th>
             <th>등록일</th>
+            <th>상세</th>
             <th>답변상태</th>
           </tr>
         </thead>
         <tbody class="text-center">
           <AccordionRow
-            v-for="(item, index) in items"
+            v-for="(item, index) in page.question"
             kindOf="qna"
-            :key="index"
+            :key="item.qnumber"
             :rowData="{
               index,
               item,
@@ -37,6 +38,12 @@
           />
         </tbody>
       </table>
+      <Pagination
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      page="adminCustomerInquiryList"
+      @update:currentPage="handlePageChange"
+    />
     </div>
   </div>
   <DeleteQnaModal id="DeleteQnaModal"/>
@@ -48,8 +55,19 @@ import { Modal } from "bootstrap";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionRow from "@/components/AccordionItem.vue";
 import DeleteQnaModal from "../../../views/Mypage/CustomerInquiry/DeleteQnaModal.vue"
+import qnaAPI from "@/apis/qnaAPI";
+import Pagination from "@/components/Pagination";
 
 let deleteQnaModal = null;
+
+// pagination이 전달해주는 페이지 번호
+let currentPage = ref(1);
+
+// DB에서 가져온 리스트
+const page = ref({
+  question : [],
+  pager : {}
+});
 
 onMounted(() => {
   deleteQnaModal = new Modal(document.querySelector("#DeleteQnaModal"));
@@ -61,22 +79,41 @@ function showDeleteQnaModal() {
 }
 
 
-const items = ref([
-  {
-    id:1,
-    title: "문의 1",
-    status: "답변 완료",
-    date: "2024/06/18",
-    details: "문의 1에 대한 상세한 답변 내용입니다.",
-  },
-  {
-    id:2,
-    title: "문의 2",
-    status: "처리 중",
-    date: "2024/06/18",
-    details: "문의 2에 대한 처리 중인 상태입니다.",
-  },
-]);
+
+// 고객의 문의 리스트 가져오기
+async function getList(){
+  console.log("되냐");
+  try {
+    const response = await qnaAPI.getQuestionListForUser();
+    page.value.question = response.data.question;
+    page.value.pager = response.data.pager;
+    console.log("d",page.value.question.size());
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+getList();
+
+// 고객의 문의 디테일 가져오기
+
+
+// const items = ref([
+//   {
+//     id:1,
+//     title: "문의 1",
+//     status: "답변 완료",
+//     date: "2024/06/18",
+//     details: "문의 1에 대한 상세한 답변 내용입니다.",
+//   },
+//   {
+//     id:2,
+//     title: "문의 2",
+//     status: "처리 중",
+//     date: "2024/06/18",
+//     details: "문의 2에 대한 처리 중인 상태입니다.",
+//   },
+// ]);
 
 const openIndex = ref(null);
 

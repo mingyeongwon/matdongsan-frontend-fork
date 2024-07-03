@@ -2,20 +2,20 @@
     <!-- 리스트(table) -->
      <div class="w-50 container">
     <table style="width: 100%; margin-top: 20px; ">
-        <thead>
+        <thead class="row">
         <!-- <th>카테고리</th> -->
-        <th>제목</th><th>날짜</th><th>답변 여부</th>
+        <th class="col-6" >제목</th><th class="col-4">날짜</th><th class="col-2">답변 여부</th>
         </thead>
         <tbody>
-            <tr v-for="(item, index) in noticeList" :key="index">
+            <tr class="row" v-for="question in props.question" :key="question.qnumber">
                     
-                    <!-- <td style="text-align: center;">[공지사항]</td> -->
-                    <td class="ps-3"><RouterLink class="routerLink" to="/Adminpage/CustomerInquiryDetail">{{ item.title }}</RouterLink></td>
-                
-                    <td style="text-align: center;">{{ item.date }}</td>
-                    <td style="text-align: center;" class="ps-5 pe-5">{{ item.status }}</td>
+                <!-- <td style="text-align: center;">[공지사항]</td> -->
+                <td class="col-6"><RouterLink class="routerLink" :to="`/Adminpage/CusomerInquiryDetail=${question.qnumber}`">{{ question.qtitle }}</RouterLink></td>
+            
+                <td class="col-4" style="text-align: center;">{{ formatDate(question.qdate) }}</td>
+                <td style="text-align: center;" class="col-2">{{  }}</td>
 
-                </tr>
+            </tr>
         
         </tbody>
     </table>
@@ -24,17 +24,49 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
+import qnaAPI from '@/apis/qnaAPI';
 
-let noticeList = ref([
-    { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-    { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-    { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-    { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-    { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-    { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-    { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-]);
+// 날짜 형식 맞추기
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// 답변 여부 불러오기
+// async function hasAnswer(qnumber){
+//     console.log("실행되나");
+//     try {
+//         const response = await qnaAPI.hasAnswer(qnumber);  
+//         if(response.data == 1){
+//             return "답변 완료";
+//         } else {
+//             return "답변 미완료";
+//         }
+//     } catch (error) {
+//         console.log(error);
+//         return "오류 남";
+//     } 
+// }
+
+const props = defineProps({
+    question: Array,
+});
+
+
+
+// let noticeList = ref([
+//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
+//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
+//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
+//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
+//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
+//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
+//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
+// ]);
 
 
 </script>

@@ -20,10 +20,16 @@ import NoticeList from "./NoticeList";
 import NoticeListFilter from "./NoticeListFilter";
 import NoticeHeader from "@/components/NoticeHeader";
 import Pagination from "@/components/Pagination";
+import { useRoute, useRouter } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
+
 
 // 현재 페이지 변경 핸들러
 const handlePageChange = (page) => {
   currentPage.value = page;
+  router.push(`/QNA/Notice?pageNo=${currentPage.value}`);
 };
 
 // 필터 변경 핸들러
@@ -34,6 +40,20 @@ const handleFilterChange = (newFilter) => {
 
 // 공지사항 리스트 (예제 데이터)
 let noticeList = ref([
+  { title: "맛동산 개인정보 처리방침 개정 안내1", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내2", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내3", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내4", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내5", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내6", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내7", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내1", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내2", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내3", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내4", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내5", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내6", date: "2024-06-01" },
+  { title: "맛동산 개인정보 처리방침 개정 안내7", date: "2024-06-01" },
   { title: "맛동산 개인정보 처리방침 개정 안내1", date: "2024-06-01" },
   { title: "맛동산 개인정보 처리방침 개정 안내2", date: "2024-06-01" },
   { title: "맛동산 개인정보 처리방침 개정 안내3", date: "2024-06-01" },

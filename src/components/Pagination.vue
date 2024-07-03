@@ -80,6 +80,8 @@ const visiblePages = computed(() => {
 
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
+
+
 </script>
 
 <style scoped>

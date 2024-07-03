@@ -1,8 +1,11 @@
 <template>
   <tr @click="rowData.toggle" style="cursor: pointer" >
     <td>{{ rowData.index + 1 }}</td>
-    <td class="fw-bold">{{ rowData.item.title }}</td>
-    <td class="text-muted">{{ rowData.item.date }}</td>
+    <td class="fw-bold">{{ rowData.item.qtitle }}</td>
+    <td class="text-muted">{{ formatDate(rowData.item.qdate) || rowData.item.date }}</td>
+    <td class="text-muted"><RouterLink class="routerLink" :to="`/CusomerInquiryDetail=${rowData.item.qnumber || rowData.item.number}`">
+      <small class="bg-success p-2 rounded fw-bold text-light">상세보기</small></RouterLink>
+    </td>
     <td
       class="text-muted"
       v-if="
@@ -23,7 +26,7 @@
     <td colspan="4">
       <div class="p-3 text-start ps-5">
         <p class="fw-bold">내용:</p>
-        <p class="text-muted">{{ rowData.item.details }}</p>
+        <p class="text-muted">{{ rowData.item.qcontent }}</p>
         <div v-if="!(rowData.item.status == '답변 완료' || rowData.item.status == '처리완료')">
           <button class="btn btn-outline-secondary btn-sm me-2" @click="editInquiry">수정</button>
           <button class="btn btn-outline-danger btn-sm" @click="showModal">삭제</button>
@@ -70,4 +73,23 @@ function editInquiry() {
   }
 }
 
+// 날짜 형식 맞추기
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 </script>
+
+<style scoped>
+.routerLink{
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 기본 텍스트 색상 상속 */
+    background: none; /* 배경 제거 */
+    border: none; /* 테두리 제거 */
+    cursor: pointer; /* 커서 스타일 설정 */
+}
+</style>

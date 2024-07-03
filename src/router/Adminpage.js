@@ -10,12 +10,12 @@ const routes = [
         import(/* webpackChunkName: "MainService" */ "@/views/Adminpage/ReportFalse"),
     },
     {
-      path: "/Adminpage/ReportFalseDetail",
+      path: "/ReportFalseDetail",
       component: () =>
         import(/* webpackChunkName: "MainService" */ "@/views/Adminpage/ReportFalseDetail"),
     },
     {
-      path: "/Adminpage/CustomerInquiryDetail",
+      path: "/CustomerInquiryDetail",
       component: () =>
         import(/* webpackChunkName: "MainService" */ "@/views/Adminpage/CustomerInquiryDetail"),
     },

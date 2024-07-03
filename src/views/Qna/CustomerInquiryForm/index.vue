@@ -69,12 +69,14 @@
 
 <script setup>
 import NoticeHeader from "@/components/NoticeHeader";
-import { ref, computed, createApp, reactive } from "vue";
-import { useRoute } from "vue-router";
+import { ref, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import VueQuillEditor from "@/components/VueQuillEditor.vue";
+import qnaAPI from "@/apis/qnaAPI";
 
 
 const route = useRoute();
+const router = useRouter();
 
 const customerInquiry = ref({
   type:"",
@@ -92,10 +94,11 @@ const checkForm = computed(() => {
   return result;
 });
 
-function handleSubmit(){
+async function handleSubmit(){
   //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
   const formData = new FormData();
-
+  // content에 p태그 붙는거 삭제하기
+  customerInquiry.value.content = customerInquiry.value.content.slice(3,-4);
   // 문자 데이터 formData에 넣기
   formData.append("qcategory", customerInquiry.value.type);
   formData.append("qtitle", customerInquiry.value.title);
@@ -107,7 +110,7 @@ function handleSubmit(){
   if(elAttach != null){
 
     for(var i=0; i<attach.value.files.length; i++){
-      formData.append("attach", elAttach.files[i]);
+      formData.append("qattach", elAttach.files[i]);
       customerInquiry.value.attach.push(elAttach.files[i]);
     }
     console.log("attach에 파일 들어옴", attach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
@@ -115,16 +118,13 @@ function handleSubmit(){
   console.log("FileList로 나옴",attach.value.files.length);
   console.log("customerInquiry: ", customerInquiry.value);
 
-  
-
-
   // 고객문의 insert 요청
-  // ...
-
-
-  // 요청 성공 후 홈으로 가거나 마이페이지로 가기
-  // ...
-
+  try {
+    const response = await qnaAPI.createQuestion(formData);
+    router.back();  
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function changeAttach(){
