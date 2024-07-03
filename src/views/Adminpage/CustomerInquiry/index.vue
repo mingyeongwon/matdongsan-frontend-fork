@@ -26,8 +26,9 @@
 
   const router = useRouter();
   const route = useRoute();
-  // pagination이 전달해주는 페이지 번호
+  
   let currentPage = ref(1);
+  let totalPages = ref(500);
 
   // DB에서 가져온 리스트
   const page = ref({
@@ -47,7 +48,8 @@
       const response = await qnaAPI.getAllQuestionList(currentPage.value);
       page.value.question = response.data.question;
       page.value.pager = response.data.pager;
-      console.log("나와라잇",page.value.question[0]);
+      console.log("나와라잇",page.value.question);
+      console.log("페이저",page.value.pager);
     } catch (error) {
       console.log("게시물 가져오기 실패",error);
     }

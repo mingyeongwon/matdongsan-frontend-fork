@@ -2,7 +2,7 @@
     <!-- 리스트(table) -->
      <div class="w-50 container">
     <table style="width: 100%; margin-top: 20px; ">
-        <thead class="row">
+        <thead class="row pt-2">
         <!-- <th>카테고리</th> -->
         <th class="col-6" >제목</th><th class="col-4">날짜</th><th class="col-2">답변 여부</th>
         </thead>
@@ -13,7 +13,7 @@
                 <td class="col-6"><RouterLink class="routerLink" :to="`/Adminpage/CusomerInquiryDetail=${question.qnumber}`">{{ question.qtitle }}</RouterLink></td>
             
                 <td class="col-4" style="text-align: center;">{{ formatDate(question.qdate) }}</td>
-                <td style="text-align: center;" class="col-2">{{  }}</td>
+                <td style="text-align: center;" :class="question.qisAnswer == 1 ? '' : 'text-danger'" class="answer col-2">{{ hasAnswer(question.qisAnswer) }}</td>
 
             </tr>
         
@@ -24,8 +24,6 @@
 </template>
 
 <script setup>
-import { ref, toRefs } from 'vue';
-import qnaAPI from '@/apis/qnaAPI';
 
 // 날짜 형식 맞추기
 function formatDate(dateString) {
@@ -36,21 +34,14 @@ function formatDate(dateString) {
   return `${year}-${month}-${day}`;
 }
 
-// 답변 여부 불러오기
-// async function hasAnswer(qnumber){
-//     console.log("실행되나");
-//     try {
-//         const response = await qnaAPI.hasAnswer(qnumber);  
-//         if(response.data == 1){
-//             return "답변 완료";
-//         } else {
-//             return "답변 미완료";
-//         }
-//     } catch (error) {
-//         console.log(error);
-//         return "오류 남";
-//     } 
-// }
+// 답변 여부 반환
+function hasAnswer(isAnswer){
+  if(isAnswer == 1 ){
+    return "답변 완료";
+  } else {
+    return "답변 미완료";
+  }
+}
 
 const props = defineProps({
     question: Array,
@@ -74,15 +65,16 @@ const props = defineProps({
 <style scoped>
     th{
       text-align: center;
-      /* padding-left: 20px; */
+      padding-top: 15px;
       border-top: 2px solid black;
       border-bottom: 1px solid grey;
       height: 60px;
-  
     }
     td{
       height: 60px;
-      border-bottom: 1px solid gray
+      border-bottom: 1px solid gray;
+      padding-top: 15px;
+
     }
     .routerLink{
         text-decoration: none; /* 밑줄 제거 */
@@ -91,5 +83,6 @@ const props = defineProps({
         border: none; /* 테두리 제거 */
         cursor: pointer; /* 커서 스타일 설정 */
     }
+
 
 </style>

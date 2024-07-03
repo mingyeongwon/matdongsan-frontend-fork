@@ -6,20 +6,8 @@
     <td class="text-muted"><RouterLink class="routerLink" :to="`/CusomerInquiryDetail=${rowData.item.qnumber || rowData.item.number}`">
       <small class="bg-success p-2 rounded fw-bold text-light">상세보기</small></RouterLink>
     </td>
-    <td
-      class="text-muted"
-      v-if="
-        rowData.item.status == '답변 완료' || rowData.item.status == '처리완료'
-      "
-    >
-      <small class="bg-success p-2 rounded fw-bold text-light">{{
-        rowData.item.status
-      }}</small>
-    </td>
-    <td class="text-muted" v-else>
-      <small class="bg-warning p-2 rounded text-dark fw-bold">{{
-        rowData.item.status
-      }}</small>
+    <td class="text-muted">
+      <small class="p-2 rounded fw-bold text-light" :class="rowData.item.qisAnswer == 1 ? 'bg-danger' : 'bg-warning'">{{ hasAnswer(rowData.item.qisAnswer) }}</small>
     </td>
   </tr>
   <tr v-if="rowData.isOpen">
@@ -27,7 +15,7 @@
       <div class="p-3 text-start ps-5">
         <p class="fw-bold">내용:</p>
         <p class="text-muted">{{ rowData.item.qcontent }}</p>
-        <div v-if="!(rowData.item.status == '답변 완료' || rowData.item.status == '처리완료')">
+        <div v-if="!(rowData.item.qisAnswer == 1 || rowData.item.status == '처리완료')">
           <button class="btn btn-outline-secondary btn-sm me-2" @click="editInquiry">수정</button>
           <button class="btn btn-outline-danger btn-sm" @click="showModal">삭제</button>
         </div>
@@ -80,6 +68,15 @@ function formatDate(dateString) {
   const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
+}
+
+// 답변 여부 반환
+function hasAnswer(isAnswer){
+  if(isAnswer == 1 ){
+    return "답변 완료";
+  } else {
+    return "답변 미완료";
+  }
 }
 
 </script>

@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { Modal } from "bootstrap";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionRow from "@/components/AccordionItem.vue";
@@ -66,7 +66,7 @@ let currentPage = ref(1);
 // DB에서 가져온 리스트
 const page = ref({
   question : [],
-  pager : {}
+  pager : {},
 });
 
 onMounted(() => {
@@ -80,40 +80,24 @@ function showDeleteQnaModal() {
 
 
 
-// 고객의 문의 리스트 가져오기
+// 고객의 문의 리스트 가져오기 함수 정의
 async function getList(){
   console.log("되냐");
   try {
     const response = await qnaAPI.getQuestionListForUser();
     page.value.question = response.data.question;
     page.value.pager = response.data.pager;
-    console.log("d",page.value.question.size());
+
+    console.log("d", page.value.question.length);
+    console.log("큐넘바",page.value.question);
   } catch (error) {
     console.log(error);
   }
 }
 
+
 getList();
 
-// 고객의 문의 디테일 가져오기
-
-
-// const items = ref([
-//   {
-//     id:1,
-//     title: "문의 1",
-//     status: "답변 완료",
-//     date: "2024/06/18",
-//     details: "문의 1에 대한 상세한 답변 내용입니다.",
-//   },
-//   {
-//     id:2,
-//     title: "문의 2",
-//     status: "처리 중",
-//     date: "2024/06/18",
-//     details: "문의 2에 대한 처리 중인 상태입니다.",
-//   },
-// ]);
 
 const openIndex = ref(null);
 

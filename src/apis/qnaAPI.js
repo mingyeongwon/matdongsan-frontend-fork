@@ -16,11 +16,6 @@ function getQuestionListForUser(pageNo){
     return axios.get("/Qna/MyCustomerInquiryList",{params:{pageNo:pageNo}});
 }
 
-// 고객 문의 답변 여부 가져오기(관리자 페이지) -> 물어보고 사용
-function hasAnswer(qnumber){
-    return axios.get("/Qna/AnswerCompleted", {params:{qnumber:qnumber}});
-}
-
 // 고객 문의 읽기
 function readQuestion(qnumber,qUnumber){
     return axios.get("/Qna/ReadCustomerInquiry",{params:{qnumber:qnumber, qUnumber:qUnumber}});
@@ -30,7 +25,6 @@ function readQuestion(qnumber,qUnumber){
 export default {
     createQuestion,
     getAllQuestionList,
-    hasAnswer,
     readQuestion,
     getQuestionListForUser,
   };
