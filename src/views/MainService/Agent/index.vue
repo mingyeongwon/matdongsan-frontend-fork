@@ -50,7 +50,7 @@
         </div>
       </ul>
       <div class="d-flex p-3 h-100 w-100 mx-auto">
-        <div class="property-list-box w-25  overflow-auto">
+        <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3" @click="backToPropertyList">
             <PropertyList type="agent" />
           </div>
@@ -60,15 +60,15 @@
             <div class="text-start test">
               <div class="">
                 <img
-                  src="https://photos.zillowstatic.com/h_l/ISjrsb703kq2pu1000000000.jpg"
+                  :src="agentProfile"
                   height="100"
                   class="rounded-circle me-3"
                 />
-                <span class="fw-bold">김덕배의 러브하우스 중개소</span>
+                <span class="fw-bold">{{ agent.abrand }}</span>
               </div>
             </div>
             <div class="">
-              <DetailInfo />
+              <DetailInfo :agentData="agent" :detailData="agentDetail" />
             </div>
             <ul class="nav nav-pills ms-4">
               <li class="nav-item">
@@ -93,19 +93,25 @@
 
             <div>
               <div class="d-flex pe-3 pb-3">
-                <div class="property-list-box w-100 h-auto" v-if="isCommentMenu">
+                <div
+                  class="property-list-box w-100 h-auto"
+                  v-if="isCommentMenu"
+                >
                   <div class="col mt-3">
                     <IndividualProductList />
                   </div>
                 </div>
                 <div class="right-box col" v-if="!isCommentMenu">
-                  <AgentReview />
+                  <AgentReview :reviewData="agentReview" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div v-if="!route.params.id" class="map-box right-box col p-3 ms-4 w-75 mx-auto">
+        <div
+          v-if="!route.params.id"
+          class="map-box right-box col p-3 ms-4 w-75 mx-auto"
+        >
           <KakaoMap page="agent" :position="agentPosition" class="" />
         </div>
       </div>
@@ -119,12 +125,29 @@ import KakaoMap from "@/components/KakaoMap.vue";
 import DetailInfo from "./DetailInfo.vue";
 import IndividualProductList from "./AgentProperty";
 import AgentReview from "./AgentReview";
-
-import { ref } from "vue";
+import agentAPI from "@/apis/agentAPI";
+import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-
+const agentProfile = ref(null);
 const route = useRoute();
 const router = useRouter();
+const agent = ref({});
+const agentDetail = ref({});
+const agentReview = ref({});
+//중개인 디테일 id 값 변할때 실행해야하는 내용들
+onMounted(() => getAgentData(route.params.id));
+watch(
+  () => route.params.id, // 타입이 변경이 되면 값 초기화
+  () => {
+    // 밑에는 타입이 변경되면 실행될 내용들
+    console.log(route.params.id);
+   
+    //중개인 데이터
+    //프로필 사진
+    getAgentData(route.params.id);
+    //중개인 데이터
+  }
+);
 let isCommentMenu = ref(true);
 const selected = "border-bottom border-4 border-warning ";
 const searchKeywordForAgent = ref("");
@@ -138,26 +161,47 @@ function subMenuCheck(check) {
   isCommentMenu.value = check;
 }
 function searchInAgent() {
-
   router.push({
     path: "/Agent",
     query: { keyword: searchKeywordForAgent.value },
   });
   searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
 }
+//중개인 데이터
+const getAgentData = async (argAnumber) => {
+  try {
+    const response = await agentAPI.getAgentDataByNumber(argAnumber);
+    agent.value = response.data.agent;
+    agentDetail.value = response.data.agentDetail;
+    agentReview.value = response.data.agentReviewList;
+    getAttach(argAnumber);
+  } catch (error) {
+    console.log(error);
+  }
+};
+//프로필 이미지 다운로드
+const getAttach = async (argAnumber) => {
+  try {
+    const response = await agentAPI.agentAttachDownload(argAnumber);
+    const blob = response.data;
+    agentProfile.value = URL.createObjectURL(blob);
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 
 <style scoped>
-.map-box{
+.map-box {
   height: 708px;
 }
-.property-list-box{
+.property-list-box {
   height: 708px;
 }
-.fa-arrow-left{
+.fa-arrow-left {
   cursor: pointer;
 }
-.fa-arrow-left:hover{
+.fa-arrow-left:hover {
   color: #b8b8b8;
   transition: 0.25s;
 }

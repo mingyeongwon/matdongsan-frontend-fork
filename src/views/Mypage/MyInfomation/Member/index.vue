@@ -92,7 +92,7 @@
         이메일 주소
         <input type="email" v-model="userData.uemail" readonly />
         <div
-          v-if="userData.urole === 'AGENT'"
+          v-if="userRole === 'AGENT'"
           class="need-to-add-type-variable-here"
         >
           <hr />
@@ -107,7 +107,13 @@
           </div>
           <hr class="mb-4" />
           사업자 등록 번호
-          <input type="text" class="me-2 ms-4 ps-2" v-model="agentDetailData.adbrandnumber" readonly size="30" />
+          <input
+            type="text"
+            class="me-2 ms-4 ps-2"
+            v-model="agentDetailData.adbrandnumber"
+            readonly
+            size="30"
+          />
 
           <hr />
           <div class="row">
@@ -217,28 +223,43 @@
 
 <script setup>
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import memberAPI from "@/apis/memberAPI";
+import agentAPI from "@/apis/agentAPI";
 const store = useStore();
 const userData = ref({});
 const agentData = ref({});
 const arrPhone = ref("");
+const userRole = ref("");
+const aattach = ref(null);
 const agentDetailData = ref({});
+const route= useRoute();
+
 //유저 데이터를 가져오는 메소드 정의
-async function getUserData(uemail) {
+async function getUserData() {
   try {
-    const response = await memberAPI.getUserData(uemail);
-    userData.value = response.data.userData;
+    const response = await memberAPI.getUserData();
+    userRole.value = response.data.userRole;
     agentData.value = response.data.agentSignupData.agent;
     agentDetailData.value = response.data.agentSignupData.agentDetail;
-    console.log(response.data);
+    console.log(response.data.agentSignupData);
     // 전화번호 하이픈을 기준으로 나누기
     arrPhone.value = agentData.value.aphone.split("-");
   } catch (error) {
     console.log(error);
   }
 }
+const getAttach = async (argAnumber) => {
+  try {
+    const response = await agentAPI.agentAttachDownload(argAnumber);
+    const blob = response.data;
+    aattach.value = URL.createObjectURL(blob);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 //로그인한 유저의 이메일을 가지고 데이터 가져오는 함수
 getUserData(store.getters.getUemail);

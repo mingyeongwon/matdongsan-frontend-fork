@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-content-between mb-3">
-      <h5 class="mt-3 fw-bold">평점 & 리뷰 (40)</h5>
+      <h5 class="mt-3 fw-bold">평점 & 리뷰 ({{props.reviewData.length}})</h5>
       <div class="align-self-center">
         <select
           class="form-select"
@@ -33,8 +33,8 @@
         </button>
       </div>
     </div>
-    <div>
-      <div>
+    <div v-if="props.reviewData" >
+      <div v-for="review in props.reviewData" :key="review.arnumber" >
         <div>
           <hr />
           <div class="d-flex justify-content-between">
@@ -43,16 +43,16 @@
                 width="40"
                 height="40"
                 class="align-self-center rounded-circle"
-                src="https://i.pinimg.com/564x/88/62/af/8862af46f4eef3f44b35d446d135dcf4.jpg"
+               :src="review.profileImage"
                 alt=""
               />
-              <p class="align-self-center fw-bold ms-2 h6 m-0">권성환</p>
+              <p class="align-self-center fw-bold ms-2 h6 m-0">{{ review.membername }}</p>
             </div>
-            <span class="align-self-center">2024/11/07</span>
+            <span class="align-self-center">{{review.ardate}}</span>
           </div>
           <div class="ms-5 justify-content-between d-flex">
             <div class="align-self-center">
-              <span class="me-1">5.0</span
+              <span class="me-1">{{ review.arrate }}</span
               ><i class="fa-solid fa-star" style="color: #ffd43b"></i
               ><i
                 class="fa-solid fa-star-half-stroke"
@@ -71,7 +71,8 @@
           </div>
           <div class="ms-5 mt-1">
             <p class="fw-bold">
-              정말 친절하게 다 알려줬어요. 사장님이 친절하고 서비스가 최고예요.
+            {{review.arcontent
+            }}
             </p>
           </div>
           <div v-if="showReplyForm" class="ms-5 mt-3">
@@ -146,14 +147,21 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import memberAPI from "@/apis/memberAPI";
+import { ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useStore } from "vuex";
+const store = useStore();
+const logedinUser =store.getters.getUemail; // 수정버튼 
 
+const props = defineProps(["reviewData"]);
+console.log(props.reviewData);
 const data = 1;
 const comment = ref("");
 const reply = ref("");
 const showReplyForm = ref(false);
 const showDeleteModal = ref(false);
+const memberProfile = ref(null);
 
 const router = useRouter();
 const route = useRoute();
@@ -185,6 +193,28 @@ function sortComment(event) {
     query: { ...route.query, sort: sortBy },
   });
 }
+
+//memberAttachDownload
+//프로필 이미지 다운로드
+const getAttach = async (argAnumber) => {
+  try {
+    const response = await memberAPI.memberAttachDownload(argAnumber);
+    const blob = response.data;
+    memberProfile.value = URL.createObjectURL(blob);
+  } catch (error) {
+    console.log(error);
+  }
+};
+//로그인한 유저의 
+const getUattach = async (argAnumber) => {
+  try {
+    const response = await memberAPI.memberAttachDownload(argAnumber);
+    const blob = response.data;
+    memberProfile.value = URL.createObjectURL(blob);
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 
 <style scoped>

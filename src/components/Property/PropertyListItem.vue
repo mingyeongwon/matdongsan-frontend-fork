@@ -87,7 +87,7 @@
     <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
         <div class="w-50">
-          <img class="" width="140" height="140" :src="aattach" alt="" />
+          <img v-if="aattach" class="" width="140" height="140" :src="aattach" alt="" />
         </div>
         <div class="w-50">
           <div class="listInfo-box ms-2">
@@ -163,7 +163,7 @@ const getAttach = async (argAnumber) => {
     console.log(error);
   }
 };
-//중개인 첨부 사진 가져오기
+//매물 첨부 사진 가져오기
 const getPttach = async (argPnumber) => {
   try {
     const response = await propertyAPI.propertyAttachDownload(argPnumber);

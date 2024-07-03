@@ -5,17 +5,16 @@
         <div class="w-50 fw-bold h4">기본정보</div>
         <hr class="border-1" />
         <div class="d-flex mt-2">
-          <div class="col-6 mt-2 h6"><b>대표자명:</b> 김덕배</div>
-          <div class="col-6 mt-2 h6"><b>중개등록번호: </b>12345-1234-12345</div>
+          <div class="col-6 mt-2 h6"><b>대표자명:</b> {{props.agentData.aname}}</div>
         </div>
         <div class="d-flex mt-2">
-          <div class="col-6 mt-2 h6"><b>대표번호: </b>02-1234-1234</div>
+          <div class="col-6 mt-2 h6"><b>대표번호: </b>{{props.agentData.aphone}}</div>
           <div class="col-6 mt-2 h6">
-            <b>집이지 가입일: </b> 2024년 5월 12일
+            <b>맛동산 가입일: </b> 2024년 5월 12일
           </div>
         </div>
         <div class="d-flex mt-2">
-          <div class="col-6 mt-2 h6"><b>사업자번호:</b> 123-12-21345</div>
+          <div class="col-6 mt-2 h6"><b>사업자번호:</b> {{props.detailData.adbrandnumber}}</div>
           <div class="col-6 mt-2 h6"><b>거래완료된 방: </b> 9개</div>
         </div>
       </div>
@@ -35,6 +34,7 @@
 import { ref } from "vue";
 import KakaoMap from "@/components/KakaoMap.vue";
 
+const props = defineProps(["detailData","agentData"]);
 const agentPosition = ref({ lat: 37.561110808242056, lng: 126.9831268386891 }); // 실제 좌표로 변경
 </script>
 

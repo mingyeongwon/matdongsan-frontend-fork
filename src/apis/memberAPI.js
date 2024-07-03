@@ -12,8 +12,8 @@ const memberJoin = (formData) => {
   //POST 방식 : raw/JSON 방식으로 데이터 전달
   return axios.post("/member/Signup/MemberSignup", formData);
 };
-const getUserData = (uemail) => {
-  return axios.get("/Mypage/MyInfomation/" + uemail);
+const getUserData = () => {
+  return axios.get("/Mypage/MyInfomation");
 };
 const agentJoin = (agent) => {
   //user Data
@@ -26,6 +26,11 @@ const agentJoin = (agent) => {
   //POST 방식 : raw/JSON 방식으로 데이터 전달
   return axios.post("/Signup/AgentSignup", agent);
 };
+
+//일반 유저 프로파일
+const memberAttachDownload = (mnumber) =>
+  //PathVariable로 데이터 전송
+  axios.get("/mattach/" + mnumber, { responseType: "blob" });
 
 //로그인
 const login = (member) => {
@@ -50,5 +55,6 @@ export default {
   agentJoin,
   login,
   getUserData,
-  deleteAccount
+  deleteAccount,
+  memberAttachDownload,
 };

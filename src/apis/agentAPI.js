@@ -13,6 +13,10 @@ const getAgentList = (pageNo, size) => {
   return axios.get("/Agent", { params: { pageNo, size } });
 };
 
+//중개인 데이터
+const getAgentDataByNumber = (anumber) => {
+  return axios.get("/Agent/"+anumber);
+}
 //중개인 프로필 사진 다운로드
 const agentAttachDownload = (anumber) =>
   //PathVariable로 데이터 전송
@@ -22,4 +26,5 @@ export default {
   signup,
   getAgentList,
   agentAttachDownload,
+  getAgentDataByNumber,
 };
