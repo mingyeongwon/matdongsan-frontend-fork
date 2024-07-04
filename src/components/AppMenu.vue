@@ -126,7 +126,7 @@
 
 <script setup>
 import LoginModal from "./LoginModal.vue";
-import { onMounted,ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Modal } from "bootstrap";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -138,27 +138,32 @@ const store = useStore();
 let loginModal = null;
 onMounted(() => {
   loginModal = new Modal(document.querySelector("#LoginModal"));
-  console.log("유저롤 123123"+ store.getters.getUserRole);
+  console.log("유저롤 123123" + store.getters.getUserRole);
+  if (store.getters.getUserRoleNumber) {
+    getUattach(store.getters.getUserRoleNumber);
+  }
 });
+watch(
+  () => store.getters.getUserRoleNumber,
+  () => {
+    getUattach(store.getters.getUserRoleNumber);
+  }
+);
 const getUattach = async (argAnumber) => {
   try {
-if(store.getters.getUserRole ==='MEMBER'){
-  const response = await memberAPI.memberAttachDownload(argAnumber);
-  const blob = response.data;
-  memberProfile.value = URL.createObjectURL(blob);
-} else{
-  const response = await agentAPI.agentAttachDownload(argAnumber);
-  const blob = response.data;
-  memberProfile.value = URL.createObjectURL(blob);
-}
-
+    if (store.getters.getUserRole === "MEMBER") {
+      const response = await memberAPI.memberAttachDownload(argAnumber);
+      const blob = response.data;
+      memberProfile.value = URL.createObjectURL(blob);
+    } else {
+      const response = await agentAPI.agentAttachDownload(argAnumber);
+      const blob = response.data;
+      memberProfile.value = URL.createObjectURL(blob);
+    }
   } catch (error) {
     console.log(error);
   }
 };
-if(store.getters.getUserRoleNumber){
-  getUattach(store.getters.getUserRoleNumber);
-}
 
 function showLoginModal() {
   loginModal.show();

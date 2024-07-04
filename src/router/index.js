@@ -7,7 +7,7 @@ import Payment from "./Payment";
 import MainPage from "@/views/Mainpage";
 import Signup from "./Signup";
 import Adminpage from "./Adminpage";
-
+import Auth from "@/apis/axiosConfig"; 
 const routes = [
   {
     path: "/",
@@ -44,4 +44,13 @@ const router = createRouter({
   
 });
 
+router.beforeEach((to, from, next) => {
+  Auth.checkTokenExpiry();
+  const token = localStorage.getItem('token');
+  if (!token && to.path !== '/login') {
+    next();
+  } else {
+    next();
+  }
+});
 export default router;
