@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-content-between mb-3">
-      <h5 class="mt-3 fw-bold">평점 & 리뷰 ({{ props.reviewData.length }})</h5>
+      <h5 class="mt-3 fw-bold">평점 & 리뷰 ({{  }} & {{ props.reviewData.length }})</h5>
       <div class="align-self-center">
         <select
           class="form-select"
@@ -22,6 +22,23 @@
         alt=""
       />
       <div class="ms-3 w-100 align-self-center">
+        <div class="d-flex flex-column">
+          <div class="star-rating d-flex mb-2">
+            <div
+              class="star"
+              v-for="index in 5"
+              :key="index"
+              @click="check(index + 1)"
+            >
+              <span v-if="index < score"
+                ><i class="fa-solid fa-star" style="color: #ffd43b"></i
+              ></span>
+              <span v-if="index >= score"
+                ><i class="fa-regular fa-star" style="color: #ffd43b"></i
+              ></span>
+            </div>
+          </div>
+        </div>
         <input
           class="w-75 p-2 rounded align-middle me-2"
           v-model="reviewData.arcontent"
@@ -77,20 +94,25 @@
             <span class="align-self-center">{{ review.ardate }}</span>
           </div>
           <div class="ms-5 justify-content-between d-flex">
-            <div class="align-self-center">
-              <span class="me-1">{{ review.arrate }}</span
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i
-                class="fa-solid fa-star-half-stroke"
-                style="color: #ffd43b"
-              ></i
-              ><i class="fa-regular fa-star" style="color: #ffd43b"></i>
+            <div class="align-self-center d-flex">
+              <span class="me-1">{{ review.arrate }}</span>
+              <div v-for="index in 5" :key="index">
+                <span v-if="index > review.arrate"
+                  ><i class="fa-regular fa-star" style="color: #ffd43b"></i
+                ></span>
+                <span v-if="index <= review.arrate"
+                  ><i class="fa-solid fa-star" style="color: #ffd43b"></i
+                ></span>
+              </div>
             </div>
-            <div>
+            <div v-if="review.arMnumber == store.getters.getUserRoleNumber">
               <div class="btn btn-sm btn-success me-2" @click="editCommnet">
                 수정하기
               </div>
-              <div class="btn btn-sm btn-danger" @click="[openDeleteModal(),getReviewId(review.arnumber)]">
+              <div
+                class="btn btn-sm btn-danger"
+                @click="[openDeleteModal(), getReviewId(review.arnumber)]"
+              >
                 삭제하기
               </div>
             </div>
@@ -165,35 +187,38 @@ import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
 const logedinUser = store.getters.getUemail; // 수정버튼
-// console.log("로그인 유저입니다"+logedinUser);
 const props = defineProps(["reviewData"]);
 const emits = defineEmits(["update-agent-data"]);
-const data = 1;
 const comment = ref("");
-const reply = ref("");
-const showReplyForm = ref(false);
 const showDeleteModal = ref(false);
 const memberProfile = ref(null);
-const clickedModalId= ref("");
-
+const clickedModalId = ref("");
+const score = ref(0);
+const defaultImg = require("@/assets/profileImage.png");
+const totalRate= ref(0);
 const router = useRouter();
 const route = useRoute();
 const reviewData = ref({
   arcontent: "",
-  arrate: "3",
+  arrate: "",
   arAnumber: route.params.id,
   arMnumber: store.getters.getUserRoleNumber,
 });
+//평점
+function check(index) {
+  score.value = +index;
+  reviewData.value.arrate = score.value-1;
+}
 //댓글 작성
 function submitComment() {
   console.log(reviewData.value);
-  if(reviewData.value.arcontent!=""){
+  if (reviewData.value.arcontent != "") {
     postReviewData(reviewData);
   }
   comment.value = "";
 }
 function getReviewId(reviewId) {
-  clickedModalId.value=reviewId;
+  clickedModalId.value = reviewId;
 }
 
 //리뷰 데이터 전송
@@ -201,17 +226,27 @@ const postReviewData = async (reviewData) => {
   try {
     const data = JSON.parse(JSON.stringify(reviewData.value));
     await agentAPI.postAgentReview(data);
-    reviewData.value.arcontent="";
+    reviewData.value.arcontent = "";
     emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
   } catch (error) {
     console.log("에러 발생");
   }
 };
 //리뷰 데이터 삭제
-const deleteReviewData = async (pageId,reviewId) => {
+const deleteReviewData = async (pageId, reviewId) => {
   try {
-    await agentAPI.deleteAgentReview(pageId,reviewId);
-   
+    await agentAPI.deleteAgentReview(pageId, reviewId);
+
+    emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
+  } catch (error) {
+    console.log("에러 발생");
+  }
+};
+//리뷰 댓글 정렬
+const sortReviewData = async (pageId, sort) => {
+  try {
+    await agentAPI.sortAgentReview(pageId, sort);
+
     emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
   } catch (error) {
     console.log("에러 발생");
@@ -227,8 +262,8 @@ function closeDeleteModal() {
 }
 //삭제 확인 버튼
 function confirmDelete() {
-  console.log(clickedModalId.value+"가 삭제되었습니다.");
-  deleteReviewData(route.params.id,clickedModalId.value);
+  console.log(clickedModalId.value + "가 삭제되었습니다.");
+  deleteReviewData(route.params.id, clickedModalId.value);
   closeDeleteModal();
 }
 //댓글 정렬 기능
@@ -239,11 +274,9 @@ function sortComment(event) {
     query: { ...route.query, sort: sortBy },
   });
 }
-
+//유저 프로필 사진
 const getUattach = async (argAnumber) => {
-
   try {
-
     if (store.getters.getUserRole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(argAnumber);
       const blob = response.data;

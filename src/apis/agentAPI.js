@@ -31,7 +31,10 @@ const postAgentReview = (reviewData) => {
 const deleteAgentReview = (anumber, arnumber) => {
   return axios.delete(`/Agent/${anumber}/${arnumber}`);
 };
-
+//중개인 정렬
+const sortAgentReview = (anumber, sort) => {
+  return axios.get("/Agent", { params: { anumber, sort } });
+};
 export default {
   signup,
   getAgentList,
@@ -39,4 +42,5 @@ export default {
   getAgentDataByNumber,
   postAgentReview,
   deleteAgentReview,
+  sortAgentReview,
 };

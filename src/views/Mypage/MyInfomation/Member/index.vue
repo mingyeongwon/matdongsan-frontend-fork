@@ -253,7 +253,7 @@ async function getUserData() {
 }
 const getUattach = async (argAnumber) => {
   try {
-if(store.getUserRole ==='MEMBER'){
+if(store.getters.getUserRole ==='MEMBER'){
   const response = await memberAPI.memberAttachDownload(argAnumber);
   const blob = response.data;
   memberProfile.value = URL.createObjectURL(blob);
