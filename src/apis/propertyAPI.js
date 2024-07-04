@@ -24,9 +24,15 @@ const deleteProperty = (pnumber) => {
   return axios.delete("/deleteProperty/" + pnumber);
 }
 
+// 인기 매물 리스트
+const getPopularPropertyList = () => {
+  return axios.get("/popularProperty");
+}
+
 export default {
   getPropertyList,
   getUserPropertyList,
   propertyAttachDownload,
-  deleteProperty
+  deleteProperty,
+  getPopularPropertyList
 };
