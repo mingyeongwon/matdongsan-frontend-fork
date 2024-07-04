@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="d-flex justify-content-between mb-3">
-      <h5 class="mt-3 fw-bold">평점 & 리뷰 ({{  }} & {{ props.reviewData.length }})</h5>
+      <h5 class="mt-3 fw-bold" v-if="!totalRate">
+        평점 & 리뷰({{ props.reviewData.length }})
+      </h5>
+      <h5 class="mt-3 fw-bold" v-else>
+        평점 & 리뷰 ({{ averageRate }} & {{ props.reviewData.length }})
+      </h5>
       <div class="align-self-center">
         <select
           class="form-select"
@@ -13,7 +18,10 @@
         </select>
       </div>
     </div>
-    <div class="d-flex mb-4" v-if="logedinUser">
+    <div
+      class="d-flex mb-4"
+      v-if="logedinUser && store.getters.getUserRole !== 'AGENT'"
+    >
       <img
         width="60"
         height="60"
@@ -50,7 +58,14 @@
         </button>
       </div>
     </div>
-    <div class="d-flex mb-4" v-else>
+    <div class="d-flex mb-4" v-if="store.getters.getUserRole === 'AGENT'"></div>
+    <div
+      class="d-flex mb-4"
+      v-if="
+        store.getters.getUserRole !== 'AGENT' &&
+        store.getters.getUserRole !== 'MEMBER'
+      "
+    >
       <img
         width="60"
         height="50"
@@ -74,7 +89,7 @@
         </button>
       </div>
     </div>
-    <div v-if="props.reviewData">
+    <div v-if="props.reviewData && props.reviewData.length > 0">
       <div v-for="review in props.reviewData" :key="review.arnumber">
         <div>
           <hr />
@@ -105,8 +120,8 @@
                 ></span>
               </div>
             </div>
-            <div v-if="review.arMnumber == store.getters.getUserRoleNumber">
-              <div class="btn btn-sm btn-success me-2" @click="editCommnet">
+            <div v-if="review.arMnumber == userRoleNumber">
+              <div  class="btn btn-sm btn-success me-2" @click="startEditReview(review)">
                 수정하기
               </div>
               <div
@@ -118,32 +133,84 @@
             </div>
           </div>
           <div class="ms-5 mt-1">
-            <p class="fw-bold">
+            <p v-if="!editingReview || editingReview.arnumber !== review.arnumber" class="fw-bold">
               {{ review.arcontent }}
             </p>
+            <div v-else>
+              <textarea v-model="editingReview.arcontent" class="form-control mb-2"></textarea>
+              <button class="btn btn-sm btn-primary me-2" @click="submitEditReview">
+                수정
+              </button>
+              <button class="btn btn-sm btn-secondary" @click="cancelEditReview">
+                취소
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      <div class="mt-5">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
+    <div v-if="props.reviewData.length == 0" class="text-center">
+      <img
+        src="@/assets/none_comment_icon.png"
+        alt=""
+        width="100"
+        class="mb-3"
+      />
+      <div class="fw-bold">아직 아무런 댓글이 없어요</div>
+    </div>
+  </div>
 
-    <div class="mt-5">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+  <!-- 경고 모달 -->
+  <div
+    class="modal fade"
+    id="warningModal"
+    tabindex="-1"
+    aria-labelledby="warningModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="warningModalLabel">경고</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          {{ warningMessage }}
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            닫기
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -182,57 +249,111 @@
 <script setup>
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { Modal } from "bootstrap";
 const store = useStore();
 const logedinUser = store.getters.getUemail; // 수정버튼
 const props = defineProps(["reviewData"]);
 const emits = defineEmits(["update-agent-data"]);
 const comment = ref("");
+const warningMessage = ref(""); // 경고 메시지 상태 추가
 const showDeleteModal = ref(false);
 const memberProfile = ref(null);
 const clickedModalId = ref("");
 const score = ref(0);
+const editingReview = ref(null); // 수정 중인 리뷰 상태 추가
 const defaultImg = require("@/assets/profileImage.png");
-const totalRate= ref(0);
 const router = useRouter();
 const route = useRoute();
+const userRoleNumber = computed(() => store.getters.getUserRoleNumber);
 const reviewData = ref({
   arcontent: "",
   arrate: "",
   arAnumber: route.params.id,
   arMnumber: store.getters.getUserRoleNumber,
 });
+console.log(userRoleNumber);
+
+//평점 총합 계산
+const totalRate = computed(() => {
+  return props.reviewData.reduce((sum, review) => sum + review.arrate, 0);
+});
+
+//평점 평균 계산 (소수점 1자리)
+const averageRate = computed(() => {
+  const count = props.reviewData.length;
+  return count > 0 ? (totalRate.value / count).toFixed(1) : 0;
+});
+
 //평점
 function check(index) {
   score.value = +index;
-  reviewData.value.arrate = score.value-1;
+  reviewData.value.arrate = score.value - 1;
 }
-//댓글 작성
-function submitComment() {
-  console.log(reviewData.value);
-  if (reviewData.value.arcontent != "") {
-    postReviewData(reviewData);
-  }
-  comment.value = "";
-}
+
 function getReviewId(reviewId) {
   clickedModalId.value = reviewId;
 }
 
-//리뷰 데이터 전송
+// 댓글 작성
+function submitComment() {
+  if (reviewData.value.arcontent === "" && score.value === 0) {
+    warningMessage.value = "댓글과 평점을 모두 작성하셔야 합니다.";
+    const warningModal = new Modal(document.getElementById("warningModal"));
+    warningModal.show();
+    return;
+  } else if (reviewData.value.arcontent === "") {
+    warningMessage.value = "댓글을 작성하셔야 합니다.";
+    const warningModal = new Modal(document.getElementById("warningModal"));
+    warningModal.show();
+    return;
+  } else if (score.value === 0) {
+    warningMessage.value = "평점을 매기셔야 합니다.";
+    const warningModal = new Modal(document.getElementById("warningModal"));
+    warningModal.show();
+    return;
+  } else {
+    postReviewData(reviewData);
+  }
+}
+
+// 리뷰 데이터 전송
 const postReviewData = async (reviewData) => {
   try {
     const data = JSON.parse(JSON.stringify(reviewData.value));
     await agentAPI.postAgentReview(data);
-    reviewData.value.arcontent = "";
     emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
+    reviewData.value.arcontent = "";
+    score.value = 0;
   } catch (error) {
     console.log("에러 발생");
   }
 };
-//리뷰 데이터 삭제
+
+// 리뷰 수정 시작
+function startEditReview(review) {
+  editingReview.value = { ...review };
+}
+
+// 리뷰 수정 취소
+function cancelEditReview() {
+  editingReview.value = null;
+}
+
+// 리뷰 수정 제출
+async function submitEditReview() {
+  try {
+    await agentAPI.updateAgentReview(editingReview.value);
+    emits("update-agent-data"); // 댓글 수정 후 에이전트 데이터 다시 가져오기
+    editingReview.value = null;
+  } catch (error) {
+    console.log("에러 발생");
+  }
+}
+
+// 리뷰 데이터 삭제
 const deleteReviewData = async (pageId, reviewId) => {
   try {
     await agentAPI.deleteAgentReview(pageId, reviewId);
@@ -242,7 +363,8 @@ const deleteReviewData = async (pageId, reviewId) => {
     console.log("에러 발생");
   }
 };
-//리뷰 댓글 정렬
+
+// 리뷰 댓글 정렬
 const sortReviewData = async (pageId, sort) => {
   try {
     await agentAPI.sortAgentReview(pageId, sort);
@@ -252,29 +374,26 @@ const sortReviewData = async (pageId, sort) => {
     console.log("에러 발생");
   }
 };
-//삭제 모달 열기
+
+// 삭제 모달 열기
 function openDeleteModal() {
   showDeleteModal.value = true;
 }
-//삭제 모달 닫기
+
+// 삭제 모달 닫기
 function closeDeleteModal() {
   showDeleteModal.value = false;
 }
-//삭제 확인 버튼
+
+// 삭제 확인 버튼
 function confirmDelete() {
   console.log(clickedModalId.value + "가 삭제되었습니다.");
   deleteReviewData(route.params.id, clickedModalId.value);
   closeDeleteModal();
 }
-//댓글 정렬 기능
-function sortComment(event) {
-  const sortBy = event.target.value;
-  router.push({
-    path: route.path,
-    query: { ...route.query, sort: sortBy },
-  });
-}
-//유저 프로필 사진
+
+
+// 유저 프로필 사진
 const getUattach = async (argAnumber) => {
   try {
     if (store.getters.getUserRole === "MEMBER") {
@@ -290,6 +409,7 @@ const getUattach = async (argAnumber) => {
     console.log(error);
   }
 };
+
 onMounted(() => {
   if (store.getters.getUserRoleNumber) {
     getUattach(store.getters.getUserRoleNumber);

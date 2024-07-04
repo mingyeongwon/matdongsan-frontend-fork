@@ -27,6 +27,9 @@ const postAgentReview = (reviewData) => {
   return axios.post("/Agent/" + reviewData.arAnumber, qs.stringify(reviewData));
 };
 
+const updateAgentReview =(editingReview)=>{
+  return axios.put(`/Agent/${editingReview.arAnumber}/${editingReview.arnumber}`,qs.stringify(editingReview))
+}
 //중개인 리뷰 삭제
 const deleteAgentReview = (anumber, arnumber) => {
   return axios.delete(`/Agent/${anumber}/${arnumber}`);
@@ -43,4 +46,5 @@ export default {
   postAgentReview,
   deleteAgentReview,
   sortAgentReview,
+  updateAgentReview,
 };
