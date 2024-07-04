@@ -34,11 +34,18 @@ const getPopularPropertyList = () => {
   return axios.get("/popularProperty");
 }
 
+// 매물 데이터
+const getPropertyData = (pnumber) => {
+  return axios.get("/Property/" + pnumber);
+};
+
+
 export default {
   getPropertyList,
   getUserPropertyList,
   propertyAttachDownload,
   deleteProperty,
   getPopularPropertyList,
-  detailPropertyAttachDownload
+  detailPropertyAttachDownload,
+  getPropertyData
 };
