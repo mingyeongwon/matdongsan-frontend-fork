@@ -31,10 +31,16 @@
 </template>
 
 <script setup>
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "delete-property"]);
+const props = defineProps({
+  pnumber: {
+    type: Number,
+    required: true
+  }
+})
 
 function deleteProperty() {
-  
+  emit('delete-property', props.pnumber);
   emit('close');
 }
 
