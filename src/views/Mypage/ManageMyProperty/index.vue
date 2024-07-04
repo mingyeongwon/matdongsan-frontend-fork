@@ -19,7 +19,7 @@
           <tr>
             <th scope="col" class="text-center">매물번호</th>
             <th scope="col" class="text-center">대표사진</th>
-            <th scope="col" class="text-center">제목 / 내용</th>
+            <th scope="col" class="text-center">가격 / 내용</th>
             <th scope="col" class="text-center">등록한 날짜</th>
             <th scope="col" class="text-center">매물 상태</th>
             <th scope="col"></th>
@@ -39,7 +39,7 @@
                 {{ property.pfloortype }},{{ property.psize }}m<sup>2</sup>,관리비 {{ property.pmaintenance }}만, {{ property.ptitle }}
               </small>
             </td>
-            <td class="fw-bold align-middle text-center">{{ property.pdate }}</td>
+            <td class="fw-bold align-middle text-center"> {{ property.formattedDate }}</td>
             <td class="fw-bold align-middle">
               <div class="d-flex flex-column">
                 <RouterLink class="routerLink " :to="{path:'/PropertyForm', query:{pnumber:property.pnumber}}">
@@ -119,6 +119,8 @@ import { onMounted, ref } from "vue";
 import { Modal } from "bootstrap";
 import propertyAPI from "@/apis/propertyAPI";
 import axios from "axios";
+import dayjs from "dayjs";
+
 
 let transactionModal = null;
 let deletePropertyModal = null;
@@ -178,6 +180,9 @@ async function getUserPropertyList() {
         getPthumbnail(property.pnumber);
       }
     });
+    properties.value.forEach(property => {
+      property.formattedDate = dayjs(property.pdate).format('YYYY-MM-DD')
+    });
   } catch (error) {
     console.log(error);
   }
@@ -193,7 +198,19 @@ const getPthumbnail = async (pnumber) => {
   }
 };
 
-getUserPropertyList();
+onMounted(() => {
+  getUserPropertyList();
+});
+
+
+const deleteProperty = async (selectedPnumber) => {
+  try {
+    await propertyAPI.deleteProperty(selectedPnumber);
+    await getUserPropertyList(); // 삭제 후 리스트 갱신
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 </script>

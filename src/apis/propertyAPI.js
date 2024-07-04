@@ -14,12 +14,19 @@ const getUserPropertyList = () => {
 };
 
 //매물 사진 다운로드
-const propertyAttachDownload = (pnumber) =>
+const propertyAttachDownload = (pnumber) => 
   //PathVariable로 데이터 전송
   axios.get("/pattach/" + pnumber, { responseType: "blob" });
+
+
+// 매물 삭제
+const deleteProperty = (pnumber) => {
+  return axios.delete("/deleteProperty/" + pnumber);
+}
 
 export default {
   getPropertyList,
   getUserPropertyList,
   propertyAttachDownload,
+  deleteProperty
 };
