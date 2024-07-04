@@ -30,7 +30,7 @@ const agentJoin = (agent) => {
 //일반 유저 프로파일
 const memberAttachDownload = (mnumber) =>
   //PathVariable로 데이터 전송
-  axios.get("/mattach/" + mnumber, { responseType: "blob" });
+  axios.get("/member/mattach/" + mnumber, { responseType: "blob" });
 
 //로그인
 const login = (member) => {

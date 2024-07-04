@@ -13,22 +13,44 @@
         </select>
       </div>
     </div>
-    <div class="d-flex mb-4">
+    <div class="d-flex mb-4" v-if="logedinUser">
       <img
         width="60"
         height="60"
         class="rounded-circle"
-        src="https://i.pinimg.com/564x/88/62/af/8862af46f4eef3f44b35d446d135dcf4.jpg"
+        :src="memberProfile"
         alt=""
       />
-      <div class="ms-3 w-100 align-self-center">
+      <div class="ms-3 w-100 align-self-center" >
         <input
           class="w-75 p-2 rounded align-middle me-2"
           v-model="comment"
           type="text"
           placeholder="댓글을 입력해주세요..."
+      
         />
         <button class="btn py-2 btn-sm btn-secondary" @click="submitComment">
+          작성하기
+        </button>
+      </div>
+    </div>
+    <div class="d-flex mb-4" v-else>
+      <img
+        width="60"
+        height="50"
+        class="rounded-circle"
+        src="@/assets/profileImage.png"
+        alt=""
+      />
+      <div class="ms-3 w-100 align-self-center" >
+        <input
+          class="w-75 p-2 rounded align-middle me-2"
+          v-model="comment"
+          type="text"
+          placeholder="로그인후 이용해주세요..."
+          readonly
+        />
+        <button class="btn py-2 btn-sm btn-secondary" disabled @click="submitComment">
           작성하기
         </button>
       </div>
@@ -39,11 +61,11 @@
           <hr />
           <div class="d-flex justify-content-between">
             <div class="d-flex">
-              <img
+              <img       
                 width="40"
                 height="40"
                 class="align-self-center rounded-circle"
-               :src="review.profileImage"
+               :src="review.profile"
                 alt=""
               />
               <p class="align-self-center fw-bold ms-2 h6 m-0">{{ review.membername }}</p>
@@ -76,11 +98,17 @@
             </p>
           </div>
           <div v-if="showReplyForm" class="ms-5 mt-3">
-            <input
+            <input v-if="logedinUser!==''"
               class="w-75 p-2 rounded align-middle me-2"
               v-model="reply"
               type="text"
               placeholder="대댓글을 입력해주세요..."
+            />
+            <input v-else
+              class="w-75 p-2 rounded align-middle me-2"
+              v-model="reply"
+              type="text"
+              placeholder="로그인후 이용할수 있습니다."
             />
             <button
               class="btn py-2 btn-sm btn-secondary"
@@ -148,14 +176,14 @@
 
 <script setup>
 import memberAPI from "@/apis/memberAPI";
-import { ref, watch } from "vue";
+import agentAPI from "@/apis/agentAPI";
+import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
 const logedinUser =store.getters.getUemail; // 수정버튼 
-
+// console.log("로그인 유저입니다"+logedinUser);
 const props = defineProps(["reviewData"]);
-console.log(props.reviewData);
 const data = 1;
 const comment = ref("");
 const reply = ref("");
@@ -194,27 +222,26 @@ function sortComment(event) {
   });
 }
 
-//memberAttachDownload
-//프로필 이미지 다운로드
-const getAttach = async (argAnumber) => {
-  try {
-    const response = await memberAPI.memberAttachDownload(argAnumber);
-    const blob = response.data;
-    memberProfile.value = URL.createObjectURL(blob);
-  } catch (error) {
-    console.log(error);
-  }
-};
-//로그인한 유저의 
 const getUattach = async (argAnumber) => {
   try {
-    const response = await memberAPI.memberAttachDownload(argAnumber);
-    const blob = response.data;
-    memberProfile.value = URL.createObjectURL(blob);
+if(store.getUserRole ==='MEMBER'){
+  const response = await memberAPI.memberAttachDownload(argAnumber);
+  const blob = response.data;
+  memberProfile.value = URL.createObjectURL(blob);
+} else{
+  const response = await agentAPI.agentAttachDownload(argAnumber);
+  const blob = response.data;
+  memberProfile.value = URL.createObjectURL(blob);
+}
+
   } catch (error) {
     console.log(error);
   }
 };
+if(store.getters.getUserRoleNumber){
+  getUattach(store.getters.getUserRoleNumber);
+}
+
 </script>
 
 <style scoped>
