@@ -102,7 +102,7 @@
                   </div>
                 </div>
                 <div class="right-box col" v-if="!isCommentMenu">
-                  <AgentReview :reviewData="reviewData" />
+                  <AgentReview :reviewData="reviewData" @update-agent-data="getAgentData(route.params.id)" />
                 </div>
               </div>
             </div>

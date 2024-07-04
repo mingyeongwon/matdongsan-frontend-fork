@@ -138,11 +138,11 @@ const store = useStore();
 let loginModal = null;
 onMounted(() => {
   loginModal = new Modal(document.querySelector("#LoginModal"));
-  
+  console.log("유저롤 123123"+ store.getters.getUserRole);
 });
 const getUattach = async (argAnumber) => {
   try {
-if(store.getUserRole ==='MEMBER'){
+if(store.getters.getUserRole ==='MEMBER'){
   const response = await memberAPI.memberAttachDownload(argAnumber);
   const blob = response.data;
   memberProfile.value = URL.createObjectURL(blob);
