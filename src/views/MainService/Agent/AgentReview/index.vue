@@ -177,7 +177,7 @@
 <script setup>
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
@@ -238,9 +238,12 @@ if(store.getUserRole ==='MEMBER'){
     console.log(error);
   }
 };
-if(store.getters.getUserRoleNumber){
+onMounted(()=>{
+  if(store.getters.getUserRoleNumber){
   getUattach(store.getters.getUserRoleNumber);
 }
+})
+
 
 </script>
 
