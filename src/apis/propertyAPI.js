@@ -13,10 +13,15 @@ const getUserPropertyList = () => {
   return axios.get("/Mypage/ManageMyProperty");
 };
 
-//매물 사진 다운로드
+// 매물 썸네일 사진 다운로드
 const propertyAttachDownload = (pnumber) => 
   //PathVariable로 데이터 전송
   axios.get("/pattach/" + pnumber, { responseType: "blob" });
+
+
+// 매물 디테일 사진 다운로드
+const detailPropertyAttachDownload = (ppnumber) => 
+  axios.get("/detailPattach/" + ppnumber, { responseType: "blob" });
 
 
 // 매물 삭제
@@ -34,5 +39,6 @@ export default {
   getUserPropertyList,
   propertyAttachDownload,
   deleteProperty,
-  getPopularPropertyList
+  getPopularPropertyList,
+  detailPropertyAttachDownload
 };

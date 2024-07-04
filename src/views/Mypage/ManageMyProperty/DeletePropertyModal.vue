@@ -37,7 +37,7 @@ const props = defineProps({
     type: Number,
     required: true
   }
-})
+});
 
 function deleteProperty() {
   emit('delete-property', props.pnumber);

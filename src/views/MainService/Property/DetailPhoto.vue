@@ -6,9 +6,12 @@
           <th scope="row" rowspan="2" class="w-50 ">
             <img
               class="img-fluid"
-              src="https://photos.zillowstatic.com/fp/f95a407a00e51654545dbec4d9a5400f-cc_ft_768.webp"
+              v-if="pthumbnail != null" :src="pthumbnail"
             />
           </th>
+          <td v-for="pattach in pattaches" :key="pattach">
+            <img v-if="pattach != null" :src="pattach" class="img-fluid">
+          </td>
           <td>
             <img
               class="img-fluid"
@@ -45,20 +48,64 @@
 
 <script setup>
 
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import {Modal} from "bootstrap";
-
+import { useRoute } from "vue-router";
+import propertyAPI from "@/apis/propertyAPI";
 import DetailPhotoModal from "./DetailPhotoModal.vue";
 
 let detailPhotoModal = null;
+const route = useRoute();
 
-onMounted(() => {
-  detailPhotoModal = new Modal(document.querySelector("#DetailPhotoModal"))
-});
+const pthumbnail = ref(null);
+const pattaches = ref({});
+
 
 function showDetailPhotoModal() {
   detailPhotoModal.show();
 }
+
+const props = defineProps({
+  pnumber: {
+    type: Number,
+    required: true
+  }
+});
+
+console.log("props.pnumber : " + props.pnumber);
+
+
+
+
+// 썸네일 사진 출력
+const getPthumbnail = async (pnumber) => {
+  try {
+    const response = await propertyAPI.propertyAttachDownload(pnumber);
+    pthumbnail.value = URL.createObjectURL(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 디테일 사진 출력
+const getPattaches = async (ppnumber) => {
+  try {
+    const response = await propertyAPI.detailPropertyAttachDownload(ppnumber);
+    pattaches.value = URL.createObjectURL(response.data);
+  } catch(error) {
+      console.log(error);
+  }
+}
+
+onMounted(() => {
+  detailPhotoModal = new Modal(document.querySelector("#DetailPhotoModal"));
+
+  if (route.params.id) {
+    getPthumbnail(route.params.id);
+    getPattaches(route.params.id);
+  }
+});
+
 
 </script>
 <style scoped></style>
