@@ -49,7 +49,9 @@ const login = (member) => {
 const deleteAccount = (currPw) => {
   return axios.put("/MyPage/DeleteAccount", { currPw: currPw });
 };
-
+const checkPaymentHistory = () => {
+  return axios.get("/paymentHistory");
+};
 export default {
   memberJoin,
   agentJoin,
@@ -57,4 +59,5 @@ export default {
   getUserData,
   deleteAccount,
   memberAttachDownload,
+  checkPaymentHistory,
 };

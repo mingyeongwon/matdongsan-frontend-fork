@@ -1,5 +1,5 @@
 <template>
-  <form action="">
+  <form @submit.prevent="submitPaymentData">
     <div class="text-center mt-5 w-50 container">
       <h3 style="font-weight: bold; margin-bottom: 30px">상품 서비스 구매</h3>
 
@@ -42,7 +42,7 @@
             :class="{ 'option-box': true, selected: productPrice === 25000 }"
             class="me-2 h-75"
           >
-            <div class="h-100 mt-4 pt-3">
+            <div class="h-100 mt-5 pt-2">
               <div class="">
                 <img class="w-25" src="@/assets/home.png" width="70" alt="" />
                 <img
@@ -90,12 +90,13 @@
           </tbody>
         </table>
         <div class="ms-5 me-5">
-          <RouterLink
-            :to="{ path: `/Payment/PaymentResult/${product}` }"
+          <button
             class="btn btn-warning text-center me-4"
             style="height: 40px; width: 30%; font-weight: bold"
-            >결제하기</RouterLink
+            type="submit"
           >
+            결제하기
+          </button>
           <RouterLink
             to="/"
             class="fw-bold btn text-center align-self-center"
@@ -119,10 +120,24 @@ import { ref } from "vue";
 const productPrice = ref(0);
 const cardStyle = ref("option-box");
 const product = ref("");
+const formResult=ref(true);
 function getProductPrice(price, productName) {
   productPrice.value = price;
   product.value = productName;
   cardStyle.value = "option-box-clicked";
+}
+
+function submitPaymentData() {
+  if(productPrice.value ==0 ||product.value=='' ){
+    formResult.value=false;
+    console.log("false입니다");
+    //모달 추가해야함
+  } else{
+    console.log("올바른 데이터");
+
+    
+  }
+
 }
 </script>
 

@@ -47,6 +47,7 @@ const deletePropertyComment = (pnumber, ucnumber) => {
 // 매물 신고
 const postReportProperty = (report) => {
   console.log("report : " + report.rcontent);
+    console.log("report : " + report.rPnumber);
   return axios.post("/createPropertyReport/" + report.rPnumber, qs.stringify(report));
 }
 

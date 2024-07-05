@@ -48,7 +48,14 @@
           </li>
         </ul>
         <ul class="navbar-nav pe-5 mb-2 mb-lg-0">
-          <li class="nav-item">
+          <li class="nav-item" v-if="hasHistory">
+            <RouterLink class="nav-link fw-bold" to="/PropertyForm"
+              ><div class="btn1 btn text-light fw-bold">
+                등록하기
+              </div></RouterLink
+            >
+          </li>
+          <li class="nav-item" v-if="!hasHistory">
             <RouterLink class="nav-link fw-bold" to="/Payment/PaymentInfo"
               ><div class="btn1 btn text-light fw-bold">
                 등록하기
@@ -137,12 +144,13 @@ const memberProfile = ref(null);
 const router = useRouter();
 const store = useStore();
 let loginModal = null;
+const hasHistory = ref(false);
 onMounted(() => {
   loginModal = new Modal(document.querySelector("#LoginModal"));
-  console.log("유저롤 123123" + store.getters.getUserRole);
   if (store.getters.getUserRoleNumber) {
     getUattach(store.getters.getUserRoleNumber);
   }
+  checkPropertyListing();
 });
 watch(
   () => store.getters.getUserRoleNumber,
@@ -175,8 +183,29 @@ function hideLoginModal() {
 }
 function handleLogout() {
   store.dispatch("deleteAuth");
+  hasHistory.value = false;
   router.push("/");
 }
+
+async function checkPropertyListing() {
+  try {
+    const response = await memberAPI.checkPaymentHistory();
+    hasHistory.value = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+// 사용자가 변경될 때마다 `checkPropertyListing` 호출
+watch(
+  () => store.getters.getUemail,
+  async (newEmail) => {
+    if (newEmail) {
+      await checkPropertyListing();
+    } else {
+      hasHistory.value = false;
+    }
+  }
+);
 </script>
 
 <style scoped>
