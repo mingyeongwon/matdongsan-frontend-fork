@@ -17,7 +17,7 @@
                 type="button"
                 class="btn btn-outline-light ps-4 pe-4 text-dark border border-secondary fw-bold"
                 data-bs-dismiss="modal">
-                취소
+                확인
               </button>
               <!-- <button
                 type="button"

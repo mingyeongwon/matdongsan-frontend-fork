@@ -3,23 +3,23 @@
       <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">공지사항</h2>
     <div class="w-50 container">
       <div class="row me-2">
-        <div class="col text-end">게시일 : {{ notice.date }}</div>
+        <div class="col text-end">게시일 : {{ notice.ndate }}</div>
       </div>
       <hr>
       <div class="row me-5">
         <span class="col-2 text-center">제목</span>
-        <div class="col-10">{{ notice.title }}</div>
+        <div class="col-10">{{ notice.ntitle }}</div>
       </div>
       <hr>
       <div class="row me-5">
         <span class="col-2 mb-3 text-center mt-5" >공지 내용</span>
-        <div class="col-10 w-75 mt-5 mb-5">{{ notice.content }}</div>
+        <div class="col-10 w-75 mt-5 mb-5">{{ notice.ncontent }}</div>
       </div>
       
       <hr>
       <div class="row d-flex me-4" style=" justify-content: end; align-items: center; ">
-        <button type="button btn-sm" @click="updateNotice">수정</button>
-        <button type="button btn-sm" @click="deleteNotice">삭제</button>
+        <button v-if="$store.state.userRole == 'ADMIN'" type="button btn-sm" @click="updateNotice">수정</button>
+        <button v-if="$store.state.userRole == 'ADMIN'" type="button btn-sm" @click="deleteNotice">삭제</button>
         <button type="button btn-sm" @click="goBack">뒤로 가기</button>
       </div>
       </div>
@@ -31,21 +31,37 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Modal } from "bootstrap";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import DeleteNoticeModal from "./DeleteNoticeModal.vue"
+import qnaAPI from "@/apis/qnaAPI";
+import axios from "axios";
 const router = useRouter();
+const route = useRoute();
 
-const notice = ref({
-  nnumber:3,
-  title:"공지사항 제목 test",
-  content:"공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test 공지사항 내용 test ",
-  date : "2024-04-23",
-});
+// 쿼리에서 nnumber가져오기
+const nnumber = route.query.nnumber;
 
+const notice = ref({});
+
+// 공지 디테일 가져오는 메소드 정의
+async function getterNotice(nnumber){
+  try {
+    const response = await qnaAPI.getNotice(nnumber);
+    notice.value = response.data
+    console.log("공지 가져옴",notice.value);
+  } catch (error) {
+    console.log("공지 안 가져와짐",error);
+  }
+}
+
+getterNotice(nnumber);
+
+// 뒤로가기 버튼
 function goBack(){
   router.back();
 }
 
+// 수정하기 버튼
 function updateNotice(){
   router.push({
     path:"/QNA/Noticeform",

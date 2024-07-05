@@ -41,6 +41,18 @@ function deleteQuestion(qnumber,qUnumber) {
     return axios.delete("/Qna/MyCustomerInquiryDelete",{params:{qnumber:qnumber, qUnumber:qUnumber}});
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 공지사항 리스트 가져오기
+function getNoticeList(pageNo, searchKeyword, sort){
+    return axios.get("/Qna/NoticeList",{params:{pageNo:pageNo, searchKeyword:searchKeyword, sort:sort}})
+}
+
+// 공지사항 읽기
+function getNotice(nnumber){
+    return axios.get("/Qna/NoticeDetail", {params:{nnumber:nnumber}})
+}
+
 export default {
     createQuestion,
     getAllQuestionList,
@@ -50,4 +62,6 @@ export default {
     getAttach,
     updateQuestion,
     deleteQuestion,
+    getNoticeList,
+    getNotice
   };
