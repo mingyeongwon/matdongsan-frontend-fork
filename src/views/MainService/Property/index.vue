@@ -57,7 +57,7 @@
           <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"/>
           <DetailInfo />
           <ReportFalse :pnumber = "route.params.id"/>
-          <Comment :userComment = "propertyCommentList" />
+          <Comment :userComment = "userComment" />
         </div>
       </div>
     </div>
@@ -87,7 +87,7 @@ let status = ref(true);
 const property = ref({});
 const propertyDetail = ref({});
 const propertyPhotos = ref([]);
-const propertyCommentList = ref([]);
+const userComment = ref([]); // 문의 댓글 
 const pthumbnail = ref(null);
 const pattaches = ref([]);
 
@@ -108,7 +108,6 @@ const getPropertyData = async (pnumber) => {
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
-    propertyCommentList.value = response.data.propertyCommentList;
 
     pattaches.value = [];
 
@@ -117,6 +116,13 @@ const getPropertyData = async (pnumber) => {
     await Promise.all(propertyPhotos.value.map(async (photo) => {
       await getPattaches(photo.ppnumber);
     }));
+
+    if(response.data.propertyCommentList) {
+      const comments = response.data.propertyCommentList;
+      userComment.value = comments.map((comment) => ({
+        ...comment,
+      }));
+    }
 
   } catch (error) {
     console.log(error);
