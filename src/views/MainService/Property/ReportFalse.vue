@@ -1,6 +1,12 @@
 <template>
-  <!--  -->
-  <div class="modal">
+  <div>
+    <section class="col-7 ps-4 mt-5 mb-3">
+          <button class="reportBtn p-3 w-100 text-start fw-bold" @click="showReportFalseModal">허위매물 신고하기</button>
+      </section>   
+  </div>
+
+  <!-- 모달 -->
+  <div class="modal" id="ReportFalseModal">
     <div class="modalDialog modal-dialog modal-fullsize modal-dialog-centered">
       <div class="modalContent modal-content modal-fullsize">
         <div class="modal-body">
@@ -13,12 +19,12 @@
             </button>
           </div>
           <div class=" ms-5 me-5">
-              <form v-on:submit.prevent="handleSubmit">
+              <form v-on:submit.prevent="handleReportSubmit">
                   <h5 style="font-weight: bold; text-align: center; margin-bottom: 20px;" >허위매물 신고하기</h5>
                   <div class="row">
                     <div class="col-2">신고<br>내용</div>
                     <textarea placeholder="정확한 확인을 위해 신고내용을 구체적으로 기재해 주세요. (20자 이상) 본 신고 내용은 해당 중개업소에게 전달되므로, 개인정보(연락처, 이름 등)는 기재하지 말아주세요." 
-                      class="col-10" style="height: 100px; font-size: small;" v-model="editReportDetails">
+                      class="col-10" style="height: 100px; font-size: small;" v-model="report.rcontent">
                     </textarea>
                   </div>
                   <hr>
@@ -29,7 +35,7 @@
                   </div>
                   <div class="row mt-5">
                       <button class="col btn btn-sm me-5" style="background-color: grey; color: white" data-bs-dismiss="modal"> 취소</button>
-                      <button type="submit" class="col btn btn-sm btn-warning" :disabled="!checkReportFalseData">신고하기</button>
+                      <button type="submit" class="col btn btn-sm btn-warning" :disabled="!checkReportFalseData" @click="submitReport">신고하기</button>
                   </div>
               </form>
           </div>
@@ -41,14 +47,34 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import {Modal} from "bootstrap";
+import { useRoute } from "vue-router";
+import propertyAPI from "@/apis/propertyAPI";
 
-const props = defineProps({
-  itemDetails: String,
-});
+const route = useRoute();
 
-console.log("props.itemDetails : " + props.itemDetails);
+const props = defineProps([
+  "itemDetails",
+  "pnumber"
+]);
 
 const editReportDetails = ref(props.itemDetails);
+
+// 매물 데이터
+const report = ref({
+  rcontent: "",
+  rPnumber: props.pnumber,
+})
+
+// 모달 열기
+function showReportFalseModal() {
+  const reportFalseModal = new Modal(document.getElementById("ReportFalseModal"));
+  reportFalseModal.show();
+}
+
+// pnumber 잘 전달되는지 확인
+console.log("report false modal received pnumber : " + props.pnumber);
+
 
 // 부모 컴포넌트에서 itemDetails 변경될 때마다 해당 변경 사항을 반영
 watch(() => props.itemDetails, (newItemDetails) => {
@@ -61,18 +87,35 @@ let reportFalse = ref({
 });
 
 const checkReportFalseData = computed(() => {
-  var result =  reportFalse.value.checkbox !== "";
+  var result = reportFalse.value.checkbox !== "";
   return result;
 });
 // editReportDetail.value !== "" &&
 
-function handleSubmit() {
-  console.log(JSON.parse(JSON.stringify(reportFalse.value)));
+function submitReport() {
+  handleReportSubmit(report);
+}
+
+// 매물 신고 폼 제출
+async function handleReportSubmit(report) {
+  try {
+    const data = JSON.parse(JSON.stringify(report.value));
+    console.log("report.value.rcontent : " + report.value.rcontent);
+    await propertyAPI.postReportProperty(data);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 </script>
 
 <style scoped>
+.reportBtn {
+  background-color: rgb(250, 250, 250);
+  border: none;
+  font-size: 14px;
+}
+
 input {
   border: 1px solid rgb(237, 237, 237);
 }

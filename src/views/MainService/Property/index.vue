@@ -56,7 +56,8 @@
         <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"/>
           <DetailInfo />
-          <Comment :propertyCommentList = "propertyCommentList" />
+          <ReportFalse :pnumber = "route.params.id"/>
+          <Comment :userComment = "propertyCommentList" />
         </div>
       </div>
     </div>
@@ -70,10 +71,12 @@ import DetailPhoto from "./DetailPhoto.vue";
 import DetailInfo from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
 import PropertyFilter from "./PropertyFilter.vue";
+import ReportFalse from "@/views/MainService/Property/ReportFalse.vue";
 import propertyAPI from "@/apis/propertyAPI";
 import { onMounted, ref, watch, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+import { param } from "jquery";
 
 const route = useRoute();
 const router = useRouter();

@@ -32,7 +32,7 @@
     </div>
 
     <!-- 댓글 -->
-    <div v-for="comment in propertyCommentList" :key="comment.ucnumber">
+    <div v-for="comment in userComment" :key="comment.ucnumber">
       <div>
         <div>
           <hr />
@@ -132,7 +132,7 @@
           >
             취소
           </button>
-          <button type="button" class="btn btn-danger" @click="confirmDelete">
+          <button type="button" class="btn btn-danger" @click="[confirmDelete(), getReviewId(review.ucnumber)]">
             삭제
           </button>
         </div>
@@ -144,19 +144,33 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter, useRoute } from 'vue-router';
+import propertyAPI from "@/apis/propertyAPI";
+
+const router = useRouter();
+const route = useRoute();
+
+const props = defineProps([
+  'userComment',
+]);
 
 const data = 1;
 const comment = ref("");
 const reply = ref("");
 const showReplyForm = ref(false);
 const showDeleteModal = ref(false);
+const clickedModalId = ref("");
 
-const router = useRouter();
-const route = useRoute();
+const userComment = ref({
+  uccomment: "",
+  arrate: "",
+  ucPnumber: route.params.id,
+})
 
-const props = defineProps([
-  'propertyCommentList',
-]);
+// ucnumber 얻기
+function getCommentId(ucnumber) {
+  clickedModalId.value = ucnumber;
+}
+
 
 //댓글 작성
 function submitComment() {
@@ -184,6 +198,7 @@ function closeDeleteModal() {
 //삭제 확인 버튼 
 function confirmDelete() {
   console.log("삭제되었습니다.");
+  deletePropertyComment(route.params.id, clickedModalId.value);
   closeDeleteModal();
 }
 //댓글 정렬 기능
@@ -194,6 +209,16 @@ function sortComment(event){
     query: { ...route.query, sort: sortBy }
   });
 }
+
+// 댓글 삭제
+const deletePropertyComment = async (pnumber, ucnumber) => {
+  try {
+    await propertyAPI.deleteAgentReview(pnumber, ucnumber);
+    // emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 
 <style scoped>
