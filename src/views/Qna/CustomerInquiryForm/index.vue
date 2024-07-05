@@ -88,102 +88,47 @@ import qnaAPI from "@/apis/qnaAPI";
 const route = useRoute();
 const router = useRouter();
 
-const customerInquiry = ref({
-});
-
-const qattach = ref(null);
-
-const getQattach = ref();
-
-// 쿼리에서 가져온 qnumber, qunumber
-const qnumber = route.query.qnumber;
-const qunumber = route.query.qunumber;
+const customerInquiry = ref({});
+const qattach = ref();
 
 const imageFiles = ref(null);
 
-// 문의 내용 가져오기
-async function getQuestion(){
-try {
-  const response = await qnaAPI.readQuestion(qnumber,qunumber);  
-  customerInquiry.value = response.data;
-  console.log("문의 객체: ",customerInquiry.value);
-} catch (error) {
-  console.log(error);
-}
-
-}
-
-// 첨부파일 가져오기
-async function getAttach(){
-try {
-  console.log("실행 첨부");
-  const responseAttach = await qnaAPI.getAttach(qnumber);
-  const blob = responseAttach.data;
-  getQattach.value = URL.createObjectURL(blob);
-  console.log("첨부파일: ", getQattach.value);
-} catch (error) {
-  console.log("실행 첨부 실패");
-
-  console.log(error);
-} 
-}
-
-// qnumber가 있음면 실행
-getQuestion()
-getAttach()
-
 // 문의 타입, 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
-  var result = customerInquiry.value.type !== "" && customerInquiry.value.title !== "" && customerInquiry.value.content !== "";
-  console.log('result: ',result);
-  return result;
+var result = customerInquiry.value.type !== "" && customerInquiry.value.title !== "" && customerInquiry.value.content !== "";
+console.log('result: ',result);
+return result;
 });
 
-// 폼 제출
 async function handleSubmit(){
-  //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
-  const formData = new FormData();
+//multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
+const formData = new FormData();
+// content에 p태그 붙는거 삭제하기
+customerInquiry.value.qcontent = customerInquiry.value.qcontent.slice(3,-4);
+// 문자 데이터 formData에 넣기
+formData.append("qcategory", customerInquiry.value.qcategory);
+formData.append("qtitle", customerInquiry.value.qtitle);
+formData.append("qcontent", customerInquiry.value.qcontent);
 
-  // content에 p태그 붙는거 삭제하기
-  customerInquiry.value.content = customerInquiry.value.content.slice(3,-4);
+const elAttach = qattach.value;
 
-  // 문자 데이터 formData에 넣기
-  formData.append("qcategory", customerInquiry.value.type);
-  formData.append("qtitle", customerInquiry.value.title);
-  formData.append("qcontent", customerInquiry.value.content);
+// 파일 데이터 formData에 넣기
+if(elAttach != null){
 
-  const elAttach = qattach.value;
-
-  // 파일 데이터 formData에 넣기
-  if(elAttach != null){
-
-    for(var i=0; i<qattach.value.files.length; i++){
-      formData.append("qattach", elAttach.files[i]);
-      customerInquiry.value.qattach.push(elAttach.files[i]);
-    }
-    console.log("attach에 파일 들어옴", qattach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
+  for(var i=0; i<qattach.value.files.length; i++){
+    formData.append("qattach", elAttach.files[i]);
   }
-  console.log("FileList로 나옴",qattach.value.files.length);
-  console.log("customerInquiry: ", customerInquiry.value);
+}
+console.log("FileList로 나옴",qattach.value.files.length);
+console.log("customerInquiry: ", customerInquiry.value);
 
-  // 고객문의 insert 요청 -> qnumber가 있으면 수정, 없으면 생성
-  if(qnumber != null){
-    //
-    try {
-    await qnaAPI.updateQuestion(formData);
-    router.back();  
-  } catch (error) {
-    console.log(error);
-  }
-  } else{
-      try {
-        await qnaAPI.createQuestion(formData);
-        router.back();  
-      } catch (error) {
-        console.log(error);
-      }
-
-  }
+// 고객문의 insert 요청
+try {
+  await qnaAPI.createQuestion(formData);
+  router.back();  
+} catch (error) {
+  console.log(error);
+}
 }
 
 // 파일을 읽고 URL을 반환하는 함수

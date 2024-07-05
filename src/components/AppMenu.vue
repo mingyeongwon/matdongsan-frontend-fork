@@ -41,7 +41,7 @@
               >관심목록</RouterLink
             >
           </li>
-          <li class="nav-item">
+          <li v-if="$store.state.userRole == 'ADMIN'" class="nav-item">
             <RouterLink class="nav-link fw-bold" to="/Adminpage/CusomerInquiry"
               >관리자</RouterLink
             >

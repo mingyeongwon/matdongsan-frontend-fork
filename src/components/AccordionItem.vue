@@ -33,9 +33,8 @@
         <p class="fw-bold">내용:</p>
         <p class="text-muted">{{ rowData.item.qcontent }}</p>
         <div v-if="!(rowData.item.qisAnswer == 1 || rowData.item.status == '처리완료')">
-          <RouterLink class="routerLink" :to="`/QNA/CustomerInquiryForm?qnumber=${rowData.item.qnumber}&qunumber=${rowData.item.qunumber}`">
-          <button class="btn btn-outline-secondary btn-sm me-2" @click="editInquiry">수정</button></RouterLink>
-          <button class="btn btn-outline-danger btn-sm" @click="showModal">삭제</button>
+          <button class="btn btn-outline-secondary btn-sm me-2" @click="editInquiry">수정</button>
+          <button class="btn btn-outline-danger btn-sm" @click="showDeleteModal">삭제</button>
         </div>
       </div>
     </td> 
@@ -45,7 +44,7 @@
 </template>
 
 <script setup>
-import { computed, toRefs } from "vue";
+import { toRefs } from "vue";
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -57,15 +56,18 @@ const props = defineProps({
 
 const emit = defineEmits(["edit-inquiry", "show-deleteQnaModal", "show-deleteReportModal"]);
 
+// props로 받은 데이터 js에서 정의 하기
 const { rowData } = toRefs(props);
-const qnumber = rowData.value.qnumber;
-const qunumber = rowData.value.qunumber;
+const qnumber = rowData.value.item.qnumber;
+const qunumber = rowData.value.item.qunumber;
+const index = rowData.value.index;
 
-function showModal() {
+function showDeleteModal() {
   if(props.kindOf === "report") {
     emit("show-deleteReportModal"); // ReportFalseListing 부모로 보냄 
   } else if (props.kindOf === "qna") {
-    emit("show-deleteQnaModal", qnumber, qunumber); // CustomerInquiry 부모로 보냄 
+    console.log("너구나",rowData.value);
+    emit("show-deleteQnaModal", qnumber, qunumber, index); // CustomerInquiry 부모로 보냄 
   }
 }
 
@@ -75,8 +77,8 @@ function editInquiry() {
     emit("edit-inquiry", props.rowData.item.details); // ReportFalseListing 부모로 보냄 
   } else if (props.kindOf === "qna") {
     router.push({
-      path: "/Qna/CustomerInquiryForm",
-      query: {id: props.rowData.item.id}
+      path: "/Qna/CustomerInquiryUpdateForm",
+      query: {qnumber: props.rowData.item.qnumber, qunumber: props.rowData.item.qunumber}
     });
   }
 }

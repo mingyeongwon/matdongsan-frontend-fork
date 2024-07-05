@@ -64,7 +64,7 @@
     </div>
     <hr>
     <div class="row d-flex" style=" justify-content: center; align-items: center; ">
-      <button type="submit" class="btn" style="background-color: #2F4858; color: white; width: 216px; height: 52px; border: none; border-radius: 10px;" :disabled="!checkForm">문의하기</button>
+      <button type="submit" class="btn" style="background-color: #2F4858; color: white; width: 216px; height: 52px; border: none; border-radius: 10px;" :disabled="!checkForm">수정하기</button>
     </div>
     <div class="row d-flex" style="border: 1px solid gray; border-radius: 10px; margin-left: 150px; margin-right: 150px; margin-top: 20px">
       <p style="text-align: center; margin-top: 15px">고객센터: 02-1899-6840</p><br>
@@ -88,33 +88,31 @@ import qnaAPI from "@/apis/qnaAPI";
 const route = useRoute();
 const router = useRouter();
 
-const customerInquiry = ref({
-qcategory:"",
-qtitle:"",
-qcontent:"",
-qattach:[],
-});
+// 폼에서 가져온 문의 객체
+const customerInquiry = ref({});
 
+// 폼에서 받아온 문의 이미지
 const qattach = ref(null);
+const imageFiles = ref(null);
 
+// DB에서 가져온 문의 이미지
 const getQattach = ref();
 
 // 쿼리에서 가져온 qnumber, qunumber
 const qnumber = route.query.qnumber;
 const qunumber = route.query.qunumber;
 
-const imageFiles = ref(null);
 
-// 문의 내용 가져오기
-async function getQuestion(){
-try {
-  const response = await qnaAPI.readQuestion(qnumber,qunumber);  
-  customerInquiry.value = response.data;
-  console.log("문의 객체: ",customerInquiry.value);
-} catch (error) {
-  console.log(error);
-}
 
+// 수정할 문의 내용 가져오는 함수 정의
+async function getQuestion(qnumber,qunumber){
+  try {
+    const response = await qnaAPI.readQuestion(qnumber,qunumber);  
+    customerInquiry.value = response.data;
+    console.log("문의 객체: ",customerInquiry.value);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // 첨부파일 가져오기
@@ -132,88 +130,86 @@ try {
 } 
 }
 
-// qnumber가 있음면 실행
-getQuestion()
-getAttach()
+getQuestion(qnumber,qunumber);
+getAttach();
+
 
 // 문의 타입, 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
-var result = customerInquiry.value.type !== "" && customerInquiry.value.title !== "" && customerInquiry.value.content !== "";
-console.log('result: ',result);
-return result;
+  var result = customerInquiry.value.type !== "" && customerInquiry.value.title !== "" && customerInquiry.value.content !== "";
+  console.log('result: ',result);
+  return result;
 });
 
 // 폼 제출
 async function handleSubmit(){
-//multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
-const formData = new FormData();
+  //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
+  const formData = new FormData();
 
-// content에 p태그 붙는거 삭제하기
-customerInquiry.value.content = customerInquiry.value.content.slice(3,-4);
+  console.log("제출 시작때 문의 객체 검사: ",customerInquiry.value);
 
-// 문자 데이터 formData에 넣기
-formData.append("qcategory", customerInquiry.value.type);
-formData.append("qtitle", customerInquiry.value.title);
-formData.append("qcontent", customerInquiry.value.content);
+  // content에 p태그 붙는거 삭제하기
+  customerInquiry.value.qcontent = customerInquiry.value.qcontent.slice(3,-4);
 
-const elAttach = qattach.value;
+  // 문자 데이터 formData에 넣기
+  formData.append("qcategory", customerInquiry.value.qcategory);
+  formData.append("qtitle", customerInquiry.value.qtitle);
+  formData.append("qcontent", customerInquiry.value.qcontent);
+  formData.append("qnumber", customerInquiry.value.qnumber);
+  formData.append("qUnumber", customerInquiry.value.qunumber);
 
-// 파일 데이터 formData에 넣기
-if(elAttach != null){
+  const elAttach = qattach.value;
+  console.log("나와",elAttach);
 
-  for(var i=0; i<qattach.value.files.length; i++){
-    formData.append("qattach", elAttach.files[i]);
-    customerInquiry.value.qattach.push(elAttach.files[i]);
-  }
-  console.log("attach에 파일 들어옴", qattach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
-}
-console.log("FileList로 나옴",qattach.value.files.length);
-console.log("customerInquiry: ", customerInquiry.value);
+  // 파일 데이터 formData에 넣기
+  if(elAttach != null){
 
-// 고객문의 insert 요청 -> qnumber가 있으면 수정, 없으면 생성
-if(qnumber != null){
-  try {
-  await qnaAPI.updateQuestion(formData);
-  router.back();  
-} catch (error) {
-  console.log(error);
-}
-} else{
-    try {
-      await qnaAPI.createQuestion(formData);
-      router.back();  
-    } catch (error) {
-      console.log(error);
+    for(var i=0; i<qattach.value.files.length; i++){
+      formData.append("qattach", elAttach.files[i]);
     }
+    //console.log("attach에 파일 들어옴", qattach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
+  }
+  console.log("FileList로 나옴",qattach.value.files.length);
+  console.log("customerInquiry: ", customerInquiry.value);
 
-}
+  // 고객문의 수정
+  try {
+    await qnaAPI.updateQuestion(formData);
+    console.log("폼 들어가냐",formData.values);
+    console.log("수정 성공");
+    router.back();  
+  } catch (error) {
+    console.log("수정 실패");
+    console.log(error);
+  }
+
 }
 
 // 파일을 읽고 URL을 반환하는 함수
 const readFile = (file) => {
-return new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    resolve({ file, src: e.target.result }); // 파일과 데이터 URL을 포함한 객체 반환
-  };
-  reader.onerror = reject;
-  reader.readAsDataURL(file); // 파일의 데이터 URL을 읽기 시작
-});
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      resolve({ file, src: e.target.result }); // 파일과 데이터 URL을 포함한 객체 반환
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file); // 파일의 데이터 URL을 읽기 시작
+  });
 };
 
 // input태그에 이미지 들어오면 실행
 const changeAttach = async (event) => {
-console.log("profile실행");
-const file = qattach.value.files[0]; // 선택된 파일 가져오기
+  console.log("profile실행");
+  const file = qattach.value.files[0]; // 선택된 파일 가져오기
 
-if (file) {
-  try {
-    const newImage = await readFile(file); // 파일 읽기
-    imageFiles.value = newImage; // imageFiles에 할당
-  } catch (error) {
-    console.error("파일을 읽는 중 오류 발생:", error);
+  if (file) {
+    try {
+      const newImage = await readFile(file); // 파일 읽기
+      imageFiles.value = newImage; // imageFiles에 할당
+    } catch (error) {
+      console.error("파일을 읽는 중 오류 발생:", error);
+    }
   }
-}
 };
 
 
