@@ -63,7 +63,8 @@
         <hr />
         <div>
           이름
-          <input class="ms-5" type="text" v-model="agentData.aname" readonly />
+          <input v-if="userRole === 'AGENT'" class="ms-5" type="text" v-model="agentData.aname" readonly />
+          <input v-else class="ms-5" type="text" v-model="memberData.mname" readonly />
         </div>
         <hr class="mb-4" />
         전화번호
@@ -90,7 +91,7 @@
         />
         <hr class="mb-4" />
         이메일 주소
-        <input type="email" v-model="userData.uemail" readonly />
+        <input type="email" v-model="store.getters.getUemail" readonly />
         <div
           v-if="userRole === 'AGENT'"
           class="need-to-add-type-variable-here"
@@ -231,6 +232,7 @@ import agentAPI from "@/apis/agentAPI";
 const store = useStore();
 const userData = ref({});
 const agentData = ref({});
+const memberData = ref({});
 const arrPhone = ref("");
 const userRole = ref("");
 const memberProfile = ref(null);
@@ -242,11 +244,17 @@ async function getUserData() {
   try {
     const response = await memberAPI.getUserData();
     userRole.value = response.data.userRole;
-    agentData.value = response.data.agentSignupData.agent;
-    agentDetailData.value = response.data.agentSignupData.agentDetail;
-    console.log(response.data.agentSignupData);
-    // 전화번호 하이픈을 기준으로 나누기
-    arrPhone.value = agentData.value.aphone.split("-");
+    if(userRole.value=='AGENT'){
+      agentData.value = response.data.agentSignupData.agent;
+      agentDetailData.value = response.data.agentSignupData.agentDetail;
+      console.log(response.data.agentSignupData);
+      // 전화번호 하이픈을 기준으로 나누기
+      arrPhone.value = agentData.value.aphone.split("-");
+    } else {
+      memberData.value =response.data.member;
+      arrPhone.value = memberData.value.mphone.split("-");
+    }
+
   } catch (error) {
     console.log(error);
   }
