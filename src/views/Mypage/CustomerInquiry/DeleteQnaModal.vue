@@ -15,7 +15,8 @@
               <button
                 type="button"
                 class="btn btn-outline-light ps-4 pe-4 text-dark border border-secondary fw-bold"
-                data-bs-dismiss="modal">
+                data-bs-dismiss="modal"
+                @click="emit('delete')">
                 취소하기
               </button>
               <button
@@ -31,7 +32,7 @@
   </template>
 
 <script setup>
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close","delete"]);
 </script>
 
 <style scoped>

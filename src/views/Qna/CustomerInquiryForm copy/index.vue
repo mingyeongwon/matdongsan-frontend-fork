@@ -89,6 +89,10 @@ const route = useRoute();
 const router = useRouter();
 
 const customerInquiry = ref({
+qcategory:"",
+qtitle:"",
+qcontent:"",
+qattach:[],
 });
 
 const qattach = ref(null);
@@ -134,83 +138,82 @@ getAttach()
 
 // 문의 타입, 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
-  var result = customerInquiry.value.type !== "" && customerInquiry.value.title !== "" && customerInquiry.value.content !== "";
-  console.log('result: ',result);
-  return result;
+var result = customerInquiry.value.type !== "" && customerInquiry.value.title !== "" && customerInquiry.value.content !== "";
+console.log('result: ',result);
+return result;
 });
 
 // 폼 제출
 async function handleSubmit(){
-  //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
-  const formData = new FormData();
+//multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
+const formData = new FormData();
 
-  // content에 p태그 붙는거 삭제하기
-  customerInquiry.value.content = customerInquiry.value.content.slice(3,-4);
+// content에 p태그 붙는거 삭제하기
+customerInquiry.value.content = customerInquiry.value.content.slice(3,-4);
 
-  // 문자 데이터 formData에 넣기
-  formData.append("qcategory", customerInquiry.value.type);
-  formData.append("qtitle", customerInquiry.value.title);
-  formData.append("qcontent", customerInquiry.value.content);
+// 문자 데이터 formData에 넣기
+formData.append("qcategory", customerInquiry.value.type);
+formData.append("qtitle", customerInquiry.value.title);
+formData.append("qcontent", customerInquiry.value.content);
 
-  const elAttach = qattach.value;
+const elAttach = qattach.value;
 
-  // 파일 데이터 formData에 넣기
-  if(elAttach != null){
+// 파일 데이터 formData에 넣기
+if(elAttach != null){
 
-    for(var i=0; i<qattach.value.files.length; i++){
-      formData.append("qattach", elAttach.files[i]);
-      customerInquiry.value.qattach.push(elAttach.files[i]);
-    }
-    console.log("attach에 파일 들어옴", qattach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
+  for(var i=0; i<qattach.value.files.length; i++){
+    formData.append("qattach", elAttach.files[i]);
+    customerInquiry.value.qattach.push(elAttach.files[i]);
   }
-  console.log("FileList로 나옴",qattach.value.files.length);
-  console.log("customerInquiry: ", customerInquiry.value);
+  console.log("attach에 파일 들어옴", qattach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
+}
+console.log("FileList로 나옴",qattach.value.files.length);
+console.log("customerInquiry: ", customerInquiry.value);
 
-  // 고객문의 insert 요청 -> qnumber가 있으면 수정, 없으면 생성
-  if(qnumber != null){
-    //
+// 고객문의 insert 요청 -> qnumber가 있으면 수정, 없으면 생성
+if(qnumber != null){
+  try {
+  await qnaAPI.updateQuestion(formData);
+  router.back();  
+} catch (error) {
+  console.log(error);
+}
+} else{
     try {
-    await qnaAPI.updateQuestion(formData);
-    router.back();  
-  } catch (error) {
-    console.log(error);
-  }
-  } else{
-      try {
-        await qnaAPI.createQuestion(formData);
-        router.back();  
-      } catch (error) {
-        console.log(error);
-      }
+      await qnaAPI.createQuestion(formData);
+      router.back();  
+    } catch (error) {
+      console.log(error);
+    }
 
-  }
+}
 }
 
 // 파일을 읽고 URL을 반환하는 함수
 const readFile = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      resolve({ file, src: e.target.result }); // 파일과 데이터 URL을 포함한 객체 반환
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file); // 파일의 데이터 URL을 읽기 시작
-  });
+return new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    resolve({ file, src: e.target.result }); // 파일과 데이터 URL을 포함한 객체 반환
+  };
+  reader.onerror = reject;
+  reader.readAsDataURL(file); // 파일의 데이터 URL을 읽기 시작
+});
 };
 
 // input태그에 이미지 들어오면 실행
 const changeAttach = async (event) => {
-  console.log("profile실행");
-  const file = qattach.value.files[0]; // 선택된 파일 가져오기
+console.log("profile실행");
+const file = qattach.value.files[0]; // 선택된 파일 가져오기
 
-  if (file) {
-    try {
-      const newImage = await readFile(file); // 파일 읽기
-      imageFiles.value = newImage; // imageFiles에 할당
-    } catch (error) {
-      console.error("파일을 읽는 중 오류 발생:", error);
-    }
+if (file) {
+  try {
+    const newImage = await readFile(file); // 파일 읽기
+    imageFiles.value = newImage; // imageFiles에 할당
+  } catch (error) {
+    console.error("파일을 읽는 중 오류 발생:", error);
   }
+}
 };
 
 

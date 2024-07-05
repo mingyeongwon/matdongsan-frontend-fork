@@ -1,13 +1,30 @@
 <template>
   <tr @click="rowData.toggle" style="cursor: pointer" >
     <td>{{ rowData.index + 1 }}</td>
-    <td class="fw-bold">{{ rowData.item.qtitle }}</td>
+    <td class="fw-bold">{{ rowData.item.qtitle || rowData.item.title }}</td>
     <td class="text-muted">{{ formatDate(rowData.item.qdate) || rowData.item.date }}</td>
-    <td class="text-muted"><RouterLink class="routerLink" :to="`/CusomerInquiryDetail=${rowData.item.qnumber || rowData.item.number}`">
+    <td v-if="rowData.item.qnumber != null" class="text-muted"><RouterLink class="routerLink" :to="`/CustomerInquiryDetail?qnumber=${rowData.item.qnumber}&qunumber=${rowData.item.qunumber}`">
       <small class="bg-success p-2 rounded fw-bold text-light">상세보기</small></RouterLink>
     </td>
-    <td class="text-muted">
+    
+    <td v-if="rowData.item.qnumber != null" class="text-muted">
       <small class="p-2 rounded fw-bold text-light" :class="rowData.item.qisAnswer == 1 ? 'bg-danger' : 'bg-warning'">{{ hasAnswer(rowData.item.qisAnswer) }}</small>
+    </td>
+    <td
+      class="text-muted"
+      v-if="
+        rowData.item.status == '답변 완료' || rowData.item.status == '처리완료'
+      "
+    >
+      <small class="bg-success p-2 rounded fw-bold text-light">{{
+        rowData.item.status
+      }}</small>
+    </td>
+    <!-- qnumber가 있으면 보여주지 말기 -->
+    <td class="text-muted" v-if="rowData.item.status != '처리완료'"  v-show="rowData.item.qnumber == null ">
+      <small class="bg-warning p-2 rounded text-dark fw-bold">{{
+        rowData.item.status
+      }}</small>
     </td>
   </tr>
   <tr v-if="rowData.isOpen">
@@ -16,7 +33,8 @@
         <p class="fw-bold">내용:</p>
         <p class="text-muted">{{ rowData.item.qcontent }}</p>
         <div v-if="!(rowData.item.qisAnswer == 1 || rowData.item.status == '처리완료')">
-          <button class="btn btn-outline-secondary btn-sm me-2" @click="editInquiry">수정</button>
+          <RouterLink class="routerLink" :to="`/QNA/CustomerInquiryForm?qnumber=${rowData.item.qnumber}&qunumber=${rowData.item.qunumber}`">
+          <button class="btn btn-outline-secondary btn-sm me-2" @click="editInquiry">수정</button></RouterLink>
           <button class="btn btn-outline-danger btn-sm" @click="showModal">삭제</button>
         </div>
       </div>
@@ -27,7 +45,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, toRefs } from "vue";
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -39,15 +57,17 @@ const props = defineProps({
 
 const emit = defineEmits(["edit-inquiry", "show-deleteQnaModal", "show-deleteReportModal"]);
 
+const { rowData } = toRefs(props);
+const qnumber = rowData.value.qnumber;
+const qunumber = rowData.value.qunumber;
 
 function showModal() {
   if(props.kindOf === "report") {
     emit("show-deleteReportModal"); // ReportFalseListing 부모로 보냄 
   } else if (props.kindOf === "qna") {
-    emit("show-deleteQnaModal"); // CustomerInquiry 부모로 보냄 
+    emit("show-deleteQnaModal", qnumber, qunumber); // CustomerInquiry 부모로 보냄 
   }
 }
-
 
 // 마이페이지에서 수정 시 1:1 문의 내역과 허위 내역 신고 구분
 function editInquiry() {

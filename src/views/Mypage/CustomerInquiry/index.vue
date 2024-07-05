@@ -3,7 +3,7 @@
     <MyPageSidebar />
     <div class="titleNcontent w-75 mx-auto">
       <div class="d-flex justify-content-between mt-2 mb-3">
-        <h4 class="fw-bold">1:1 문의</h4>
+        <h4 class="fw-bold">1:1 문의</h4><span style="font-size: small; text-align: start;">답변이 있는 문의는 수정 및 삭제가 불가능 합니다.</span>
         <div>
           <router-link to="/Qna/CustomerInquiryForm">
             <button type="button" class="btn btn-warning me-1">
@@ -41,12 +41,12 @@
       <Pagination
       :currentPage="currentPage"
       :totalPages="totalPages"
-      page="adminCustomerInquiryList"
+      page="myCustomerInquiry"
       @update:currentPage="handlePageChange"
     />
     </div>
   </div>
-  <DeleteQnaModal id="DeleteQnaModal"/>
+  <DeleteQnaModal id="DeleteQnaModal" @delete="deleteQuestion"/>
 </template>
 
 <script setup>
@@ -57,11 +57,15 @@ import AccordionRow from "@/components/AccordionItem.vue";
 import DeleteQnaModal from "../../../views/Mypage/CustomerInquiry/DeleteQnaModal.vue"
 import qnaAPI from "@/apis/qnaAPI";
 import Pagination from "@/components/Pagination";
+import { useRoute, useRouter } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
 
 let deleteQnaModal = null;
 
-// pagination이 전달해주는 페이지 번호
 let currentPage = ref(1);
+let totalPages = ref();
 
 // DB에서 가져온 리스트
 const page = ref({
@@ -74,29 +78,43 @@ onMounted(() => {
 });
 
 // 삭제 버튼 클릭 시 실행되는 함수
-function showDeleteQnaModal() {
+function showDeleteQnaModal(qnumber,qunumber) {
   deleteQnaModal.show();
 }
 
-
+function handlePageChange(page){
+    currentPage.value = page;
+    router.push(`/Mypage/CustomerInquiry?page=${currentPage.value}`);
+  }
 
 // 고객의 문의 리스트 가져오기 함수 정의
 async function getList(){
   console.log("되냐");
   try {
-    const response = await qnaAPI.getQuestionListForUser();
+    const response = await qnaAPI.getQuestionListForUser(currentPage.value);
     page.value.question = response.data.question;
     page.value.pager = response.data.pager;
-
-    console.log("d", page.value.question.length);
-    console.log("큐넘바",page.value.question);
+    totalPages.value = page.value.pager.totalPageNo
+    console.log("리스트 갯수", page.value.question.length);
+    console.log("문의 객체",page.value.question[0]);
   } catch (error) {
     console.log(error);
   }
 }
 
-
+// 리스트 가져오기
 getList();
+
+// 페이지가 변하면 게시물 가져오는 메소드 실행하기
+watch(currentPage, () => {
+  console.log("와치와치");
+  getList();
+})
+
+// 게시물 삭제
+function deleteQuestion(){
+  
+}
 
 
 const openIndex = ref(null);

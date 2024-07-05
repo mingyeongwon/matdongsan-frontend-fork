@@ -21,10 +21,27 @@ function readQuestion(qnumber,qUnumber){
     return axios.get("/Qna/ReadCustomerInquiry",{params:{qnumber:qnumber, qUnumber:qUnumber}});
 }
 
+// 문의 작성자 이메일 가져오기
+function getWriter(qUnumber){
+    return axios.get("/Qna/getQuestionWriter", {params:{qUnumber:qUnumber}});
+}
+
+// 문의 첨부파일 가져오기
+function getAttach(qnumber){
+    return axios.get("/Qna/qattach/"+qnumber, {responseType:"blob"});
+}
+
+// 문의 수정 하기
+function updateQuestion(formData) {
+    return axios.put("/Qna/MyCustomerInquiryUpdate", formData);
+}
 
 export default {
     createQuestion,
     getAllQuestionList,
     readQuestion,
     getQuestionListForUser,
+    getWriter,
+    getAttach,
+    updateQuestion,
   };

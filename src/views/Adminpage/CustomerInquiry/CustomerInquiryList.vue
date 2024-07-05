@@ -10,7 +10,7 @@
             <tr class="row" v-for="question in props.question" :key="question.qnumber">
                     
                 <!-- <td style="text-align: center;">[공지사항]</td> -->
-                <td class="col-6"><RouterLink class="routerLink" :to="`/Adminpage/CusomerInquiryDetail=${question.qnumber}`">{{ question.qtitle }}</RouterLink></td>
+                <td class="col-6"><RouterLink class="routerLink" :to="`/CustomerInquiryDetail?qnumber=${question.qnumber}&qunumber=${question.qunumber}`">{{ question.qtitle }}</RouterLink></td>
             
                 <td class="col-4" style="text-align: center;">{{ formatDate(question.qdate) }}</td>
                 <td style="text-align: center;" :class="question.qisAnswer == 1 ? '' : 'text-danger'" class="answer col-2">{{ hasAnswer(question.qisAnswer) }}</td>
