@@ -57,8 +57,7 @@ import PropertyListItem from "./PropertyListItem.vue";
 import agentAPI from "@/apis/agentAPI";
 import propertyAPI from "@/apis/propertyAPI";
 import favoriteAPI from "@/apis/favoriteAPI";
-import { useRoute, useRouter } from "vue-router";
-
+const emit = defineEmits(["update:positionData"]);
 
 const props = defineProps(["type"]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
@@ -134,21 +133,29 @@ watch(
   }
 );
 
+// agentList 배열의 변경을 감지하여 emit
+watch(
+  () => displayedAgents.value,
+  (newValue) => {
+    emit("update:positionData", newValue);
+  },
+  { deep: true }
+);
 
-//부동산 리스트 목록을 가져오는 메소드 정의
-async function getAgentList(pageNo, size) {
+const getAgentList = async (pageNo, size) => {
   try {
-    console.log(pageNo);
     const response = await agentAPI.getAgentList(pageNo, size);
     if (Array.isArray(response.data.agent)) {
       displayedAgents.value.push(...response.data.agent);
+      emit("update:positionData", displayedAgents.value);
     } else {
       console.error("Agent list is not an array");
     }
   } catch (error) {
     console.log(error);
   }
-}
+};
+
 //매물 목록을 가져오는 메소드 정의
 async function getPropertyList(pageNo, size) {
   try {
@@ -163,6 +170,7 @@ async function getPropertyList(pageNo, size) {
     console.log(error);
   }
 }
+
 //관심상품 목록을 가져오는 메소드 정의
 async function getFavoriteList(pageNo, size) {
   try {
@@ -176,7 +184,6 @@ async function getFavoriteList(pageNo, size) {
     console.log(error);
   }
 }
-
 </script>
 
 <style scoped>

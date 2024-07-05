@@ -31,11 +31,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import KakaoMap from "@/components/KakaoMap.vue";
-
 const props = defineProps(["detailData","agentData"]);
-const agentPosition = ref({ lat: 37.561110808242056, lng: 126.9831268386891 }); // 실제 좌표로 변경
+
+const agentPosition = ref([]); // 초기 값 설정
+
+// agentData가 변경될 때마다 agentPosition 업데이트
+watch(() => props.agentData, (newAgentData) => {
+  agentPosition.value = { lat: newAgentData.alatitude, lng: newAgentData.alongitude };
+}, { immediate: true }); // immediate: true를 설정하여 처음 로드될 때도 반영되도록 설정
+
 </script>
 
 <style scoped>

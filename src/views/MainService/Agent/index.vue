@@ -52,7 +52,10 @@
       <div class="d-flex p-3 h-100 w-100 mx-auto">
         <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3" @click="backToPropertyList">
-            <PropertyList type="agent" />
+            <PropertyList
+              type="agent"
+              @update:positionData="getAgentPositionData"
+            />
           </div>
         </div>
         <div class="right-box ms-4 col p-3 w-75" v-if="route.params.id">
@@ -62,6 +65,7 @@
                 <img
                   :src="agentProfile"
                   height="100"
+                  width="100"
                   class="rounded-circle me-3"
                 />
                 <span class="fw-bold">{{ agent.abrand }}</span>
@@ -102,7 +106,10 @@
                   </div>
                 </div>
                 <div class="right-box col" v-if="!isCommentMenu">
-                  <AgentReview :reviewData="reviewData" @update-agent-data="getAgentData(route.params.id)" />
+                  <AgentReview
+                    :reviewData="reviewData"
+                    @update-agent-data="getAgentData(route.params.id)"
+                  />
                 </div>
               </div>
             </div>
@@ -112,7 +119,7 @@
           v-if="!route.params.id"
           class="map-box right-box col p-3 ms-4 w-75 mx-auto"
         >
-          <KakaoMap page="agent" :position="agentPosition" class="" />
+          <KakaoMap page="agentList" :position="agentPositionList" class="" />
         </div>
       </div>
     </div>
@@ -135,14 +142,14 @@ const route = useRoute();
 const router = useRouter();
 const agent = ref({});
 const agentDetail = ref({});
-const agentReview = ref([]);
+const agentPositionList = ref([]);
 const reviewData = ref([]);
 const isCommentMenu = ref(true);
 const selected = "border-bottom border-4 border-warning ";
 const searchKeywordForAgent = ref("");
 const memberProfiles = ref({});
 
-// Function to get profile image for members
+// 유저 프로필 사진 다운로드
 const getMattach = async (memberId) => {
   try {
     const response = await memberAPI.memberAttachDownload(memberId);
@@ -153,7 +160,7 @@ const getMattach = async (memberId) => {
   }
 };
 
-// Function to get agent data
+// 중개인 데이터 get 함수
 const getAgentData = async (argAnumber) => {
   try {
     const response = await agentAPI.getAgentDataByNumber(argAnumber);
@@ -162,9 +169,11 @@ const getAgentData = async (argAnumber) => {
 
     if (response.data.agentReviewList) {
       const reviews = response.data.agentReviewList;
-      await Promise.all(reviews.map(async (review) => {
-        await getMattach(review.arMnumber);
-      }));
+      await Promise.all(
+        reviews.map(async (review) => {
+          await getMattach(review.arMnumber);
+        })
+      );
       reviewData.value = reviews.map((review) => ({
         ...review,
         profile: memberProfiles.value[review.arMnumber],
@@ -177,7 +186,7 @@ const getAgentData = async (argAnumber) => {
   }
 };
 
-// Function to get agent profile image
+//중개인 이미지 다운로드
 const getAttach = async (argAnumber) => {
   try {
     const response = await agentAPI.agentAttachDownload(argAnumber);
@@ -191,15 +200,25 @@ const getAttach = async (argAnumber) => {
 onMounted(() => {
   if (route.params.id) {
     getAgentData(route.params.id);
+    
   }
 });
-
+function getAgentPositionData(data) {
+  agentPositionList.value = data;
+}
 watch(
   () => route.params.id,
   (newId) => {
     if (newId) {
       getAgentData(newId);
     }
+  }
+);
+watch(
+  () => agentPositionList.value,
+  (newPositionList) => {
+    console.log("Agent position list updated:", newPositionList);
+    // KakaoMap 컴포넌트는 이미 agentPositionList를 prop으로 받고 있으므로 자동으로 업데이트.
   }
 );
 
@@ -218,7 +237,6 @@ function searchInAgent() {
   });
   searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
 }
-
 </script>
 
 <style scoped>

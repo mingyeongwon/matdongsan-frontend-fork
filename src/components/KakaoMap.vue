@@ -16,17 +16,8 @@ const kakao = window.kakao;
 const userLatitude = ref(0);
 const userLongitude = ref(0);
 
-const exampleProperties = [
-  { title: "num1", lat: 37.5072528, lng: 127.0294288 },
-  { title: "num2", lat: 37.5052528, lng: 127.0274288 },
-  { title: "num3", lat: 37.5067528, lng: 127.0289288 },
-  { title: "num4", lat: 37.27943075229118, lng: 127.01763998406159 },
-  { title: "num5", lat: 37.55915668706214, lng: 126.92536526611102 },
-  { title: "num6", lat: 35.13854258261161, lng: 129.1014781294671 },
-  { title: "num7", lat: 37.55518388656961, lng: 126.92926237742505 },
-  { title: "num8", lat: 35.20618517638034, lng: 129.07944301057026 },
-  { title: "num9", lat: 37.561110808242056, lng: 126.9831268386891 },
-];
+const exampleProperties = [];
+const exampleAgents = [{ title: "num1", lat: 38.5072528, lng: 127.0294288 }];
 const exampleFavorites = [
   { title: "num1", lat: 37.5072528, lng: 127.0294288 },
   { title: "num9", lat: 37.561110808242056, lng: 126.9831268386891 },
@@ -38,7 +29,7 @@ const initMap = () => {
   const mapOptions = {
     center: new kakao.maps.LatLng(userLatitude.value, userLongitude.value), // 초기 중심 좌표
     level: 5,
-    maxLevel: 7,
+    maxLevel: 14,
     disableDoubleClickZoom: true,
   };
 
@@ -52,9 +43,13 @@ const initMap = () => {
       "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; // 마커 이미지의 주소
     let imageSize = new kakao.maps.Size(34, 45); // 마커 이미지의 크기
     let imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커 이미지 옵션
-    let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+    let markerImage = new kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      imageOption
+    );
 
-    exampleFavorites.forEach(property => {
+    exampleFavorites.forEach((property) => {
       let markerPosition = new kakao.maps.LatLng(property.lat, property.lng); // 마커 위치
 
       // 즐겨찾기 마커 생성
@@ -66,11 +61,23 @@ const initMap = () => {
     });
   } else {
     // 페이지가 favorite가 아닌 경우 예제 마커와 클러스터 표시
-    displayMarker(
-      exampleProperties.map((property) => [property.lat, property.lng])
-    );
+    if (
+      props.page == "agentList" &&
+      props.position &&
+      Array.isArray(props.position)
+    ) {
+      console.log("실행");
 
-    if (props.page !== "agent") {
+      displayMarker(
+        props.position.map((agent) => [agent.alatitude, agent.alongitude])
+      );
+    } else if (props.page == "property") {
+      displayMarker(
+        exampleProperties.map((property) => [property.lat, property.lng])
+      );
+    }
+
+    if (props.page === "property") {
       const clusterOptions = {
         map: map,
         averageCenter: true,
@@ -91,8 +98,16 @@ const initMap = () => {
   }
 
   // 에이전트 위치 마커 추가
-  if (props.position) {
-    const agentLatLng = new kakao.maps.LatLng(props.position.lat, props.position.lng);
+  if (
+    props.page === "agent" &&
+    props.position &&
+    typeof props.position === "object" &&
+    !Array.isArray(props.position)
+  ) {
+    const agentLatLng = new kakao.maps.LatLng(
+      props.position.lat,
+      props.position.lng
+    );
     agentMarker.value = new kakao.maps.Marker({
       position: agentLatLng,
       map: map,
@@ -111,7 +126,7 @@ const displayMarker = (markerPositions) => {
       })
   );
   markers.value.forEach((marker) => marker.setMap(map)); // 새 마커 추가
-  if (cluster) {
+  if (cluster && props.page === "property") {
     cluster.clear(); // 클러스터 초기화
     cluster.addMarkers(markers.value); // 클러스터에 마커 추가
   }
@@ -160,21 +175,32 @@ onMounted(() => {
 });
 
 // props.position이 변경될 때마다 에이전트 마커 위치 업데이트
-watch(() => props.position, (newPosition) => {
-  if (map && newPosition) {
-    const newCenter = new kakao.maps.LatLng(newPosition.lat, newPosition.lng);
-    if (agentMarker.value) {
-      agentMarker.value.setPosition(newCenter);
-    } else {
-      agentMarker.value = new kakao.maps.Marker({
-        position: newCenter,
-        map: map,
-      });
+watch(
+  () => props.position,
+  (newPosition) => {
+    if (map && newPosition) {
+      if (Array.isArray(newPosition)) {
+        displayMarker(
+          newPosition.map((agent) => [agent.alatitude, agent.alongitude])
+        );
+      } else {
+        const newCenter = new kakao.maps.LatLng(
+          newPosition.lat,
+          newPosition.lng
+        );
+        if (agentMarker.value) {
+          agentMarker.value.setPosition(newCenter);
+        } else {
+          agentMarker.value = new kakao.maps.Marker({
+            position: newCenter,
+            map: map,
+          });
+        }
+        map.setCenter(newCenter); // 지도 중심을 에이전트 위치로 변경
+      }
     }
-    map.setCenter(newCenter); // 지도 중심을 에이전트 위치로 변경
   }
-});
-
+);
 </script>
 
 <style scoped>
