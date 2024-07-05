@@ -4,6 +4,10 @@ const routes = [
         component: () =>  import(/* webpackChunkName: "Qna" */ '@/views/Qna/CustomerInquiryForm')
     },
     {
+        path: "/QNA/CustomerInquiryUpdateForm",
+        component: () =>  import(/* webpackChunkName: "Qna" */ '@/views/Qna/CustomerInquiryUpdateForm')
+    },
+    {
         path: "/QNA/FAQ",
         component: () =>  import(/* webpackChunkName: "Qna" */ '@/views/Qna/Faq')
     },

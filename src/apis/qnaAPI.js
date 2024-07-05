@@ -36,6 +36,11 @@ function updateQuestion(formData) {
     return axios.put("/Qna/MyCustomerInquiryUpdate", formData);
 }
 
+// 문의 삭제 하기
+function deleteQuestion(qnumber,qUnumber) {
+    return axios.delete("/Qna/MyCustomerInquiryDelete",{params:{qnumber:qnumber, qUnumber:qUnumber}});
+}
+
 export default {
     createQuestion,
     getAllQuestionList,
@@ -44,4 +49,5 @@ export default {
     getWriter,
     getAttach,
     updateQuestion,
+    deleteQuestion,
   };

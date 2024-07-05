@@ -26,9 +26,9 @@
     
     <hr>
     <!-- 관리자로 로그인 했을 때만 보이게 하기 -->
-      <!-- <div v-if="$store.state.userId !== ''"> store 구현되면 다시 설정하기--> 
+      <div v-if="$store.state.userRole == 'ADMIN'">
         <answerForm />
-      <!-- </div> -->
+      </div>
     </div>
     <!-- 컴포넌트 삽입 -->
   </div>
@@ -39,7 +39,8 @@ import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import qnaAPI from "@/apis/qnaAPI";
 import answerForm from "./answerForm.vue";
-
+import {useStore} from "vuex";
+const store = useStore();
 const router = useRouter();
 const route = useRoute();
 

@@ -46,7 +46,7 @@
     />
     </div>
   </div>
-  <DeleteQnaModal id="DeleteQnaModal" @delete="deleteQuestion"/>
+  <DeleteQnaModal id="DeleteQnaModal" @delete="agreeDeleteQuestion" @close="hideModal"/>
 </template>
 
 <script setup>
@@ -67,6 +67,10 @@ let deleteQnaModal = null;
 let currentPage = ref(1);
 let totalPages = ref();
 
+const deleteQnumber = ref();
+const deleteQunumber = ref();
+const deleteIndex = ref();
+
 // DB에서 가져온 리스트
 const page = ref({
   question : [],
@@ -78,8 +82,37 @@ onMounted(() => {
 });
 
 // 삭제 버튼 클릭 시 실행되는 함수
-function showDeleteQnaModal(qnumber,qunumber) {
+function showDeleteQnaModal(qnumber,qunumber,index) {
   deleteQnaModal.show();
+  // 아코디언에서 해당하는 게시물의 qnumber와 qunumber를 가져옴
+  deleteQnumber.value = qnumber;
+  deleteQunumber.value = qunumber;
+  deleteIndex.value = index;
+
+  console.log("삭제 버튼 클릭 시 실행되는 함수", deleteQnumber.value, deleteQunumber.value);
+
+}
+
+
+function hideModal() {
+  deleteQnaModal.hide();
+}
+
+
+// 게시물 삭제
+async function agreeDeleteQuestion(){
+
+  console.log("삭제 해!");
+  try {
+    await qnaAPI.deleteQuestion(deleteQnumber.value, deleteQunumber.value);
+    console.log("삭제 완료");  
+    hideModal();
+    getList()
+    isOpen();
+  } catch (error) {
+    console.log("삭제 안 됨 !",error);
+    hideModal()
+  }
 }
 
 function handlePageChange(page){
@@ -96,7 +129,6 @@ async function getList(){
     page.value.pager = response.data.pager;
     totalPages.value = page.value.pager.totalPageNo
     console.log("리스트 갯수", page.value.question.length);
-    console.log("문의 객체",page.value.question[0]);
   } catch (error) {
     console.log(error);
   }
@@ -111,19 +143,16 @@ watch(currentPage, () => {
   getList();
 })
 
-// 게시물 삭제
-function deleteQuestion(){
-  
-}
-
-
 const openIndex = ref(null);
 
 function toggle(index) {
   openIndex.value = openIndex.value === index ? null : index;
+  console.log("닫아",openIndex.value);
 }
 
 function isOpen(index) {
+  console.log("열어",openIndex.value);
+
   return openIndex.value === index;
 }
 </script>
