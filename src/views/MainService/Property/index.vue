@@ -106,9 +106,16 @@ const getPropertyData = async (pnumber) => {
     propertyPhotos.value = response.data.propertyPhotos;
     propertyCommentList.value = response.data.propertyCommentList;
 
+    pattaches.value = [];
+
+    getPthumbnail(pnumber);
+
     await Promise.all(propertyPhotos.value.map(async (photo) => {
       await getPattaches(photo.ppnumber);
-    }))
+    }));
+
+    console.log("pattaches:", pattaches.value);
+
   } catch (error) {
     console.log(error);
   }
@@ -152,15 +159,17 @@ const toggleHover = (state) => {
 onMounted(() => {
   if (route.params.id) {
     getPropertyData(route.params.id);
-    getPthumbnail(route.params.id);
   }
 });
 
 // params로 넘어온 pnumber 
 watch(() => route.params.id, (newPnumber) => {
   if(newPnumber) {
+    propertyPhotos.value = [];
+    pattaches.value = [];
     getPropertyData(newPnumber);
     console.log("newPnumber : " + newPnumber);
+
   }
 });
 

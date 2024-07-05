@@ -8,36 +8,37 @@
               class="img-fluid"
               v-if="pthumbnail != null" :src="pthumbnail"
             />
+            <img v-else src="../../../assets/no_image.jpg" width="200" alt="">
           </th>
-          <!-- <td v-for="pattach in pattaches" :key="pattach">
-            <img v-if="pattach != null" :src="pattach" class="img-fluid">
-          </td> -->
           <td>
             <img
               class="img-fluid"
-              v-if="pattaches[0] != null" :src="pattaches[0]"
+              v-if="pattaches[0] != null" :src="pattaches[0]"  width="200"
             />
+            <img v-else src="../../../assets/no_image.jpg" width="200" alt="">
           </td>
           <td>
             <img
               class="img-fluid"
-              v-if="pattaches[1] != null" :src="pattaches[1]"
+              v-if="pattaches[1] != null" :src="pattaches[1]"  width="200"
             />
+            <img v-else src="../../../assets/no_image.jpg" width="200" alt="">
           </td>
         </tr>
         <tr>
           <th scope="row">
             <img
               class="img-fluid"
-              v-if="pattaches[2] != null" :src="pattaches[2]"
+              v-if="pattaches[2] != null" :src="pattaches[2]"  width="200"
             />
-            <img v-else src="../../../assets/no_image.jpg" alt="">
+            <img v-else src="../../../assets/no_image.jpg" width="200" alt="">
           </th>
           <td>
             <img
               class="img-fluid"
-              v-if="pattaches[3] != null" :src="pattaches[3]"
+              v-if="pattaches[3] != null" :src="pattaches[3]"  width="200"
             />
+            <img v-else src="../../../assets/no_image.jpg" width="200" alt="">
           </td>
         </tr>
       </tbody>
@@ -58,6 +59,8 @@ let detailPhotoModal = null;
 const props = defineProps([
   'pthumbnail', 'pattaches'
 ]);
+
+console.log("pattaches in detailPhoto :", props.pattaches);
 
 function showDetailPhotoModal() {
   detailPhotoModal.show();
