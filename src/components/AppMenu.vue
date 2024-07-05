@@ -81,6 +81,7 @@
                 alt=""
                 class="me-1 rounded-circle align-self-center"
                 width="35"
+                height="35"
               />
               <span class=""> {{ $store.getters.getUemail }} </span>
             </RouterLink>

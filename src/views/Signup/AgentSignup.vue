@@ -216,6 +216,7 @@ import { ref, computed } from "vue";
 import ImagePreview from "@/components/ImagePreview.vue"; // ImagePreview 컴포넌트 가져오기
 import agentAPI from "@/apis/agentAPI";
 const router = useRouter();
+const kakao = window.kakao;
 
 // 회원가입 데이터와 에러 메시지 초기화
 let agentSignup = ref({
@@ -231,6 +232,8 @@ let agentSignup = ref({
   addressDetail: "",
   profileImage: [], // 프로필 이미지를 저장할 배열
   documentImage: [], // 서류 이미지를 저장할 배열
+  alatitude: "",
+  alongitude: "",
 });
 
 let errorMessage = ref({
@@ -304,17 +307,17 @@ async function handleSubmit() {
   formData.append("userEmail.upassword", agentSignup.value.agentPassword1);
   formData.append("userEmail.urole", "AGENT");
   formData.append("userEmail.uremoved", false);
-  
+
   formData.append("agent.abrand", agentSignup.value.agentBrandName);
   formData.append("agent.aname", agentSignup.value.agentName);
   formData.append("agent.aphone", agentSignup.value.agentPhone);
   formData.append("agent.aaddress", agentSignup.value.address);
   formData.append("agent.aaddressdetail", agentSignup.value.addressDetail);
   formData.append("agent.apostcode", agentSignup.value.postcode);
-  formData.append("agent.alatitude", "37.3952969470752");
-  formData.append("agent.alongitude", "127.110449292622");
+  formData.append("agent.alatitude", agentSignup.value.alatitude);
+  formData.append("agent.alongitude", agentSignup.value.alongitude);
   formData.append("agent.aprofile", agentSignup.value.profileImage[0]);
-  
+
   formData.append("agentDetail.adattach", agentSignup.value.documentImage[0]);
 
   formData.append("agentDetail.adbrandnumber", agentSignup.value.agentBrandNum);
@@ -340,6 +343,7 @@ function openPostSearch() {
     oncomplete: (data) => {
       agentSignup.value.postcode = data.zonecode;
       agentSignup.value.address = data.address;
+      showMap(data.address); // 주소로 좌표 저장하기
     },
   }).open();
 }
@@ -352,6 +356,21 @@ function handleProfileImageUpdate(files) {
 // 서류 이미지 업데이트 핸들러
 function handleDocumentImageUpdate(files) {
   agentSignup.value.documentImage = files;
+}
+
+function showMap(address) {
+
+
+
+
+  const geocoder = new kakao.maps.services.Geocoder();
+
+  geocoder.addressSearch(address, function (result, status) {
+    if (status === kakao.maps.services.Status.OK) {
+      agentSignup.value.alongitude = result[0].x;
+      agentSignup.value.alatitude = result[0].y;
+    }
+  });
 }
 </script>
 

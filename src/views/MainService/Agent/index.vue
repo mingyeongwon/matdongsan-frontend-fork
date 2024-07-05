@@ -218,6 +218,7 @@ function searchInAgent() {
   });
   searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
 }
+
 </script>
 
 <style scoped>
