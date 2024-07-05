@@ -588,6 +588,8 @@ async function loginHandleSubmit() {
       const payload = {
         uemail: response.data.uemail,
         accessToken: response.data.accessToken,
+        userRole: response.data.userRole,
+        userRoleNumber: response.data.userRoleNumber,
       };
 
       store.dispatch("saveAuth", payload);

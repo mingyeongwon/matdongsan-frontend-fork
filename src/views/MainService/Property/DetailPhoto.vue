@@ -6,19 +6,22 @@
           <th scope="row" rowspan="2" class="w-50 ">
             <img
               class="img-fluid"
-              src="https://photos.zillowstatic.com/fp/f95a407a00e51654545dbec4d9a5400f-cc_ft_768.webp"
+              v-if="pthumbnail != null" :src="pthumbnail"
             />
           </th>
+          <!-- <td v-for="pattach in pattaches" :key="pattach">
+            <img v-if="pattach != null" :src="pattach" class="img-fluid">
+          </td> -->
           <td>
             <img
               class="img-fluid"
-              src="https://photos.zillowstatic.com/fp/506243417f2983d94dcf8deecbee10d3-cc_ft_768.webp"
+              v-if="pattaches[0] != null" :src="pattaches[0]"
             />
           </td>
           <td>
             <img
               class="img-fluid"
-              src="https://photos.zillowstatic.com/fp/2ab0729fe00ec391ecb064b786b102eb-cc_ft_768.webp"
+              v-if="pattaches[1] != null" :src="pattaches[1]"
             />
           </td>
         </tr>
@@ -26,13 +29,14 @@
           <th scope="row">
             <img
               class="img-fluid"
-              src="https://photos.zillowstatic.com/fp/bcd02478396f1bc38c713a0b87e85c9b-cc_ft_768.webp"
+              v-if="pattaches[2] != null" :src="pattaches[2]"
             />
+            <img v-else src="../../../assets/no_image.jpg" alt="">
           </th>
           <td>
             <img
               class="img-fluid"
-              src="https://photos.zillowstatic.com/fp/17c649bba13d15df3cccf0b91b52d9e0-cc_ft_768.webp"
+              v-if="pattaches[3] != null" :src="pattaches[3]"
             />
           </td>
         </tr>
@@ -45,20 +49,27 @@
 
 <script setup>
 
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import {Modal} from "bootstrap";
-
 import DetailPhotoModal from "./DetailPhotoModal.vue";
 
 let detailPhotoModal = null;
 
-onMounted(() => {
-  detailPhotoModal = new Modal(document.querySelector("#DetailPhotoModal"))
-});
+const props = defineProps([
+  'pthumbnail', 'pattaches'
+]);
 
 function showDetailPhotoModal() {
   detailPhotoModal.show();
 }
+
+
+
+onMounted(() => {
+  detailPhotoModal = new Modal(document.querySelector("#DetailPhotoModal"));
+
+});
+
 
 </script>
 <style scoped></style>

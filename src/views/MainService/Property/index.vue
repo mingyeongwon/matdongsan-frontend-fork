@@ -1,31 +1,5 @@
 <template>
   <div class="overflow-hidden w-75 mx-auto">
-    <div>
-      <form class="mt-2 w-100">
-        <div class="d-flex justify-content-end px-4 w-100">
-          <div class="d-flex ">
-            <input
-              class="form-control me-2 w-auto"
-              type="search"
-              placeholder="주소 검색"
-              aria-label="Search"
-              v-model="searchKeyword"
-              @keyup.enter="searchInProperty"
-            />
-            <button
-              class="btn btn-outline-success"
-              type="button"
-              @click="searchInProperty"
-            >
-              Search
-            </button> 
-          </div>
-          <div class="d-flex">
-            필터
-          </div>
-        </div>
-      </form>
-    </div>
     <PropertyFilter class="w-100 mt-2"/>
     <ul class="nav nav-pills mt-5 ms-4">
       <li class="nav-item">
@@ -80,7 +54,7 @@
           <KakaoMap @getPropertyData="getPropertyData" />
         </div>
         <div class="right-box col h-100 p-3" v-if="route.params.id">
-          <DetailPhoto />
+          <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"  />
           <DetailInfo />
           <Comment />
         </div>
@@ -96,7 +70,8 @@ import DetailPhoto from "./DetailPhoto.vue";
 import DetailInfo from "./DetailInfo.vue";
 import KakaoMap from "@/components/KakaoMap.vue";
 import PropertyFilter from "./PropertyFilter.vue";
-import { ref } from "vue";
+import propertyAPI from "@/apis/propertyAPI";
+import { onMounted, ref, watch, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -104,32 +79,62 @@ const route = useRoute();
 const router = useRouter();
 const store = useStore();
 
-const propertyData = ref([]);
 let status = ref(true);
+
+const property = ref({});
+const propertyDetail = ref({});
+const propertyPhotos = ref([]);
+const propertyCommentList = ref([]);
+const pthumbnail = ref(null);
+const pattaches = ref([]);
+
 
 // 검색
 const searchKeyword = ref("");
 
-function searchInProperty() {
-  // vuex
-  store.dispatch("search/updateSearchKeyword", {
-    searchKeyword: searchKeyword.value,
-  });
-  router.push({
-    path: "/Property",
-    query: { keyword: searchKeyword.value },
-  });
-  searchKeyword.value = ""; // 검색 버튼에서 내용 사라지게
-}
-
+// 뒤로 가기
 function backToPropertyList() {
   router.push("/Property");
 }
 
-const getPropertyData = (data) => {
-  propertyData.value = data;
-  console.log(propertyData.value);
+// property 데이터
+const getPropertyData = async (pnumber) => {
+  try {
+    const response = await propertyAPI.getPropertyData(pnumber);
+    property.value = response.data.totalProperty.property;
+    propertyDetail.value = response.data.totalProperty.propertyDetail;
+    propertyPhotos.value = response.data.propertyPhotos;
+    propertyCommentList.value = response.data.propertyCommentList;
+
+    await Promise.all(propertyPhotos.value.map(async (photo) => {
+      await getPattaches(photo.ppnumber);
+    }))
+  } catch (error) {
+    console.log(error);
+  }
 };
+
+// 썸네일 사진 출력
+const getPthumbnail = async (pnumber) => {
+  try {
+    const response = await propertyAPI.propertyAttachDownload(pnumber);
+    pthumbnail.value = URL.createObjectURL(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 디테일 사진 출력
+const getPattaches = async (ppnumber) => {
+  try {
+    const response = await propertyAPI.detailPropertyAttachDownload(ppnumber);
+    const pattach = URL.createObjectURL(response.data);
+    pattaches.value.push(pattach);
+  } catch(error) {
+      console.log(error);
+  }
+}
+
 
 const liked = (productId) => {
   console.log("productId : " + productId);
@@ -143,6 +148,23 @@ const isHovered = ref(false);
 const toggleHover = (state) => {
   isHovered.value = state;
 };
+
+onMounted(() => {
+  if (route.params.id) {
+    getPropertyData(route.params.id);
+    getPthumbnail(route.params.id);
+  }
+});
+
+// params로 넘어온 pnumber 
+watch(() => route.params.id, (newPnumber) => {
+  if(newPnumber) {
+    getPropertyData(newPnumber);
+    console.log("newPnumber : " + newPnumber);
+  }
+});
+
+
 </script>
 
 <style scoped>

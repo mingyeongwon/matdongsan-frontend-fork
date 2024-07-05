@@ -102,7 +102,7 @@
                   </div>
                 </div>
                 <div class="right-box col" v-if="!isCommentMenu">
-                  <AgentReview :reviewData="agentReview" />
+                  <AgentReview :reviewData="reviewData" @update-agent-data="getAgentData(route.params.id)" />
                 </div>
               </div>
             </div>
@@ -128,58 +128,56 @@ import AgentReview from "./AgentReview";
 import agentAPI from "@/apis/agentAPI";
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import memberAPI from "@/apis/memberAPI";
+
 const agentProfile = ref(null);
 const route = useRoute();
 const router = useRouter();
 const agent = ref({});
 const agentDetail = ref({});
-const agentReview = ref({});
-//중개인 디테일 id 값 변할때 실행해야하는 내용들
-onMounted(() => getAgentData(route.params.id));
-watch(
-  () => route.params.id, // 타입이 변경이 되면 값 초기화
-  () => {
-    // 밑에는 타입이 변경되면 실행될 내용들
-    console.log(route.params.id);
-   
-    //중개인 데이터
-    //프로필 사진
-    getAgentData(route.params.id);
-    //중개인 데이터
-  }
-);
-let isCommentMenu = ref(true);
+const agentReview = ref([]);
+const reviewData = ref([]);
+const isCommentMenu = ref(true);
 const selected = "border-bottom border-4 border-warning ";
 const searchKeywordForAgent = ref("");
+const memberProfiles = ref({});
 
-function backToAgentList() {
-  console.log("clicked");
-  router.push("/Agent");
-}
+// Function to get profile image for members
+const getMattach = async (memberId) => {
+  try {
+    const response = await memberAPI.memberAttachDownload(memberId);
+    const blob = response.data;
+    memberProfiles.value[memberId] = URL.createObjectURL(blob);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-function subMenuCheck(check) {
-  isCommentMenu.value = check;
-}
-function searchInAgent() {
-  router.push({
-    path: "/Agent",
-    query: { keyword: searchKeywordForAgent.value },
-  });
-  searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
-}
-//중개인 데이터
+// Function to get agent data
 const getAgentData = async (argAnumber) => {
   try {
     const response = await agentAPI.getAgentDataByNumber(argAnumber);
     agent.value = response.data.agent;
     agentDetail.value = response.data.agentDetail;
-    agentReview.value = response.data.agentReviewList;
-    getAttach(argAnumber);
+
+    if (response.data.agentReviewList) {
+      const reviews = response.data.agentReviewList;
+      await Promise.all(reviews.map(async (review) => {
+        await getMattach(review.arMnumber);
+      }));
+      reviewData.value = reviews.map((review) => ({
+        ...review,
+        profile: memberProfiles.value[review.arMnumber],
+      }));
+    }
+
+    await getAttach(argAnumber);
   } catch (error) {
     console.log(error);
   }
 };
-//프로필 이미지 다운로드
+
+// Function to get agent profile image
 const getAttach = async (argAnumber) => {
   try {
     const response = await agentAPI.agentAttachDownload(argAnumber);
@@ -189,6 +187,37 @@ const getAttach = async (argAnumber) => {
     console.log(error);
   }
 };
+
+onMounted(() => {
+  if (route.params.id) {
+    getAgentData(route.params.id);
+  }
+});
+
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (newId) {
+      getAgentData(newId);
+    }
+  }
+);
+
+function backToAgentList() {
+  router.push("/Agent");
+}
+
+function subMenuCheck(check) {
+  isCommentMenu.value = check;
+}
+
+function searchInAgent() {
+  router.push({
+    path: "/Agent",
+    query: { keyword: searchKeywordForAgent.value },
+  });
+  searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
+}
 </script>
 
 <style scoped>

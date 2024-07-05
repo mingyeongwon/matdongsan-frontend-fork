@@ -19,19 +19,19 @@
           <tr>
             <th scope="col" class="text-center">매물번호</th>
             <th scope="col" class="text-center">대표사진</th>
-            <th scope="col" class="text-center">제목 / 내용</th>
+            <th scope="col" class="text-center">가격 / 내용</th>
             <th scope="col" class="text-center">등록한 날짜</th>
             <th scope="col" class="text-center">매물 상태</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="property in property" :key="property.pnumber">
+          <tr v-for="property in properties" :key="property.pnumber">
             <th scope="row" class="text-center align-middle">
               {{ property.pnumber }}
             </th>
             <td class="align-middle text-center">
-              <img v-if="pthumbnail != null" :src="pthumbnail" width="150" alt="매물 사진" />
+              <img v-if="pthumbnails[property.pnumber] != null" :src="pthumbnails[property.pnumber]" width="150" alt="매물 사진" />
             </td>
             <td class="align-middle text-muted">
               <div class="fw-bold">{{ property.pcategory }} {{ property.pdeposite }} {{ property.prentalfee }}</div>
@@ -39,7 +39,7 @@
                 {{ property.pfloortype }},{{ property.psize }}m<sup>2</sup>,관리비 {{ property.pmaintenance }}만, {{ property.ptitle }}
               </small>
             </td>
-            <td class="fw-bold align-middle text-center">{{ property.pdate }}</td>
+            <td class="fw-bold align-middle text-center"> {{ property.formattedDate }}</td>
             <td class="fw-bold align-middle">
               <div class="d-flex flex-column">
                 <RouterLink class="routerLink " :to="{path:'/PropertyForm', query:{pnumber:property.pnumber}}">
@@ -105,7 +105,9 @@
   />
   <DeletePropertyModal
     id="DeletePropertyModal"
-    @close="hideDeletePropertyModal" />
+    :pnumber = "selectedPnumber"
+    @close="hideDeletePropertyModal"
+    @delete-property="deleteProperty" />
 
 </template>
 
@@ -117,15 +119,17 @@ import { onMounted, ref } from "vue";
 import { Modal } from "bootstrap";
 import propertyAPI from "@/apis/propertyAPI";
 import axios from "axios";
+import dayjs from "dayjs";
+
 
 let transactionModal = null;
 let deletePropertyModal = null;
 let idNumber = ref(0);
 
-const property = ref({});
-const pthumbnail = ref(null);
-
+const properties = ref([]);
 const pthumbnails = ref({});
+
+const selectedPnumber = ref(0); // 삭제 모달에 보내는 pnumber
 
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
@@ -137,14 +141,14 @@ function toggleActive(property) {
 }
 
 
-const properties = ref([
+const property = ref([
   { id: 1, isActive: false,checkTransactionCompletedData:true },
   { id: 2, isActive: false,checkTransactionCompletedData:true },
   // 추가 매물 데이터
 ]);
 
 
-// 모달
+// 거래완료 모달
 function showTransactionModal(data) {
   transactionModal.show();
   idNumber.value=data.id;
@@ -156,7 +160,9 @@ function hideTransactionModal(data) { // 거래 완료 확인 모달에서 거�
   data[idNumber.value-1].checkTransactionCompletedData = false;
 }
 
+// 삭제 모달
 function showDeletePropertyModal(pnumber) {
+  selectedPnumber.value = pnumber;
   deletePropertyModal.show();
 }
 
@@ -168,25 +174,43 @@ function hideDeletePropertyModal() {
 async function getUserPropertyList() {
   try {
     const response = await propertyAPI.getUserPropertyList();
-    property.value = response.data;
-    if(property.value.pthumbnailoname != null) {
-      getPthumbnail(property.value.pnumber);
-    }
+    properties.value = response.data;
+    properties.value.forEach(property => {
+      if (property.pthumbnailoname != null) {
+        getPthumbnail(property.pnumber);
+      }
+    });
+    properties.value.forEach(property => {
+      property.formattedDate = dayjs(property.pdate).format('YYYY-MM-DD')
+    });
   } catch (error) {
     console.log(error);
   }
 }
 
-const getPthumbnail = async (argPnumber) => {
+// 사진 출력
+const getPthumbnail = async (pnumber) => {
   try {
-    const response = await propertyAPI.propertyAttachDownload(argPnumber);
-    pthumbnail.value = URL.createObjectURL(response.data);
+    const response = await propertyAPI.propertyAttachDownload(pnumber);
+    pthumbnails.value[pnumber] = URL.createObjectURL(response.data);
   } catch (error) {
     console.log(error);
   }
 };
 
-getUserPropertyList();
+onMounted(() => {
+  getUserPropertyList();
+});
+
+
+const deleteProperty = async (selectedPnumber) => {
+  try {
+    await propertyAPI.deleteProperty(selectedPnumber);
+    await getUserPropertyList(); // 삭제 후 리스트 갱신
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 </script>

@@ -19,10 +19,9 @@
           <div class="listInfo-box ms-2">
             <p class="listPrice mb-2 mt-2">
               <b
-                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}/{{
-                  favoriteData.prentalfee
-                }}</b
-              >
+                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}
+                /{{favoriteData.prentalfee}}
+                </b>
             </p>
             <p class="listInfo">
               {{ favoriteData.floor }}층, {{ favoriteData.size }}m<sup>2</sup>,
@@ -58,11 +57,12 @@
         <div class="w-50">
           <div class="listInfo-box ms-2">
             <p class="listPrice mb-2 mt-2">
-              <b
-                >{{ propertyData.pcategory }} {{ propertyData.pdeposite }}/{{
-                  propertyData.prentalfee
-                }}</b
-              >
+              <b>
+                {{ propertyData.pcategory }} {{ propertyData.pdeposite }}
+                <span v-if="propertyData.prentalfee > 0">
+                  /{{propertyData.prentalfee}}
+                </span>
+                </b>
             </p>
             <p class="listInfo">
               {{ propertyData.pfloor }}층, {{ propertyData.psize }}m<sup>2</sup>,
@@ -173,6 +173,7 @@ const getPttach = async (argPnumber) => {
     console.log(error);
   }
 };
+
 if (props.agentData.anumber) {
   getAttach(props.agentData.anumber);
 } else if (props.propertyData.pnumber) {
