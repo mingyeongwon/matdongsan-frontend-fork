@@ -169,7 +169,7 @@ import { ref, onMounted } from "vue";
 import {Modal} from "bootstrap";
 
 import PropertyItem from "@/components/Property/PropertyListItem.vue";
-import ReportFalseModal from "@/components/ReportFalseModal.vue";
+import ReportFalseModal from "@/views/MainService/Property/ReportFalseModal.vue";
 
 let reportFalseModal = null;
 

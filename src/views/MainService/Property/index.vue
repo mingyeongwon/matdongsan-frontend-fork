@@ -54,9 +54,9 @@
           <KakaoMap @getPropertyData="getPropertyData" />
         </div>
         <div class="right-box col h-100 p-3" v-if="route.params.id">
-          <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"  />
+          <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"/>
           <DetailInfo />
-          <Comment />
+          <Comment :propertyCommentList = "propertyCommentList" />
         </div>
       </div>
     </div>
@@ -89,6 +89,7 @@ const pthumbnail = ref(null);
 const pattaches = ref([]);
 
 
+
 // 검색
 const searchKeyword = ref("");
 
@@ -113,8 +114,6 @@ const getPropertyData = async (pnumber) => {
     await Promise.all(propertyPhotos.value.map(async (photo) => {
       await getPattaches(photo.ppnumber);
     }));
-
-    console.log("pattaches:", pattaches.value);
 
   } catch (error) {
     console.log(error);
@@ -167,6 +166,7 @@ watch(() => route.params.id, (newPnumber) => {
   if(newPnumber) {
     propertyPhotos.value = [];
     pattaches.value = [];
+    // propertyCommentList.value = [];
     getPropertyData(newPnumber);
     console.log("newPnumber : " + newPnumber);
 

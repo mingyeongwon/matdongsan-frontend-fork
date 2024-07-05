@@ -30,7 +30,9 @@
         </button>
       </div>
     </div>
-    <div>
+
+    <!-- 댓글 -->
+    <div v-for="comment in propertyCommentList" :key="comment.ucnumber">
       <div>
         <div>
           <hr />
@@ -45,12 +47,12 @@
               />
               <p class="align-self-center fw-bold ms-2 h6 m-0">권성환</p>
             </div>
-            <span class="align-self-center">2024/11/07</span>
+            <span class="align-self-center">{{comment.ucdate}}</span>
           </div>
           <div class="d-flex justify-content-between">
             <div class="ms-5">
               <p class="mt-2 fw-bold">
-                정말 친절하게 다 알려줬어요. 사장님이 친절하고 서비스가 최고예요.
+                {{comment.uccomment}}
               </p>
             </div>
 
@@ -151,6 +153,10 @@ const showDeleteModal = ref(false);
 
 const router = useRouter();
 const route = useRoute();
+
+const props = defineProps([
+  'propertyCommentList',
+]);
 
 //댓글 작성
 function submitComment() {

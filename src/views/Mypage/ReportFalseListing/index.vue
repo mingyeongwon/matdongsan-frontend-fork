@@ -45,7 +45,7 @@ import { ref, onMounted } from "vue";
 import { Modal } from "bootstrap";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionItem from "@/components/AccordionItem.vue";
-import ReportFalseModal from "@/components/ReportFalseModal.vue";
+import ReportFalseModal from "@/views/MainService/Property/ReportFalseModal.vue";
 import DeleteReportModal from "../../../views/Mypage/ReportFalseListing/DeleteReportModal.vue"
 
 let reportFalseModal = null;
