@@ -51,6 +51,12 @@ const postReportProperty = (report) => {
   return axios.post("/createPropertyReport/" + report.rPnumber, qs.stringify(report));
 }
 
+// 매물 신고 리스트
+const getReportList = () => {
+  return axios.get("/Mypage/ReportFalseListing");
+};
+
+
 export default {
   getPropertyList,
   getUserPropertyList,
@@ -59,5 +65,6 @@ export default {
   getPopularPropertyList,
   detailPropertyAttachDownload,
   getPropertyData,
-  postReportProperty
+  postReportProperty,
+  getReportList
 };
