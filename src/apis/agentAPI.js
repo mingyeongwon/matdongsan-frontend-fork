@@ -14,14 +14,18 @@ const getAgentList = (pageNo, size) => {
 };
 
 //중개인 데이터
-const getAgentDataByNumber = (anumber,pageNo) => {
+const getAgentDataByNumber = (anumber, pageNo) => {
   console.log(anumber);
-  return axios.get("/Agent/" + anumber,{ params: { pageNo } });
+  return axios.get("/Agent/" + anumber, { params: { pageNo } });
 };
 //중개인 데이터 업데이트
 const updateAgentData = (agentData) => {
-  return axios.put("/Agent/Mypage/MyInfomation",agentData)
-}
+  return axios.put("/Agent/Mypage/MyInfomation", agentData);
+};
+//중개인 리뷰 페이지 불러오기
+const getAgentReviewData = (anumber) => {
+  return axios.get("/Agent/AgentReview/"+anumber);
+};
 //중개인 프로필 사진 다운로드
 const agentAttachDownload = (anumber) =>
   //PathVariable로 데이터 전송
@@ -32,9 +36,12 @@ const postAgentReview = (reviewData) => {
   return axios.post("/Agent/" + reviewData.arAnumber, qs.stringify(reviewData));
 };
 //중개인 리뷰 업데이트
-const updateAgentReview =(editingReview)=>{
-  return axios.put(`/Agent/${editingReview.arAnumber}/${editingReview.arnumber}`,qs.stringify(editingReview))
-}
+const updateAgentReview = (editingReview) => {
+  return axios.put(
+    `/Agent/${editingReview.arAnumber}/${editingReview.arnumber}`,
+    qs.stringify(editingReview)
+  );
+};
 //중개인 리뷰 삭제
 const deleteAgentReview = (anumber, arnumber) => {
   return axios.delete(`/Agent/${anumber}/${arnumber}`);
@@ -53,4 +60,5 @@ export default {
   sortAgentReview,
   updateAgentReview,
   updateAgentData,
+  getAgentReviewData,
 };

@@ -19,9 +19,10 @@
           <div class="listInfo-box ms-2">
             <p class="listPrice mb-2 mt-2">
               <b
-                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}
-                /{{favoriteData.prentalfee}}
-                </b>
+                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }} /{{
+                  favoriteData.prentalfee
+                }}
+              </b>
             </p>
             <p class="listInfo">
               {{ favoriteData.floor }}층, {{ favoriteData.size }}m<sup>2</sup>,
@@ -46,13 +47,7 @@
     <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
         <div class="w-50">
-          <img
-            class=""
-            width="140"
-            height="140"
-            :src="pattach"
-            alt=""
-          />
+          <img class="" width="140" height="140" :src="pattach" alt="" />
         </div>
         <div class="w-50">
           <div class="listInfo-box ms-2">
@@ -60,13 +55,14 @@
               <b>
                 {{ propertyData.pcategory }} {{ propertyData.pdeposite }}
                 <span v-if="propertyData.prentalfee > 0">
-                  /{{propertyData.prentalfee}}
+                  /{{ propertyData.prentalfee }}
                 </span>
-                </b>
+              </b>
             </p>
             <p class="listInfo">
-              {{ propertyData.pfloor }}층, {{ propertyData.psize }}m<sup>2</sup>,
-              관리비 {{ propertyData.pmaintenance }}만
+              {{ propertyData.pfloor }}층,
+              {{ propertyData.psize }}m<sup>2</sup>, 관리비
+              {{ propertyData.pmaintenance }}만
             </p>
             <p class="listInfo">{{ propertyData.ptitle }}</p>
             <p
@@ -87,7 +83,14 @@
     <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
         <div class="w-50">
-          <img v-if="aattach" class="" width="140" height="140" :src="aattach" alt="" />
+          <img
+            v-if="aattach"
+            class=""
+            width="140"
+            height="140"
+            :src="aattach"
+            alt=""
+          />
         </div>
         <div class="w-50">
           <div class="listInfo-box ms-2">
@@ -96,6 +99,8 @@
             </p>
             <p class="listInfo ms-2">{{ agentData.aname }},</p>
             <p class="listInfo ms-2">{{ agentData.aphone }}</p>
+            <p class="listInfo ms-2">댓글 ({{ agentDetailData.total }})</p>
+            <p class="listInfo ms-2">평점 ({{ averageRating }})</p>
           </div>
         </div>
       </div>
@@ -104,23 +109,25 @@
 </template>
 
 <script setup>
+import { ref, computed, watchEffect } from "vue";
 import agentAPI from "@/apis/agentAPI";
 import propertyAPI from "@/apis/propertyAPI";
-import { ref } from "vue";
-const aattach = ref(null); //중개인 첨부 사진
-const pattach = ref(null); //매물 첨부 사진
+
+const aattach = ref(null); // 중개인 첨부 사진
+const pattach = ref(null); // 매물 첨부 사진
+const agentDetailData = ref({ sum: 0, total: 0 }); // 리뷰 평점 합과 수
 const props = defineProps({
   propertyData: {
     type: Object,
     default: () => ({
-      id: 0,
+      pnumber: 0,
       pcategory: "월세",
       pdeposite: 3000,
       prentalfee: 20,
-      title: "O성북천변 신축급 풀옵션원룸O성신여대역도보4분거리O",
-      floor: 1,
-      size: 25,
-      maintenance: 8,
+      ptitle: "O성북천변 신축급 풀옵션원룸O성신여대역도보4분거리O",
+      pfloor: 1,
+      psize: 25,
+      pmaintenance: 8,
       detailInfo: "",
     }),
   },
@@ -138,22 +145,18 @@ const props = defineProps({
       detailInfo: "",
     }),
   },
-
   agentData: {
     type: Object,
     default: () => ({
-      id: 0,
-      company: "검은소와 중개소 ",
-      pdeposite: 3000,
-      prentalfee: 20,
-      title: "O성북천변 신축급 풀옵션원룸O성신여대역도보4분거리O",
-      maintenance: 8,
-      detailInfo: "",
+      anumber: 0,
+      abrand: "검은소와 중개소",
+      aname: "",
+      aphone: "",
     }),
   },
 });
 
-//중개인 첨부 사진 가져오기
+// 중개인 첨부 사진 가져오기
 const getAttach = async (argAnumber) => {
   try {
     const response = await agentAPI.agentAttachDownload(argAnumber);
@@ -163,7 +166,18 @@ const getAttach = async (argAnumber) => {
     console.log(error);
   }
 };
-//매물 첨부 사진 가져오기
+
+// 중개인 리뷰 데이터 가져오기
+const getAgentReviewData = async (argAnumber) => {
+  try {
+    const response = await agentAPI.getAgentReviewData(argAnumber);
+    agentDetailData.value = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 매물 첨부 사진 가져오기
 const getPttach = async (argPnumber) => {
   try {
     const response = await propertyAPI.propertyAttachDownload(argPnumber);
@@ -174,8 +188,25 @@ const getPttach = async (argPnumber) => {
   }
 };
 
+// 평균 평점 계산
+const averageRating = computed(() => {
+  const total = agentDetailData.value.total;
+  const sum = agentDetailData.value.sum;
+  if (total == "0") {
+    return "0.0";
+  }
+  return (sum / total).toFixed(1);
+});
+
+// 데이터가 변경될 때마다 API 호출
 if (props.agentData.anumber) {
   getAttach(props.agentData.anumber);
+  getAgentReviewData(props.agentData.anumber);
+  watchEffect(() => {
+    console.log(
+      "이게 디테일 관련 숫자멥: " + JSON.stringify(agentDetailData.value)
+    );
+  });
 } else if (props.propertyData.pnumber) {
   getPttach(props.propertyData.pnumber);
 }
