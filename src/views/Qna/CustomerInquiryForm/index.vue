@@ -33,7 +33,8 @@
       <span class="col-2 mb-3 text-center" >문의 내용</span>
     </div>
     <div class="row me-5 container ms-2">
-      <VueQuillEditor class="col " v-model="customerInquiry.qcontent" />
+      <!-- 공용 컴포넌트 사용으로 qcontent라고 하지 않고 content로 사용한다. -->
+      <VueQuillEditor class="col " v-model="customerInquiry.content" />
     </div>
     <hr>
     <div class="row me-5">
@@ -95,20 +96,21 @@ const imageFiles = ref(null);
 
 // 문의 타입, 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
-var result = customerInquiry.value.type !== "" && customerInquiry.value.title !== "" && customerInquiry.value.content !== "";
+var result = customerInquiry.value.qcategory !== "" && customerInquiry.value.qtitle !== "" && customerInquiry.value.content !== "";
 console.log('result: ',result);
 return result;
 });
 
+// 제출 함수
 async function handleSubmit(){
 //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
 const formData = new FormData();
 // content에 p태그 붙는거 삭제하기
-customerInquiry.value.qcontent = customerInquiry.value.qcontent.slice(3,-4);
+customerInquiry.value.content = customerInquiry.value.content.slice(3,-4);
 // 문자 데이터 formData에 넣기
 formData.append("qcategory", customerInquiry.value.qcategory);
 formData.append("qtitle", customerInquiry.value.qtitle);
-formData.append("qcontent", customerInquiry.value.qcontent);
+formData.append("qcontent", customerInquiry.value.content);
 
 const elAttach = qattach.value;
 

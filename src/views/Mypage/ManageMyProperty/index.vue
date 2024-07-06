@@ -3,7 +3,7 @@
     <MyPageSideBar />
     <div class="titleNcontent w-75 mx-auto">
       <div class="d-flex justify-content-between">
-        <h4 class="col h4 mt-2 fw-bold">매물관리</h4>
+        <h4 class="col h4 mt-2 fw-bold">매물 관리</h4>
         <div class="align-self-center">
           <select class="form-select" name="filter" id="">
             <option value="날짜순" selected>최신순</option>

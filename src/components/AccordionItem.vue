@@ -66,7 +66,7 @@ function showDeleteModal() {
   if(props.kindOf === "report") {
     emit("show-deleteReportModal"); // ReportFalseListing 부모로 보냄 
   } else if (props.kindOf === "qna") {
-    console.log("너구나",rowData.value);
+    console.log("rowData.value : ",rowData.value);
     emit("show-deleteQnaModal", qnumber, qunumber, index); // CustomerInquiry 부모로 보냄 
   }
 }

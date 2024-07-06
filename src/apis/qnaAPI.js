@@ -1,6 +1,8 @@
 import axios from "axios";
 import qs from "qs";
 
+// 고객 문의 Question
+
 // 고객 문의 생성
 function createQuestion(formData){
     return axios.post("/Qna/CustomerInquiryForm",formData);
@@ -53,6 +55,43 @@ function getNotice(nnumber){
     return axios.get("/Qna/NoticeDetail", {params:{nnumber:nnumber}})
 }
 
+// 공지사항 생성
+function createNotice(formData){
+    return axios.post("/Qna/NoticeForm",formData);
+}
+
+// 공지사항 수정
+function updateNotice(formData){
+    return axios.put("/Qna/NoticeForm",formData);
+}
+
+// 공지사항 삭제
+function deleteDetailNotice(nnumber){
+    return axios.delete("/Qna/NoticeDetailDelete",{params:{nnumber:nnumber}});
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 답변 생성
+function createAnswer(formData){
+    return axios.post("/Qna/AdminInquiryAnswer", formData);
+}
+
+// 답변 가져오기
+function getAnswerByQnumber(aQnumber){
+    return axios.get("/Qna/AdminInquiryAnswerDetail",{params:{aQnumber:aQnumber}});
+}
+
+// 답변 수정하기
+function updateAnswer(formData){
+    return axios.put("/Qna/AdminInquiryAnswer", formData)
+}
+
+// 답변 삭제하기
+function deleteAnswerByAQnumber(anumber, qnumber){
+    return axios.delete("/Qna/AdminInquiryAnswerDelete",{params:{anumber:anumber, qnumber:qnumber}});
+}
+
 export default {
     createQuestion,
     getAllQuestionList,
@@ -62,6 +101,15 @@ export default {
     getAttach,
     updateQuestion,
     deleteQuestion,
+
     getNoticeList,
-    getNotice
+    getNotice,
+    createNotice,
+    updateNotice,
+    deleteDetailNotice,
+
+    createAnswer,
+    getAnswerByQnumber,
+    updateAnswer,
+    deleteAnswerByAQnumber,
   };

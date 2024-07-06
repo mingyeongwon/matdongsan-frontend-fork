@@ -159,7 +159,7 @@ async function handleSubmit(){
   formData.append("qUnumber", customerInquiry.value.qunumber);
 
   const elAttach = qattach.value;
-  console.log("나와",elAttach);
+  console.log("첨부 데이터",elAttach);
 
   // 파일 데이터 formData에 넣기
   if(elAttach != null){
@@ -175,7 +175,6 @@ async function handleSubmit(){
   // 고객문의 수정
   try {
     await qnaAPI.updateQuestion(formData);
-    console.log("폼 들어가냐",formData.values);
     console.log("수정 성공");
     router.back();  
   } catch (error) {

@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, toRefs } from 'vue';
+import { toRefs } from 'vue';
 
 const props = defineProps({
     noticeList: Object,

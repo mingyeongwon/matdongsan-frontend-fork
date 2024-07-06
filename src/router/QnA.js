@@ -19,11 +19,9 @@ const routes = [
         path: "/QNA/Noticeform",
         component: () =>  import(/* webpackChunkName: "Qna" */ '@/views/Qna/NoticeForm')
     },
-
-    // 임시 파일 나중에 삭제 예정
     {
-        path: "/QNA/temp",
-        component: () =>  import(/* webpackChunkName: "Qna" */ '@/views/Qna/CustomerInquiryForm/temp.vue')
+        path: "/QNA/NoticeUpdateForm",
+        component: () =>  import(/* webpackChunkName: "Qna" */ '@/views/Qna/NoticeUpdateForm')
     },
     {
         path: "/QNA/NoticeDetail",
