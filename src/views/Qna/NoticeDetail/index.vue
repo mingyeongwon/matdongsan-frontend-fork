@@ -25,7 +25,7 @@
       </div>
       <!-- 컴포넌트 삽입 -->
     </div>
-    <DeleteNoticeModal id="DeleteNoticeModal" @close="realdelete"/>
+    <DeleteNoticeModal id="DeleteNoticeModal" @close="hideModal" @delete="agreeDeleteQuestion"/>
 </template>
 
 <script setup>
@@ -34,7 +34,6 @@ import { Modal } from "bootstrap";
 import { useRouter, useRoute } from "vue-router";
 import DeleteNoticeModal from "./DeleteNoticeModal.vue"
 import qnaAPI from "@/apis/qnaAPI";
-import axios from "axios";
 const router = useRouter();
 const route = useRoute();
 
@@ -50,7 +49,7 @@ async function getterNotice(nnumber){
     notice.value = response.data
     console.log("공지 가져옴",notice.value);
   } catch (error) {
-    console.log("공지 안 가져와짐",error);
+    console.log("공지 가져오기 실패",error);
   }
 }
 
@@ -64,7 +63,7 @@ function goBack(){
 // 수정하기 버튼
 function updateNotice(){
   router.push({
-    path:"/QNA/Noticeform",
+    path:"/QNA/NoticeUpdateForm",
     query:{nnumber: notice.value.nnumber}
   });
 }
@@ -75,14 +74,26 @@ onMounted(() => {
   deleteNoticeModal = new Modal(document.querySelector("#DeleteNoticeModal"));
 });
 
+// 모달 닫기
+function hideModal() {
+  deleteNoticeModal.hide();
+}
+
 // 삭제 버튼 클릭 시 확인하는 모달 켜짐
 function deleteNotice() {
   deleteNoticeModal.show();
 }
 
 // 모달에서도 최종적으로 삭제버튼을 누를 경우
-function realdelete(){
+async function agreeDeleteQuestion(){
+  console.log("nnumber 확인: ",nnumber);
   // 삭제 하는 axios 작성
+  try {
+    await qnaAPI.deleteDetailNotice(nnumber);
+    console.log("삭제 완료");
+  } catch (error) {
+    console.log("삭제 실패",error);
+  }
 }
 
 

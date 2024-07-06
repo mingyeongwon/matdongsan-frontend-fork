@@ -1,6 +1,8 @@
 import axios from "axios";
 import qs from "qs";
 
+// 고객 문의 Question
+
 // 고객 문의 생성
 function createQuestion(formData){
     return axios.post("/Qna/CustomerInquiryForm",formData);
@@ -53,6 +55,28 @@ function getNotice(nnumber){
     return axios.get("/Qna/NoticeDetail", {params:{nnumber:nnumber}})
 }
 
+// 공지사항 생성
+function createNotice(formData){
+    return axios.post("/Qna/NoticeForm",formData);
+}
+
+// 공지사항 수정
+function updateNotice(formData){
+    return axios.put("/Qna/NoticeForm",formData);
+}
+
+// 공지사항 삭제
+function deleteDetailNotice(nnumber){
+    return axios.delete("/Qna/NoticeDetailDelete",{params:{nnumber:nnumber}});
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 답변 생성
+function createAnswer(formData){
+    return axios.post("/Qna/AdminInquiryAnswer", formData);
+}
+
 export default {
     createQuestion,
     getAllQuestionList,
@@ -62,6 +86,12 @@ export default {
     getAttach,
     updateQuestion,
     deleteQuestion,
+
     getNoticeList,
-    getNotice
+    getNotice,
+    createNotice,
+    updateNotice,
+    deleteDetailNotice,
+
+    createAnswer,
   };

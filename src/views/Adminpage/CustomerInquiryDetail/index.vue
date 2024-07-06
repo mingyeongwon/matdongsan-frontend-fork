@@ -26,21 +26,34 @@
     
     <hr>
     <!-- 관리자로 로그인 했을 때만 보이게 하기 -->
-      <div v-if="$store.state.userRole == 'ADMIN'">
-        <answerForm />
+    <div v-if="$store.state.userRole == 'ADMIN'">
+      <!-- <answerForm /> -->
+      <form @submit.prevent="hanndleSubmit">
+      <div class="row me-5">
+        <span class="col-2 mb-3 text-center mt-3" >답변</span>
+        <div class="col-10">
+        <VueQuillEditor  v-model="answer" />
       </div>
+      </div>
+      
+      
+      <div class="row d-flex me-4" style=" justify-content: center; align-items: end; ">
+        <button class="mt-3" type="submit" :disabled="checkForm">완료</button>
+      </div>
+      
+    </form>
+    </div>
     </div>
     <!-- 컴포넌트 삽입 -->
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import qnaAPI from "@/apis/qnaAPI";
-import answerForm from "./answerForm.vue";
-import {useStore} from "vuex";
-const store = useStore();
+import VueQuillEditor from "@/components/VueQuillEditor.vue";
+
 const router = useRouter();
 const route = useRoute();
 
@@ -51,10 +64,6 @@ const qunumber = route.query.qunumber;
 const customerInquiry = ref({});
 const qWriter = ref();
 const qAttach = ref();
-
-function goBack(){
-  router.back();
-}
 
 // 문의 내용 가져오기
 async function getQuestion(){
@@ -103,9 +112,33 @@ function formatDate(dateString) {
   return `${year}-${month}-${day}`;
 }
 
+// 문의 정보 불러오기
 getWriter()
 getQuestion()
 getAttach()
+
+// 답변 제출하기
+const answer = ref("");
+
+// 답변이 비어있으면 제출 버튼 비활성화
+const checkForm = computed(() => {
+var result = answer.value !== ""
+return result;
+});
+
+async function hanndleSubmit(){
+  try {
+    const formData = new FormData();
+    formData.append("acontent",answer.value);
+    formData.append("aQnumber",qnumber);
+    await qnaAPI.createAnswer(formData);
+    console.log("답변 생성 성공");
+    router.back();
+  } catch (error) {
+    console.log("답변 생성 실패",error);
+  }
+
+}
 
 </script>
 
@@ -124,6 +157,24 @@ border: 2px solid black;
 
 .askMenuBtn:hover{
 color: white;
+}
+
+button {
+background-color: #2F4858;
+color: white;
+border: transparent;
+border-radius: 10px;
+padding: 5px;
+width: 10%;
+/* margin-right: 100px; */
+height: 40px;
+font-size: small
+}
+
+input {
+border: 1px solid lightgray;
+height: 120px;
+border-radius: 10px;
 }
 
 
