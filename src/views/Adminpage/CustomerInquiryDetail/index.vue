@@ -25,34 +25,79 @@
     </div>
     
     <hr>
-    <!-- 관리자로 로그인 했을 때만 보이게 하기 -->
-    <div v-if="$store.state.userRole == 'ADMIN'">
+    <!-- 답변 폼 관리자로 로그인 하고 답변이 없을 때만 보이게 하기 -->
+    <div v-if="$store.state.userRole == 'ADMIN' && getAnswer == '' ">
       <!-- <answerForm /> -->
-      <form @submit.prevent="hanndleSubmit">
+      <form @submit.prevent="handleInsertSubmit">
+        <div class="row me-5">
+          <span class="col-2 mb-3 text-center mt-3" >답변 ↳</span>
+          <div class="col-10">
+          <VueQuillEditor  v-model="answer.content" />
+          </div>
+        </div>
+        
+        <div class="row d-flex me-4" style=" justify-content: center; align-items: end; ">
+          <button class="mt-3" type="submit" :disabled="!checkForm">완료</button>
+        </div>
+        
+      </form>
+    </div>
+    <!-- 답변이 있으면 답변 보여주기(관리자도 회원도 볼 수 있는 ui)-->
+    <div v-if=" getAnswer != '' ">
       <div class="row me-5">
-        <span class="col-2 mb-3 text-center mt-3" >답변</span>
-        <div class="col-10">
-        <VueQuillEditor  v-model="answer" />
+        <span class="col-2 mb-3 text-center mt-3" >답변 ↳</span>
+        <div class="col-10 mb-3 mt-3">
+          <div>{{ getAnswer.acontent }}</div>
+        </div>
       </div>
+      <div v-if="!openUpdate" class="row me-5 mt-5 mb-5 justify-content-end">
+        <div class="col-2 btn btn-sm btn-warning me-2" type="button" @click="goBack">뒤로가기</div>
+        <!-- 답변이 달리면 회원은 수정이나 삭제를 할 수 없다. -->
+        <div v-if="$store.state.userRole == 'ADMIN'" class="col-3 btn btn-sm btn-success me-2" type="button" @click="updateAnswer">답변 수정하기</div>
+        <div v-if="$store.state.userRole == 'ADMIN'" class="col-3 btn btn-sm btn-success me-2" type="button" @click="deleteAnswer">답변 삭제하기</div>
       </div>
-      
-      
-      <div class="row d-flex me-4" style=" justify-content: center; align-items: end; ">
-        <button class="mt-3" type="submit" :disabled="checkForm">완료</button>
-      </div>
-      
-    </form>
+    </div>
+    <!-- 답변 폼 관리자로 로그인 하고 수정버튼을 클릭 했을 때만 보이게 하기 -->
+     <!-- 수정 버튼은 관리자만 클릭 할 수 있다. -->
+    <div v-if="openUpdate">
+      <!-- <answerForm /> -->
+      <hr>
+      <form @submit.prevent="handleUpdateSubmit">
+        <div class="row me-5 mt-5">
+          <span class="col-2 mb-3 text-center mt-3" >수정할 답변</span>
+          <div class="col-10">
+          <VueQuillEditor  v-model="answer.content" />
+          </div>
+        </div>
+        
+        <div class="row d-flex me-4" style=" justify-content: center; align-items: end;">
+          <button class="mt-3 me-2" type="button" @click="goBack">뒤로가기</button>
+          <button class="mt-3" type="submit" :disabled="!checkForm">수정 완료</button>
+        </div>
+      </form>
     </div>
     </div>
-    <!-- 컴포넌트 삽입 -->
+    <!-- 모달 컴포넌트 삽입 -->
+    <AgreeDeleteModal id="DeleteAnswerModal" @delete="agreeDeleteQuestion" @close="hideModal">
+    <template v-slot:body>
+        <div class="modal-body">
+          <p class="fw-bold p-4 h-4 text-center">
+            해당 답변을 삭제 하시겠습니까? <br />
+            삭제 후에 수정 불가합니다.
+          </p>
+        </div>
+      </template>
+  </AgreeDeleteModal>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import qnaAPI from "@/apis/qnaAPI";
 import VueQuillEditor from "@/components/VueQuillEditor.vue";
+import AgreeDeleteModal from "@/components/AgreeDeleteModal.vue"
+import { Modal } from "bootstrap";
 
 const router = useRouter();
 const route = useRoute();
@@ -61,16 +106,26 @@ const route = useRoute();
 const qnumber = route.query.qnumber;
 const qunumber = route.query.qunumber;
 
+// 문의 가져오기
 const customerInquiry = ref({});
 const qWriter = ref();
 const qAttach = ref();
 
+// 답변 가져오기
+const getAnswer = ref({});
+
+// 뒤로가기
+function goBack(){
+    router.back();
+}
+
+// Question Read ///////////////////////////////////////////////////////////////////////////////////
 // 문의 내용 가져오기
 async function getQuestion(){
   try {
     const response = await qnaAPI.readQuestion(qnumber,qunumber);  
     customerInquiry.value = response.data;
-    console.log("문의 객체: ",customerInquiry.value);
+    console.log("가져온 문의 객체: ",customerInquiry.value);
   } catch (error) {
     console.log(error);
   }
@@ -117,19 +172,23 @@ getWriter()
 getQuestion()
 getAttach()
 
-// 답변 제출하기
-const answer = ref("");
+// 답변 제출하기 ////////////////////////////////////////////////////////////////////////////
+
+const answer = ref({});
 
 // 답변이 비어있으면 제출 버튼 비활성화
 const checkForm = computed(() => {
-var result = answer.value !== ""
-return result;
-});
+  var result = answer.value.content !== ""
+  return result;
+  });
 
-async function hanndleSubmit(){
+  // 답변 제출 
+async function handleInsertSubmit(){
+  console.log("생성 폼 제출 함수 실행");
   try {
+    answer.value.content = answer.value.content.slice(3,-4);
     const formData = new FormData();
-    formData.append("acontent",answer.value);
+    formData.append("acontent",answer.value.content);
     formData.append("aQnumber",qnumber);
     await qnaAPI.createAnswer(formData);
     console.log("답변 생성 성공");
@@ -137,7 +196,76 @@ async function hanndleSubmit(){
   } catch (error) {
     console.log("답변 생성 실패",error);
   }
+}
 
+// 답변 가져오기 /////////////////////////////////////////////////////////////////////
+async function readAnswer(aQnumber){
+  try {
+    const response = await qnaAPI.getAnswerByQnumber(aQnumber);
+    getAnswer.value = response.data;
+    console.log("답변 가져오기 성공");
+    console.log(getAnswer.value);
+  } catch (error) {
+    console.log("답변 가져오기 실패",error);
+  }
+}
+
+readAnswer(qnumber);
+
+// 답변 수정하기 /////////////////////////////////////////////////////////////////////
+let openUpdate = ref(false);
+
+// 답변 작성란 나오게 하기
+function updateAnswer(){
+  openUpdate.value = !openUpdate.value
+}
+
+// 수정 할 답변 제출 
+async function handleUpdateSubmit(){
+  console.log("수정 폼 제출 함수 실행");
+  try {
+    answer.value.content = answer.value.content.slice(3,-4);
+    const formData = new FormData();
+    formData.append("acontent",answer.value.content);
+    formData.append("aQnumber",qnumber);
+    await qnaAPI.updateAnswer(formData);
+    console.log("수정답변 생성 성공");
+    router.back();
+  } catch (error) {
+    console.log("수정답변 생성 실패",error);
+  }
+}
+
+// 답변 삭제하기 /////////////////////////////////////////////////////////////////////
+// 
+let deleteAnswerModal = null;
+
+onMounted(() => {
+  deleteAnswerModal = new Modal(document.querySelector("#DeleteAnswerModal"));
+});
+
+// 모달 닫기
+function hideModal() {
+  deleteAnswerModal.hide();
+}
+
+// 삭제 버튼 클릭 시 확인하는 모달 켜짐
+function deleteAnswer(){
+  deleteAnswerModal.show();
+}
+
+// 모달에서도 최종적으로 삭제버튼을 누를 경우 삭제 실행
+async function agreeDeleteQuestion(){
+  console.log("매개변수 값 확인 anumber: ",getAnswer.value.anumber,"qnumber: ", getAnswer.value.aqnumber);
+  // 삭제 하는 axios 작성
+  try {
+    await qnaAPI.deleteAnswerByAQnumber(getAnswer.value.anumber, getAnswer.value.aqnumber);
+    console.log("삭제 완료");
+    hideModal();
+    router.back();
+  } catch (error) {
+    console.log("삭제 실패",error);
+  }
 }
 
 </script>

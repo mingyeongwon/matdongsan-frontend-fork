@@ -25,14 +25,23 @@
       </div>
       <!-- 컴포넌트 삽입 -->
     </div>
-    <DeleteNoticeModal id="DeleteNoticeModal" @close="hideModal" @delete="agreeDeleteQuestion"/>
+    <AgreeDeleteModal id="DeleteNoticeModal" @close="hideModal" @delete="agreeDeleteQuestion">
+      <template v-slot:body>
+        <div class="modal-body">
+          <p class="fw-bold p-4 h-4 text-center">
+            해당 공지사항을 삭제 하시겠습니까? <br />
+            삭제 후에 수정 불가합니다.
+          </p>
+        </div>
+      </template>
+    </AgreeDeleteModal>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { Modal } from "bootstrap";
 import { useRouter, useRoute } from "vue-router";
-import DeleteNoticeModal from "./DeleteNoticeModal.vue"
+import AgreeDeleteModal from "@/components/AgreeDeleteModal.vue"
 import qnaAPI from "@/apis/qnaAPI";
 const router = useRouter();
 const route = useRoute();
@@ -91,6 +100,8 @@ async function agreeDeleteQuestion(){
   try {
     await qnaAPI.deleteDetailNotice(nnumber);
     console.log("삭제 완료");
+    hideModal();
+    router.back();
   } catch (error) {
     console.log("삭제 실패",error);
   }

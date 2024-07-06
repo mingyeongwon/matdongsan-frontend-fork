@@ -62,7 +62,7 @@ const handlePageChange = (page) => {
 
   // 페이지가 변하면 게시물 가져오는 메소드 실행하기
   watch(currentPage, () => {
-    console.log("와치와치");
+    console.log("페이지가 변하면 게시물 가져오는 메소드 실행");
     getAllNoticeList(currentPage.value, noticeFilter.value.searchKeyword, noticeFilter.value.sort);
   })
 

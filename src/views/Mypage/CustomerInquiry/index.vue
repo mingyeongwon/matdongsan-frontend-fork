@@ -16,7 +16,7 @@
       <table class="table">
         <thead class="text-center">
           <tr>
-            <th>#</th>
+            <th>번호</th>
             <th>항목</th>
             <th>등록일</th>
             <th>상세</th>
@@ -46,7 +46,16 @@
     />
     </div>
   </div>
-  <DeleteQnaModal id="DeleteQnaModal" @delete="agreeDeleteQuestion" @close="hideModal"/>
+  <AgreeDeleteModal id="DeleteQuestionModal" @delete="agreeDeleteQuestion" @close="hideModal">
+    <template v-slot:body>
+        <div class="modal-body">
+          <p class="fw-bold p-4 h-4 text-center">
+            해당 문의사항을 삭제 하시겠습니까? <br />
+            삭제 후에 수정 불가합니다.
+          </p>
+        </div>
+      </template>
+  </AgreeDeleteModal>
 </template>
 
 <script setup>
@@ -54,7 +63,7 @@ import { ref, onMounted, watch } from "vue";
 import { Modal } from "bootstrap";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
 import AccordionRow from "@/components/AccordionItem.vue";
-import DeleteQnaModal from "../../../views/Mypage/CustomerInquiry/DeleteQnaModal.vue"
+import AgreeDeleteModal from "@/components/AgreeDeleteModal.vue"
 import qnaAPI from "@/apis/qnaAPI";
 import Pagination from "@/components/Pagination";
 import { useRoute, useRouter } from "vue-router";
@@ -78,7 +87,7 @@ const page = ref({
 });
 
 onMounted(() => {
-  deleteQnaModal = new Modal(document.querySelector("#DeleteQnaModal"));
+  deleteQnaModal = new Modal(document.querySelector("#DeleteQuestionModal"));
 });
 
 // 삭제 버튼 클릭 시 실행되는 함수
@@ -102,7 +111,7 @@ function hideModal() {
 // 게시물 삭제
 async function agreeDeleteQuestion(){
 
-  console.log("삭제 해!");
+  console.log("삭제 실행");
   try {
     await qnaAPI.deleteQuestion(deleteQnumber.value, deleteQunumber.value);
     console.log("삭제 완료");  
@@ -110,7 +119,7 @@ async function agreeDeleteQuestion(){
     getList()
     isOpen();
   } catch (error) {
-    console.log("삭제 안 됨 !",error);
+    console.log("삭제 실패",error);
     hideModal()
   }
 }
@@ -122,7 +131,7 @@ function handlePageChange(page){
 
 // 고객의 문의 리스트 가져오기 함수 정의
 async function getList(){
-  console.log("되냐");
+  console.log("고객의 문의 리스트 가져오기 실행");
   try {
     const response = await qnaAPI.getQuestionListForUser(currentPage.value);
     page.value.question = response.data.question;
@@ -139,7 +148,7 @@ getList();
 
 // 페이지가 변하면 게시물 가져오는 메소드 실행하기
 watch(currentPage, () => {
-  console.log("와치와치");
+  console.log("페이지 변함 감지");
   getList();
 })
 
@@ -147,11 +156,11 @@ const openIndex = ref(null);
 
 function toggle(index) {
   openIndex.value = openIndex.value === index ? null : index;
-  console.log("닫아",openIndex.value);
+  console.log("아코디언 닫기",openIndex.value);
 }
 
 function isOpen(index) {
-  console.log("열어",openIndex.value);
+  console.log("아코디언 열기",openIndex.value);
 
   return openIndex.value === index;
 }

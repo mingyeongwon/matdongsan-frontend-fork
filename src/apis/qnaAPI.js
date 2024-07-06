@@ -77,6 +77,21 @@ function createAnswer(formData){
     return axios.post("/Qna/AdminInquiryAnswer", formData);
 }
 
+// 답변 가져오기
+function getAnswerByQnumber(aQnumber){
+    return axios.get("/Qna/AdminInquiryAnswerDetail",{params:{aQnumber:aQnumber}});
+}
+
+// 답변 수정하기
+function updateAnswer(formData){
+    return axios.put("/Qna/AdminInquiryAnswer", formData)
+}
+
+// 답변 삭제하기
+function deleteAnswerByAQnumber(anumber, qnumber){
+    return axios.delete("/Qna/AdminInquiryAnswerDelete",{params:{anumber:anumber, qnumber:qnumber}});
+}
+
 export default {
     createQuestion,
     getAllQuestionList,
@@ -94,4 +109,7 @@ export default {
     deleteDetailNotice,
 
     createAnswer,
+    getAnswerByQnumber,
+    updateAnswer,
+    deleteAnswerByAQnumber,
   };
