@@ -119,7 +119,11 @@
           v-if="!route.params.id"
           class="map-box right-box col p-3 ms-4 w-75 mx-auto"
         >
-          <KakaoMap page="agentList" :position="agentPositionList" class="" />
+          <KakaoMap
+            page="agentList"
+            :positionList="agentPositionList"
+            class=""
+          />
         </div>
       </div>
     </div>
@@ -200,12 +204,13 @@ const getAttach = async (argAnumber) => {
 onMounted(() => {
   if (route.params.id) {
     getAgentData(route.params.id);
-    
   }
 });
+
 function getAgentPositionData(data) {
   agentPositionList.value = data;
 }
+
 watch(
   () => route.params.id,
   (newId) => {
@@ -214,16 +219,19 @@ watch(
     }
   }
 );
+
 watch(
-  () => agentPositionList.value,
-  (newPositionList) => {
-    console.log("Agent position list updated:", newPositionList);
+  () => agentPositionList.value.length,
+  () => {
+    console.log("Agent position list updated:", agentPositionList.value);
     // KakaoMap 컴포넌트는 이미 agentPositionList를 prop으로 받고 있으므로 자동으로 업데이트.
-  }
+  },
+  { deep: true }
 );
 
 function backToAgentList() {
   router.push("/Agent");
+
 }
 
 function subMenuCheck(check) {

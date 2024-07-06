@@ -55,7 +55,8 @@
               height="60"
               class="bg-warning rounded align-self-center p-2"
             />
-            <h6 class="text-center mt-1 fw-bold">{{ hasQuantity }}개</h6>
+            <h6 class="text-center mt-1 fw-bold" v-if="hasQuantity">{{ hasQuantity }}개</h6>
+            <h6 class="text-center mt-1 fw-bold" v-else>0개</h6>
           </div>
         </div>
         <hr />

@@ -5,7 +5,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 const emit = defineEmits(["getPropertyData"]);
-const props = defineProps(["position", "page"]);
+const props = defineProps(["positionList","position", "page"]);
 
 let map;
 let cluster = null;
@@ -195,9 +195,23 @@ watch(
             position: newCenter,
             map: map,
           });
-        }
+        }  
+        map.setLevel(8);
         map.setCenter(newCenter); // 지도 중심을 에이전트 위치로 변경
+        
       }
+    }
+  }
+);
+// props.positionList가 변경될 때마다 에이전트 마커 위치 업데이트
+watch(
+  () => props.positionList ? props.positionList.length : 0,
+  (newLength) => {
+    if (map && newLength > 0) {
+      displayMarker(
+        props.positionList.map((agent) => [agent.alatitude, agent.alongitude])
+      );
+      console.log("실행");
     }
   }
 );
