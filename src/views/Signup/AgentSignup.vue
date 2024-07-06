@@ -357,12 +357,8 @@ function handleProfileImageUpdate(files) {
 function handleDocumentImageUpdate(files) {
   agentSignup.value.documentImage = files;
 }
-
+//주소에 따른 좌표 등록
 function showMap(address) {
-
-
-
-
   const geocoder = new kakao.maps.services.Geocoder();
 
   geocoder.addressSearch(address, function (result, status) {

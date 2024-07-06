@@ -17,6 +17,10 @@ const getAgentList = (pageNo, size) => {
 const getAgentDataByNumber = (anumber) => {
   return axios.get("/Agent/" + anumber);
 };
+//중개인 데이터 업데이트
+const updateAgentData = (agentData) => {
+  return axios.put("/Agent/Mypage/MyInfomation",agentData)
+}
 //중개인 프로필 사진 다운로드
 const agentAttachDownload = (anumber) =>
   //PathVariable로 데이터 전송
@@ -26,7 +30,7 @@ const agentAttachDownload = (anumber) =>
 const postAgentReview = (reviewData) => {
   return axios.post("/Agent/" + reviewData.arAnumber, qs.stringify(reviewData));
 };
-
+//중개인 리뷰 업데이트
 const updateAgentReview =(editingReview)=>{
   return axios.put(`/Agent/${editingReview.arAnumber}/${editingReview.arnumber}`,qs.stringify(editingReview))
 }
@@ -47,4 +51,5 @@ export default {
   deleteAgentReview,
   sortAgentReview,
   updateAgentReview,
+  updateAgentData,
 };

@@ -3,7 +3,7 @@
     <ul class="list-group">
       <li class="list-group-item fw-bolder h5 m-0 p-3">마이페이지</li>
       <RouterLink
-        to="/MyPage/MyInfomation/Agent"
+        to="/MyPage/MyInfomation"
         class="text-decoration-none text-dark"
       >
         <li class="list-group-item item border border-bottom-0">내 정보</li></RouterLink

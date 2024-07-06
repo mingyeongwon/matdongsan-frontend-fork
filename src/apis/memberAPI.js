@@ -44,7 +44,10 @@ const login = (member) => {
   //POST 방식 : QueryString(mid=user&mpassword=12345) 방식으로 데이터 전달
   return axios.post("/login", qs.stringify(member));
 };
-
+//일반 유저 데이터 업데이트
+const updateMemberData = (memberData) => {
+  return axios.put("/member/Mypage/MyInfomation", memberData);
+};
 // 탈퇴
 const deleteAccount = (currPw) => {
   return axios.put("/MyPage/DeleteAccount", { currPw: currPw });
@@ -60,4 +63,5 @@ export default {
   deleteAccount,
   memberAttachDownload,
   checkPaymentHistory,
+  updateMemberData,
 };

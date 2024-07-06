@@ -83,8 +83,15 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <img
+              <img v-if="memberProfile"
                 :src="memberProfile"
+                alt=""
+                class="me-1 rounded-circle align-self-center"
+                width="35"
+                height="35"
+              />
+              <img v-if="!memberProfile"
+                src="@/assets/profileImage.png"
                 alt=""
                 class="me-1 rounded-circle align-self-center"
                 width="35"
@@ -96,7 +103,7 @@
               <li>
                 <RouterLink
                   class="dropdown-item"
-                  to="/Mypage/MyInfomation/Member"
+                  to="/Mypage/MyInfomation"
                   >내 정보</RouterLink
                 >
               </li>
