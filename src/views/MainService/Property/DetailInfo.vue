@@ -9,53 +9,72 @@
             </div>
             <ul class="text-muted">
               <li class="listGrid mt-3">
-                <div><p>전세</p></div>
-                <div><p>1억5000</p></div>
+                <div><p>{{property.pcategory}}</p></div>
+                <div><p>{{property.pdeposite}}
+                  <span v-if="property.pcategory == '월세'"> / {{property.prentalfee}}</span>
+                </p></div>
               </li>
               <li class="listGrid mt-3">
                 <div><p>관리비</p></div>
-                <div><p>매월 5만원</p></div>
+                <div><p>{{property.pmaintenance}}만원</p></div>
               </li>
               <li class="listGrid mt-3">
-                <div><p>주차가능여부</p></div>
-                <div><p>가능</p></div>
+                <div><p>방 수 / 욕실 수</p></div>
+                <div>
+                  <p>1개 / 
+                    <span v-if="propertyDetail.pdbath === true">1</span>
+                    <span v-else>0</span>개
+                  </p>
+                </div>
+              </li>
+              <li class="listGrid mt-3">
+                <div><p>주차여부</p></div>
+                <div>
+                  <p v-if="propertyDetail.pdlot === true">가능</p>
+                  <p v-else>불가능</p>
+                </div>
               </li>
             </ul>
           </section>
-          <section class="col-4">
+          <section class="col-4 ms-4">
             <div>
               <h4 class="fw-bold">상세정보</h4>
             </div>
             <ul class="text-muted">
               <li class="listGrid mt-3">
-                <div><p>해당층/건물층</p></div>
-                <div><p>4층 / 6층</p></div>
+                <div><p>해당층</p></div>
+                <div><p>
+                  <span v-if="property.pfloortype == '지하'">B</span><span v-if="property.pfloortype == '지하' || property.pfloortype == '지상'">{{ property.pfloor }}층 / </span>
+                  {{property.pfloortype}}
+                </p></div>
               </li>
               <li class="listGrid">
-                <div><p>전용/공급면적</p></div>
+                <div><p>전용면적</p></div>
                 <div>
-                  <p>29.24m<sup>2</sup> / 34.87m<sup>2</sup></p>
+                  <p>{{property.psize}}m<sup>2</sup></p>
                 </div>
               </li>
               <li class="listGrid">
-                <div><p>방향</p></div>
-                <div><p>남동 (안방 기준)</p></div>
-              </li>
-              <li class="listGrid">
                 <div><p>난방</p></div>
-                <div><p>있음</p></div>
+                <div>
+                  <p v-if="propertyDetail.pdheating === true">가능</p>
+                  <p v-else>불가능</p>
+                </div>
               </li>
               <li class="listGrid">
                 <div><p>엘리베이터</p></div>
-                <div><p>있음</p></div>
+                <div>
+                  <p v-if="propertyDetail.pdlift === true">있음</p>
+                  <p v-else>없음</p>
+                </div>
               </li>
               <li class="listGrid">
                 <div><p>입주가능일</p></div>
                 <div><p>즉시 입주 (협의 가능)</p></div>
               </li>
               <li class="listGrid">
-                <div><p>최초등록일</p></div>
-                <div><p>2024.05.14</p></div>
+                <div><p>등록일</p></div>
+                <div><p>{{ property.pdate }}</p></div>
               </li>
             </ul>
           </section>
@@ -68,56 +87,56 @@
 
           <div class="d-flex mb-3">
             <div class="col-2 ms-1 me-2">
-              <img
-                width="50"
-                height="50"
-                src="https://cdn-icons-png.flaticon.com/512/1941/1941761.png"
-                alt=""
-              />
+              <i class="fa-solid fa-bed"></i>
+              <p>침대</p>
+            </div>
+            <div class="col-2 me-2">
+              <i class="fa-solid fa-mattress-pillow"></i>
+              <p>전자레인지</p>
+            </div>
+            <div class="col-2 me-2">
               <p>에어컨</p>
             </div>
             <div class="col-2 me-2">
-              <img
-                width="50"
-                height="50"
-                src="https://cdn-icons-png.flaticon.com/512/1941/1941761.png"
-                alt=""
-              />
-              <p>에어컨</p>
+              <p>냉장고</p>
             </div>
             <div class="col-2 me-2">
-              <img
-                width="50"
-                height="50"
-                src="https://cdn-icons-png.flaticon.com/512/1941/1941761.png"
-                alt=""
-              />
-              <p>에어컨</p>
+              <p>가스레인지</p>
             </div>
-            <div class="col-2">
-              <img
-                width="50"
-                height="50"
-                src="https://cdn-icons-png.flaticon.com/512/1941/1941761.png"
-                alt=""
-              />
-              <p>에어컨</p>
+            <div class="col-2 me-2">
+              <p>신발장</p>
             </div>
+            <div class="col-2 me-2">
+              <p>TV</p>
+            </div>
+            <div class="col-2 me-2">
+              <p>옷장</p>
+            </div>
+            <div class="col-2 me-2">
+              <p>식탁</p>
+            </div>
+            <div class="col-2 me-2">
+              <p>책상</p>
+            </div>
+            <div class="col-2 me-2">
+              <p>세탁기</p>
+            </div>
+            <div class="col-2 me-2">
+              <p>인덕션</p>
+            </div>
+
           </div>
         </section>
-        <section class="col-4 mt-5">
+        <section class="col-4 mt-5 ms-4">
           <div>
             <h4 class="fw-bold">위치 및 주변시설</h4>
           </div>
           <div>
-            <p>서울특별시 강서구 방화동 612-60</p>
+            <p class="m-0">{{property.paddress}}</p>
+            <p class="" v-if="property.paddressdetail !== ''">{{ property.paddressdetail }}</p>
           </div>
-          <div>
-            <img
-              src="https://t1.daumcdn.net/roughmap/imgmap/32c02a6918295568d950c0a1a03969a11f62e4674cec9a988d017796b66c132c"
-              alt=""
-              width="400"
-            />
+          <div class="h-100">
+            <KakaoMap :position="propertyPosition" page="property"/>
           </div>
         </section>
         <section class="col-7 ps-4 mt-5">
@@ -125,19 +144,9 @@
             <h4 class="fw-bold">상세설명</h4>
           </div>
           <div class="detailInfo">
-            <h6 class="fw-bold">김포공항 출퇴근 도보 5분거리 강추 드려요</h6>
+            <h6 class="fw-bold">{{property.ptitle}}</h6>
             <small>
-              승무원들 초강추 김포공항 도보 5분거리 <br />★ 매물 특징 ★ <br />
-              📢 공항시장역 9호선 3분거리<br />
-              📢 도보 2분거리 버스정류장<br />
-              📢 남향집으로 채광 좋습니다. <br />📢 큰 길과 인접하며 공동현관
-              보안, cctv등 보안설비로 안전합니다. <br />
-              📢 김포공항 인근으로 산책하기 좋습니다. <br />📢 승무원들 초강추
-              매물 <br />📢 마트, 병원, 식당, 카페, 편의점 등 생활인프라
-              좋습니다. <br /><br />★ 매물위치 및 주변환경 ★<br />
-              - 위치 > 공항시장역9호선 송정역5호선 더블역세권 <br />- 옵션 >
-              에어컨, 냉장고, 인덕션, 신발장, 전자도어락 등 <br />- 편의시설 >
-              마트, 병원, 식당, 카페, 편의점 등
+              {{propertyDetail.pdcontent}}
             </small>
           </div>
         </section>
@@ -163,10 +172,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-
+import { ref, onMounted, watch } from "vue";
+import dayjs from "dayjs";
+import KakaoMap from "@/components/KakaoMap.vue";
 import PropertyItem from "@/components/Property/PropertyListItem.vue";
 
+const props = defineProps(["property", "propertyDetail"]);
+
+const propertyPosition = ref([]);
+
+// property가 변경될 때마다 propertyPosition 업데이트
+watch(() => props.property, (newProperty) => {
+  propertyPosition.value = {lat: newProperty.platitude, lng: newProperty.plongitude};
+}, {immediate: true}); // immediate: true를 설정하여 처음 로드될 때도 반영되도록 설정
+
+// const formattedDate = dayjs(props.property.pdate).format('YYYY-MM-DD');
+// console.log(formattedDate);
 </script>
 
 <style scoped>

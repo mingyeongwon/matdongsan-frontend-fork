@@ -44,7 +44,7 @@
                 </button> </RouterLink>
                 <button
                   class=" btn btn-sm fw-bold btn-danger"
-                  @click="showDeletePropertyModal(report.rPnumber)">
+                  @click="openDeleteReportModal(report.rpnumber)">
                   삭제
                 </button>                
               </div>
@@ -73,6 +73,39 @@
     </div>
   </div>
 
+  <!-- 모달 -->
+  <div class="modal" tabindex="-1" id="DeleteReportModal" >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <slot name="body">
+            <div class="modal-body">
+              <p class="fw-bold p-4 h-4 text-center">
+                삭제 하시겠습니까? <br />
+                삭제 후에 수정 불가합니다.
+              </p>
+            </div>
+          </slot>
+          <slot name="footer">
+            <div class="modal-footer border border-0 mx-auto mb-3">
+              <button
+                type="button"
+                class="btn btn-outline-light ps-4 pe-4 text-dark border border-secondary fw-bold"
+                data-bs-dismiss="modal">
+                돌아가기
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger ms-5 ps-4 pe-4 fw-bold"
+                data-bs-dismiss="modal"
+                @click="confirmDeleteReport">
+                신고 삭제하기
+              </button>
+            </div>
+          </slot>
+        </div>
+      </div>
+    </div>
+
 </template>
 
 <script setup>
@@ -81,9 +114,19 @@ import { ref, onMounted } from "vue";
 import propertyAPI from "@/apis/propertyAPI";
 import axios from "axios";
 import dayjs from "dayjs";
+import { Modal } from "bootstrap";
 
 const reports = ref([]);
 const pthumbnails = ref({});
+const selectedRpnumber = ref(0);
+
+// 모달 열기
+function openDeleteReportModal(pnumber) {
+  const deleteReportModal = new Modal(document.getElementById("DeleteReportModal"));
+  deleteReportModal.show();
+  selectedRpnumber.value = pnumber;
+  console.log("selectedRpnumber : " + selectedRpnumber.value);
+}
 
 // 허위 매물 리스트
 async function getUserReportList() {
@@ -92,9 +135,8 @@ async function getUserReportList() {
     reports.value = response.data;
 console.log(reports.value)
     reports.value.forEach(report => {
-        console.log("report : " + report.rpnumber);
         getPthumbnail(report.rpnumber);
-        report.formattedDate = dayjs(report.rdate).format('YYYY-MM-DD')
+        report.formattedDate = dayjs(report.rdate).format('YYYY-MM-DD');
     });
   } catch (error) {
     console.log(error);
@@ -115,10 +157,19 @@ onMounted(() => {
   getUserReportList();
 });
 
+// 모달에서 삭제 버튼 클릭 시 실행
+const confirmDeleteReport = () => {
+    console.log("received selectedRpnumber : " + selectedRpnumber.value);
+    deleteReportProperty(selectedRpnumber.value);
+    // 모달 닫기
+    const deleteReportModal = Modal.getInstance(document.getElementById("DeleteReportModal"));
+    deleteReportModal.hide();
+}
 
-const deleteProperty = async (selectedPnumber) => {
+// 허위 신고 삭제
+const deleteReportProperty = async (pnumber) => {
   try {
-    await propertyAPI.deleteProperty(selectedPnumber);
+    await propertyAPI.deletePropertyReport(pnumber);
     await getUserReportList(); // 삭제 후 리스트 갱신
   } catch (error) {
     console.log(error);

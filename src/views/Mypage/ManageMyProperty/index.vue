@@ -19,7 +19,7 @@
           <tr>
             <th scope="col" class="text-center">매물번호</th>
             <th scope="col" class="text-center">대표사진</th>
-            <th scope="col" class="text-center">가격 / 내용</th>
+            <th scope="col" class="text-center">가격 / 제목</th>
             <th scope="col" class="text-center">등록한 날짜</th>
             <th scope="col" class="text-center">매물 상태</th>
             <th scope="col"></th>

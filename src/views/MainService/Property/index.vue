@@ -55,7 +55,7 @@
         </div>
         <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"/>
-          <DetailInfo />
+          <DetailInfo :property = "property" :propertyDetail = "propertyDetail" />
           <ReportFalse :pnumber = "route.params.id"/>
           <Comment :userComment = "userComment" />
         </div>

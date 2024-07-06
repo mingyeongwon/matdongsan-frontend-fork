@@ -30,7 +30,7 @@
               <hr>
               <p style="font-weight: bold;">신고하기전에 확인해주세요!!</p>
               <div class="row">
-                <input class="col-1" type="checkbox" id="checkbox1" v-model="reportFalse.checkbox">
+                <input class="col-1" type="checkbox" id="checkbox1" v-model="report.checkbox">
                 <label class="col-11" for="checkbox1" style="font-size: small;">2020년 2월 21일부터, 정당한 이유 없이 시세에 영향을 주기 위해 공인중개사 등의 광고를 방해하면 3년 이하 징역 또는 3,000만원 이하 벌금에 처해집니다. 신고 시 명확한 사실을 기재해 주세요.</label>
               </div>
               <div class="row mt-5">
@@ -64,6 +64,7 @@ const editReportDetails = ref(props.itemDetails);
 const report = ref({
   rcontent: '',
   rPnumber: props.pnumber,
+  checkbox: '',
 });
 
 // 모달 열기
@@ -86,7 +87,7 @@ const reportFalse = ref({
 });
 
 const checkReportFalseData = computed(() => {
-  return reportFalse.value.checkbox !== "";
+  return report.value.checkbox !== "" && report.value.rcontent !== "";
 });
 
 // 매물 신고 폼 제출
@@ -98,6 +99,8 @@ async function handleReportSubmit() {
     // 모달 닫기
     const reportFalseModal = Modal.getInstance(document.getElementById("ReportFalseModal"));
     reportFalseModal.hide();
+    report.value.rcontent="";
+    report.value.checkbox="";
   } catch (error) {
     console.log(error);
   }

@@ -56,6 +56,12 @@ const getReportList = () => {
   return axios.get("/Mypage/ReportFalseListing");
 };
 
+// 매물 신고 삭제
+const deletePropertyReport = (pnumber) => {
+  console.log("pnumber : " + pnumber);
+  return axios.delete("/deletePropertyReport/" + pnumber);
+}
+
 
 export default {
   getPropertyList,
@@ -66,5 +72,6 @@ export default {
   detailPropertyAttachDownload,
   getPropertyData,
   postReportProperty,
-  getReportList
+  getReportList,
+  deletePropertyReport
 };
