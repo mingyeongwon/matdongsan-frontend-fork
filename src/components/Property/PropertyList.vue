@@ -64,6 +64,7 @@ const displayedProperties = ref([]); // 표시할 property 목록
 const displayedFavorites = ref([]); // 표시할 favorite 목록
 const displayedAgents = ref([]); // 표시할 agent 목록
 const isLoading = ref(false); // 로딩 상태
+const allLoaded = ref(false); // 모든 데이터를 로드했는지 여부
 const limit = 5; // 한번에 로드할 항목 수
 let offset = ref(1); // 현재 오프셋 값
 
@@ -71,8 +72,9 @@ const scrollTrigger = ref(null); // 스크롤 트리거 요소 참조
 
 const loadMoreItems = async () => {
   // 인피니티 스크롤
-  // 이미 로딩 중이면 함수를 종료
-  if (isLoading.value) return;
+  console.log("offset: " + offset.value);
+  // 이미 로딩 중이거나 모든 데이터를 로드한 경우 함수를 종료
+  if (isLoading.value || allLoaded.value) return;
 
   // 로딩 상태를 true로 설정
   isLoading.value = true;
@@ -80,19 +82,34 @@ const loadMoreItems = async () => {
   try {
     // type이 'property'인 경우
     if (props.type === "property") {
-      await getPropertyList(offset.value, limit);
+      const response = await propertyAPI.getPropertyList(offset.value, limit);
+      const dataLength = response.data.property.length;
+      displayedProperties.value.push(...response.data.property);
+      if (dataLength < limit) {
+        allLoaded.value = true;
+      }
     }
     // type이 'agent'인 경우
     else if (props.type === "agent") {
-      await getAgentList(offset.value, limit);
+      const response = await agentAPI.getAgentList(offset.value, limit);
+      const dataLength = response.data.agent.length;
+      displayedAgents.value.push(...response.data.agent);
+      if (dataLength < limit) {
+        allLoaded.value = true;
+      }
     }
     // type이 'favorite'인 경우
     else if (props.type === "favorite") {
-      await getFavoriteList(offset.value, limit);
+      const response = await favoriteAPI.getFavoriteList(offset.value, limit);
+      const dataLength = response.data.favorite.length;
+      displayedFavorites.value.push(...response.data.favorite);
+      if (dataLength < limit) {
+        allLoaded.value = true;
+      }
     }
-
-    // offset을 limit만큼 증가시켜 다음 로드 위치를 업데이트
-    offset.value++;
+    if (!allLoaded.value) {
+      offset.value++; // 데이터가 충분히 로드되었다면 offset 증가
+    }
   } catch (error) {
     console.error(error);
   } finally {
@@ -129,6 +146,7 @@ watch(
     displayedFavorites.value = [];
     displayedAgents.value = [];
     offset.value = 1;
+    allLoaded.value = false; // 모든 데이터 로드 상태 초기화
     loadMoreItems(); // 새로운 type에 따라 데이터를 로드
   }
 );
@@ -141,49 +159,6 @@ watch(
   },
   { deep: true }
 );
-
-const getAgentList = async (pageNo, size) => {
-  try {
-    const response = await agentAPI.getAgentList(pageNo, size);
-    if (Array.isArray(response.data.agent)) {
-      displayedAgents.value.push(...response.data.agent);
-      emit("update:positionData", displayedAgents.value);
-    } else {
-      console.error("Agent list is not an array");
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-//매물 목록을 가져오는 메소드 정의
-async function getPropertyList(pageNo, size) {
-  try {
-    const response = await propertyAPI.getPropertyList(pageNo, size);
-    if (Array.isArray(response.data.property)) {
-      displayedProperties.value.push(...response.data.property);
-      console.log(displayedProperties.value[0]);
-    } else {
-      console.error("Property list is not an array");
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-//관심상품 목록을 가져오는 메소드 정의
-async function getFavoriteList(pageNo, size) {
-  try {
-    const response = await favoriteAPI.getFavoriteList(pageNo, size);
-    if (Array.isArray(response.data.favorite)) {
-      displayedFavorites.value.push(...response.data.favorite);
-    } else {
-      console.error("Favorite list is not an array");
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
 </script>
 
 <style scoped>

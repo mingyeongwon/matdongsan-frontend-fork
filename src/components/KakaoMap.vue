@@ -31,12 +31,11 @@ const initMap = () => {
   kakao.maps.event.addListener(map, "zoom_changed", updateMarkersInView);
 
   // 페이지별 마커 로직 처리
-  if (props.page === "favorite") {
+  if (props.page === "favorite") { //관심 매물 페이지인 경우 관심 상품 마커 맵에 표시
     displayFavorites();
-  } else if (props.page === "agentList" && Array.isArray(props.positionList)) {
-    console.log("중개인 리스트 맵 실행");
+  } else if (props.page === "agentList" && Array.isArray(props.positionList)) { // 중개인 리스트페이지이며 리스트들의 좌표값이 있을 경우 지도에 마커 표시
     displayMarker(props.positionList.map(agent => [agent.alatitude, agent.alongitude]));
-  } else if (props.page === "property") {
+  } else if (props.page === "property") { // 매물 페이지인 경우 매물 마커들 맵에 표시
     setupPropertyMarkers();
   }
 

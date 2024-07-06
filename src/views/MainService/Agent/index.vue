@@ -51,7 +51,7 @@
       </ul>
       <div class="d-flex p-3 h-100 w-100 mx-auto">
         <div class="property-list-box w-25 overflow-auto">
-          <div class="col mt-3" @click="backToPropertyList">
+          <div class="col mt-3">
             <PropertyList
               type="agent"
               @update:positionData="getAgentPositionData"
@@ -61,7 +61,7 @@
         <div class="right-box ms-4 col p-3 w-75" v-if="route.params.id">
           <div class="w-75">
             <div class="text-start test">
-              <div class="">
+              <div>
                 <img
                   :src="agentProfile"
                   height="100"
@@ -71,7 +71,7 @@
                 <span class="fw-bold">{{ agent.abrand }}</span>
               </div>
             </div>
-            <div class="">
+            <div>
               <DetailInfo :agentData="agent" :detailData="agentDetail" />
             </div>
             <ul class="nav nav-pills ms-4">
@@ -94,7 +94,6 @@
                 </div>
               </li>
             </ul>
-
             <div>
               <div class="d-flex pe-3 pb-3">
                 <div
@@ -108,7 +107,9 @@
                 <div class="right-box col" v-if="!isCommentMenu">
                   <AgentReview
                     :reviewData="reviewData"
-                    @update-agent-data="getAgentData(route.params.id)"
+                    :pager="pagerData"
+                    @update-agent-data="getAgentData"
+                    @update:currentPage="handlePageChange"
                   />
                 </div>
               </div>
@@ -148,11 +149,12 @@ const agent = ref({});
 const agentDetail = ref({});
 const agentPositionList = ref([]);
 const reviewData = ref([]);
+const pagerData = ref({});
 const isCommentMenu = ref(true);
-const selected = "border-bottom border-4 border-warning ";
+const selected = "border-bottom border-4 border-warning";
 const searchKeywordForAgent = ref("");
 const memberProfiles = ref({});
-
+const currentPage = ref(0);
 // 유저 프로필 사진 다운로드
 const getMattach = async (memberId) => {
   try {
@@ -165,12 +167,12 @@ const getMattach = async (memberId) => {
 };
 
 // 중개인 데이터 get 함수
-const getAgentData = async (argAnumber) => {
+const getAgentData = async (pageNo = 1) => {
   try {
-    const response = await agentAPI.getAgentDataByNumber(argAnumber);
+    const response = await agentAPI.getAgentDataByNumber(route.params.id, pageNo);
     agent.value = response.data.agent;
     agentDetail.value = response.data.agentDetail;
-
+    pagerData.value = response.data.pager;
     if (response.data.agentReviewList) {
       const reviews = response.data.agentReviewList;
       await Promise.all(
@@ -184,7 +186,7 @@ const getAgentData = async (argAnumber) => {
       }));
     }
 
-    await getAttach(argAnumber);
+    await getAttach(route.params.id);
   } catch (error) {
     console.log(error);
   }
@@ -203,19 +205,23 @@ const getAttach = async (argAnumber) => {
 
 onMounted(() => {
   if (route.params.id) {
-    getAgentData(route.params.id);
+    getAgentData();
   }
 });
 
 function getAgentPositionData(data) {
   agentPositionList.value = data;
 }
+const handlePageChange = (page) => {
+  currentPage.value = page;
+  getAgentData(page);
+};
 
 watch(
   () => route.params.id,
   (newId) => {
     if (newId) {
-      getAgentData(newId);
+      getAgentData();
     }
   }
 );
@@ -231,7 +237,6 @@ watch(
 
 function backToAgentList() {
   router.push("/Agent");
-
 }
 
 function subMenuCheck(check) {

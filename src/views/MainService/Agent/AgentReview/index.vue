@@ -148,25 +148,12 @@
           </div>
         </div>
       </div>
-      <div class="mt-5">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <Pagination
+          :currentPage="pager.pageNo"
+          :totalPages="pager.totalPageNo"
+          :maxVisiblePages="5"
+          @update:currentPage="page => emits('update:currentPage', page)"
+        />
     </div>
     <div v-if="props.reviewData.length == 0" class="text-center">
       <img
@@ -249,14 +236,15 @@
 <script setup>
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { Modal } from "bootstrap";
+import Pagination from "@/components/Pagination.vue";
 const store = useStore();
 const logedinUser = store.getters.getUemail; // 수정버튼
-const props = defineProps(["reviewData"]);
-const emits = defineEmits(["update-agent-data"]);
+const props = defineProps(["reviewData","pager"]);
+const emits = defineEmits(["update-agent-data","update:currentPage"]);
 const comment = ref("");
 const warningMessage = ref(""); // 경고 메시지 상태 추가
 const showDeleteModal = ref(false);
@@ -415,6 +403,8 @@ onMounted(() => {
     getUattach(store.getters.getUserRoleNumber);
   }
 });
+
+
 </script>
 
 <style scoped>

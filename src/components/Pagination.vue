@@ -2,19 +2,19 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       <li :class="['page-item', { disabled: currentPage === 1 }]">
-        <RouterLink class="page-link" to="#" @click.prevent="goToPage(1)" tabindex="-1" :aria-disabled="currentPage === 1">처음</RouterLink>
+        <a class="page-link" href="#" @click.prevent="goToPage(1)" tabindex="-1" :aria-disabled="currentPage === 1">처음</a>
       </li>
       <li :class="['page-item', { disabled: currentPage === 1 }]">
-        <RouterLink class="page-link" to="#" @click.prevent="prevPage" tabindex="-1" :aria-disabled="currentPage === 1">이전</RouterLink>
+        <a class="page-link" href="#" @click.prevent="prevPage" tabindex="-1" :aria-disabled="currentPage === 1">이전</a>
       </li>
       <li v-for="page in visiblePages" :key="page" :class="['page-item', { active: page === currentPage }]">
-        <RouterLink class="page-link" to="#" @click.prevent="goToPage(page)">{{ page }}</RouterLink>
+        <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
       </li>
       <li :class="['page-item', { disabled: currentPage === totalPages }]">
-        <RouterLink class="page-link" to="#" @click.prevent="nextPage" :aria-disabled="currentPage === totalPages">다음</RouterLink>
+        <a class="page-link" href="#" @click.prevent="nextPage" :aria-disabled="currentPage === totalPages">다음</a>
       </li>
       <li :class="['page-item', { disabled: currentPage === totalPages }]">
-        <RouterLink class="page-link" to="#" @click.prevent="goToPage(totalPages)" :aria-disabled="currentPage === totalPages">끝</RouterLink>
+        <a class="page-link" href="#" @click.prevent="goToPage(totalPages)" :aria-disabled="currentPage === totalPages">끝</a>
       </li>
     </ul>
   </nav>
@@ -37,10 +37,6 @@ const props = defineProps({
   maxVisiblePages: {
     type: Number,
     default: 5
-  },
-  page: {
-    type: String,
-    required: true
   }
 });
 
@@ -80,8 +76,6 @@ const visiblePages = computed(() => {
 
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
-
-
 </script>
 
 <style scoped>

@@ -14,8 +14,9 @@ const getAgentList = (pageNo, size) => {
 };
 
 //중개인 데이터
-const getAgentDataByNumber = (anumber) => {
-  return axios.get("/Agent/" + anumber);
+const getAgentDataByNumber = (anumber,pageNo) => {
+  console.log(anumber);
+  return axios.get("/Agent/" + anumber,{ params: { pageNo } });
 };
 //중개인 데이터 업데이트
 const updateAgentData = (agentData) => {
