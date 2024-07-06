@@ -26,10 +26,10 @@
         <tbody>
           <tr v-for="report in reports" :key="report.rnumber">
             <th scope="row" class="text-center align-middle">
-              {{ report.rPnumber }}
+              {{ report.rpnumber }}
             </th>
             <td class="align-middle text-center">
-              <img v-if="pthumbnails[report.rPnumber] != null" :src="pthumbnails[report.rPnumber]" width="150" alt="매물 사진" />
+              <img v-if="pthumbnails[report.rpnumber] != null" :src="pthumbnails[report.rpnumber]" width="150" alt="매물 사진" />
             </td>
             <td class="align-middle text-muted">
               <div class="fw-bold">{{ report.rcontent }}</div>
@@ -82,23 +82,19 @@ import propertyAPI from "@/apis/propertyAPI";
 import axios from "axios";
 import dayjs from "dayjs";
 
-let idNumber = ref(0);
-
 const reports = ref([]);
 const pthumbnails = ref({});
 
-
-
-//유저 매물 리스트 목록을 가져오는 메소드 정의
+// 허위 매물 리스트
 async function getUserReportList() {
   try {
     const response = await propertyAPI.getReportList();
     reports.value = response.data;
+console.log(reports.value)
     reports.value.forEach(report => {
-        getPthumbnail(report.rPnumber);
-    });
-    reports.value.forEach(report => {
-      report.formattedDate = dayjs(report.rdate).format('YYYY-MM-DD')
+        console.log("report : " + report.rpnumber);
+        getPthumbnail(report.rpnumber);
+        report.formattedDate = dayjs(report.rdate).format('YYYY-MM-DD')
     });
   } catch (error) {
     console.log(error);
