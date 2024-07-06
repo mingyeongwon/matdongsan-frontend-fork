@@ -78,10 +78,10 @@ const propertyDetail = ref({
   pdtable: "",
   pdwasher: "",
   pdinduction: ""
-})
+});
 
 const pthumbnail = ref(null);
-const ppattach = ref(null);
+const ppattaches = ref([]);
 
 // 부동산 정보 객체
 const propertyInfo = reactive({
