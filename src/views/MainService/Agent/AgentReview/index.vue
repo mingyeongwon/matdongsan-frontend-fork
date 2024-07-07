@@ -5,7 +5,7 @@
         평점 & 리뷰({{ props.reviewData.length }})
       </h5>
       <h5 class="mt-3 fw-bold" v-else>
-        평점 & 리뷰 ({{ averageRate }} & {{ props.reviewData.length }})
+        평점 & 리뷰 ({{ props.reviewData.length }})
       </h5>
       <div class="align-self-center">
         <select
@@ -264,22 +264,6 @@ const reviewData = ref({
 });
 console.log(userRoleNumber);
 
-//평점 총합 계산
-const totalRate = computed(() => {
-  return props.reviewData.reduce((sum, review) => sum + review.arrate, 0);
-});
-
-//평점 평균 계산 (소수점 1자리)
-const averageRate = computed(() => {
-  const count = props.reviewData.length;
-  return count > 0 ? (totalRate.value / count).toFixed(1) : 0;
-});
-
-//평점
-function check(index) {
-  score.value = +index;
-  reviewData.value.arrate = score.value - 1;
-}
 
 function getReviewId(reviewId) {
   clickedModalId.value = reviewId;
