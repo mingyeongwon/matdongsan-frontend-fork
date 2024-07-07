@@ -1,18 +1,19 @@
 <template>
     <!-- 리스트(table) -->
      <div class="w-50 container">
+      
     <table style="width: 100%; margin-top: 20px; ">
         <thead class="row pt-2">
         <!-- <th>카테고리</th> -->
-        <th class="col-6" >제목</th><th class="col-4">날짜</th><th class="col-2">답변 여부</th>
+        <th class="col-2">문의 유형</th><th class="col-6" >제목</th><th class="col-2">날짜</th><th class="col-2">답변 여부</th>
         </thead>
         <tbody>
             <tr class="row" v-for="question in props.question" :key="question.qnumber">
                     
-                <!-- <td style="text-align: center;">[공지사항]</td> -->
+                <td class="col-2" style="text-align: center;">{{ category(question.qcategory) }}</td>
                 <td class="col-6"><RouterLink class="routerLink" :to="`/CustomerInquiryDetail?qnumber=${question.qnumber}&qunumber=${question.qunumber}`">{{ question.qtitle }}</RouterLink></td>
             
-                <td class="col-4" style="text-align: center;">{{ formatDate(question.qdate) }}</td>
+                <td class="col-2" style="text-align: center;">{{ formatDate(question.qdate) }}</td>
                 <td style="text-align: center;" :class="question.qisAnswer == 1 ? '' : 'text-danger'" class="answer col-2">{{ hasAnswer(question.qisAnswer) }}</td>
 
             </tr>
@@ -24,6 +25,9 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+
 
 // 날짜 형식 맞추기
 function formatDate(dateString) {
@@ -43,22 +47,24 @@ function hasAnswer(isAnswer){
   }
 }
 
+// 카테고리 한글 변환
+function category(qcategory){
+  if(qcategory == "useage"){
+    return "서비스 이용문의";
+  } else if(qcategory == "reportFalse"){
+    return "허위매물 신고";
+  }else if(qcategory == "complex"){
+    return "단지정보 문의";
+  }else if(qcategory == "etc"){
+    return "기타 문의";
+  }else if(qcategory == "failure-error"){
+    return "장애/오류 신고";
+  }
+}
+
 const props = defineProps({
     question: Array,
 });
-
-
-
-// let noticeList = ref([
-//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-//     { title: "매물 등록권 3개를 구매하면 3개의 매물을 한번에 등록해야 하나요?", date: "2024-06-01", status:"답변 완료" },
-// ]);
-
 
 </script>
 
@@ -83,6 +89,5 @@ const props = defineProps({
         border: none; /* 테두리 제거 */
         cursor: pointer; /* 커서 스타일 설정 */
     }
-
 
 </style>

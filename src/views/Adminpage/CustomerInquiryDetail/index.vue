@@ -2,12 +2,19 @@
   <div>
     <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">고객 문의</h2>
   <div class="w-50 container pb-5">
-    <div class="row me-2">
-      <div class="col text-end">게시일 : {{ formatDate(customerInquiry.qdate) }}</div>
+    <div class="row">
+    <div class="col">
+      <div> 문의 유형: {{ category(customerInquiry.qcategory) }}</div>
     </div>
-    <div class="row me-2">
-      <div class="col text-end">작성자 : {{ qWriter }}</div>
+    <div class="col">
+      <div class="row me-2">
+        <div class="col text-end">게시일 : {{ formatDate(customerInquiry.qdate) }}</div>
+      </div>
+      <div class="row me-2">
+        <div class="col text-end">작성자 : {{ qWriter }}</div>
+      </div>
     </div>
+  </div>
     <hr>
     <div class="row me-5">
       <span class="col-2 text-center">제목</span>
@@ -66,7 +73,7 @@
         <div class="row me-5 mt-5">
           <span class="col-2 mb-3 text-center mt-3" >수정할 답변</span>
           <div class="col-10">
-          <VueQuillEditor  v-model="answer.content" />
+          <VueQuillEditor  v-model.trim="answer.content" />
           </div>
         </div>
         
@@ -76,13 +83,31 @@
         </div>
       </form>
     </div>
+    <!-- 답변이 없으면 문의 수정 삭제가 가능 -->
+    <div v-if="getAnswer == '' ">
+      <div class="row d-flex me-4" style=" justify-content: center; align-items: end;">
+        <button class="mt-3 me-2" type="button" @click="goBack">뒤로가기</button>
+        <button class="mt-3 me-2" type="button" @click="updateQuestion">수정</button>
+        <button class="mt-3" type="button" @click="deleteQuestion">삭제</button>
+      </div>
+    </div>
     </div>
     <!-- 모달 컴포넌트 삽입 -->
-    <AgreeDeleteModal id="DeleteAnswerModal" @delete="agreeDeleteQuestion" @close="hideModal">
+    <AgreeDeleteModal id="DeleteAnswerModal" @delete="agreeDeleteAnswer" @close="hideAnswerModal">
     <template v-slot:body>
         <div class="modal-body">
           <p class="fw-bold p-4 h-4 text-center">
             해당 답변을 삭제 하시겠습니까? <br />
+            삭제 후에 수정 불가합니다.
+          </p>
+        </div>
+      </template>
+  </AgreeDeleteModal>
+  <AgreeDeleteModal id="DeleteQuestionModal" @delete="agreeDeleteQuestion" @close="hideQuestionModal">
+    <template v-slot:body>
+        <div class="modal-body">
+          <p class="fw-bold p-4 h-4 text-center">
+            해당 문의을 삭제 하시겠습니까? <br />
             삭제 후에 수정 불가합니다.
           </p>
         </div>
@@ -167,6 +192,20 @@ function formatDate(dateString) {
   return `${year}-${month}-${day}`;
 }
 
+function category(qcategory){
+  if(qcategory == "useage"){
+    return "서비스 이용문의";
+  } else if(qcategory == "reportFalse"){
+    return "허위매물 신고";
+  }else if(qcategory == "complex"){
+    return "단지정보 문의";
+  }else if(qcategory == "etc"){
+    return "기타 문의";
+  }else if(qcategory == "failure-error"){
+    return "장애/오류 신고";
+  }
+}
+
 // 문의 정보 불러오기
 getWriter()
 getQuestion()
@@ -186,13 +225,13 @@ const checkForm = computed(() => {
 async function handleInsertSubmit(){
   console.log("생성 폼 제출 함수 실행");
   try {
-    answer.value.content = answer.value.content.slice(3,-4);
+    
     const formData = new FormData();
     formData.append("acontent",answer.value.content);
     formData.append("aQnumber",qnumber);
     await qnaAPI.createAnswer(formData);
     console.log("답변 생성 성공");
-    router.back();
+    router.go(0) // 새로고침
   } catch (error) {
     console.log("답변 생성 실패",error);
   }
@@ -224,13 +263,13 @@ function updateAnswer(){
 async function handleUpdateSubmit(){
   console.log("수정 폼 제출 함수 실행");
   try {
-    answer.value.content = answer.value.content.slice(3,-4);
+    
     const formData = new FormData();
     formData.append("acontent",answer.value.content);
     formData.append("aQnumber",qnumber);
     await qnaAPI.updateAnswer(formData);
     console.log("수정답변 생성 성공");
-    router.back();
+    router.go(0) // 새로고침
   } catch (error) {
     console.log("수정답변 생성 실패",error);
   }
@@ -245,7 +284,7 @@ onMounted(() => {
 });
 
 // 모달 닫기
-function hideModal() {
+function hideAnswerModal() {
   deleteAnswerModal.hide();
 }
 
@@ -255,16 +294,52 @@ function deleteAnswer(){
 }
 
 // 모달에서도 최종적으로 삭제버튼을 누를 경우 삭제 실행
-async function agreeDeleteQuestion(){
+async function agreeDeleteAnswer(){
   console.log("매개변수 값 확인 anumber: ",getAnswer.value.anumber,"qnumber: ", getAnswer.value.aqnumber);
   // 삭제 하는 axios 작성
   try {
     await qnaAPI.deleteAnswerByAQnumber(getAnswer.value.anumber, getAnswer.value.aqnumber);
     console.log("삭제 완료");
-    hideModal();
-    router.back();
+    hideAnswerModal();
+    goBack();
   } catch (error) {
     console.log("삭제 실패",error);
+  }
+}
+
+// 문의 수정 //////////////////////////////////////////////////////////////////////////////
+// 문의 수정하는 페이지로 이동
+function updateQuestion(){
+  router.push({
+      path: "/Qna/CustomerInquiryUpdateForm",
+      query: {qnumber: qnumber, qunumber: qunumber}
+    });
+}
+// 문의 삭제 ///////////////////////////////////////////////////////////////////////////////
+// 삭제할거냐는 모달 띄우기
+function deleteQuestion(){
+  deleteQuestionModal.show();
+}
+
+let deleteQuestionModal = null;
+
+onMounted(() => {
+  deleteQuestionModal = new Modal(document.querySelector("#DeleteQuestionModal"));
+});
+
+// 모달 닫기
+function hideQuestionModal() {
+  deleteQuestionModal.hide();
+}
+
+// 모달에서도 삭제하기를 누르면 최종적으로 삭제 실행
+async function agreeDeleteQuestion(){
+  try {
+    await qnaAPI.deleteQuestion(qnumber,qunumber);
+    hideQuestionModal();
+    router.back()
+  } catch (error) {
+    console.log(error);
   }
 }
 

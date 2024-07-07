@@ -26,7 +26,7 @@
     <hr>
     <div class="row me-5">
       <span class="col-2" style="text-align: center;">제목</span>
-      <input class="col-10" type="text" name="askTitle" v-model="customerInquiry.qtitle">
+      <input class="col-10" type="text" name="askTitle" v-model.trim="customerInquiry.qtitle">
     </div>
     <hr>
     <div class="row me-5">
@@ -34,7 +34,7 @@
     </div>
     <div class="row me-5 container ms-2">
       <!-- 공용 컴포넌트 사용으로 qcontent라고 하지 않고 content로 사용한다. -->
-      <VueQuillEditor class="col " v-model="customerInquiry.content" />
+      <VueQuillEditor class="col " v-model.trim="customerInquiry.content" />
     </div>
     <hr>
     <div class="row me-5">
@@ -106,7 +106,7 @@ async function handleSubmit(){
 //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
 const formData = new FormData();
 // content에 p태그 붙는거 삭제하기
-customerInquiry.value.content = customerInquiry.value.content.slice(3,-4);
+
 // 문자 데이터 formData에 넣기
 formData.append("qcategory", customerInquiry.value.qcategory);
 formData.append("qtitle", customerInquiry.value.qtitle);

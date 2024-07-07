@@ -101,7 +101,7 @@ async function agreeDeleteQuestion(){
     await qnaAPI.deleteDetailNotice(nnumber);
     console.log("삭제 완료");
     hideModal();
-    router.back();
+    router.push({path: "/QNA/Notice"}); // 삭제하면 리스트 돌아가기
   } catch (error) {
     console.log("삭제 실패",error);
   }

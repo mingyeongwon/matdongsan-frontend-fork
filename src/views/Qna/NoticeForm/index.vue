@@ -15,14 +15,14 @@
       <form @submit.prevent="handleSubmit">
       <div class="row me-5">
         <span class="col-2 text-center">제목</span>
-        <input class="col-10" type="text" name="askTitle" v-model="notice.title"> 
+        <input class="col-10" type="text" name="askTitle" v-model.trim="notice.title"> 
       </div>
       <hr>
       <div class="row me-5">
         <span class="col-2 mb-3 text-center" >공지 내용</span>
       </div>
       <div class="row me-5 container ms-2">
-        <VueQuillEditor class="col " v-model="notice.content" />
+        <VueQuillEditor class="col " v-model.trim="notice.content" />
       </div>
       <!-- <hr>
       <div class="row me-5">
@@ -72,7 +72,6 @@ async function insertNotice(formData){
 function handleSubmit(){
   console.log(JSON.parse(JSON.stringify(notice.value)));
   // content에 p태그 붙는거 삭제하기
-  notice.value.content = notice.value.content.slice(3,-4);
   const formData = new FormData();
   formData.append("ntitle",notice.value.title);
   formData.append("ncontent",notice.value.content);

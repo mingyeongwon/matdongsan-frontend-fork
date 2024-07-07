@@ -6,11 +6,17 @@
     <NoticeListFilter :noticeFilter="noticeFilter" />
     <NoticeList :noticeList="page.notice" />
     <Pagination
+      v-if="page.pager.totalPageNo != 0"
       :currentPage="currentPage"
       :totalPages="totalPageNo"
       page="notice"
       @update:currentPage="handlePageChange"
     />
+    <div v-else class="w-50 container">
+        <div class="text-center">
+          검색 결과가 없습니다.
+        </div>
+      </div>
   </div>
 </template>
 

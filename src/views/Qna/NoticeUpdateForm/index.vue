@@ -78,7 +78,11 @@ async function updateNewNotice(formData){
     const response = await qnaAPI.updateNotice(formData);
     console.log("수정 한 데이터",response.data);
     console.log("공지 수정 됨");
-    router.back();
+    // router.back();
+    router.push({
+    path: "/QNA/noticedetail",
+    query: {nnumber: nnumber}
+  }); // 수정 하면 디테일 페이지로 가기
   } catch (error) {
     console.log("수정한 공지 수정 안됨",error);
   }
@@ -88,13 +92,13 @@ async function updateNewNotice(formData){
 function handleSubmit(){
   console.log(JSON.parse(JSON.stringify(notice.value)));
   // content에 p태그 붙는거 삭제하기
-  notice.value.ncontent = notice.value.ncontent.slice(3,-4);
+  
   const formData = new FormData();
   formData.append("ntitle",notice.value.ntitle);
   formData.append("ncontent",notice.value.ncontent);
   formData.append("nnumber",notice.value.nnumber);
   updateNewNotice(formData);
-  // 이 밑의 실행문은 만들지 말기 -> insert메소드에서 뒤로가기 함
+  // 이 밑의 실행문은 만들지 말기 -> update메소드에서 디테일로 페이지 이동 함
 }
 
 // 제목, 내용이 없으면 제출버튼 비활성화
