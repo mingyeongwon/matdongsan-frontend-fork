@@ -123,7 +123,6 @@
           <KakaoMap
             page="agentList"
             :positionList="agentPositionList"
-            class=""
           />
         </div>
       </div>
@@ -216,7 +215,7 @@ const handlePageChange = (page) => {
   currentPage.value = page;
   getAgentData(page);
 };
-
+//params 값이 변경될때마다 agentData를 업데이트
 watch(
   () => route.params.id,
   (newId) => {

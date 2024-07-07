@@ -57,7 +57,7 @@ import PropertyListItem from "./PropertyListItem.vue";
 import agentAPI from "@/apis/agentAPI";
 import propertyAPI from "@/apis/propertyAPI";
 import favoriteAPI from "@/apis/favoriteAPI";
-const emit = defineEmits(["update:positionData"]);
+const emit = defineEmits(["update:positionData","update:propertyPositionData"]);
 
 const props = defineProps(["type"]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
@@ -156,6 +156,15 @@ watch(
   () => displayedAgents.value,
   (newValue) => {
     emit("update:positionData", newValue);
+  },
+  { deep: true }
+);
+// propertyList 배열의 변경을 감지하여 emit
+
+watch(
+  () => displayedProperties.value,
+  (newValue) => {
+    emit("update:propertyPositionData", newValue);
   },
   { deep: true }
 );

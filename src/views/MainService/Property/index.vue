@@ -47,11 +47,11 @@
       <div class="d-flex ps-3 pe-3 pb-3 pt-3">
         <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3">
-            <PropertyList type="property"/>
+            <PropertyList type="property" @update:propertyPositionData="getPropertyPositionData"/>
           </div>
         </div>
         <div class="map-box right-box col p-3" v-if="!route.params.id">
-          <KakaoMap @getPropertyData="getPropertyData" />
+          <KakaoMap page="propertyList" :propertyPositionList="propertyPositionList"/>
         </div>
         <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"/>
@@ -73,10 +73,9 @@ import KakaoMap from "@/components/KakaoMap.vue";
 import PropertyFilter from "./PropertyFilter.vue";
 import ReportFalse from "@/views/MainService/Property/ReportFalse.vue";
 import propertyAPI from "@/apis/propertyAPI";
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
-import { param } from "jquery";
 
 const route = useRoute();
 const router = useRouter();
@@ -90,7 +89,7 @@ const propertyPhotos = ref([]);
 const userComment = ref([]); // 문의 댓글 
 const pthumbnail = ref(null);
 const pattaches = ref([]);
-
+const propertyPositionList = ref([]);
 
 
 // 검색
@@ -101,6 +100,11 @@ function backToPropertyList() {
   router.push("/Property");
 }
 
+// /components/PropertyList에서 가져온 PropertyList데이터
+function getPropertyPositionData(data) {
+  console.log("실행됨");
+  propertyPositionList.value = data;
+}
 // property 데이터
 const getPropertyData = async (pnumber) => {
   try {
@@ -181,6 +185,16 @@ watch(() => route.params.id, (newPnumber) => {
 
   }
 });
+
+//
+watch(
+  () => propertyPositionList.value.length,
+  () => {
+    console.log("Property position list updated:", propertyPositionList.value);
+    // KakaoMap 컴포넌트는 이미 propertyPositionList를 prop으로 받고 있으므로 자동으로 업데이트.
+  },
+  { deep: true }
+);
 
 
 </script>

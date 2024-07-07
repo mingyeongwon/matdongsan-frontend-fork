@@ -5,7 +5,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 const emit = defineEmits(["getPropertyData"]);
-const props = defineProps(["positionList", "position", "page"]);
+const props = defineProps(["positionList","propertyPositionList", "position", "page"]);
 
 let map;
 let cluster = null;
@@ -35,7 +35,7 @@ const initMap = () => {
     displayFavorites();
   } else if (props.page === "agentList" && Array.isArray(props.positionList)) { // 중개인 리스트페이지이며 리스트들의 좌표값이 있을 경우 지도에 마커 표시
     displayMarker(props.positionList.map(agent => [agent.alatitude, agent.alongitude]));
-  } else if (props.page === "property") { // 매물 페이지인 경우 매물 마커들 맵에 표시
+  } else if (props.page === "propertyList") { // 매물 페이지인 경우 매물 마커들 맵에 표시
     setupPropertyMarkers();
   }
 
@@ -85,13 +85,15 @@ const displayFavorites = () => {
 
 // 부동산 페이지 클러스터 설정
 const setupPropertyMarkers = () => {
+displayMarker(props.propertyPositionList.map(property => [property.platitude, property.plongitude]))
   const clusterOptions = {
     map: map,
     averageCenter: true,
-    disableClickZoom: true,
+    
   };
-  cluster = new kakao.maps.MarkerClusterer(clusterOptions);
-  cluster.addMarkers(markers.value);
+  cluster = new kakao.maps.MarkerClusterer(clusterOptions); //클러스터 기능을 쓰기위한 초기화 변수 선언
+  cluster.setMinClusterSize(1); // 클러스터 최소 마커 -> 1개만 있어도 클러스터화
+  cluster.addMarkers(markers.value); // 마커추가
 };
 
 // 현재 뷰에 있는 마커 데이터 업데이트
@@ -133,6 +135,11 @@ watch(() => props.position, (newPosition) => {
 watch(() => props.positionList ? props.positionList.length : 0, (newLength) => {
   if (map && newLength > 0) {
     displayMarker(props.positionList.map(agent => [agent.alatitude, agent.alongitude]));
+  }
+});
+watch(() => props.propertyPositionList ? props.propertyPositionList.length : 0, (newLength) => {
+  if (map && newLength > 0) {
+    displayMarker(props.propertyPositionList.map(property => [property.platitude, property.plongitude]));
   }
 });
 
