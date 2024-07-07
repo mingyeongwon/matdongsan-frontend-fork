@@ -8,14 +8,14 @@
           type="text"
           class="col form-control form-control-sm border border-1 border-secondary p-2"
           placeholder="리스트에 노출되는 문구입니다. 40자 미만으로 작성해주세요"
-          v-model="propertyInfo.title"
+          v-model="property.ptitle"
         />
         <div class="col-5"></div>
       </div>
   
       <div class="w-75">
         <span class="me-5 align-self-center"></span>
-        <VueQuillEditor v-model="propertyInfo.content" />
+        <VueQuillEditor v-model="propertyDetail.pdcontent" />
       </div>
     </div>
   </template>
@@ -24,10 +24,11 @@
   import { toRefs } from 'vue';
   import VueQuillEditor from "@/components/VueQuillEditor.vue";
   
-  const props = defineProps({
-    propertyInfo: Object
-  });
+  const props = defineProps([
+    'propertyDetail', 'property'
+  ]);
   
-  const { propertyInfo } = toRefs(props);
+  const { propertyDetail } = toRefs(props);
+  const { property } = toRefs(props);
   </script>
   

@@ -72,6 +72,12 @@ const checkPropertyListing = () => {
 const purchasePropertyListing =(product) => {
   return axios.post("/Payment/PaymentResult/"+product);
 }
+
+// 매물 등록
+const postProperty = (formData) => {
+  return axios.post("/PropertyForm", formData);
+}
+
 export default {
   getPropertyList,
   getUserPropertyList,
@@ -85,4 +91,5 @@ export default {
   deletePropertyReport,
   checkPropertyListing,
   purchasePropertyListing,
+  postProperty
 };

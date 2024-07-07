@@ -23,7 +23,7 @@
               class="address me-2"
               placeholder="예) 서울시 강남구 봉은사로 1길 12,1층"
               size="40"
-              v-model="propertyInfo.address"
+              v-model="property.paddress"
               readonly
             />
             <div
@@ -39,14 +39,14 @@
             class="row ms-0 mt-3 postcode"
             placeholder="우편번호"
             size="20"
-            v-model="propertyInfo.postcode"
+            v-model="property.ppostcode"
             readonly
           />
           <input
             type="text"
             class="row ms-0 mt-3"
             placeholder="상세주소 입력"
-            v-model="propertyInfo.addressDetail"
+            v-model="property.paddressdetail"
             size="20"
             @input="emitUpdate"
           />
@@ -66,23 +66,24 @@
 import { toRefs, watch, onMounted } from "vue";
 
 const props = defineProps({
-  propertyInfo: Object,
+  property: Object,
 });
+const emit = defineEmits(["update:property"]);
+const { property } = toRefs(props);
 
-const emit = defineEmits(["update:propertyInfo"]);
-const { propertyInfo } = toRefs(props);
-
+// 주소 검색
 function openPostSearch() {
   new window.daum.Postcode({
     oncomplete: (data) => {
-      propertyInfo.value.postcode = data.zonecode;
-      propertyInfo.value.address = data.address;
+      property.value.ppostcode = data.zonecode;
+      property.value.paddress = data.address;
       emitUpdate();
       showMap(data.address); // 주소 검색 완료 후 지도에 표시
     },
   }).open();
 }
 
+// 주소 지도 표시
 function showMap(address) {
   const mapContainer = document.getElementById("map");
   const mapOption = {
@@ -96,8 +97,8 @@ function showMap(address) {
   geocoder.addressSearch(address, function (result, status) {
     if (status === kakao.maps.services.Status.OK) {
       const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-      propertyInfo.value.lon = result[0].x;
-      propertyInfo.value.lat = result[0].y;
+      property.value.plongitude = result[0].x;
+      property.value.platitude = result[0].y;
       const marker = new kakao.maps.Marker({
         map: map,
         position: coords,
@@ -108,14 +109,14 @@ function showMap(address) {
 }
 
 function emitUpdate() {
-  emit("update:propertyInfo", { propertyInfo });
-  console.log(propertyInfo.value);
+  emit("update:property", { property });
+  console.log(property.value);
 }
 
 watch(
-  () => props.propertyInfo,
+  () => props.property,
   (newValue) => {
-    Object.assign(propertyInfo, newValue);
+    Object.assign(property, newValue);
   }
 );
 
