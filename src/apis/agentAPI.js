@@ -46,6 +46,10 @@ const updateAgentReview = (editingReview) => {
 const deleteAgentReview = (anumber, arnumber) => {
   return axios.delete(`/Agent/${anumber}/${arnumber}`);
 };
+//중개인 매물 가져오기
+const getAgentProperty = (anumber) => {
+  return axios.get('/')
+}
 //중개인 정렬
 const sortAgentReview = (anumber, sort) => {
   return axios.get("/Agent", { params: { anumber, sort } });

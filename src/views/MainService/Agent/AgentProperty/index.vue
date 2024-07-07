@@ -83,10 +83,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
+import agentAPI from '@/apis/agentAPI';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+const route = useRoute();
+const agentProperiesData = ref([]); 
 const id = ref(0);
 id.value=1;
+
+//중개인이 올린 매물 리스트 가져오는 함수 
+async function getPropertiesByAgent(){
+
+  console.log("테스트중: "+route.params.id);
+  try {
+    const response = await agentAPI.getAgentProperty(route.params.id);
+    agentProperiesData.value = response.data;
+  } catch (error) {
+   console.log(error); 
+  }
+}
+onMounted(()=>{
+  getPropertiesByAgent();
+})
 </script>
 
 <style scoped>
