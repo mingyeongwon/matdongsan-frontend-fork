@@ -54,6 +54,11 @@ const getAgentProperty = (anumber,pageNo) => {
 const sortAgentReview = (anumber, sort) => {
   return axios.get("/Agent", { params: { anumber, sort } });
 };
+// 아이디 찾기
+const findAgentEmail = (formData) => {
+  return axios.post("/login/findAgentEmail", formData);
+}
+
 export default {
   signup,
   getAgentList,
@@ -66,4 +71,5 @@ export default {
   updateAgentData,
   getAgentReviewData,
   getAgentProperty,
+  findAgentEmail,
 };

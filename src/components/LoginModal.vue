@@ -157,7 +157,7 @@
                     type="text"
                     name="name"
                     placeholder="이름 입력"
-                    v-model.trim="findEmail.name"
+                    v-model.trim="findEmail.uname"
                   />
                 </div>
                 <div></div>
@@ -172,7 +172,7 @@
                     type="text"
                     name="text"
                     placeholder="전화번호 입력"
-                    v-model.trim="findEmail.phone"
+                    v-model.trim="findEmail.uphone"
                   />
                 </div>
               </div>
@@ -271,7 +271,7 @@
                   />
                 </div>
               </div>
-              <div class="mt-3">
+              <!-- <div class="mt-3">
                 <div>
                   <h4 class="fs-6 fw-bold">중개업자 여부</h4>
                 </div>
@@ -284,12 +284,12 @@
                     <option value="Member">일반 회원</option>
                   </select>
                 </div>
-              </div>
+              </div> -->
               <div class="mt-3">
                 <button
                   type="submit"
                   class="w-100 btn btn-warning"
-                  :disabled="!checkUpdatePasswordData"
+                  :disabled="!checkValidUserForUpdatePasswordData"
                 >
                   비밀번호 변경하기
                 </button>
@@ -325,14 +325,8 @@
                 <div>
                   <h4 class="fs-6 fw-bold">당신의 이메일은</h4>
                 </div>
-                <div class="loginInputBox">
-                  <input
-                    class="h-100 w-100 p-3"
-                    type="text"
-                    name="name"
-                    :value="tempUser.email"
-                    readonly
-                  />
+                <div class="loginInputBox text-center">
+                  {{ getEmail }}
                 </div>
               </div>
               <div class="mt-3">
@@ -479,7 +473,7 @@
               <div class="">
                 <div>
                   <h4 class="fs-5 fw-bold text-center mt-5 mb-5">
-                    해당하는 회원을 찾을 수 없습니다.
+                    {{}}
                   </h4>
                 </div>
               </div>
@@ -505,6 +499,7 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import memberAPI from "@/apis/memberAPI";
 import { useStore } from "vuex";
+import agentAPI from "@/apis/agentAPI";
 const router = useRouter();
 const emit = defineEmits(["moveToMemberSignup", "moveToAgentSignup", "close"]);
 const props = defineProps(["modalStatus"]);
@@ -528,7 +523,14 @@ let loginUser = ref({
 let findEmail = ref({
   uname: "",
   uphone: "",
+  type: "",
 });
+
+// 찾아온 이메일
+const getEmail = ref("");
+
+// 이메일 못 찾음
+const errorMessageFindEmail = ref("알 수 없는 오류로 실패 했습니다.");
 
 // 비밀번호 찾기 폼
 let findPassword = ref({
@@ -543,12 +545,12 @@ let changePassword = ref({
   newPassword2: "",
 });
 
-// 사용자용 오류 메시지
+// 사용자용 유효성 오류 메시지
 let errorMessage = ref({
   newPassword1: "",
   newPassword2: "",
 });
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 로그인 폼 제출하면 실행하는 함수
 async function loginHandleSubmit() {
   console.log("제출 함수 실행");
@@ -601,23 +603,17 @@ async function loginHandleSubmit() {
     console.log("에러 발생");
   }
 }
-// 비밀번호 찾기 폼 제출하면 실행하는 함수
-// function findPasswordHandleSubmit() {
-//   if (
-//     tempUser.name === findPassword.value.uname &&
-//     tempUser.phone === findPassword.value.uphone &&
-//     tempUser.email === findPassword.value.uemail
-//   ) {
-//     checkStatus.value = "updatePassword";
-//   } else {
-//     checkStatus.value = "missPassword";
-//   }
-// }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//비밀번호 찾기 폼 제출하면 실행하는 함수
+function findPasswordHandleSubmit() {
+  
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var passwordPattern =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
 var passwordResult = ref(null);
-
 // 비밀번호 변경 폼 제출하면 실행하는 함수
 function changePasswordHandleSubmit() {
   passwordResult.value = passwordPattern.test(
@@ -642,29 +638,68 @@ function changePasswordHandleSubmit() {
     console.log("비밀번호 맞음", passwordValidStyle.value);
   }
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // // 이메일 찾기 폼 제출하면 실행하는 함수
-// function findEmailHandleSubmit() {
-//   if (
-//     tempUser.name === findEmail.value.name &&
-//     tempUser.phone === findEmail.value.phone
-//   ) {
-//     checkStatus.value = "findEmail";
-//   } else {
-//     checkStatus.value = "missEmail";
-//   }
-// }
+async function findEmailHandleSubmit() {
+  console.log("이메일 찾기 제출 실행");
+  console.log(findEmail.value);
+  if(findEmail.value.type == "Agent"){
+    const formData = new FormData();
+    try {
+      formData.append("aname", findEmail.value.uname);
+      formData.append("aphone", findEmail.value.uphone);
+      const response = await agentAPI.findAgentEmail(formData);
+      getEmail.value = response.data.success
+      console.log("중개인 이메일 찾기 성공", getEmail.value);
+      console.log("해당하는 회원이 없으면 반환",response.data.fail);
+      if(response.data.fail == null){
+        checkStatus.value = "findEmail";
+      } else {
+        checkStatus.value = "missEmail";
+        errorMessageFindEmail.value = response.data.fail;
+      }
+    } catch (error) {
+      console.log("이메일 찾기 실패",error);
+      checkStatus.value = "missEmail";
+    }
+  } else if(findEmail.value.type == "Member"){
+    const formData = new FormData();
+    formData.append("mname", findEmail.value.uname);
+    formData.append("mphone", findEmail.value.uphone);
+    try {
+      const response = await memberAPI.findMemberEmail(formData);
+      getEmail.value = response.data.success
+      console.log("일반 이메일 찾기 성공", getEmail.value);
+      console.log("해당하는 회원이 없으면 반환",response.data.fail);
+      if(response.data.fail == null){
+        checkStatus.value = "findEmail";
+      } else {
+        checkStatus.value = "missEmail";
+        errorMessageFindEmail.value = response.data.fail;
+      }
+    } catch (error) {
+      console.log("이메일 찾기 실패",error);
+      checkStatus.value = "missEmail";
+    }
+  }
+  
+}
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 빈값 유효성
 // 로그인 할때 빈 값이 있으면 제출 버튼 비활성화
+// 로그인
 const checkData = computed(() => {
   var result = loginUser.value.email !== "" && loginUser.value.password !== "";
   return result;
 });
+// 아이디 찾기 폼
 const checkFindEmailData = computed(() => {
-  var result = findEmail.value.name !== "" && findEmail.value.phone !== "";
+  var result = findEmail.value.name !== "" && findEmail.value.phone !== "" && findEmail.value.type !== "";
   return result;
 });
-const checkUpdatePasswordData = computed(() => {
+// 비밀번호 
+const checkValidUserForUpdatePasswordData = computed(() => {
   var result =
     findPassword.value.name !== "" &&
     findPassword.value.phone !== "" &&
@@ -683,6 +718,7 @@ function checkUserPassword() {
 // 모달 닫으면 v-if 사용을 위한 설정 초기화
 function cancelUserData() {
   checkStatus.value = null;
+  getEmail.value = null;
 }
 </script>
 

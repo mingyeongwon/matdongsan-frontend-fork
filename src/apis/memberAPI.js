@@ -55,6 +55,16 @@ const deleteAccount = (currPw) => {
 const checkPaymentHistory = () => {
   return axios.get("/paymentHistory");
 };
+
+// 아이디 찾기 -> 개인정보이기 때문에 쿼리가 아닌 form데이터로 보냄
+function findMemberEmail(formData){
+  return axios.post("/login/findMemberEmail", formData);
+}
+
+// 해당 회원이 존재하는 지 확인 (중개인도 같은거 사용...)
+function canResetPassword(formData){
+  return axios.post("/canResetPassword", formData);
+}
 export default {
   memberJoin,
   agentJoin,
@@ -64,4 +74,6 @@ export default {
   memberAttachDownload,
   checkPaymentHistory,
   updateMemberData,
+  findMemberEmail,
+  canResetPassword,
 };
