@@ -57,7 +57,7 @@
           <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"/>
           <DetailInfo :property = "property" :propertyDetail = "propertyDetail" />
           <ReportFalse :pnumber = "route.params.id"/>
-          <Comment :userComment = "userComment" />
+          <Comment :userComment = "userComment" @update-property-data="getPropertyData" />
         </div>
       </div>
     </div>
@@ -76,10 +76,11 @@ import propertyAPI from "@/apis/propertyAPI";
 import { onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
-
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
+import memberAPI from "@/apis/memberAPI";
+import agentAPI from "@/apis/agentAPI";
 
 let status = ref(true);
 
@@ -90,6 +91,24 @@ const userComment = ref([]); // 문의 댓글
 const pthumbnail = ref(null);
 const pattaches = ref([]);
 const propertyPositionList = ref([]);
+const userProfiles = ref({});
+
+// 유저 프로필 사진
+const getUattach = async (userId) => {
+  try {
+    if (store.getters.getUserRole === "MEMBER") {
+      const response = await memberAPI.memberAttachDownload(userId);
+      const blob = response.data;
+      userProfiles.value[userId] = URL.createObjectURL(blob);
+    } else {
+      const response = await agentAPI.agentAttachDownload(userId);
+      const blob = response.data;
+      userProfiles.value[userId] = URL.createObjectURL(blob);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 // 검색
@@ -109,6 +128,7 @@ function getPropertyPositionData(data) {
 const getPropertyData = async (pnumber) => {
   try {
     const response = await propertyAPI.getPropertyData(pnumber);
+    console.log(response);
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
@@ -123,8 +143,13 @@ const getPropertyData = async (pnumber) => {
 
     if(response.data.propertyCommentList) {
       const comments = response.data.propertyCommentList;
+      await Promise.all(
+        comments.map(async (comment) => {
+          await getUattach(comment.ucunumber);
+      }));
       userComment.value = comments.map((comment) => ({
         ...comment,
+        profile: userProfiles.value[comment.ucunumber],
       }));
     }
 
@@ -153,6 +178,7 @@ const getPattaches = async (ppnumber) => {
       console.log(error);
   }
 }
+
 
 
 const liked = (productId) => {

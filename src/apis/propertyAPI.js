@@ -37,6 +37,11 @@ const getPropertyData = (pnumber) => {
   return axios.get("/Property/" + pnumber);
 };
 
+// 댓글 작성
+const postPropertyComment = (userComment) => {
+  return axios.post("/Property/" + userComment.ucPnumber, qs.stringify(userComment));
+};
+
 // 댓글 삭제
 const deletePropertyComment = (pnumber, ucnumber) => {
   return axios.delete(`/Property/${pnumber}/${ucnumber}`);
@@ -91,5 +96,7 @@ export default {
   deletePropertyReport,
   checkPropertyListing,
   purchasePropertyListing,
-  postProperty
+  postProperty,
+  postPropertyComment,
+  deletePropertyComment
 };
