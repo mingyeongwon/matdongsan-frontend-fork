@@ -3,19 +3,19 @@
     <table class="table table-borderless m-0">
       <tbody>
         <tr>
-          <th scope="row" rowspan="2" class="w-50">
+          <th scope="row" rowspan="2" class="w-50 pe-0">
             <img
-              class="img-fluid thumbnail"
+              class="img-fluid thumbnail p-0"
               v-if="pthumbnail != null"
               :src="pthumbnail"
             />
             <img v-else src="../../../assets/no_image.jpg" width="200" alt="" />
           </th>
-          <td>
-            <div class="row row-cols-2">
-              <div v-for="index in 4" :key="index">
+          <td class='ps-0 pe-0'>
+            <div class="row row-cols-2 p-0">
+              <div v-for="index in 4" :key="index" class="p-0">
                 <img
-                  class="img-fluid property-img mb-2"
+                  class="img-fluid property-img mb-2  p-0 pe-2"
                   v-if="index <= pattaches.length && pattaches[index - 1]"
                   :src="pattaches[index - 1]"
                 />
@@ -134,11 +134,11 @@ function showDetailPhotoModal() {
 
 <style scoped>
 .thumbnail {
-  height: 512px;
-  width: 400px;
+  height: 502px;
+  width: 466px;
 }
 .property-img {
-  width: 206px;
+  width: 256px;
   height: 248px;
 }
 </style>

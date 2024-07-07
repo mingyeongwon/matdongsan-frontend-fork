@@ -82,46 +82,55 @@
 
         <section class="col-4 mb-3 ms-2 mt-5">
           <div>
-            <h4 class="fw-bold mb-3">옵션</h4>
+            <h4 class="fw-bold mb-4">옵션</h4>
           </div>
 
-          <div class="d-flex mb-3">
-            <div class="col-2 ms-1 me-2">
-              <i class="fa-solid fa-bed"></i>
+          <div class="d-flex mb-3 flex-wrap">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-bed-alt-7857147.svg" width="25" alt="">
               <p>침대</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
               <i class="fa-solid fa-mattress-pillow"></i>
               <p>전자레인지</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-air-conditioner-7857364.svg" width="25" alt="">
               <p>에어컨</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-refrigerator-11740054.svg" width="25" alt="">
               <p>냉장고</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-fire-burner-12435076.svg" width="25" alt="">
               <p>가스레인지</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-table-10435317.svg" width="25" alt="">
               <p>신발장</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-screen-3917420.svg" width="25" alt="">
               <p>TV</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-table-columns-8770948.svg" width="25" alt="">
               <p>옷장</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+
               <p>식탁</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-desk-16060639.svg" width="25" alt="">
               <p>책상</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-font-washer-11740067.svg" width="25" alt="">
               <p>세탁기</p>
             </div>
-            <div class="col-2 me-2">
+            <div class="col-2 me-2 text-center">
               <p>인덕션</p>
             </div>
 
@@ -136,15 +145,96 @@
             <p class="" v-if="property.paddressdetail !== ''">{{ property.paddressdetail }}</p>
           </div>
           <div class="h-100">
-            <KakaoMap :position="propertyPosition" page="property"/>
+            <KakaoMap :position="propertyPosition" page="property" class="h-75"/>
           </div>
         </section>
-        <section class="col-7 ps-4 mt-5">
+        <section class="col-10 mt-5 pt-5 w-75 ">
           <div>
             <h4 class="fw-bold">상세설명</h4>
           </div>
           <div class="detailInfo">
             <h6 class="fw-bold">{{property.ptitle}}</h6>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
+            <small>
+              {{propertyDetail.pdcontent}}
+            </small>
             <small>
               {{propertyDetail.pdcontent}}
             </small>
@@ -200,7 +290,7 @@ watch(() => props.property, (newProperty) => {
 
 .detailInfo {
   background-color: rgb(250, 250, 250);
-  padding: 32px 24px;
+  width: 760px;
 }
 
 .productNum {
