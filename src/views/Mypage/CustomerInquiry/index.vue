@@ -17,7 +17,8 @@
         <thead class="text-center">
           <tr>
             <th>번호</th>
-            <th>항목</th>
+            <th>문의 유형</th>
+            <th>제목</th>
             <th>등록일</th>
             <th>상세</th>
             <th>답변상태</th>
@@ -39,11 +40,17 @@
         </tbody>
       </table>
       <Pagination
+      v-if="page.pager.totalPageNo != 0"
       :currentPage="currentPage"
       :totalPages="totalPages"
       page="myCustomerInquiry"
       @update:currentPage="handlePageChange"
     />
+    <div v-else class="w-75 container">
+      <div class="text-center mt-5 mb-5">
+        문의가 없습니다.
+      </div>
+    </div>
     </div>
   </div>
   <AgreeDeleteModal id="DeleteQuestionModal" @delete="agreeDeleteQuestion" @close="hideModal">
@@ -102,7 +109,6 @@ function showDeleteQnaModal(qnumber,qunumber,index) {
 
 }
 
-
 function hideModal() {
   deleteQnaModal.hide();
 }
@@ -137,7 +143,7 @@ async function getList(){
     page.value.question = response.data.question;
     page.value.pager = response.data.pager;
     totalPages.value = page.value.pager.totalPageNo
-    console.log("리스트 갯수", page.value.question.length);
+    console.log("가져온 첫번째 문의 객체", page.value.question[0]);
   } catch (error) {
     console.log(error);
   }

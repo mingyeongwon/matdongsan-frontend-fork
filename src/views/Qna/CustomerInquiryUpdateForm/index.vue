@@ -149,7 +149,7 @@ async function handleSubmit(){
   console.log("제출 시작때 문의 객체 검사: ",customerInquiry.value);
 
   // content에 p태그 붙는거 삭제하기
-  customerInquiry.value.qcontent = customerInquiry.value.qcontent.slice(3,-4);
+  
 
   // 문자 데이터 formData에 넣기
   formData.append("qcategory", customerInquiry.value.qcategory);

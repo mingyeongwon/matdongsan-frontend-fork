@@ -41,7 +41,7 @@ const state = reactive({
 });
 
 function onEditorChange({ quill, html, text }) {
-  emit('update:modelValue', html);
+  emit('update:modelValue', text);
 }
 
 watch(() => props.modelValue, (newValue) => {

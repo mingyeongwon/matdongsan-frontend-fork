@@ -9,8 +9,8 @@ function createQuestion(formData){
 }
 
 // 고객 문의 리스트 전체 가져오기(관리자 페이지)
-function getAllQuestionList(pageNo){
-    return axios.get("/Qna/CustomerInquiryList",{params:{pageNo:pageNo}});
+function getAllQuestionListWithFilter(pageNo, type){
+    return axios.get("/Qna/CustomerInquiryList",{params:{pageNo:pageNo, type:type}});
 }
 
 // 고객 문의 리스트 해당 고객문의만 가져오기(마이 페이지)
@@ -94,7 +94,7 @@ function deleteAnswerByAQnumber(anumber, qnumber){
 
 export default {
     createQuestion,
-    getAllQuestionList,
+    getAllQuestionListWithFilter,
     readQuestion,
     getQuestionListForUser,
     getWriter,
