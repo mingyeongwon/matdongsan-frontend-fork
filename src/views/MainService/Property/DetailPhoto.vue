@@ -13,18 +13,17 @@
           </th>
           <td>
             <div class="row row-cols-2">
-              <div v-for="(item, index) in pattaches" :key="index">
+              <div v-for="index in 4" :key="index">
                 <img
                   class="img-fluid property-img mb-2"
-                  v-if="item && index < 2"
-                  :src="item"
-                  width="200"
+                  v-if="index <= pattaches.length && pattaches[index - 1]"
+                  :src="pattaches[index - 1]"
                 />
                 <img
-                  class="img-fluid property-img mt-2"
-                  v-if="item && index >= 2 && index < 4"
-                  :src="item"
-                  width="200"
+                  class="img-fluid property-img"
+                  v-else
+                  src="../../../assets/no_image.jpg"
+                  alt="No Image"
                 />
               </div>
             </div>
