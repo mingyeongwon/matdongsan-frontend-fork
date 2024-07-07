@@ -14,25 +14,23 @@ const getUserPropertyList = () => {
 };
 
 // 매물 썸네일 사진 다운로드
-const propertyAttachDownload = (pnumber) => 
+const propertyAttachDownload = (pnumber) =>
   //PathVariable로 데이터 전송
   axios.get("/pattach/" + pnumber, { responseType: "blob" });
 
-
 // 매물 디테일 사진 다운로드
-const detailPropertyAttachDownload = (ppnumber) => 
+const detailPropertyAttachDownload = (ppnumber) =>
   axios.get("/detailPattach/" + ppnumber, { responseType: "blob" });
-
 
 // 매물 삭제
 const deleteProperty = (pnumber) => {
   return axios.delete("/deleteProperty/" + pnumber);
-}
+};
 
 // 인기 매물 리스트
 const getPopularPropertyList = () => {
   return axios.get("/popularProperty");
-}
+};
 
 // 매물 데이터
 const getPropertyData = (pnumber) => {
@@ -47,9 +45,12 @@ const deletePropertyComment = (pnumber, ucnumber) => {
 // 매물 신고
 const postReportProperty = (report) => {
   console.log("report : " + report.rcontent);
-    console.log("report : " + report.rPnumber);
-  return axios.post("/createPropertyReport/" + report.rPnumber, qs.stringify(report));
-}
+  console.log("report : " + report.rPnumber);
+  return axios.post(
+    "/createPropertyReport/" + report.rPnumber,
+    qs.stringify(report)
+  );
+};
 
 // 매물 신고 리스트
 const getReportList = () => {
@@ -60,9 +61,17 @@ const getReportList = () => {
 const deletePropertyReport = (pnumber) => {
   console.log("pnumber : " + pnumber);
   return axios.delete("/deletePropertyReport/" + pnumber);
+};
+
+//매물 등록권 소유 여부 체크
+const checkPropertyListing = () => {
+  return axios.get("/paymentHistory");
+};
+
+//매물 등록권 구매
+const purchasePropertyListing =(product) => {
+  return axios.post("/Payment/PaymentResult/"+product);
 }
-
-
 export default {
   getPropertyList,
   getUserPropertyList,
@@ -73,5 +82,7 @@ export default {
   getPropertyData,
   postReportProperty,
   getReportList,
-  deletePropertyReport
+  deletePropertyReport,
+  checkPropertyListing,
+  purchasePropertyListing,
 };
