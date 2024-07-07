@@ -5,49 +5,29 @@
         <tr>
           <th scope="row" rowspan="2" class="w-50">
             <img
-              class="img-fluid"
+              class="img-fluid thumbnail"
               v-if="pthumbnail != null"
               :src="pthumbnail"
             />
             <img v-else src="../../../assets/no_image.jpg" width="200" alt="" />
           </th>
           <td>
-            <img
-              class="img-fluid"
-              v-if="pattaches[0] != null"
-              :src="pattaches[0]"
-              width="200"
-            />
-            <img v-else src="../../../assets/no_image.jpg" width="200" alt="" />
-          </td>
-          <td>
-            <img
-              class="img-fluid"
-              v-if="pattaches[1] != null"
-              :src="pattaches[1]"
-              width="200"
-            />
-            <img v-else src="../../../assets/no_image.jpg" width="200" alt="" />
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">
-            <img
-              class="img-fluid"
-              v-if="pattaches[2] != null"
-              :src="pattaches[2]"
-              width="200"
-            />
-            <img v-else src="../../../assets/no_image.jpg" width="200" alt="" />
-          </th>
-          <td>
-            <img
-              class="img-fluid"
-              v-if="pattaches[3] != null"
-              :src="pattaches[3]"
-              width="200"
-            />
-            <img v-else src="../../../assets/no_image.jpg" width="200" alt="" />
+            <div class="row row-cols-2">
+              <div v-for="(item, index) in pattaches" :key="index">
+                <img
+                  class="img-fluid property-img mb-2"
+                  v-if="item && index < 2"
+                  :src="item"
+                  width="200"
+                />
+                <img
+                  class="img-fluid property-img mt-2"
+                  v-if="item && index >= 2 && index < 4"
+                  :src="item"
+                  width="200"
+                />
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -59,7 +39,7 @@
     >
   </div>
 
-  <div class="modal" tabindex="-1" id="DetailPhotoModal">
+  <div class="modal fade" tabindex="-1" id="DetailPhotoModal">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <button
         type="button"
@@ -78,25 +58,37 @@
               aria-current="true"
               aria-label="Slide 1"
             ></button>
-            <button v-for="n in pattaches.length" :key="n"
+            <button
+              v-for="(item, index) in pattaches"
+              :key="index"
               type="button"
-              data-bs-target="#carouselExampleCaptions"
-              data-bs-slide-to="{n}"
-              aria-label="'Slide ' + ({n} + 1)"
+              :data-bs-target="'#carouselExampleCaptions'"
+              :data-bs-slide-to="index + 1"
+              :aria-label="'Slide ' + (index + 2)"
             ></button>
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img
-                v-if="pthumbnail != null" :src="pthumbnail"
-                class="d-block w-100" 
+                v-if="pthumbnail != null"
+                :src="pthumbnail"
+                class="d-block w-100"
+                width="798"
+                height="776"
                 alt="상세 사진"
               />
             </div>
-            <div class="carousel-item" v-for="pattach in pattaches" :key="pattach">
+            <div
+              class="carousel-item"
+              v-for="(item, index) in pattaches"
+              :key="index"
+            >
               <img
-                v-if="pattach != null" :src="pattach"
+                v-if="item"
+                :src="item"
                 class="d-block w-100"
+                width="798"
+                height="776"
                 alt="상세 사진"
               />
             </div>
@@ -134,8 +126,20 @@ console.log("props.pattaches.length : " + props.pattaches.length);
 
 // 모달 열기
 function showDetailPhotoModal() {
-  const detailPhotoModal = new Modal(document.getElementById("DetailPhotoModal"));
+  const detailPhotoModal = new Modal(
+    document.getElementById("DetailPhotoModal")
+  );
   detailPhotoModal.show();
 }
 </script>
-<style scoped></style>
+
+<style scoped>
+.thumbnail {
+  height: 512px;
+  width: 400px;
+}
+.property-img {
+  width: 206px;
+  height: 248px;
+}
+</style>

@@ -28,6 +28,11 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "PropertyForm" */ "@/views/PropertyForm"),
   },
+  {
+    path: "/invalid-access", // 잘못된 접근 페이지 추가
+    name: "InvalidAccess",
+    component: InvalidAccess
+  },
   ...MyPage,
   ...Product,
   ...MainService,
@@ -35,11 +40,7 @@ const routes = [
   ...Payment,
   ...Signup,
   ...Adminpage,
-  {
-    path: "/invalid-access", // 잘못된 접근 페이지 추가
-    name: "InvalidAccess",
-    component: InvalidAccess
-  }
+ 
 ];
 
 const router = createRouter({
