@@ -1,12 +1,8 @@
 <template>
   <div>
     <div class="d-flex justify-content-between mb-3">
-      <h5 class="mt-3 fw-bold" v-if="!totalRate">
-        평점 & 리뷰({{ props.reviewData.length }})
-      </h5>
-      <h5 class="mt-3 fw-bold" v-else>
-        평점 & 리뷰 ({{ props.reviewData.length }})
-      </h5>
+      평점 & 리뷰({{ props.reviewData.length }})
+
       <div class="align-self-center">
         <select
           class="form-select"
@@ -53,7 +49,7 @@
           type="text"
           placeholder="댓글을 입력해주세요..."
         />
-        <button class="btn py-2 btn-sm btn-secondary" @click="submitComment">
+        <button type="button" class="btn py-2 btn-sm btn-secondary" @click="submitComment">
           작성하기
         </button>
       </div>
@@ -121,7 +117,10 @@
               </div>
             </div>
             <div v-if="review.arMnumber == userRoleNumber">
-              <div  class="btn btn-sm btn-success me-2" @click="startEditReview(review)">
+              <div
+                class="btn btn-sm btn-success me-2"
+                @click="startEditReview(review)"
+              >
                 수정하기
               </div>
               <div
@@ -133,15 +132,29 @@
             </div>
           </div>
           <div class="ms-5 mt-1">
-            <p v-if="!editingReview || editingReview.arnumber !== review.arnumber" class="fw-bold">
+            <p
+              v-if="
+                !editingReview || editingReview.arnumber !== review.arnumber
+              "
+              class="fw-bold"
+            >
               {{ review.arcontent }}
             </p>
             <div v-else>
-              <textarea v-model="editingReview.arcontent" class="form-control mb-2"></textarea>
-              <button class="btn btn-sm btn-primary me-2" @click="submitEditReview">
+              <textarea
+                v-model="editingReview.arcontent"
+                class="form-control mb-2"
+              ></textarea>
+              <button
+                class="btn btn-sm btn-primary me-2"
+                @click="submitEditReview"
+              >
                 수정
               </button>
-              <button class="btn btn-sm btn-secondary" @click="cancelEditReview">
+              <button
+                class="btn btn-sm btn-secondary"
+                @click="cancelEditReview"
+              >
                 취소
               </button>
             </div>
@@ -149,11 +162,11 @@
         </div>
       </div>
       <Pagination
-          :currentPage="pager.pageNo"
-          :totalPages="pager.totalPageNo"
-          :maxVisiblePages="5"
-          @update:currentPage="page => emits('update:currentPage', page)"
-        />
+        :currentPage="pager.pageNo"
+        :totalPages="pager.totalPageNo"
+        :maxVisiblePages="5"
+        @update:currentPage="(page) => emits('update:currentPage', page)"
+      />
     </div>
     <div v-if="props.reviewData.length == 0" class="text-center">
       <img
@@ -169,15 +182,15 @@
   <!-- 경고 모달 -->
   <div
     class="modal fade"
-    id="warningModal"
+    id="commentWarningModal"
     tabindex="-1"
-    aria-labelledby="warningModalLabel"
+    aria-labelledby="commentWarningModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="warningModalLabel">경고</h5>
+          <h5 class="modal-title" id="commentWarningModalLabel">경고</h5>
           <button
             type="button"
             class="btn-close"
@@ -243,8 +256,8 @@ import { Modal } from "bootstrap";
 import Pagination from "@/components/Pagination.vue";
 const store = useStore();
 const logedinUser = store.getters.getUemail; // 수정버튼
-const props = defineProps(["reviewData","pager"]);
-const emits = defineEmits(["update-agent-data","update:currentPage"]);
+const props = defineProps(["reviewData", "pager"]);
+const emits = defineEmits(["update-agent-data", "update:currentPage"]);
 const comment = ref("");
 const warningMessage = ref(""); // 경고 메시지 상태 추가
 const showDeleteModal = ref(false);
@@ -258,12 +271,11 @@ const route = useRoute();
 const userRoleNumber = computed(() => store.getters.getUserRoleNumber);
 const reviewData = ref({
   arcontent: "",
-  arrate: "",
+  arrate: 0,
   arAnumber: route.params.id,
   arMnumber: store.getters.getUserRoleNumber,
 });
 console.log(userRoleNumber);
-
 
 function getReviewId(reviewId) {
   clickedModalId.value = reviewId;
@@ -273,27 +285,29 @@ function getReviewId(reviewId) {
 function submitComment() {
   if (reviewData.value.arcontent === "" && score.value === 0) {
     warningMessage.value = "댓글과 평점을 모두 작성하셔야 합니다.";
-    const warningModal = new Modal(document.getElementById("warningModal"));
+    const warningModal = new Modal(document.getElementById("commentWarningModal"));
     warningModal.show();
     return;
   } else if (reviewData.value.arcontent === "") {
     warningMessage.value = "댓글을 작성하셔야 합니다.";
-    const warningModal = new Modal(document.getElementById("warningModal"));
+    const warningModal = new Modal(document.getElementById("commentWarningModal"));
     warningModal.show();
     return;
   } else if (score.value === 0) {
     warningMessage.value = "평점을 매기셔야 합니다.";
-    const warningModal = new Modal(document.getElementById("warningModal"));
+    const warningModal = new Modal(document.getElementById("commentWarningModal"));
     warningModal.show();
     return;
   } else {
-    postReviewData(reviewData);
+    reviewData.value.arrate = score.value - 1;
+    postReviewData();
   }
 }
 
 // 리뷰 데이터 전송
-const postReviewData = async (reviewData) => {
+const postReviewData = async () => {
   try {
+    console.log("리뷰데이터 " + reviewData.value.arrate);
     const data = JSON.parse(JSON.stringify(reviewData.value));
     await agentAPI.postAgentReview(data);
     emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
@@ -364,7 +378,6 @@ function confirmDelete() {
   closeDeleteModal();
 }
 
-
 // 유저 프로필 사진
 const getUattach = async (argAnumber) => {
   try {
@@ -388,7 +401,9 @@ onMounted(() => {
   }
 });
 
-
+function check(data) {
+  score.value = data;
+}
 </script>
 
 <style scoped>

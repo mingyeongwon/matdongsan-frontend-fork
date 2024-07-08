@@ -220,11 +220,6 @@ const averageRating = computed(() => {
 if (props.agentData.anumber) {
   getAttach(props.agentData.anumber);
   getAgentReviewData(props.agentData.anumber);
-  watchEffect(() => {
-    console.log(
-      "이게 디테일 관련 숫자멥: " + JSON.stringify(agentDetailData.value)
-    );
-  });
 } else if (props.propertyData.pnumber) {
   getPttach(props.propertyData.pnumber);
 }

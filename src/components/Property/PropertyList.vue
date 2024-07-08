@@ -57,9 +57,12 @@ import PropertyListItem from "./PropertyListItem.vue";
 import agentAPI from "@/apis/agentAPI";
 import propertyAPI from "@/apis/propertyAPI";
 import favoriteAPI from "@/apis/favoriteAPI";
-const emit = defineEmits(["update:positionData","update:propertyPositionData"]);
+const emit = defineEmits([
+  "update:positionData",
+  "update:propertyPositionData",
+]);
 
-const props = defineProps(["type"]); // props로부터 type 속성 정의
+const props = defineProps(["type", "filters"]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
 const displayedFavorites = ref([]); // 표시할 favorite 목록
 const displayedAgents = ref([]); // 표시할 agent 목록
@@ -91,7 +94,11 @@ const loadMoreItems = async () => {
     }
     // type이 'agent'인 경우
     else if (props.type === "agent") {
-      const response = await agentAPI.getAgentList(offset.value, limit);
+      const response = await agentAPI.getAgentList(
+        offset.value,
+        limit,
+        props.filters
+      );
       const dataLength = response.data.agent.length;
       displayedAgents.value.push(...response.data.agent);
       if (dataLength < limit) {
@@ -151,6 +158,20 @@ watch(
   }
 );
 
+watch(
+  () => props.filters,
+  (newFilters) => {
+    // 필터가 변경되면 리스트를 초기화하고 다시 로드
+    displayedProperties.value = [];
+    displayedFavorites.value = [];
+    displayedAgents.value = [];
+    offset.value = 1;
+    allLoaded.value = false; // 모든 데이터 로드 상태 초기화
+    loadMoreItems(); // 필터에 따라 데이터를 로드
+  },
+  { deep: true }
+);
+
 // agentList 배열의 변경을 감지하여 emit
 watch(
   () => displayedAgents.value,
@@ -159,8 +180,8 @@ watch(
   },
   { deep: true }
 );
-// propertyList 배열의 변경을 감지하여 emit
 
+// propertyList 배열의 변경을 감지하여 emit
 watch(
   () => displayedProperties.value,
   (newValue) => {

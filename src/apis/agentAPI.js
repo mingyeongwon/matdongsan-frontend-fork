@@ -7,10 +7,18 @@ function signup(formData) {
 }
 
 //중개인 리스트
-const getAgentList = (pageNo, size) => {
+const getAgentList = (pageNo, size, filter) => {
+  console.log("Sending filters:", filter);
   //GET: http://localhost/agent?pageNo=1&size=10
-
-  return axios.get("/Agent", { params: { pageNo, size } });
+  return axios.get("/Agent", {
+    params: {
+      pageNo,
+      size,
+      byRate: filter.byRate,
+      byComment: filter.byComment,
+      byDate: filter.byDate,
+    },
+  });
 };
 
 //중개인 데이터
@@ -24,7 +32,7 @@ const updateAgentData = (agentData) => {
 };
 //중개인 리뷰 페이지 불러오기
 const getAgentReviewData = (anumber) => {
-  return axios.get("/Agent/AgentReview/"+anumber);
+  return axios.get("/Agent/AgentReview/" + anumber);
 };
 //중개인 프로필 사진 다운로드
 const agentAttachDownload = (anumber) =>
@@ -47,9 +55,9 @@ const deleteAgentReview = (anumber, arnumber) => {
   return axios.delete(`/Agent/${anumber}/${arnumber}`);
 };
 //중개인 매물 가져오기
-const getAgentProperty = (anumber,pageNo) => {
-  return axios.get("/Agent/Property/" + anumber,{ params: { pageNo } })
-}
+const getAgentProperty = (anumber, pageNo) => {
+  return axios.get("/Agent/Property/" + anumber, { params: { pageNo } });
+};
 //중개인 정렬
 const sortAgentReview = (anumber, sort) => {
   return axios.get("/Agent", { params: { anumber, sort } });
@@ -57,7 +65,7 @@ const sortAgentReview = (anumber, sort) => {
 // 아이디 찾기
 const findAgentEmail = (formData) => {
   return axios.post("/login/findAgentEmail", formData);
-}
+};
 
 export default {
   signup,

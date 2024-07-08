@@ -2,7 +2,7 @@
   <div class="AgentMap-container w-75 mx-auto">
     <div class="h-100">
       <form class="mt-2 w-100">
-        <div class="d-flex justify-content-end ">
+        <div class="d-flex justify-content-end">
           <div class="d-flex">
             <input
               class="form-control me-2 w-auto"
@@ -22,7 +22,7 @@
           </div>
         </div>
       </form>
-      <AgentFilter />
+      <AgentFilter @update:filterData="getFilterData" />
       <ul class="nav nav-pills ms-4 mt-3">
         <li class="nav-item">
           <RouterLink
@@ -57,6 +57,7 @@
             <PropertyList
               type="agent"
               @update:positionData="getAgentPositionData"
+              :filters="filterData"
             />
           </div>
         </div>
@@ -74,7 +75,7 @@
               </div>
             </div>
             <div>
-              <DetailInfo :agentData="agent" :detailData="agentDetail" />
+              <DetailInfo :agentData="agent" :detailData="agentDetail" :joinDate="joinDate" :tradeCount="tradeCount"/>
             </div>
             <ul class="nav nav-pills ms-4">
               <li class="nav-item">
@@ -120,7 +121,7 @@
         </div>
         <div
           v-if="!route.params.id"
-          class="map-box right-box col p-3 ms-4 w-75 mx-auto"
+          class="map-box right-box col p-3 w-75 mx-auto"
         >
           <KakaoMap page="agentList" :positionList="agentPositionList" />
         </div>
@@ -154,6 +155,9 @@ const selected = "border-bottom border-4 border-warning";
 const searchKeywordForAgent = ref("");
 const memberProfiles = ref({});
 const currentPage = ref(0);
+const filterData = ref({});
+const joinDate = ref("");
+const tradeCount = ref(0);
 // 유저 프로필 사진 다운로드
 const getMattach = async (memberId) => {
   try {
@@ -175,6 +179,8 @@ const getAgentData = async (pageNo = 1) => {
     agent.value = response.data.agent;
     agentDetail.value = response.data.agentDetail;
     pagerData.value = response.data.pager;
+    joinDate.value = response.data.joinDate;
+    tradeCount.value = response.data.tradeCount;
     if (response.data.agentReviewList) {
       const reviews = response.data.agentReviewList;
       await Promise.all(
@@ -210,10 +216,15 @@ onMounted(() => {
     getAgentData();
   }
 });
-
+//중개인 좌표데이터 자식으로부터 가져오기
 function getAgentPositionData(data) {
   agentPositionList.value = data;
 }
+//필터값 자식으로부터 가져오기
+function getFilterData(data) {
+  filterData.value = data;
+}
+
 const handlePageChange = (page) => {
   currentPage.value = page;
   getAgentData(page);
@@ -236,7 +247,10 @@ watch(
   },
   { deep: true }
 );
-
+watch(
+  () => {filterData.value.byComment,filterData.value.byRate,filterData.value.byDate},
+  { deep: true }
+);
 function backToAgentList() {
   router.push("/Agent");
 }

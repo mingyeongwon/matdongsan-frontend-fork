@@ -14,14 +14,14 @@
             <b>대표번호: </b>{{ props.agentData.aphone }}
           </div>
           <div class="col-6 mt-2 h6">
-            <b>맛동산 가입일: </b> 2024년 5월 12일
+            <b>맛동산 가입일: </b> {{ props.joinDate }}
           </div>
         </div>
         <div class="d-flex mt-2">
           <div class="col-6 mt-2 h6">
             <b>사업자번호:</b> {{ props.detailData.adbrandnumber }}
           </div>
-          <div class="col-6 mt-2 h6"><b>거래완료된 방: </b> 9개</div>
+          <div class="col-6 mt-2 h6"><b>거래완료된 방: </b> {{props.tradeCount}}개</div>
         </div>
       </div>
 
@@ -40,7 +40,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import KakaoMap from "@/components/KakaoMap.vue";
-const props = defineProps(["detailData", "agentData"]);
+const props = defineProps(["detailData", "agentData","tradeCount","joinDate"]);
 
 const agentPosition = ref([]); // 초기 값 설정
 
