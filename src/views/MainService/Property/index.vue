@@ -126,7 +126,6 @@ const getUserDataByUnumber = async(unumber) => {
       const response = await memberAPI.memberAttachDownload(member.value.mnumber);
       const blob = response.data;
       userProfiles.value[unumber] = URL.createObjectURL(blob);
-      console.log("member : " + JSON.stringify(member));
     } else {
       const response = await agentAPI.agentAttachDownload(agent.value.anumber);
       const blob = response.data;
@@ -150,16 +149,16 @@ function getPropertyPositionData(data) {
   propertyPositionList.value = data;
 }
 // property 데이터
-const getPropertyData = async (pnumber) => {
+const getPropertyData = async () => {
   try {
-    const response = await propertyAPI.getPropertyData(pnumber);
+    const response = await propertyAPI.getPropertyData(route.params.id);
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
 
     pattaches.value = [];
 
-    getPthumbnail(pnumber);
+    getPthumbnail(route.params.id);
 
     await Promise.all(propertyPhotos.value.map(async (photo) => {
       await getPattaches(photo.ppnumber);
@@ -220,7 +219,7 @@ const toggleHover = (state) => {
 
 onMounted(() => {
   if (route.params.id) {
-    getPropertyData(route.params.id);
+    getPropertyData();
   }
 });
 
@@ -230,7 +229,7 @@ watch(() => route.params.id, (newPnumber) => {
     propertyPhotos.value = [];
     pattaches.value = [];
     // propertyCommentList.value = [];
-    getPropertyData(newPnumber);
+    getPropertyData();
     console.log("newPnumber : " + newPnumber);
 
   }

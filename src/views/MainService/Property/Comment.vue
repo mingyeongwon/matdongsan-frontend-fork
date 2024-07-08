@@ -195,9 +195,9 @@ const editingComment = ref();
 const replyComment = ref(Array(props.userComment.length).fill(""));
 const showReplyForm = ref(Array(userComment.value.length).fill(false));
 
-console.log("props.userComment : " + JSON.parse(JSON.stringify(props.userComment)))
-console.log("props.userComment.ucUnumber : " + props.userComment.ucUnumber);
-console.log("userRoleNumber : " + userRoleNumber.value);
+// console.log("props.userComment : " + JSON.parse(JSON.stringify(props.userComment)))
+// console.log("props.userComment.ucUnumber : " + props.userComment.ucUnumber);
+// console.log("userRoleNumber : " + userRoleNumber.value);
 // console.log("userEmail : " + userEmail.value);
 
 
@@ -218,6 +218,7 @@ const postPropertyComment = async (userComment) => {
     const data = JSON.parse(JSON.stringify(userComment.value));
     console.log("userComment.value.uccomment : " + userComment.value.uccomment);
     console.log("userComment.value.ucPnumber : " + userComment.value.ucPnumber);
+    console.log("userComment.value.ucparentnumber : " + userComment.value.ucparentnumber);
     
     await propertyAPI.postPropertyComment(data);
     emits("update-property-data"); // 데이터 다시 가져오기
@@ -291,7 +292,7 @@ function confirmDelete() {
 const deletePropertyComment = async (pnumber, ucnumber) => {
   try {
     await propertyAPI.deletePropertyComment(pnumber, ucnumber);
-    // emits("update-agent-data"); // 데이터 다시 가져오기
+    emits("update-property-data"); // 데이터 다시 가져오기
   } catch (error) {
     console.log(error);
   }

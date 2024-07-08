@@ -197,7 +197,10 @@ formData.append("property.ppostcode", property.ppostcode);
 formData.append("property.platitude", property.platitude);
 formData.append("property.plongitude", property.plongitude);
 formData.append("property.pthumbnail", property.pthumbnail[0]);
-formData.append("propertyPhoto.ppattach", property.ppattach[0]);
+
+property.ppattach.forEach((file, index) => {
+    formData.append(`propertyPhoto.ppattach[${index}]`, file);
+  });
 
 // propertyDetail 데이터 추가
 Object.entries(propertyDetail).forEach(([key, value]) => {

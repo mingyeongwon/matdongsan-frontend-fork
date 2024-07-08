@@ -4,17 +4,17 @@
         <div class="d-flex w-100">
             
                 <div v-for="popularProperty in popularProperties" :key="popularProperty.pnumber" class="w-25 m-2">
-                    <router-link to="/Property" class="text-decoration-none text-dark">
+                    <router-link :to="{ path: `/Property/${popularProperty.pnumber}` }" class="text-decoration-none text-dark">
                         <div>
                             <img v-if="pthumbnails[popularProperty.pnumber] != null" :src="pthumbnails[popularProperty.pnumber]" 
                                 width="230" height="230"  alt="인기매물" class="rounded-1">
                         </div>
                         <div class="featuredlistInfo-box">
                             <p class="featuredlist-title mb-2 mt-2"><b>
-                                {{ popularProperty.pcategory }} {{ popularProperty.pdeposite }}
-                                <span v-if="popularProperty.prentalfee > 0"> / {{ popularProperty.prentalfee }}</span>
+                                {{ popularProperty.pcategory }} {{ popularProperty.pdeposite }}만원
+                                <span v-if="popularProperty.prentalfee > 0"> / {{ popularProperty.prentalfee }}만원</span>
                             </b></p>
-                            <p class="featuredlist-info">{{ popularProperty.pfloor }}층, {{ popularProperty.psize }}m<sup>2</sup>, 관리비 {{ popularProperty.pmaintenance }}만</p>
+                            <p class="featuredlist-info">{{ popularProperty.pfloor }}층, {{ popularProperty.psize }}m<sup>2</sup>, 관리비 {{ popularProperty.pmaintenance }}만원</p>
                             <p class="featuredlist-info">{{ popularProperty.ptitle }}</p>
                         </div>
                     </router-link>
