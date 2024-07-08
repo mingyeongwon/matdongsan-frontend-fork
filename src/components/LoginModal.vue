@@ -9,6 +9,7 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="cancelUserData"
             ></button>
           </div>
           <!-- 로그인 영역 -->
@@ -452,8 +453,8 @@
               </div>
             </form>
           </div>
-          <!-- 이메일 찾기 실패 결과 영역 -->
-          <div v-if="checkStatus === 'missPassword'">
+          <!-- 비밀번호 찾기 실패 결과 영역 -->
+          <div v-if="checkStatus === 'resultPassword'">
             <div
               class="d-flex w-75 mx-auto justify-content-center align-items-center"
             >
@@ -466,14 +467,16 @@
                 <h2 class="nav-title mb-1 fw-bold text-warning fs-2">
                   Matdongsan
                 </h2>
-                <p class="sub-title m-0 text-center fw-bold">부동산 맛집</p>
+                <p class="sub-title m-0 text-center fw-bold">
+                  부동산 맛집 resultPassword
+                </p>
               </div>
             </div>
             <form class="d-flex flex-column w-75 mx-auto mt-4">
               <div class="">
                 <div>
                   <h4 class="fs-5 fw-bold text-center mt-5 mb-5">
-                    {{}}
+                    {{ errorMessageFindPassword }}
                   </h4>
                 </div>
               </div>
@@ -500,6 +503,8 @@ import { useRouter } from "vue-router";
 import memberAPI from "@/apis/memberAPI";
 import { useStore } from "vuex";
 import agentAPI from "@/apis/agentAPI";
+import { Modal } from "bootstrap";
+
 const router = useRouter();
 const emit = defineEmits(["moveToMemberSignup", "moveToAgentSignup", "close"]);
 const props = defineProps(["modalStatus"]);
@@ -531,12 +536,14 @@ const getEmail = ref("");
 
 // 이메일 못 찾음
 const errorMessageFindEmail = ref("알 수 없는 오류로 실패 했습니다.");
+// 비밀번호를 찾기 위해 제출한 회원의 정보를 못 찾음
+const errorMessageFindPassword = ref("알 수 없는 오류로 실패 했습니다.");
 
 // 비밀번호 찾기 폼
 let findPassword = ref({
-  uemail: "",
-  uname: "",
-  uphone: "",
+  email: "",
+  name: "",
+  phone: "",
 });
 
 // 비밀번호 변경하기 폼
@@ -553,7 +560,9 @@ let errorMessage = ref({
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 로그인 폼 제출하면 실행하는 함수
 async function loginHandleSubmit() {
-  console.log("제출 함수 실행");
+  console.log("로그인 제출 함수 실행");
+  checkValid.value.passwordValid = "";
+
   // // 아이디 확인
   // if (loginUser.value.email !== tempUser.email) {
   //   checkValid.value.emailValid = "가입한 회원이 아닙니다.";
@@ -596,18 +605,42 @@ async function loginHandleSubmit() {
 
       store.dispatch("saveAuth", payload);
 
-      emit("close"); // 모달 닫기
-      router.push("/"); // 유효성 검사를 통과하면 홈으로 가기 -> 모달이 안 없어지는 문제 발생
-    }
+      emit("close"); 
+      router.push("/"); 
+    } else if(response.data.result === "removed"){
+      console.log("탈퇴한 회원");
+      checkValid.value.passwordValid = "탈퇴한 회원입니다. 다시 회원가입 하세요";
+    } 
   } catch (error) {
     console.log("에러 발생");
+    checkValid.value.passwordValid = "아이디와 비밀번호가 맞지 않습니다.";
+    
   }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //비밀번호 찾기 폼 제출하면 실행하는 함수
-function findPasswordHandleSubmit() {
-  
+async function findPasswordHandleSubmit() {
+  // 찾기 폼에서 해당 유저가 존재하는 지 확인
+  const formData = new FormData();
+  formData.append("email", findPassword.value.email);
+  formData.append("name", findPassword.value.name);
+  formData.append("phone", findPassword.value.phone);
+  const responseResult = await memberAPI.canResetPassword(formData);
+  if (responseResult.data.noUser != null) {
+    // 응답의 noUser가 값이 있을 때
+    errorMessageFindPassword.value = responseResult.data.noUser;
+    checkStatus.value = "resultPassword";
+  } else if (responseResult.data.notFoundUser != null) {
+    errorMessageFindPassword.value = responseResult.data.notFoundUser;
+    checkStatus.value = "resultPassword";
+  } else if (responseResult.data.success != null) {
+    getEmail.value = responseResult.data.success;
+    // 비밀번호 변경할 수 있는 ui 보여주기
+    checkStatus.value = "updatePassword";
+  } else {
+    checkStatus.value = "resultPassword";
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -615,27 +648,54 @@ var passwordPattern =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
 var passwordResult = ref(null);
 // 비밀번호 변경 폼 제출하면 실행하는 함수
-function changePasswordHandleSubmit() {
+async function changePasswordHandleSubmit() {
+  let pattern = ref();
+  let doubleCheck = ref();
+
+  // 유효성 검사
   passwordResult.value = passwordPattern.test(
     changePassword.value.newPassword1
   );
-  // 바꿀 비밀번호 유효성 검사
+  // 바꿀 비밀번호 정규식 검사
   if (!passwordResult.value) {
     errorMessage.value.newPassword1 = "유효하지 않은 비밀번호 입니다.";
-    passwordValidStyle.value = false;
     console.log("비밀번호 패턴 틀림 여부", passwordValidStyle.value);
-    console.log("비밀번호 패턴 틀림 여부", !passwordResult.value);
-  } else if (
-    changePassword.value.newPassword1 !== changePassword.value.newPassword2
-  ) {
-    errorMessage.value.newPassword2 = "비밀번호와 비밀번호 확인이 다릅니다.";
+    pattern.value = false;
+  } else {
     errorMessage.value.newPassword1 = "";
-    passwordValidStyle.value = false;
+    pattern.value = true;
+  }
+  // 비밀번호 두번 체크
+  if (changePassword.value.newPassword1 !== changePassword.value.newPassword2) {
+    errorMessage.value.newPassword2 = "비밀번호와 비밀번호 확인이 다릅니다.";
+    doubleCheck.value = false;
     console.log("비밀번호 다름 여부", passwordValidStyle.value);
   } else {
-    errorMessage.value.newPassword2 = "알맞은 비밀번호 입니다.";
-    passwordValidStyle.value = true;
+    errorMessage.value.newPassword2 = "비밀번호가 같습니다.";
+    doubleCheck.value = true;
     console.log("비밀번호 맞음", passwordValidStyle.value);
+  }
+
+  if (pattern.value && doubleCheck) {
+    passwordValidStyle.value = true;
+    try {
+      // 유효성 검사 통과하면 통신 시작
+      const formData = new FormData();
+      formData.append("upassword", changePassword.value.newPassword1);
+      formData.append("uemail", getEmail.value);
+      const response = await memberAPI.updatePassword(formData);
+
+      if (response.data.success != null) {
+        errorMessageFindPassword.value = response.data.success;
+      } else if (response.data.fail != null) {
+        errorMessageFindPassword.value = response.data.fail;
+      }
+      checkStatus.value = "resultPassword";
+    } catch (error) {
+      console.log(error);
+      checkStatus.value = "resultPassword";
+      errorMessageFindPassword.value = "알 수 없는 오류로 실패 했습니다.";
+    }
   }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -643,46 +703,45 @@ function changePasswordHandleSubmit() {
 async function findEmailHandleSubmit() {
   console.log("이메일 찾기 제출 실행");
   console.log(findEmail.value);
-  if(findEmail.value.type == "Agent"){
+  if (findEmail.value.type == "Agent") {
     const formData = new FormData();
     try {
       formData.append("aname", findEmail.value.uname);
       formData.append("aphone", findEmail.value.uphone);
       const response = await agentAPI.findAgentEmail(formData);
-      getEmail.value = response.data.success
+      getEmail.value = response.data.success;
       console.log("중개인 이메일 찾기 성공", getEmail.value);
-      console.log("해당하는 회원이 없으면 반환",response.data.fail);
-      if(response.data.fail == null){
+      console.log("해당하는 회원이 없으면 반환", response.data.fail);
+      if (response.data.fail == null) {
         checkStatus.value = "findEmail";
       } else {
         checkStatus.value = "missEmail";
         errorMessageFindEmail.value = response.data.fail;
       }
     } catch (error) {
-      console.log("이메일 찾기 실패",error);
+      console.log("이메일 찾기 실패", error);
       checkStatus.value = "missEmail";
     }
-  } else if(findEmail.value.type == "Member"){
+  } else if (findEmail.value.type == "Member") {
     const formData = new FormData();
     formData.append("mname", findEmail.value.uname);
     formData.append("mphone", findEmail.value.uphone);
     try {
       const response = await memberAPI.findMemberEmail(formData);
-      getEmail.value = response.data.success
+      getEmail.value = response.data.success;
       console.log("일반 이메일 찾기 성공", getEmail.value);
-      console.log("해당하는 회원이 없으면 반환",response.data.fail);
-      if(response.data.fail == null){
+      console.log("해당하는 회원이 없으면 반환", response.data.fail);
+      if (response.data.fail == null) {
         checkStatus.value = "findEmail";
       } else {
         checkStatus.value = "missEmail";
         errorMessageFindEmail.value = response.data.fail;
       }
     } catch (error) {
-      console.log("이메일 찾기 실패",error);
+      console.log("이메일 찾기 실패", error);
       checkStatus.value = "missEmail";
     }
   }
-  
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -695,10 +754,13 @@ const checkData = computed(() => {
 });
 // 아이디 찾기 폼
 const checkFindEmailData = computed(() => {
-  var result = findEmail.value.name !== "" && findEmail.value.phone !== "" && findEmail.value.type !== "";
+  var result =
+    findEmail.value.name !== "" &&
+    findEmail.value.phone !== "" &&
+    findEmail.value.type !== "";
   return result;
 });
-// 비밀번호 
+// 비밀번호 변경하기
 const checkValidUserForUpdatePasswordData = computed(() => {
   var result =
     findPassword.value.name !== "" &&
@@ -715,10 +777,32 @@ function checkUserPassword() {
   checkStatus.value = "password";
 }
 
-// 모달 닫으면 v-if 사용을 위한 설정 초기화
+// 모달 닫으면 상태값 초기화
 function cancelUserData() {
   checkStatus.value = null;
   getEmail.value = null;
+  emailValidStyle.value = null;
+  passwordValidStyle.value = null;
+
+  errorMessage.value.newPassword1 = null;
+  errorMessage.value.newPassword2 = null;
+
+  changePassword.value.newPassword1 = null;
+  changePassword.value.newPassword2 = null;
+
+  findPassword.value.email = null;
+  findPassword.value.name = null;
+  findPassword.value.phone = null;
+
+  findEmail.value.type = null;
+  findEmail.value.uname = null;
+  findEmail.value.uphone = null;
+
+  loginUser.value.uemail = null;
+  loginUser.value.upassword = null;
+
+  checkValid.value.emailValid = null;
+  checkValid.value.passwordValid = null;
 }
 </script>
 

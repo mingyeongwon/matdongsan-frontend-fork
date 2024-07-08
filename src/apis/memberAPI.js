@@ -61,10 +61,17 @@ function findMemberEmail(formData){
   return axios.post("/login/findMemberEmail", formData);
 }
 
-// 해당 회원이 존재하는 지 확인 (중개인도 같은거 사용...)
+// 해당 회원이 존재하는 지 확인 (중개인도 같은거 사용)
 function canResetPassword(formData){
   return axios.post("/canResetPassword", formData);
 }
+
+// 회원 비밀번호 변경
+function updatePassword(formData){
+  return axios.put("/updatePassword", formData);
+}
+
+
 export default {
   memberJoin,
   agentJoin,
@@ -76,4 +83,5 @@ export default {
   updateMemberData,
   findMemberEmail,
   canResetPassword,
+  updatePassword,
 };
