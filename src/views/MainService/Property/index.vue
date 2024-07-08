@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-hidden w-75 mx-auto">
     <PropertyFilter class="w-100 mt-2"/>
-    <ul class="nav nav-pills mt-5 ms-4">
+    <ul class="nav nav-pills mt-3 ms-4">
       <li class="nav-item">
         <RouterLink
           class="btn btn-sm text-dark fw-bold nav-link border-bottom border-4 border-info rounded-0"

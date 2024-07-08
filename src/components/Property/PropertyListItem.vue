@@ -100,7 +100,25 @@
             <p class="listInfo ms-2">{{ agentData.aname }},</p>
             <p class="listInfo ms-2">{{ agentData.aphone }}</p>
             <p class="listInfo ms-2">댓글 ({{ agentDetailData.total }})</p>
-            <p class="listInfo ms-2">평점 ({{ averageRating }})</p>
+            <p class="listInfo ms-2">
+              평점
+
+              <!-- 빈별 -->
+              <span v-for="index in 5" :key="index">
+                <span v-if="averageRating >= index">
+                  <i class="fa-solid fa-star" style="color: #ffd43b"></i>
+                </span>
+                <span v-else-if="averageRating >= index - 0.5">
+                  <i
+                    class="fa-solid fa-star-half-stroke"
+                    style="color: #ffd43b"
+                  ></i>
+                </span>
+                <span v-else>
+                  <i class="fa-regular fa-star" style="color: #ffd43b"></i>
+                </span>
+              </span>
+            </p>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
   <div class="AgentMap-container w-75 mx-auto">
     <div class="h-100">
       <form class="mt-2 w-100">
-        <div class="d-flex justify-content-between px-4">
+        <div class="d-flex justify-content-end ">
           <div class="d-flex">
             <input
               class="form-control me-2 w-auto"
@@ -22,7 +22,8 @@
           </div>
         </div>
       </form>
-      <ul class="nav nav-pills ms-4 mt-5">
+      <AgentFilter />
+      <ul class="nav nav-pills ms-4 mt-3">
         <li class="nav-item">
           <RouterLink
             class="btn btn-sm text-dark fw-bold nav-link"
@@ -49,6 +50,7 @@
           ></i>
         </div>
       </ul>
+
       <div class="d-flex p-3 h-100 w-100 mx-auto">
         <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3">
@@ -120,10 +122,7 @@
           v-if="!route.params.id"
           class="map-box right-box col p-3 ms-4 w-75 mx-auto"
         >
-          <KakaoMap
-            page="agentList"
-            :positionList="agentPositionList"
-          />
+          <KakaoMap page="agentList" :positionList="agentPositionList" />
         </div>
       </div>
     </div>
@@ -140,6 +139,7 @@ import agentAPI from "@/apis/agentAPI";
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import memberAPI from "@/apis/memberAPI";
+import AgentFilter from "./AgentFilter.vue";
 
 const agentProfile = ref(null);
 const route = useRoute();
@@ -168,7 +168,10 @@ const getMattach = async (memberId) => {
 // 중개인 데이터 get 함수
 const getAgentData = async (pageNo = 1) => {
   try {
-    const response = await agentAPI.getAgentDataByNumber(route.params.id, pageNo);
+    const response = await agentAPI.getAgentDataByNumber(
+      route.params.id,
+      pageNo
+    );
     agent.value = response.data.agent;
     agentDetail.value = response.data.agentDetail;
     pagerData.value = response.data.pager;

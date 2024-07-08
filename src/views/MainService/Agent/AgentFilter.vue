@@ -1,20 +1,7 @@
 <template>
 <div class="filter-popup">
     <form action="">
-        <div class="d-flex justify-content-end w-100 ">
-          <div class="d-flex ">
-            <input
-              class="form-control me-2 w-auto"
-              type="search"
-              placeholder="주소 검색"
-              aria-label="Search"
-              v-model="searchKeyword" />
-          </div>
-          <div class="d-flex">
-            <button class="btn btn-outline-success">필터</button>
-          </div>
-        </div>
-        <div class=" mt-2">
+        <div class="mt-2">
             <div class="d-flex border-top">
                 <div class="filter-box border-start">
                     <div>거래유형</div>
