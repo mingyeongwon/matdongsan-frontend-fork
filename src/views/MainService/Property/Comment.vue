@@ -94,13 +94,13 @@
           <div v-if="showReplyForm[index]" class="ms-5 mt-3">
             <input
               class="w-75 p-2 rounded align-middle me-2"
-              v-model="userComment.uccomment"
+              v-model="replyComment[index]"
               type="text"
               placeholder="대댓글을 입력해주세요..."
             />
             <button
               class="btn py-2 btn-sm btn-secondary"
-              @click="submitReply(comment.ucnumber)"
+              @click="submitReply(comment.ucnumber, index)"
             >
               작성하기
             </button>
@@ -186,13 +186,13 @@ const clickedModalId = ref("");
 const userComment = ref({
   uccomment: "",
   ucPnumber: route.params.id,
-  ucparentnumber: "",
+  ucparentnumber: 0,
 });
 const userRoleNumber = computed(() => store.getters.getUserRoleNumber);
 // const userEmail = computed(() => store.getters.getUemail);
 const userCommonData = ref({});
 const editingComment = ref();
-const replyingComment = ref();
+const replyComment = ref(Array(props.userComment.length).fill(""));
 const showReplyForm = ref(Array(userComment.value.length).fill(false));
 
 console.log("props.userComment : " + JSON.parse(JSON.stringify(props.userComment)))
@@ -217,6 +217,8 @@ const postPropertyComment = async (userComment) => {
   try {
     const data = JSON.parse(JSON.stringify(userComment.value));
     console.log("userComment.value.uccomment : " + userComment.value.uccomment);
+    console.log("userComment.value.ucPnumber : " + userComment.value.ucPnumber);
+    
     await propertyAPI.postPropertyComment(data);
     emits("update-property-data"); // 데이터 다시 가져오기
     userComment.value.uccomment = "";
@@ -249,14 +251,17 @@ function cancelEditComment() {
 //대댓글 작성 토글
 function toggleReplyForm(index) {
   showReplyForm.value[index] = !showReplyForm.value[index];
-  reply.value = "";
+  replyComment.value[index] = "";
 }
 
 //대댓글 제출
-function submitReply(ucparentnumber) {
+function submitReply(ucparentnumber, index) {
   console.log("댓글의 부모 아이디: ", ucparentnumber);
-  reply.value = "";
-  showReplyForm.value = false;
+  userComment.value.ucparentnumber = ucparentnumber;
+  userComment.value.uccomment = replyComment.value[index];
+  postPropertyComment(userComment);
+  showReplyForm.value[index] = false;
+  replyComment.value[index] = "";
 }
 
 //댓글 정렬 기능

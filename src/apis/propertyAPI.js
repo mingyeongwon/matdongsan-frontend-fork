@@ -39,6 +39,7 @@ const getPropertyData = (pnumber) => {
 
 // 댓글 작성
 const postPropertyComment = (userComment) => {
+  console.log("userComment.ucPnumber : " + userComment.ucPnumber);
   return axios.post("/Property/" + userComment.ucPnumber, qs.stringify(userComment));
 };
 
