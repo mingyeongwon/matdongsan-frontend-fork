@@ -1,7 +1,7 @@
 <template>
   <div class="AgentMap-container w-75 mx-auto">
     <div class="h-100">
-      <form class="mt-2 w-100">
+      <div class="mt-2 w-100">
         <div class="d-flex justify-content-end">
           <div class="d-flex">
             <input
@@ -10,18 +10,18 @@
               placeholder="부동산 검색"
               aria-label="Search"
               v-model="searchKeywordForAgent"
-              @keyup.enter="searchInAgent"
+              @keyup.enter="searchInAgent(1, $event)"
             />
             <button
               class="btn btn-outline-success"
               type="button"
-              @click="searchInAgent"
+              @click="searchInAgent(1, $event)"
             >
               Search
             </button>
           </div>
         </div>
-      </form>
+      </div>
       <AgentFilter @update:filterData="getFilterData" />
       <ul class="nav nav-pills ms-4 mt-3">
         <li class="nav-item">
@@ -58,6 +58,8 @@
               type="agent"
               @update:positionData="getAgentPositionData"
               :filters="filterData"
+              :searchedData="searchedAgentList"
+              :searchData="searchKeywordForAgent"
             />
           </div>
         </div>
@@ -165,6 +167,7 @@ const filterData = ref({});
 const joinDate = ref("");
 const tradeCount = ref(0);
 const agentReviewFilter = ref("");
+const searchedAgentList = ref([]);
 // 유저 프로필 사진 다운로드
 const getMattach = async (memberId) => {
   try {
@@ -271,13 +274,22 @@ function subMenuCheck(check) {
   isCommentMenu.value = check;
 }
 
-function searchInAgent() {
-  router.push({
-    path: "/Agent",
-    query: { keyword: searchKeywordForAgent.value },
-  });
+//검색 기능
+async function searchInAgent(pageNo = 1) {
+  // 검색 키워드 axios로 보내기
+  try {
+    const response = await agentAPI.postSearchKeyword(
+      searchKeywordForAgent.value,
+      pageNo
+    );
+    searchedAgentList.value = response.data.agent;
+  } catch (error) {
+    console.log(error);
+  }
   searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
 }
+
+//리뷰 필터 항목 가져오기
 function getAgentReviewFilter(data) {
   agentReviewFilter.value = data;
 }
@@ -285,7 +297,6 @@ function getAgentReviewFilter(data) {
 watch(
   () => agentReviewFilter.value,
   () => {
-    
     getAgentData();
   }
 );

@@ -64,7 +64,10 @@ const sortAgentReview = (anumber, sort) => {
 const findAgentEmail = (formData) => {
   return axios.post("/login/findAgentEmail", formData);
 };
-
+// 부동산 검색
+const postSearchKeyword = (keyword,pageNo) => {
+  return axios.get("/Agent" , { params: { pageNo,keyword } })
+}
 export default {
   signup,
   getAgentList,
@@ -78,4 +81,5 @@ export default {
   getAgentReviewData,
   getAgentProperty,
   findAgentEmail,
+  postSearchKeyword,
 };

@@ -62,7 +62,7 @@ const emit = defineEmits([
   "update:propertyPositionData",
 ]);
 
-const props = defineProps(["type", "filters"]); // props로부터 type 속성 정의
+const props = defineProps(["type", "filters","searchedData","searchData"]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
 const displayedFavorites = ref([]); // 표시할 favorite 목록
 const displayedAgents = ref([]); // 표시할 agent 목록
@@ -93,11 +93,12 @@ const loadMoreItems = async () => {
       }
     }
     // type이 'agent'인 경우
-    else if (props.type === "agent") {
+    else if (props.type === "agent" && props.searchData=='') {
       const response = await agentAPI.getAgentList(
         offset.value,
         limit,
-        props.filters
+        props.filters,
+
       );
       const dataLength = response.data.agent.length;
       displayedAgents.value.push(...response.data.agent);
@@ -188,6 +189,15 @@ watch(
     emit("update:propertyPositionData", newValue);
   },
   { deep: true }
+);
+
+watch(
+  () => props.searchData,
+  () => {
+    displayedAgents.value = props.searchedData;
+
+  },
+  { immediate: true }
 );
 </script>
 

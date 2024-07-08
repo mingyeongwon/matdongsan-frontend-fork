@@ -99,7 +99,7 @@
             type="button"
             @click="submitFilter"
           >
-            30개의 매물보기
+            조건 검색
           </button>
         </div>
       </div>
@@ -184,7 +184,7 @@ function submitFilter() {
     warningModal.show();
   } else {
     emits("update:filterData", filters.value);
-    filters.value = { byRate: "", byComment: "", byDate: "" };
+    //filters.value = { byRate: "", byComment: "", byDate: "" };
   }
 }
 </script>
