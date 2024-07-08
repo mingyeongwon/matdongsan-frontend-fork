@@ -32,7 +32,7 @@
     </div>
 
     <!-- 댓글 -->
-    <div v-for="comment in props.userComment" :key="comment.ucnumber">
+    <div v-for="(comment, index) in props.userComment" :key="comment.ucnumber">
       <div>
         <div>
           <hr />
@@ -52,25 +52,18 @@
             </div>
             <span class="align-self-center">{{comment.ucdate}}</span>
           </div>
-          <div class="d-flex justify-content-between">
-            <div class="ms-5">
-              <p class="mt-2 fw-bold">
-                <span v-if="comment.ucremoved === true">삭제된 댓글입니다.</span>
-                <span v-else>{{comment.uccomment}}</span>
-              </p>
-            </div>
-
+          <div class="d-flex justify-content-end">
             <div v-if="comment.ucremoved !== true" class="ms-5 justify-content-end d-flex">
               <div class="d-flex">
                 <div
                   class="btn btn-sm text-decoration-underline"
-                  @click="toggleReplyForm"
+                  @click="toggleReplyForm(index)"
                 >
                   댓글달기
                 </div>
 
-                <div v-if="comment.ucUnumber == userRoleNumber">
-                  <div class="btn btn-sm btn-success me-2" @click="startEditReview(review)">
+                <div v-if="comment.ucUnumber == userCommonData.unumber">
+                  <div class="btn btn-sm btn-success me-2" @click="editCommentButton(comment)">
                     수정하기
                   </div>
                   <div class="btn btn-sm btn-danger" @click="[openDeleteModal(), getCommentId(comment.ucnumber)]">
@@ -80,9 +73,25 @@
 
               </div>
             </div>
-
           </div>
-          <div v-if="showReplyForm" class="ms-5 mt-3">
+
+          <div class="ms-5 mt-1">
+            <p v-if="!editingComment || editingComment.ucnumber !== comment.ucnumber" class="fw-bold">
+              <span v-if="comment.ucremoved === true">삭제된 댓글입니다.</span>
+              <span v-else>{{comment.uccomment}}</span>
+            </p>
+            <div v-else>
+              <textarea v-model="editingComment.uccomment" class="form-control mb-2"></textarea>
+              <button class="btn btn-sm btn-primary me-2" @click="submitEditComment">
+                수정
+              </button>
+              <button class="btn btn-sm btn-secondary" @click="cancelEditComment">
+                취소
+              </button>
+            </div>
+          </div>
+
+          <div v-if="showReplyForm[index]" class="ms-5 mt-3">
             <input
               class="w-75 p-2 rounded align-middle me-2"
               v-model="reply"
@@ -91,7 +100,7 @@
             />
             <button
               class="btn py-2 btn-sm btn-secondary"
-              @click="submitReply(data)"
+              @click="submitReply(comment.ucnumber)"
             >
               작성하기
             </button>
@@ -172,15 +181,23 @@ const data = 1;
 const memberProfile = ref(null);
 const comment = ref("");
 const reply = ref("");
-const showReplyForm = ref(false);
 const showDeleteModal = ref(false);
 const clickedModalId = ref("");
 const userComment = ref({
   uccomment: "",
   ucPnumber: route.params.id,
-  ucUnumber: store.getters.getUserRoleNumber,
 });
 const userRoleNumber = computed(() => store.getters.getUserRoleNumber);
+// const userEmail = computed(() => store.getters.getUemail);
+const userCommonData = ref({});
+const editingComment = ref();
+const showReplyForm = ref(Array(userComment.value.length).fill(false));
+
+console.log("props.userComment : " + JSON.parse(JSON.stringify(props.userComment)))
+console.log("props.userComment.ucUnumber : " + props.userComment.ucUnumber);
+console.log("userRoleNumber : " + userRoleNumber.value);
+// console.log("userEmail : " + userEmail.value);
+
 
 // ucnumber 얻기
 function getCommentId(ucnumber) {
@@ -193,6 +210,7 @@ function submitComment() {
   postPropertyComment(userComment);
 }
 
+// 댓글 작성 데이터 전송
 const postPropertyComment = async (userComment) => {
   try {
     const data = JSON.parse(JSON.stringify(userComment.value));
@@ -205,13 +223,34 @@ const postPropertyComment = async (userComment) => {
   }
 }
 
+// 댓글 수정
+function editCommentButton(comment) {
+  editingComment.value = {...comment};
+}
+
+// 댓글 수정 데이터 전송
+async function submitEditComment() {
+  try {
+    await propertyAPI.editPropertyComment(editingComment.value);
+    emits("update-property-data");
+    editingComment.value = "";
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+// 댓글 수정 취소
+function cancelEditComment() {
+  editingComment.value = "";
+}
+
 //대댓글 작성 토글
-function toggleReplyForm() {
-  showReplyForm.value = !showReplyForm.value;
+function toggleReplyForm(index) {
+  showReplyForm.value[index] = !showReplyForm.value[index];
 }
 //대댓글 제출
-function submitReply(id) {
-  console.log(reply.value, "댓글의 아이디: ", id);
+function submitReply(ucparentnumber) {
+  console.log("댓글의 부모 아이디: ", ucparentnumber);
   reply.value = "";
   showReplyForm.value = false;
 }
@@ -248,15 +287,15 @@ const deletePropertyComment = async (pnumber, ucnumber) => {
   }
 };
 
-// 유저 프로필 사진
-const getUattach = async (argAnumber) => {
+// 로그인한 유저 프로필 사진
+const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
   try {
     if (store.getters.getUserRole === "MEMBER") {
-      const response = await memberAPI.memberAttachDownload(argAnumber);
+      const response = await memberAPI.memberAttachDownload(userTypeNumber);
       const blob = response.data;
       memberProfile.value = URL.createObjectURL(blob);
     } else {
-      const response = await agentAPI.agentAttachDownload(argAnumber);
+      const response = await agentAPI.agentAttachDownload(userTypeNumber);
       const blob = response.data;
       memberProfile.value = URL.createObjectURL(blob);
     }
@@ -265,9 +304,26 @@ const getUattach = async (argAnumber) => {
   }
 };
 
+// 로그인한 유저 정보 가져오기
+const getUserData = async(uemail) => {
+  try {
+    const response = await memberAPI.getUserData(uemail);
+    userCommonData.value = response.data;
+    console.log("userCommonData : " + userCommonData.value);
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+
+
 onMounted(() => {
   if (store.getters.getUserRoleNumber) {
     getUattach(store.getters.getUserRoleNumber);
+  }
+  if(store.getters.getUemail) {
+    getUserData(store.getters.getUemail);
+    console.log("store.getters.getUemail : " + store.getters.getUemail);
   }
 });
 </script>
