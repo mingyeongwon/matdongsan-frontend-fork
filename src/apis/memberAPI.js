@@ -79,9 +79,14 @@ function canResetPassword(formData){
   return axios.post("/canResetPassword", formData);
 }
 
-// 회원 비밀번호 변경
+// 회원 비밀번호 변경 (중개인도 같은거 사용)
 function updatePassword(formData){
   return axios.put("/updatePassword", formData);
+}
+
+// 회원 비밀번호 맞는 지 확인 (중개인도 같은거 사용)
+function checkOldPassword(formData){
+  return axios.post("/checkOldPassword", formData);
 }
 
 
@@ -99,4 +104,5 @@ export default {
   findMemberEmail,
   canResetPassword,
   updatePassword,
+  checkOldPassword
 };

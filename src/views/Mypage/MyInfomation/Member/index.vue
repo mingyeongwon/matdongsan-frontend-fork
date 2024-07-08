@@ -164,10 +164,10 @@
           <button type="button" @click="resetInfoBtn" class="btn btn-danger">취소</button>
         </div>
       </form>
-
+      <!-- 비밀번호 변경 -->
       <h4 class="mt-5 fw-bold">비밀번호 변경</h4>
       <hr class="border border-black border-2" />
-      <form action="" class="w-75 mx-auto">
+      <form action="" class="w-75 mx-auto" @submit.prevent="changePasswordSubmit">
         <table class="table table-lg w-75">
           <tbody>
             <tr>
@@ -177,16 +177,19 @@
                   type="password"
                   class="ms-4 w-100"
                   v-model.trim="changePassword.oldPassword"
-                  @keyup="validOldPassword"
+                  placeholder="현재 비밀번호를 입력하세요."
                 />
-                <div class="text-danger ms-4 mt-1">
+                <div class="ms-4 mt-1" :class="oldPasswordValidStyle ? 'text-success' : 'text-danger'">
                   {{ errorMessage.oldPassword }}
                 </div>
+              </td>
+              <td>
+                <div class="btn btn-sm btn-warning ms-3" @click="validOldPassword"> 확인 </div>
               </td>
             </tr>
             <tr>
               <th scope="row">새 비밀번호</th>
-              <td>
+              <td colspan="2">
                 <input
                   type="password"
                   class="ms-4 w-100"
@@ -203,6 +206,7 @@
                   {{ errorMessage.newPassword1 }}
                 </div>
               </td>
+              
             </tr>
             <tr>
               <th scope="row">새 비밀번호 확인</th>
@@ -229,7 +233,7 @@
 
         <div class="text-end me-5">
           <button
-            button="button"
+            button="submit"
             class="btn btn-warning"
             :disabled="!checkChangePasswordData"
           >
@@ -285,11 +289,15 @@
 
 <script setup>
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
 import { Modal } from "bootstrap";
+import { useRoute, useRouter } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
 const store = useStore();
 const agentData = ref({});
 const memberData = ref({});
@@ -299,6 +307,7 @@ const memberProfile = ref(null);
 const agentDetailData = ref({});
 const hasQuantity = ref(0);
 const updateMessage = ref("");
+
 //유저 데이터를 가져오는 메소드 정의
 async function getUserData() {
   try {
@@ -358,8 +367,6 @@ var oldPasswordValidStyle = ref(false);
 var new1PasswordValidStyle = ref(false);
 var new2PasswordValidStyle = ref(false);
 
-const tempPassword = "user123";
-
 var passwordPattern =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
 var passwordResult = ref(null);
@@ -370,9 +377,7 @@ const imageFilesProfile = ref(null);
 // 변경을 할 때 빈 값이 있으면 제출 버튼 비활성화
 const checkChangePasswordData = computed(() => {
   var result =
-    changePassword.value.oldPassword !== "" &&
-    changePassword.value.newPassword1 !== "" &&
-    changePassword.value.newPassword2 !== "";
+  oldPasswordValidStyle.value && new1PasswordValidStyle.value && new2PasswordValidStyle.value;
   return result;
 });
 
@@ -423,28 +428,38 @@ function showMap(address) {
     }
   });
 }
-function validOldPassword() {
-  // 비밀번호 유효성 검사
-  if (changePassword.value.oldPassword !== tempPassword) {
-    errorMessage.value.oldPassword = "비밀번호가 틀렸습니다.";
+//////////////////////////////////////////////////////////////////////////////
+async function validOldPassword() {
+  // 기존 비밀번호 일치한지 확인
+  try {
+    const formData = new FormData();
+    formData.append("uemail", store.state.uemail);
+    formData.append("upassword", changePassword.value.oldPassword);
+    const response = await memberAPI.checkOldPassword(formData)
+    console.log("결과: ",response.data.result);
+    if (response.data.result == "틀림") {
+      console.log("입력값 보여주기 else",changePassword.value.oldPassword);
+      errorMessage.value.oldPassword = "비밀번호가 틀렸습니다.";
+      oldPasswordValidStyle.value = false;
+      console.log("비밀번호 틀림 여부", oldPasswordValidStyle.value);
+    } else {
+      console.log("입력값 보여주기 else",changePassword.value.oldPassword);
+      oldPasswordValidStyle.value = true;
+      errorMessage.value.oldPassword = "비밀번호가 일치합니다.";
+    }
+  } catch (error) {
+    console.log(error);
     oldPasswordValidStyle.value = false;
-    console.log("비밀번호 틀림 여부", oldPasswordValidStyle.value);
-  } else {
-    oldPasswordValidStyle.value = true;
-    errorMessage.value.oldPassword = "";
   }
 }
-
+// 새로운 비밀번호 패턴 검사
 function validNew1Password() {
+  passwordResult.value = passwordPattern.test(changePassword.value.newPassword1);
   if (!passwordResult.value) {
-    passwordResult.value = passwordPattern.test(
-      changePassword.value.newPassword1
-    );
     errorMessage.value.newPassword1 = "유효하지 않은 비밀번호 입니다.";
     new1PasswordValidStyle.value = false;
-    console.log("비밀번호 패턴 틀림 여부", new1PasswordValidStyle.value);
   } else {
-    errorMessage.value.newPassword1 = "비밀 번호 사용이 가능합니다.";
+    errorMessage.value.newPassword1 = "비밀번호 사용이 가능합니다.";
     new1PasswordValidStyle.value = true;
   }
 }
@@ -455,12 +470,46 @@ function validNew2Password() {
     new2PasswordValidStyle.value = false;
     console.log("비밀번호 다름 여부", new2PasswordValidStyle.value);
   } else {
-    errorMessage.value.newPassword2 = "알맞은 비밀번호 입니다.";
+    errorMessage.value.newPassword2 = "같은 비밀번호 입니다.";
     new2PasswordValidStyle.value = true;
     console.log("비밀번호 맞음", new2PasswordValidStyle.value);
   }
 }
+// 비밀번호 변경
+async function changePasswordSubmit(){
+  // 유효성 검사를 모두 통과하면 제출 실행
+  const updateInfoDoneModal = new Modal(document.getElementById("updateInfoDoneModal"));
+  const formData = new FormData();
+  formData.append("upassword",changePassword.value.newPassword1);
+  formData.append("uemail", store.state.uemail);
+  try {
+    const response = await memberAPI.updatePassword(formData);
+  if (response.data.success) {
+      updateMessage.value = response.data.success;
+      resetPasswordInfo()
+      updateInfoDoneModal.show();
+    } else if (response.data.fail) {
+      updateMessage.value = response.data.fail;
+      updateInfoDoneModal.show();
+    }
+  } catch (error) {
+    console.log(error);
+    updateMessage.value = "알 수 없는 오류로 실패 했습니다."; 
+    updateInfoDoneModal.show();
+  }
+  // 제출 하고 제출 조건이 되는 논리값 초기화
+  oldPasswordValidStyle.value = false; 
+  new1PasswordValidStyle.value = false;
+  new2PasswordValidStyle.value = false;
+  
+  // 변경되었다는 모달 창 띄우기
 
+
+  // console.log(JSON.parse(JSON.stringify(changePassword.value)));
+  console.log("비밀번호 변경 폼 제출");
+}
+
+// 내 정보 수정 제출
 async function handleSubmit() {
   console.log("제출 함수 실행");
   //중개인 제출 데이터 폼
@@ -508,22 +557,14 @@ async function handleSubmit() {
       console.log(error.response ? error.response.data : error.message);
     }
   }
+
+  // 프사 바뀌면 nav사진 바로 바꾸기
   const updateInfoDoneModal = new Modal(document.getElementById("updateInfoDoneModal"));
   updateInfoDoneModal.show();
-  // 유효성 검사를 모두 통과하면 실행
-  if (
-    oldPasswordValidStyle.value &&
-    new1PasswordValidStyle &&
-    new2PasswordValidStyle
-  ) {
-    // 검사 완료한 폼을 스프링 부트에 보내기
-    // 변경되었다는 모달 창 띄우기
-  }
-
-  // console.log(JSON.parse(JSON.stringify(changePassword.value)));
+  // router.go(0); // nav에 사진 바뀌는거 구현 못하면 차악으로 하기
+   
 }
 //수정 완료 업데이트
-
 function resetPasswordInfo() {
   changePassword.value.newPassword1 = "";
   changePassword.value.newPassword2 = "";
@@ -533,6 +574,13 @@ function resetPasswordInfo() {
   errorMessage.value.newPassword2 = "";
   errorMessage.value.oldPassword = "";
 }
+
+// 내 정보 수정 초기화 
+function resetInfoBtn(){
+  getUserData(store.getters.getUemail);
+  imageFilesProfile.value = null;
+}
+
 </script>
 
 <style scoped>
