@@ -92,30 +92,46 @@ const pthumbnail = ref(null);
 const pattaches = ref([]);
 const propertyPositionList = ref([]);
 const userProfiles = ref({});
+const userCommonData = ref({});
+const member = ref({});
+const agent = ref({});
 
-// 유저 프로필 사진
-const getUattach = async (userId) => {
-  try {
-    if (store.getters.getUserRole === "MEMBER") {
-      const response = await memberAPI.memberAttachDownload(userId);
-      const blob = response.data;
-      userProfiles.value[userId] = URL.createObjectURL(blob);
-    } else {
-      const response = await agentAPI.agentAttachDownload(userId);
-      const blob = response.data;
-      userProfiles.value[userId] = URL.createObjectURL(blob);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+// 기존 댓글 유저 프로필 사진
+// const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
+//   try {
+//     if (userCommonData.value.urole === "MEMBER") {
+//       const response = await memberAPI.memberAttachDownload(userTypeNumber);
+//       const blob = response.data;
+//       userProfiles.value[userTypeNumber] = URL.createObjectURL(blob);
+//     } else {
+//       const response = await agentAPI.agentAttachDownload(userTypeNumber);
+//       const blob = response.data;
+//       userProfiles.value[userTypeNumber] = URL.createObjectURL(blob);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 // 기존 댓글 작성 유저 정보 가져오기
 const getUserDataByUnumber = async(unumber) => {
   try {
+    console.log("getUserDataByUnumber 실행됨");
+    console.log("recevied unumber : " + unumber);
     const response = await memberAPI.getUserDataByUnumber(unumber);
-    // userCommonData.value = response.data;
-    // console.log("userCommonData : " + userCommonData.value);
+    userCommonData.value = response.data.userCommonData;
+    member.value = response.data.member;
+    agent.value = response.data.agent;
+    if(userCommonData.value.urole === "MEMBER") {
+      const response = await memberAPI.memberAttachDownload(member.value.mnumber);
+      const blob = response.data;
+      userProfiles.value[unumber] = URL.createObjectURL(blob);
+      console.log("member : " + JSON.stringify(member));
+    } else {
+      const response = await agentAPI.agentAttachDownload(agent.value.anumber);
+      const blob = response.data;
+      userProfiles.value[unumber] = URL.createObjectURL(blob);
+    }
   } catch(error) {
     console.log(error);
   }
@@ -131,14 +147,12 @@ function backToPropertyList() {
 
 // /components/PropertyList에서 가져온 PropertyList데이터
 function getPropertyPositionData(data) {
-  console.log("실행됨");
   propertyPositionList.value = data;
 }
 // property 데이터
 const getPropertyData = async (pnumber) => {
   try {
     const response = await propertyAPI.getPropertyData(pnumber);
-    console.log(response);
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
@@ -155,7 +169,7 @@ const getPropertyData = async (pnumber) => {
       const comments = response.data.propertyCommentList;
       await Promise.all(
         comments.map(async (comment) => {
-          await getUattach(comment.ucunumber);
+          await getUserDataByUnumber(comment.ucUnumber);
       }));
       userComment.value = comments.map((comment) => ({
         ...comment,

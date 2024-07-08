@@ -94,7 +94,7 @@
           <div v-if="showReplyForm[index]" class="ms-5 mt-3">
             <input
               class="w-75 p-2 rounded align-middle me-2"
-              v-model="reply"
+              v-model="userComment.uccomment"
               type="text"
               placeholder="대댓글을 입력해주세요..."
             />
@@ -186,11 +186,13 @@ const clickedModalId = ref("");
 const userComment = ref({
   uccomment: "",
   ucPnumber: route.params.id,
+  ucparentnumber: "",
 });
 const userRoleNumber = computed(() => store.getters.getUserRoleNumber);
 // const userEmail = computed(() => store.getters.getUemail);
 const userCommonData = ref({});
 const editingComment = ref();
+const replyingComment = ref();
 const showReplyForm = ref(Array(userComment.value.length).fill(false));
 
 console.log("props.userComment : " + JSON.parse(JSON.stringify(props.userComment)))
@@ -247,13 +249,16 @@ function cancelEditComment() {
 //대댓글 작성 토글
 function toggleReplyForm(index) {
   showReplyForm.value[index] = !showReplyForm.value[index];
+  reply.value = "";
 }
+
 //대댓글 제출
 function submitReply(ucparentnumber) {
   console.log("댓글의 부모 아이디: ", ucparentnumber);
   reply.value = "";
   showReplyForm.value = false;
 }
+
 //댓글 정렬 기능
 function sortComment(event){
   const sortBy = event.target.value;
@@ -307,13 +312,21 @@ const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
 // 로그인한 유저 정보 가져오기
 const getUserData = async(uemail) => {
   try {
-    const response = await memberAPI.getUserData(uemail);
+    const response = await memberAPI.getUserDataByUemail(uemail);
     userCommonData.value = response.data;
     console.log("userCommonData : " + userCommonData.value);
   } catch(error) {
     console.log(error);
   }
 }
+
+
+
+
+
+
+
+
 
 
 

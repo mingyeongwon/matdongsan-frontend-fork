@@ -18,6 +18,11 @@ const getUserData = () => {
   return axios.get("/Mypage/MyInfomation");
 };
 
+// 유저 정보 불러오기 by uemail
+const getUserDataByUemail = (uemail) => {
+  return axios.get("/Mypage/MyInfomation/" + uemail);
+};
+
 // 유저 정보 불러오기 by unumber
 const getUserDataByUnumber = (unumber) => {
   return axios.get("/getUserData/" + unumber);
@@ -85,6 +90,8 @@ export default {
   agentJoin,
   login,
   getUserData,
+  getUserDataByUemail,
+  getUserDataByUnumber,
   deleteAccount,
   memberAttachDownload,
   checkPaymentHistory,
