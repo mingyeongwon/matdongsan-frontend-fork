@@ -110,6 +110,16 @@ const getUattach = async (userId) => {
   }
 };
 
+// 기존 댓글 작성 유저 정보 가져오기
+const getUserDataByUnumber = async(unumber) => {
+  try {
+    const response = await memberAPI.getUserDataByUnumber(unumber);
+    // userCommonData.value = response.data;
+    // console.log("userCommonData : " + userCommonData.value);
+  } catch(error) {
+    console.log(error);
+  }
+}
 
 // 검색
 const searchKeyword = ref("");

@@ -42,6 +42,11 @@ const postPropertyComment = (userComment) => {
   return axios.post("/Property/" + userComment.ucPnumber, qs.stringify(userComment));
 };
 
+// 댓글 수정
+const editPropertyComment = (editingComment) => {
+  return axios.put(`/Property/${editingComment.ucUnumber}/${editingComment.ucnumber}`, qs.stringify(editingComment));
+};
+
 // 댓글 삭제
 const deletePropertyComment = (pnumber, ucnumber) => {
   return axios.delete(`/Property/${pnumber}/${ucnumber}`);
@@ -98,5 +103,6 @@ export default {
   purchasePropertyListing,
   postProperty,
   postPropertyComment,
-  deletePropertyComment
+  deletePropertyComment,
+  editPropertyComment
 };

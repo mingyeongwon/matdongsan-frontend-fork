@@ -12,9 +12,17 @@ const memberJoin = (formData) => {
   //POST 방식 : raw/JSON 방식으로 데이터 전달
   return axios.post("/member/Signup/MemberSignup", formData);
 };
+
+
 const getUserData = () => {
   return axios.get("/Mypage/MyInfomation");
 };
+
+// 유저 정보 불러오기 by unumber
+const getUserDataByUnumber = (unumber) => {
+  return axios.get("/getUserData/" + unumber);
+};
+
 const agentJoin = (agent) => {
   //user Data
   // {
@@ -61,10 +69,17 @@ function findMemberEmail(formData){
   return axios.post("/login/findMemberEmail", formData);
 }
 
-// 해당 회원이 존재하는 지 확인 (중개인도 같은거 사용...)
+// 해당 회원이 존재하는 지 확인 (중개인도 같은거 사용)
 function canResetPassword(formData){
   return axios.post("/canResetPassword", formData);
 }
+
+// 회원 비밀번호 변경
+function updatePassword(formData){
+  return axios.put("/updatePassword", formData);
+}
+
+
 export default {
   memberJoin,
   agentJoin,
@@ -76,4 +91,5 @@ export default {
   updateMemberData,
   findMemberEmail,
   canResetPassword,
+  updatePassword,
 };
