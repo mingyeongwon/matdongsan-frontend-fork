@@ -610,7 +610,9 @@ async function loginHandleSubmit() {
     } else if(response.data.result === "removed"){
       console.log("탈퇴한 회원");
       checkValid.value.passwordValid = "탈퇴한 회원입니다. 다시 회원가입 하세요";
-    } 
+    }  else if(response.data.result === "fail"){
+      checkValid.value.passwordValid = "비밀번호가 틀렸습니다.";
+    }
   } catch (error) {
     console.log("에러 발생");
     checkValid.value.passwordValid = "아이디와 비밀번호가 맞지 않습니다.";
