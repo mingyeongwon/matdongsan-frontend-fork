@@ -8,7 +8,6 @@ function signup(formData) {
 
 //중개인 리스트
 const getAgentList = (pageNo, size, filter) => {
-  console.log("Sending filters:", filter);
   //GET: http://localhost/agent?pageNo=1&size=10
   return axios.get("/Agent", {
     params: {
@@ -22,9 +21,8 @@ const getAgentList = (pageNo, size, filter) => {
 };
 
 //중개인 데이터
-const getAgentDataByNumber = (anumber, pageNo) => {
-  console.log(anumber);
-  return axios.get("/Agent/" + anumber, { params: { pageNo } });
+const getAgentDataByNumber = (anumber, pageNo,sort) => {
+  return axios.get("/Agent/" + anumber, { params: { pageNo,sort } });
 };
 //중개인 데이터 업데이트
 const updateAgentData = (agentData) => {

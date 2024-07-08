@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="d-flex justify-content-between mb-3">
-      평점 & 리뷰({{ props.reviewData.length }})
+    <div class="d-flex justify-content-between">
+      <div class="align-self-center fw-bold">평점 & 리뷰({{ props.reviewData.length }})</div>
 
       <div class="align-self-center">
         <select
@@ -9,8 +9,10 @@
           aria-label="Default select example"
           @change="sortComment"
         >
-          <option selected value="최신순">최신순</option>
-          <option value="오래된순">오래된순</option>
+          <option selected value="desc">최신순</option>
+          <option value="asc">오래된순</option>
+          <option value="highRate">높은 별점순</option>
+          <option value="lowRate">낮은 별점순</option>
         </select>
       </div>
     </div>
@@ -49,7 +51,11 @@
           type="text"
           placeholder="댓글을 입력해주세요..."
         />
-        <button type="button" class="btn py-2 btn-sm btn-secondary" @click="submitComment">
+        <button
+          type="button"
+          class="btn py-2 btn-sm btn-secondary"
+          @click="submitComment"
+        >
           작성하기
         </button>
       </div>
@@ -257,7 +263,7 @@ import Pagination from "@/components/Pagination.vue";
 const store = useStore();
 const logedinUser = store.getters.getUemail; // 수정버튼
 const props = defineProps(["reviewData", "pager"]);
-const emits = defineEmits(["update-agent-data", "update:currentPage"]);
+const emits = defineEmits(["update-agent-data", "update:currentPage","get:agentFilter"]);
 const comment = ref("");
 const warningMessage = ref(""); // 경고 메시지 상태 추가
 const showDeleteModal = ref(false);
@@ -285,17 +291,23 @@ function getReviewId(reviewId) {
 function submitComment() {
   if (reviewData.value.arcontent === "" && score.value === 0) {
     warningMessage.value = "댓글과 평점을 모두 작성하셔야 합니다.";
-    const warningModal = new Modal(document.getElementById("commentWarningModal"));
+    const warningModal = new Modal(
+      document.getElementById("commentWarningModal")
+    );
     warningModal.show();
     return;
   } else if (reviewData.value.arcontent === "") {
     warningMessage.value = "댓글을 작성하셔야 합니다.";
-    const warningModal = new Modal(document.getElementById("commentWarningModal"));
+    const warningModal = new Modal(
+      document.getElementById("commentWarningModal")
+    );
     warningModal.show();
     return;
   } else if (score.value === 0) {
     warningMessage.value = "평점을 매기셔야 합니다.";
-    const warningModal = new Modal(document.getElementById("commentWarningModal"));
+    const warningModal = new Modal(
+      document.getElementById("commentWarningModal")
+    );
     warningModal.show();
     return;
   } else {
@@ -400,7 +412,9 @@ onMounted(() => {
     getUattach(store.getters.getUserRoleNumber);
   }
 });
-
+function sortComment(event){
+  emits("get:agentFilter", event.target.value)
+}
 function check(data) {
   score.value = data;
 }

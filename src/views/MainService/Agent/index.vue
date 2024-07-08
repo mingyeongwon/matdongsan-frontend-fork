@@ -75,7 +75,12 @@
               </div>
             </div>
             <div>
-              <DetailInfo :agentData="agent" :detailData="agentDetail" :joinDate="joinDate" :tradeCount="tradeCount"/>
+              <DetailInfo
+                :agentData="agent"
+                :detailData="agentDetail"
+                :joinDate="joinDate"
+                :tradeCount="tradeCount"
+              />
             </div>
             <ul class="nav nav-pills ms-4">
               <li class="nav-item">
@@ -113,6 +118,7 @@
                     :pager="pagerData"
                     @update-agent-data="getAgentData"
                     @update:currentPage="handlePageChange"
+                    @get:agentFilter="getAgentReviewFilter"
                   />
                 </div>
               </div>
@@ -158,6 +164,7 @@ const currentPage = ref(0);
 const filterData = ref({});
 const joinDate = ref("");
 const tradeCount = ref(0);
+const agentReviewFilter = ref("");
 // 유저 프로필 사진 다운로드
 const getMattach = async (memberId) => {
   try {
@@ -174,7 +181,8 @@ const getAgentData = async (pageNo = 1) => {
   try {
     const response = await agentAPI.getAgentDataByNumber(
       route.params.id,
-      pageNo
+      pageNo,
+      agentReviewFilter.value
     );
     agent.value = response.data.agent;
     agentDetail.value = response.data.agentDetail;
@@ -248,7 +256,11 @@ watch(
   { deep: true }
 );
 watch(
-  () => {filterData.value.byComment,filterData.value.byRate,filterData.value.byDate},
+  () => {
+    filterData.value.byComment,
+      filterData.value.byRate,
+      filterData.value.byDate;
+  },
   { deep: true }
 );
 function backToAgentList() {
@@ -266,6 +278,17 @@ function searchInAgent() {
   });
   searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
 }
+function getAgentReviewFilter(data) {
+  agentReviewFilter.value = data;
+}
+
+watch(
+  () => agentReviewFilter.value,
+  () => {
+    
+    getAgentData();
+  }
+);
 </script>
 
 <style scoped>

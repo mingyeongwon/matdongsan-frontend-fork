@@ -1,12 +1,14 @@
 <template>
   <div class="list-box mt-5 w-100">
     <div class="justify-content-center">
-      <div class="row row-cols-4 justify-content-start mb-5 mx-auto ms-3 w-100" v-if="agentProperiesData.length > 0">
+      <div class="row row-cols-4 justify-content-start mb-5 mx-auto ms-3 w-100 text-center" v-if="agentProperiesData.length > 0">
         <RouterLink
           v-for="(property, index) in agentProperiesData"
           :key="index"
+          :to="property.pstatus !== '거래완료' ? { path: `/Property/${property.pnumber}` } : ''"
           class="col-3 text-decoration-none text-dark me-4 w-auto"
-          :to="{ path: `/Property/${property.pnumber}` }"
+          :class="{ disabled: property.pstatus === '거래완료' }"
+          @click.prevent="property.pstatus === '거래완료' ? handleDisabledClick : null"
         >
           <img
             :src="getPropertyThumbnail(property.pnumber)"
@@ -15,8 +17,8 @@
             height="150"
             alt=""
           />
-          <h5 class="fw-bold">{{ property.ptitle }} {{ property.pcategory}} {{ property.prentalfee }} </h5>
-          <small>{{ property.pcontents }}</small>
+          <h5 class="fw-bold">{{ property.ptitle }} {{ property.pcategory }} {{ property.prentalfee }} </h5>
+          <small class="property-status text-dark fw-bold btn btn-warning btn-sm">{{ property.pstatus }}</small>
         </RouterLink>
       </div>
       <div class="mb-5 mx-auto ms-3 w-100 text-center" v-else>
@@ -68,6 +70,12 @@ const getPropertyThumbnail = (pnumber) => {
   return pthumbnails.value[pnumber];
 };
 
+// 비활성화된 링크 클릭 처리
+function handleDisabledClick(event) {
+  event.preventDefault();
+  // 추가적인 비활성화 클릭 로직을 여기에 작성할 수 있습니다.
+}
+
 onMounted(() => {
   getPropertiesByAgent();
 });
@@ -81,5 +89,13 @@ watch(() => route.params.id, () => {
 .list-box {
   margin-right: auto;
   margin-left: auto;
+}
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.property-status{
+  font-size: 10px;
 }
 </style>

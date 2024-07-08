@@ -23,6 +23,7 @@
           </div>
           <div class="col-6 mt-2 h6"><b>거래완료된 방: </b> {{props.tradeCount}}개</div>
         </div>
+        
       </div>
 
       <div class="h5 fw-bold mt-5 w-100 text-center agentPosition">
