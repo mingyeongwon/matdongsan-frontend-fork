@@ -39,7 +39,8 @@
       </div>
     </div>
   </RouterLink>
-  <RouterLink
+  <div v-if="props.propertyData.pstatus!=='거래완료'">
+    <RouterLink
     :to="{ path: `/Property/${propertyData.pnumber}` }"
     class="row text-decoration-none me-3 text-dark"
     v-if="props.propertyData.pnumber"
@@ -56,6 +57,8 @@
                 {{ propertyData.pcategory }} {{ propertyData.pdeposite }}
                 <span v-if="propertyData.prentalfee > 0">
                   /{{ propertyData.prentalfee }}
+
+                 
                 </span>
               </b>
             </p>
@@ -75,6 +78,8 @@
       </div>
     </div>
   </RouterLink>
+  </div>
+ 
   <RouterLink
     :to="{ path: `/Agent/${agentData.anumber}` }"
     class="row text-decoration-none me-3 text-dark"
@@ -147,6 +152,7 @@ const props = defineProps({
       psize: 25,
       pmaintenance: 8,
       detailInfo: "",
+      pstatus:"",
     }),
   },
   favoriteData: {
