@@ -130,7 +130,7 @@
           v-if="!route.params.id"
           class="map-box right-box col p-3 w-75 mx-auto"
         >
-          <KakaoMap page="agentList" :positionList="agentPositionList" />
+          <KakaoMap page="agentList" :positionList="agentPositionList" @get:clickedAgentPosition="getClickAgentPosition"/>
         </div>
       </div>
     </div>
@@ -167,7 +167,6 @@ const filterData = ref({});
 const joinDate = ref("");
 const tradeCount = ref(0);
 const agentReviewFilter = ref("");
-const searchedAgentList = ref([]);
 
 // 검색 함수
 function searchInAgent() {
@@ -291,6 +290,13 @@ watch(
     getAgentData();
   }
 );
+
+//지도에서 클릭된 마커의 좌표 값 가져오기
+function getClickAgentPosition(lat,lng) {
+  console.log("좌표 가져오기 함수 실행");
+  console.log(lat);
+  console.log(lng);
+}
 </script>
 
 <style scoped>

@@ -4,8 +4,14 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-const emit = defineEmits(["getPropertyData"]);
-const props = defineProps(["positionList","propertyPositionList", "position", "page"]);
+
+const emits = defineEmits(["getPropertyData", "get:clickedAgentPosition"]);
+const props = defineProps([
+  "positionList",
+  "propertyPositionList",
+  "position",
+  "page",
+]);
 
 let map;
 let cluster = null;
@@ -31,38 +37,73 @@ const initMap = () => {
   kakao.maps.event.addListener(map, "zoom_changed", updateMarkersInView);
 
   // 페이지별 마커 로직 처리
-  if (props.page === "favorite") { //관심 매물 페이지인 경우 관심 상품 마커 맵에 표시
+  if (props.page === "favorite") {
+    //관심 매물 페이지인 경우 관심 상품 마커 맵에 표시
     displayFavorites();
-  } else if (props.page === "agentList" && Array.isArray(props.positionList)) { // 중개인 리스트페이지이며 리스트들의 좌표값이 있을 경우 지도에 마커 표시
-    displayMarker(props.positionList.map(agent => [agent.alatitude, agent.alongitude]));
-  } else if (props.page === "propertyList") { // 매물 페이지인 경우 매물 마커들 맵에 표시
+  } else if (props.page === "agentList" && Array.isArray(props.positionList)) {
+    // 중개인 리스트페이지이며 리스트들의 좌표값이 있을 경우 지도에 마커 표시
+    displayMarker(
+      props.positionList.map((agent) => [agent.alatitude, agent.alongitude]),
+      "agent"
+    );
+  } else if (props.page === "propertyList") {
+    // 매물 페이지인 경우 매물 마커들 맵에 표시
     setupPropertyMarkers();
   }
 
-  if (props.page === "agent" && props.position && typeof props.position === "object" && !Array.isArray(props.position)) {
-    const agentLatLng = new kakao.maps.LatLng(props.position.lat, props.position.lng);
-    agentMarker.value = new kakao.maps.Marker({ position: agentLatLng, map: map });
+  if (
+    props.page === "agent" &&
+    props.position &&
+    typeof props.position === "object" &&
+    !Array.isArray(props.position)
+  ) {
+    const agentLatLng = new kakao.maps.LatLng(
+      props.position.lat,
+      props.position.lng
+    );
+    agentMarker.value = new kakao.maps.Marker({
+      position: agentLatLng,
+      map: map,
+    });
     map.setCenter(agentLatLng);
   }
 };
 
 // 마커 표시 함수 최적화
-const displayMarker = (markerPositions) => {
+const displayMarker = (markerPositions, type = "default") => {
   // 기존 마커들 중 필요없는 마커 제거
-  markers.value.forEach(marker => {
-    if (!markerPositions.some(pos => pos[0] === marker.getPosition().getLat() && pos[1] === marker.getPosition().getLng())) {
+  markers.value.forEach((marker) => {
+    if (
+      !markerPositions.some(
+        (pos) =>
+          pos[0] === marker.getPosition().getLat() &&
+          pos[1] === marker.getPosition().getLng()
+      )
+    ) {
       marker.setMap(null);
-      markers.value = markers.value.filter(m => m !== marker);
+      markers.value = markers.value.filter((m) => m !== marker);
     }
   });
 
   // 새로운 마커들만 추가
-  markerPositions.forEach(position => {
-    if (!markers.value.some(m => m.getPosition().getLat() === position[0] && m.getPosition().getLng() === position[1])) {
+  markerPositions.forEach((position) => {
+    if (
+      !markers.value.some(
+        (m) =>
+          m.getPosition().getLat() === position[0] &&
+          m.getPosition().getLng() === position[1]
+      )
+    ) {
       const newMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(...position),
         map: map,
       });
+
+      // 마커 타입에 따른 클릭 이벤트 설정
+      kakao.maps.event.addListener(newMarker, "click", () => {
+        handleMarkerClick(type, position);
+      });
+
       markers.value.push(newMarker);
     }
   });
@@ -80,20 +121,50 @@ const displayFavorites = () => {
     { lat: 37.5072528, lng: 127.0294288 },
     { lat: 37.561110808242056, lng: 126.9831268386891 },
   ];
-  displayMarker(exampleFavorites.map(fav => [fav.lat, fav.lng]));
+  displayMarker(
+    exampleFavorites.map((fav) => [fav.lat, fav.lng]),
+    "favorite"
+  );
 };
 
 // 부동산 페이지 클러스터 설정
 const setupPropertyMarkers = () => {
-displayMarker(props.propertyPositionList.map(property => [property.platitude, property.plongitude]))
+  displayMarker(
+    props.propertyPositionList.map((property) => [
+      property.platitude,
+      property.plongitude,
+    ]),
+    "property"
+  );
   const clusterOptions = {
     map: map,
     averageCenter: true,
-    
   };
   cluster = new kakao.maps.MarkerClusterer(clusterOptions); //클러스터 기능을 쓰기위한 초기화 변수 선언
   cluster.setMinClusterSize(1); // 클러스터 최소 마커 -> 1개만 있어도 클러스터화
   cluster.addMarkers(markers.value); // 마커추가
+
+  //클러스터 클릭이벤트 설정
+  kakao.maps.event.addListener(cluster, "clusterclick", function (cluster) {
+    // 현재 지도 레벨에서 1레벨 확대한 레벨
+    var level = map.getLevel() - 1;
+    if (map.getLevel() === 2) {
+      console.log("click: " + cluster.getCenter().getLat());
+    }
+    // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
+    map.setLevel(level, { anchor: cluster.getCenter() });
+  });
+};
+
+// 마커 클릭 이벤트 핸들러
+const handleMarkerClick = (type, position) => {
+  if (type == "agent") {
+    emits("get:clickedAgentPosition", position[0], position[1]);
+  } else {
+    alert(
+      `기타 위치의 좌표는 위도: ${position[0]}, 경도: ${position[1]}입니다.`
+    );
+  }
 };
 
 // 현재 뷰에 있는 마커 데이터 업데이트
@@ -101,11 +172,13 @@ const updateMarkersInView = () => {
   if (props.page === "favorite") return;
 
   bounds.value = map.getBounds();
-  const propertyListData = markers.value.filter(marker => bounds.value.contain(marker.getPosition())).map(marker => {
-    const pos = marker.getPosition();
-    return { Ma: pos.Ma, La: pos.La };
-  });
-  emit("getPropertyData", propertyListData);
+  const propertyListData = markers.value
+    .filter((marker) => bounds.value.contain(marker.getPosition()))
+    .map((marker) => {
+      const pos = marker.getPosition();
+      return { Ma: pos.Ma, La: pos.La };
+    });
+  emits("getPropertyData", propertyListData);
 };
 
 onMounted(() => {
@@ -121,27 +194,48 @@ onMounted(() => {
     }
   );
 });
-
-watch(() => props.position, (newPosition) => {
-  if (map && newPosition) {
-    if (Array.isArray(newPosition)) {
-      displayMarker(newPosition.map(agent => [agent.alatitude, agent.alongitude]));
-    } else {
-      updateAgentMarker(newPosition);
+//중개인 포지션이 변경되면 상태 업데이트
+watch(
+  () => props.position,
+  (newPosition) => {
+    if (map && newPosition) {
+      if (Array.isArray(newPosition)) {
+        displayMarker(
+          newPosition.map((agent) => [agent.alatitude, agent.alongitude]),
+          "agent"
+        );
+      } else {
+        updateAgentMarker(newPosition);
+      }
     }
   }
-});
+);
 
-watch(() => props.positionList ? props.positionList.length : 0, (newLength) => {
-  if (map && newLength > 0) {
-    displayMarker(props.positionList.map(agent => [agent.alatitude, agent.alongitude]));
+watch(
+  () => (props.positionList ? props.positionList.length : 0),
+  (newLength) => {
+    if (map && newLength > 0) {
+      displayMarker(
+        props.positionList.map((agent) => [agent.alatitude, agent.alongitude]),
+        "agent"
+      );
+    }
   }
-});
-watch(() => props.propertyPositionList ? props.propertyPositionList.length : 0, (newLength) => {
-  if (map && newLength > 0) {
-    displayMarker(props.propertyPositionList.map(property => [property.platitude, property.plongitude]));
+);
+watch(
+  () => (props.propertyPositionList ? props.propertyPositionList.length : 0),
+  (newLength) => {
+    if (map && newLength > 0) {
+      displayMarker(
+        props.propertyPositionList.map((property) => [
+          property.platitude,
+          property.plongitude,
+        ]),
+        "property"
+      );
+    }
   }
-});
+);
 
 // 에이전트 마커 위치 업데이트
 const updateAgentMarker = (position) => {
