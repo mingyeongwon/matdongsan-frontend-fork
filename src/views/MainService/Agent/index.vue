@@ -291,11 +291,25 @@ watch(
   }
 );
 
+//좌표를 가지고 해당 되는 부동산페이지로 이동
+async function moveAgentDetailByPosition(lat,lng){
+  try {
+    const response = await agentAPI.getAgentDataByPosition(lat,lng);
+    console.log(response.data);
+    router.push("/Agent/"+response.data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 //지도에서 클릭된 마커의 좌표 값 가져오기
 function getClickAgentPosition(lat,lng) {
   console.log("좌표 가져오기 함수 실행");
   console.log(lat);
   console.log(lng);
+  if(lat && lng){
+    moveAgentDetailByPosition(lat,lng);
+  }
 }
 </script>
 

@@ -7,7 +7,7 @@ function signup(formData) {
 }
 
 //중개인 리스트
-const getAgentList = (pageNo, size, filter,keyword) => {
+const getAgentList = (pageNo, size, filter, keyword) => {
   //GET: http://localhost/agent?pageNo=1&size=10
   return axios.get("/Agent", {
     params: {
@@ -16,14 +16,14 @@ const getAgentList = (pageNo, size, filter,keyword) => {
       byRate: filter.byRate,
       byComment: filter.byComment,
       byDate: filter.byDate,
-      keyword:keyword,
+      keyword: keyword,
     },
   });
 };
 
 //중개인 데이터
-const getAgentDataByNumber = (anumber, pageNo,sort) => {
-  return axios.get("/Agent/" + anumber, { params: { pageNo,sort } });
+const getAgentDataByNumber = (anumber, pageNo, sort) => {
+  return axios.get("/Agent/" + anumber, { params: { pageNo, sort } });
 };
 //중개인 데이터 업데이트
 const updateAgentData = (agentData) => {
@@ -66,9 +66,13 @@ const findAgentEmail = (formData) => {
   return axios.post("/login/findAgentEmail", formData);
 };
 // 부동산 검색
-const postSearchKeyword = (keyword,pageNo) => {
-  return axios.get("/Agent" , { params: { pageNo,keyword } })
-}
+const postSearchKeyword = (keyword, pageNo) => {
+  return axios.get("/Agent", { params: { pageNo, keyword } });
+};
+//좌표 부동산 가져오기
+const getAgentDataByPosition = (lat, lng) => {
+  return axios.get("/Agent/Position", { params: { lat, lng } });
+};
 export default {
   signup,
   getAgentList,
@@ -83,4 +87,5 @@ export default {
   getAgentProperty,
   findAgentEmail,
   postSearchKeyword,
+  getAgentDataByPosition,
 };
