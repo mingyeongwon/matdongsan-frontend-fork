@@ -26,7 +26,7 @@
     <hr>
     <div class="row me-5">
       <span class="col-2" style="text-align: center;">제목</span>
-      <input class="col-10" type="text" name="askTitle" v-model="customerInquiry.qtitle">
+      <input class="col-10" type="text" name="askTitle" maxLength="100" v-model="customerInquiry.qtitle">
     </div>
     <hr>
     <div class="row me-5">

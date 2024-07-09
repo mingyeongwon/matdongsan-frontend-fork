@@ -15,7 +15,7 @@
       <form @submit.prevent="handleSubmit">
       <div class="row me-5">
         <span class="col-2 text-center">제목</span>
-        <input class="col-10" type="text" name="askTitle" v-model.trim="notice.title"> 
+        <input class="col-10" type="text" name="askTitle" maxLength="100" v-model.trim="notice.title"> 
       </div>
       <hr>
       <div class="row me-5">
