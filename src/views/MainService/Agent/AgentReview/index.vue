@@ -1,15 +1,18 @@
 <template>
   <div>
     <div class="d-flex justify-content-between">
-      <div class="align-self-center fw-bold">평점 & 리뷰({{ props.reviewData.length }})</div>
+      <div class="align-self-center fw-bold">
+        평점 & 리뷰({{ props.reviewData.length }})
+      </div>
 
       <div class="align-self-center">
         <select
           class="form-select"
           aria-label="Default select example"
           @change="sortComment"
+          v-model="sortOrder"
         >
-          <option selected value="desc">최신순</option>
+          <option value="desc">최신순</option>
           <option value="asc">오래된순</option>
           <option value="highRate">높은 별점순</option>
           <option value="lowRate">낮은 별점순</option>
@@ -263,15 +266,17 @@ import Pagination from "@/components/Pagination.vue";
 const store = useStore();
 const logedinUser = store.getters.getUemail; // 수정버튼
 const props = defineProps(["reviewData", "pager"]);
-const emits = defineEmits(["update-agent-data", "update:currentPage","get:agentFilter"]);
-const comment = ref("");
+const emits = defineEmits([
+  "update-agent-data",
+  "update:currentPage",
+  "get:agentFilter",
+]);
 const warningMessage = ref(""); // 경고 메시지 상태 추가
 const showDeleteModal = ref(false);
 const memberProfile = ref(null);
 const clickedModalId = ref("");
 const score = ref(0);
 const editingReview = ref(null); // 수정 중인 리뷰 상태 추가
-const defaultImg = require("@/assets/profileImage.png");
 const router = useRouter();
 const route = useRoute();
 const userRoleNumber = computed(() => store.getters.getUserRoleNumber);
@@ -281,7 +286,7 @@ const reviewData = ref({
   arAnumber: route.params.id,
   arMnumber: store.getters.getUserRoleNumber,
 });
-console.log(userRoleNumber);
+const sortOrder = ref("desc");
 
 function getReviewId(reviewId) {
   clickedModalId.value = reviewId;
@@ -401,12 +406,22 @@ onMounted(() => {
     getUattach(store.getters.getUserRoleNumber);
   }
 });
-function sortComment(event){
-  emits("get:agentFilter", event.target.value)
+//Agent.vue로 이벤트 값 보내는 함수
+function sortComment(event) {
+  emits("get:agentFilter", event.target.value);
 }
+//평점 자식으로 부터 가져오는 emit 함수
 function check(data) {
   score.value = data;
 }
+
+watch(
+  () => route.params.id,
+  (newId) => {
+    sortOrder.value = "desc";  // 초기화할 값
+    // 여기에 필요한 추가 초기화 작업을 수행할 수 있습니다.
+  }
+);
 </script>
 
 <style scoped>

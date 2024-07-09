@@ -251,6 +251,7 @@ watch(
   (newId) => {
     if (newId) {
       getAgentData();
+      isCommentMenu.value=true;
     }
   }
 );
