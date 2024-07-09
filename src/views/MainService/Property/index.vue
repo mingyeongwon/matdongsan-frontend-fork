@@ -26,18 +26,23 @@
         ></i>
 
         <!-- 찜하기 아이콘 -->
-        <i
+        <i v-if="store.getters.getUserRole === 'MEMBER'"
           :class="[
             isHovered ? 'fa-solid fa-heart' : 'fa-regular fa-heart',
             'fa-xl',
             'heart-icon',
+            isClicked ? 'fa-solid fa-heart' : 'fa-regular fa-heart',
+            'fa-xl',
+            'heart-icon',
           ]"
           style="color: #ff0000"
-          @click="liked(propertyData.id)"
+          @click="isLiked"
           @mouseover="toggleHover(true)"
-          @mouseleave="toggleHover(false)"
-        ></i>
-
+          @mouseleave="toggleHover(false)">
+        </i>
+        <!-- <i v-if="isClicked" class="fa-solid fa-heart fa-xl" style="color: #ff0000;"
+          @click="isLiked(false)">
+        </i> -->
         <!-- 찜하기 취소 -->
         <!-- <i class="fa-solid fa-heart" style="color: #ff0000;" @click="unlike"></i> -->
       </div>
@@ -148,6 +153,71 @@ function backToPropertyList() {
 function getPropertyPositionData(data) {
   propertyPositionList.value = data;
 }
+
+
+// 좋아요 아이콘 변경 상태
+const isHovered = ref(false);
+const isClicked = ref(false);
+
+// 좋아요
+const isLiked = () => {
+  isClicked.value = !isClicked.value;
+  if(isClicked.value) {
+    postLikeProperty();
+  } else {
+    cancelLikeProperty();
+  }
+};
+
+
+const toggleHover = (state) => {
+  isHovered.value = state;
+};
+
+// 좋아요 데이터 전송
+const postLikeProperty = async () => {
+  try {
+    await propertyAPI.likeProperty(route.params.id);
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+// 좋아요 취소 데이터 전송
+const cancelLikeProperty = async () => {
+  try {
+    await propertyAPI.cancelLikeProperty(route.params.id);
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+// 좋아요 여부
+const isPropertyLiked = async () => {
+      try {
+        const response = await propertyAPI.isPropertyLiked(route.params.id);
+        isClicked.value = response.data; // 서버에서 boolean 값 반환
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+
+// const postPropertyComment = async (userComment) => {
+//   try {
+//     const data = JSON.parse(JSON.stringify(userComment.value));
+//     console.log("userComment.value.uccomment : " + userComment.value.uccomment);
+//     console.log("userComment.value.ucPnumber : " + userComment.value.ucPnumber);
+//     console.log("userComment.value.ucparentnumber : " + userComment.value.ucparentnumber);
+    
+//     await propertyAPI.postPropertyComment(data);
+//     emits("update-property-data"); // 데이터 다시 가져오기
+//     userComment.value.uccomment = "";
+//   } catch(error) {
+//     console.log(error);
+//   }
+// }
+
 // property 데이터
 const getPropertyData = async () => {
   try {
@@ -202,24 +272,10 @@ const getPattaches = async (ppnumber) => {
   }
 }
 
-
-
-const liked = (productId) => {
-  console.log("productId : " + productId);
-  console.log(route.params.id);
-  store.dispatch("like/addToWishList", { productId });
-};
-
-// 좋아요 아이콘 변경 상태
-const isHovered = ref(false);
-
-const toggleHover = (state) => {
-  isHovered.value = state;
-};
-
 onMounted(() => {
   if (route.params.id) {
     getPropertyData();
+    isPropertyLiked();
   }
 });
 
@@ -230,7 +286,7 @@ watch(() => route.params.id, (newPnumber) => {
     pattaches.value = [];
     // propertyCommentList.value = [];
     getPropertyData();
-    console.log("newPnumber : " + newPnumber);
+    isPropertyLiked();
 
   }
 });

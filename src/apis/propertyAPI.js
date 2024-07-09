@@ -89,6 +89,22 @@ const postProperty = (formData) => {
   return axios.post("/PropertyForm", formData);
 }
 
+// 좋아요
+const likeProperty =  (pnumber) => {
+  return axios.post("/likeProperty/" + pnumber);
+}
+
+// 좋아요 취소
+const cancelLikeProperty =  (pnumber) => {
+  return axios.delete("/cancelLikeProperty/" + pnumber);
+}
+
+// 좋아요 확인 
+const isPropertyLiked =  (pnumber) => {
+  return axios.get("/isPropertyLiked/" + pnumber);
+}
+
+
 export default {
   getPropertyList,
   getUserPropertyList,
@@ -105,5 +121,8 @@ export default {
   postProperty,
   postPropertyComment,
   deletePropertyComment,
-  editPropertyComment
+  editPropertyComment,
+  likeProperty,
+  cancelLikeProperty,
+  isPropertyLiked
 };
