@@ -5,10 +5,9 @@
       <span v-else>방내놓기</span>
     </h3>
     <!-- 각 섹션 컴포넌트들 -->
-    <PropertyInfo :property="property" @update:property="updateProperty" />
+    <PropertyInfo :property="property" />
     <TradeInfo :property="property" :propertyDetail="propertyDetail" @paymentTypeChange="handlePaymentTypeChange"  
                 @maintenanceChange="handleMaintenanceChange" @moveInChange="handleMoveInChange"
-                @update:property="updateProperty" @update:propertyDetail="updatePropertyDetail"
     />
     
     <FacilityInfo :propertyDetail="propertyDetail" />
@@ -25,6 +24,7 @@
       <!-- 이미지 미리보기 컴포넌트 -->
       <ImagePreview
         imagePurpose="single"
+        :thumbnailImage="thumbnailImage"
         @update:image="handleSingleImageUpdate"
         class="mt-3 mb-3"
       />
@@ -68,24 +68,24 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 
 let requiredInfoModal = null;
-const editPthumbnail = ref();
-const editPpattaches = ref([]);
 const propertyPhotos = ref([]);
-const editProperty = ref({});
-const editPropertyDetail = ref({});
+const thumbnailImage = ref(null);
 
 // property 데이터 가져오기
 const getPropertyData = async () => {
   if(route.params.id) {
     try {
       const response = await propertyAPI.getPropertyData(route.params.id);
+      console.log("response : " + response);
       Object.assign(property, response.data.totalProperty.property);
       // property.value = response.data.totalProperty.property;
       Object.assign(propertyDetail, response.data.totalProperty.propertyDetail);
+
+
       // propertyDetail.value = response.data.totalProperty.propertyDetail;
-      // propertyPhotos.value = response.data.propertyPhotos;
+      // property.ppattach = response.data.propertyPhotos;
   
-      editPpattaches.value = [];
+      // property.pthumbnail = [];
   
       // getPthumbnail(route.params.id);
   
@@ -99,13 +99,6 @@ const getPropertyData = async () => {
   }
 };
 
-const updateProperty = (updatedProperty) => {
-  Object.assign(property, updatedProperty);
-};
-
-const updatePropertyDetail = (updatedPropertyDetail) => {
-  Object.assign(propertyDetail, updatedPropertyDetail);
-};
 
 
 
@@ -137,7 +130,7 @@ const property = reactive({
 // propertyDetail
 const propertyDetail = reactive({
   pdcontent: "",
-  pdmonveindate: "",
+  pdmoveindate: "",
   pdbath: "",
   pdlift: "",
   pdbed: false,
@@ -216,7 +209,7 @@ async function handleSubmit() {
   }
 
   if (propertyDetail.moveIn === "today") {
-    propertyDetail.pmoveindate = dayjs().format('YYYY-MM-DD');
+    propertyDetail.pdmoveindate = dayjs().format('YYYY-MM-DD');
   }
 
   if (property.pcategory === "전세") {
@@ -239,11 +232,17 @@ formData.append("property.paddressdetail", property.paddressdetail);
 formData.append("property.ppostcode", property.ppostcode);
 formData.append("property.platitude", property.platitude);
 formData.append("property.plongitude", property.plongitude);
-formData.append("property.pthumbnail", property.pthumbnail[0]);
 
-property.ppattach.forEach((file, index) => {
-    formData.append(`propertyPhoto.ppattach[${index}]`, file);
-  });
+if(property.pthumbnail) {
+  formData.append("property.pthumbnail", property.pthumbnail[0]);
+}
+
+if(property.ppattach) {
+  property.ppattach.forEach((file, index) => {
+      formData.append(`propertyPhoto.ppattach[${index}]`, file);
+    });
+}
+
 
 // propertyDetail 데이터 추가
 Object.entries(propertyDetail).forEach(([key, value]) => {
@@ -251,8 +250,14 @@ Object.entries(propertyDetail).forEach(([key, value]) => {
 });
 
 try {
-    const response = await propertyAPI.postProperty(formData);
-    console.log(response);
+    if(route.params.id) {
+      const response = await propertyAPI.updateProperty(route.params.id, formData);
+      console.log(response);
+    } else {
+      const response = await propertyAPI.postProperty(formData);
+      console.log(response);
+    }
+
   
   } catch(error) {
     console.log(error);
@@ -288,7 +293,7 @@ function handleMaintenanceChange() {
 
 // 입주 변경 핸들러
 function handleMoveInChange() {
-  propertyDetail.pmoveindate = "";
+  propertyDetail.pdmoveindate = "";
 }
 
 // 결제 유형 변경 핸들러

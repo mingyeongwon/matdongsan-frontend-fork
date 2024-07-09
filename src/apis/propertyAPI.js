@@ -89,6 +89,11 @@ const postProperty = (formData) => {
   return axios.post("/PropertyForm", formData);
 }
 
+//  매물 수정
+const updateProperty = (pnumber, formData) => {
+  return axios.put("/PropertyForm/" + pnumber, formData); 
+}
+
 // 좋아요
 const likeProperty =  (pnumber) => {
   return axios.post("/likeProperty/" + pnumber);
@@ -119,6 +124,7 @@ export default {
   checkPropertyListing,
   purchasePropertyListing,
   postProperty,
+  updateProperty,
   postPropertyComment,
   deletePropertyComment,
   editPropertyComment,

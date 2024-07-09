@@ -33,11 +33,14 @@
             <td class="align-middle text-center">
               <img v-if="pthumbnails[property.pnumber] != null" :src="pthumbnails[property.pnumber]" width="150" alt="매물 사진" />
             </td>
-            <td class="align-middle text-muted">
-              <div class="fw-bold">{{ property.pcategory }} {{ property.pdeposite }} {{ property.prentalfee }}</div>
+            <td class="align-middle text-muted text-center">
+              <div class="fw-bold">{{ property.pcategory }} {{ property.pdeposite }}만원
+                <span v-if="property.pcategory == '월세'"> / {{ property.prentalfee }}만원</span>
+              </div>
               <small>
-                {{ property.pfloortype }},{{ property.psize }}m<sup>2</sup>,관리비 {{ property.pmaintenance }}만, {{ property.ptitle }}
+                {{ property.pfloortype }},{{ property.psize }}m<sup>2</sup>,관리비 {{ property.pmaintenance }}만원
               </small>
+              <div><small>{{ property.ptitle }}</small></div>
             </td>
             <td class="fw-bold align-middle text-center"> {{ property.formattedDate }}</td>
             <td class="fw-bold align-middle">
