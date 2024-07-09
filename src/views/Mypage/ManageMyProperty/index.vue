@@ -42,7 +42,7 @@
             <td class="fw-bold align-middle text-center"> {{ property.formattedDate }}</td>
             <td class="fw-bold align-middle">
               <div class="d-flex flex-column">
-                <RouterLink class="routerLink " :to="{path:'/PropertyForm', query:{pnumber:property.pnumber}}">
+                <RouterLink class="routerLink " :to="{path:`/PropertyForm/${property.pnumber}`}">
                 <button
                   class="btn btn-warning btn-sm w-100 fw-bold mb-3"
                   v-if="property.pstatus !== 거래완료"

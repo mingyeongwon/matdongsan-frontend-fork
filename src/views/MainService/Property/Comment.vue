@@ -4,9 +4,9 @@
     <div class="d-flex justify-content-between mb-3">
       <h4 class="mt-3 fw-bold">문의하기 ({{ props.userComment.length }})</h4>
       <div class="align-self-center">
-        <select class="form-select" aria-label="Default select example" @change="sortComment">
-          <option selected value="최신순">최신순</option>
-          <option value="오래된순">오래된순</option>
+        <select class="form-select" aria-label="Default select example" @change="sortComment"  v-model="selectedSortOption">
+          <option selected value="desc">최신순</option>
+          <option value="asc">오래된순</option>
         </select>
       </div>
     </div>
@@ -163,7 +163,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import { useStore } from "vuex";
 import propertyAPI from "@/apis/propertyAPI";
@@ -175,7 +175,7 @@ const store = useStore();
 const props = defineProps([
   'userComment',
 ]);
-const emits = defineEmits(['update-property-data'])
+const emits = defineEmits(['update-property-data', 'get:commentFilter'])
 
 const data = 1;
 const memberProfile = ref(null);
@@ -194,6 +194,7 @@ const userCommonData = ref({});
 const editingComment = ref();
 const replyComment = ref(Array(props.userComment.length).fill(""));
 const showReplyForm = ref(Array(userComment.value.length).fill(false));
+const selectedSortOption = ref('desc');
 
 // console.log("props.userComment : " + JSON.parse(JSON.stringify(props.userComment)))
 // console.log("props.userComment.ucUnumber : " + props.userComment.ucUnumber);
@@ -267,11 +268,7 @@ function submitReply(ucparentnumber, index) {
 
 //댓글 정렬 기능
 function sortComment(event){
-  const sortBy = event.target.value;
-  router.push({ 
-    path: route.path,
-    query: { ...route.query, sort: sortBy }
-  });
+  emits("get:commentFilter", event.target.value);
 }
 
 //삭제 모달 열기
@@ -329,7 +326,11 @@ const getUserData = async(uemail) => {
 
 
 
-
+watch(() => route.params.id, (newPnumber) => {
+  if(newPnumber) {
+    selectedSortOption.value = 'desc';
+  }
+});
 
 
 
@@ -337,6 +338,7 @@ const getUserData = async(uemail) => {
 
 
 onMounted(() => {
+  selectedSortOption.value = 'desc';
   if (store.getters.getUserRoleNumber) {
     getUattach(store.getters.getUserRoleNumber);
   }

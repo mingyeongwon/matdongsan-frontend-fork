@@ -33,8 +33,8 @@ const getPopularPropertyList = () => {
 };
 
 // 매물 데이터
-const getPropertyData = (pnumber) => {
-  return axios.get("/Property/" + pnumber);
+const getPropertyData = (pnumber, date) => {
+  return axios.get("/Property/" + pnumber, { params: { date } });
 };
 
 // 댓글 작성

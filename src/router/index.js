@@ -9,6 +9,7 @@ import Signup from "./Signup";
 import Adminpage from "./Adminpage";
 import InvalidAccess from "@/components/InvalidAccess"; // 추가
 import Auth from "@/apis/axiosConfig";
+import PropertyForm from "./PropertyForm";
 
 const routes = [
   {
@@ -24,11 +25,6 @@ const routes = [
       ),
   },
   {
-    path: "/PropertyForm",
-    component: () =>
-      import(/* webpackChunkName: "PropertyForm" */ "@/views/PropertyForm"),
-  },
-  {
     path: "/invalid-access", // 잘못된 접근 페이지 추가
     name: "InvalidAccess",
     component: InvalidAccess
@@ -40,7 +36,7 @@ const routes = [
   ...Payment,
   ...Signup,
   ...Adminpage,
- 
+  ...PropertyForm
 ];
 
 const router = createRouter({

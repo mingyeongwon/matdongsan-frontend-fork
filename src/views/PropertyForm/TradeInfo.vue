@@ -202,15 +202,12 @@
   <script setup>
   import { computed, toRefs } from 'vue';
   import dayjs from 'dayjs';
-
   const props = defineProps([
     'property', 'propertyDetail'
   ]);
+  const { property, propertyDetail  } = toRefs(props);
+  const emit = defineEmits(['maintenanceChange', 'moveInChange', 'paymentTypeChange', 'update:property', 'update:propertyDetail']);
   
-  const { property } = toRefs(props);
-  const { propertyDetail } = toRefs(props);
-  
-  const emit = defineEmits(['maintenanceChange', 'moveInChange', 'paymentTypeChange']);
   
   function handleMaintenanceChange() {
     emit('maintenanceChange');

@@ -62,7 +62,8 @@
           <DetailPhoto :pthumbnail = "pthumbnail" :pattaches = "pattaches"/>
           <DetailInfo :property = "property" :propertyDetail = "propertyDetail" />
           <ReportFalse :pnumber = "route.params.id"/>
-          <Comment :userComment = "userComment" @update-property-data="getPropertyData" />
+          <Comment :userComment = "userComment" @update-property-data="getPropertyData"
+                  @get:commentFilter="getPropertyCommentFilter" />
         </div>
       </div>
     </div>
@@ -100,6 +101,7 @@ const userProfiles = ref({});
 const userCommonData = ref({});
 const member = ref({});
 const agent = ref({});
+const propertyCommentFilter = ref("");
 
 // 기존 댓글 유저 프로필 사진
 // const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
@@ -118,28 +120,7 @@ const agent = ref({});
 //   }
 // };
 
-// 기존 댓글 작성 유저 정보 가져오기
-const getUserDataByUnumber = async(unumber) => {
-  try {
-    console.log("getUserDataByUnumber 실행됨");
-    console.log("recevied unumber : " + unumber);
-    const response = await memberAPI.getUserDataByUnumber(unumber);
-    userCommonData.value = response.data.userCommonData;
-    member.value = response.data.member;
-    agent.value = response.data.agent;
-    if(userCommonData.value.urole === "MEMBER") {
-      const response = await memberAPI.memberAttachDownload(member.value.mnumber);
-      const blob = response.data;
-      userProfiles.value[unumber] = URL.createObjectURL(blob);
-    } else {
-      const response = await agentAPI.agentAttachDownload(agent.value.anumber);
-      const blob = response.data;
-      userProfiles.value[unumber] = URL.createObjectURL(blob);
-    }
-  } catch(error) {
-    console.log(error);
-  }
-}
+
 
 // 검색
 const searchKeyword = ref("");
@@ -203,25 +184,34 @@ const isPropertyLiked = async () => {
     };
 
 
-// const postPropertyComment = async (userComment) => {
-//   try {
-//     const data = JSON.parse(JSON.stringify(userComment.value));
-//     console.log("userComment.value.uccomment : " + userComment.value.uccomment);
-//     console.log("userComment.value.ucPnumber : " + userComment.value.ucPnumber);
-//     console.log("userComment.value.ucparentnumber : " + userComment.value.ucparentnumber);
-    
-//     await propertyAPI.postPropertyComment(data);
-//     emits("update-property-data"); // 데이터 다시 가져오기
-//     userComment.value.uccomment = "";
-//   } catch(error) {
-//     console.log(error);
-//   }
-// }
+// 기존 댓글 작성 유저 정보 가져오기
+const getUserDataByUnumber = async(unumber) => {
+  try {
+    console.log("getUserDataByUnumber 실행됨");
+    console.log("recevied unumber : " + unumber);
+    const response = await memberAPI.getUserDataByUnumber(unumber);
+    userCommonData.value = response.data.userCommonData;
+    member.value = response.data.member;
+    agent.value = response.data.agent;
+    if(userCommonData.value.urole === "MEMBER") {
+      const response = await memberAPI.memberAttachDownload(member.value.mnumber);
+      const blob = response.data;
+      userProfiles.value[unumber] = URL.createObjectURL(blob);
+    } else {
+      const response = await agentAPI.agentAttachDownload(agent.value.anumber);
+      const blob = response.data;
+      userProfiles.value[unumber] = URL.createObjectURL(blob);
+    }
+  } catch(error) {
+    console.log(error);
+  }
+}
 
-// property 데이터
+
+// property 데이터 가져오기
 const getPropertyData = async () => {
   try {
-    const response = await propertyAPI.getPropertyData(route.params.id);
+    const response = await propertyAPI.getPropertyData(route.params.id, propertyCommentFilter.value);
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
@@ -242,7 +232,7 @@ const getPropertyData = async () => {
       }));
       userComment.value = comments.map((comment) => ({
         ...comment,
-        profile: userProfiles.value[comment.ucunumber],
+        profile: userProfiles.value[comment.ucUnumber],
       }));
     }
 
@@ -272,6 +262,11 @@ const getPattaches = async (ppnumber) => {
   }
 }
 
+function getPropertyCommentFilter(data) {
+  propertyCommentFilter.value = data;
+  
+}
+
 onMounted(() => {
   if (route.params.id) {
     getPropertyData();
@@ -285,11 +280,16 @@ watch(() => route.params.id, (newPnumber) => {
     propertyPhotos.value = [];
     pattaches.value = [];
     // propertyCommentList.value = [];
+    propertyCommentFilter.value = "desc";
     getPropertyData();
     isPropertyLiked();
-
   }
 });
+
+watch(() => propertyCommentFilter.value, () => {
+    getPropertyData();
+    
+})
 
 //
 watch(
@@ -300,6 +300,8 @@ watch(
   },
   { deep: true }
 );
+
+
 
 
 </script>

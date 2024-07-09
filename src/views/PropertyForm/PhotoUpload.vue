@@ -2,7 +2,6 @@
   <div class="mt-5">
     <div class="d-flex">
       <h4 class="col">사진 등록</h4>
-      <span class="text-danger fw-bold align-self-center">사전 등록전 반드시 알려주세요!</span>
     </div>
     <hr />
     <div class="image-box">
