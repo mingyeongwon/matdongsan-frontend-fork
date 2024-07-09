@@ -1,9 +1,15 @@
 <template>
   <div class="product-container w-75">
-    <h3 class="text-center fw-bold mt-3 mb-3">방내놓기</h3>
+    <h3 class="text-center fw-bold mt-3 mb-3">
+      <span v-if="route.params.id">수정하기</span>
+      <span v-else>방내놓기</span>
+    </h3>
     <!-- 각 섹션 컴포넌트들 -->
-    <PropertyInfo :property="property" />
-    <TradeInfo :property="property" :propertyDetail="propertyDetail" @paymentTypeChange="handlePaymentTypeChange"  @maintenanceChange="handleMaintenanceChange" @moveInChange="handleMoveInChange" />
+    <PropertyInfo :property="property" @update:property="updateProperty" />
+    <TradeInfo :property="property" :propertyDetail="propertyDetail" @paymentTypeChange="handlePaymentTypeChange"  
+                @maintenanceChange="handleMaintenanceChange" @moveInChange="handleMoveInChange"
+                @update:property="updateProperty" @update:propertyDetail="updatePropertyDetail"
+    />
     
     <FacilityInfo :propertyDetail="propertyDetail" />
     <!-- 이미지 업로드 컴포넌트 -->
@@ -12,7 +18,6 @@
     <div class="mt-5">
     <div class="d-flex">
       <h4 class="col">사진 등록</h4>
-      <span class="text-danger fw-bold align-self-center">사전 등록전 반드시 알려주세요!</span>
     </div>
     <hr />
     <div class="image-box">
@@ -59,13 +64,50 @@ import { Modal } from "bootstrap";
 import dayjs from "dayjs";
 import propertyAPI from "@/apis/propertyAPI";
 import ImagePreview from "@/components/ImagePreview.vue"; // ImagePreview 컴포넌트 가져오기
+import { useRoute } from "vue-router";
+const route = useRoute();
 
 let requiredInfoModal = null;
+const editPthumbnail = ref();
+const editPpattaches = ref([]);
+const propertyPhotos = ref([]);
+const editProperty = ref({});
+const editPropertyDetail = ref({});
 
-// 컴포넌트가 마운트될 때 모달 초기화
-onMounted(() => {
-  requiredInfoModal = new Modal(document.querySelector("#requiredInfo"));
-});
+// property 데이터 가져오기
+const getPropertyData = async () => {
+  if(route.params.id) {
+    try {
+      const response = await propertyAPI.getPropertyData(route.params.id);
+      Object.assign(property, response.data.totalProperty.property);
+      // property.value = response.data.totalProperty.property;
+      Object.assign(propertyDetail, response.data.totalProperty.propertyDetail);
+      // propertyDetail.value = response.data.totalProperty.propertyDetail;
+      // propertyPhotos.value = response.data.propertyPhotos;
+  
+      editPpattaches.value = [];
+  
+      // getPthumbnail(route.params.id);
+  
+      // await Promise.all(propertyPhotos.value.map(async (photo) => {
+      //   await getPattaches(photo.ppnumber);
+      // }));
+  
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
+const updateProperty = (updatedProperty) => {
+  Object.assign(property, updatedProperty);
+};
+
+const updatePropertyDetail = (updatedPropertyDetail) => {
+  Object.assign(propertyDetail, updatedPropertyDetail);
+};
+
+
 
 // 필수 정보 입력 안내 모달 표시 함수
 function showLoginModal() {
@@ -166,6 +208,7 @@ function handleMultiImageUpdate(files) {
 
 
 // 폼 제출 핸들러
+// propertyForm 데이터 전송
 async function handleSubmit() {
   // 공용 관리비와 입주 가능 일자가 없으면 기본값 설정
   if (property.isPmaintenance === "false") {
@@ -252,6 +295,12 @@ function handleMoveInChange() {
 function handlePaymentTypeChange() {
   property.prentalfee = "";
 }
+
+// 컴포넌트가 마운트될 때 모달 초기화
+onMounted(() => {
+  // requiredInfoModal = new Modal(document.querySelector("#requiredInfo"));
+  getPropertyData();
+});
 
 </script>
 
