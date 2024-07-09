@@ -213,6 +213,14 @@ watch(
     }
   }
 );
+
+// 내 정보에서 프로필 사진이 수정될 때 마다 사진 불러오기 호출
+watch(
+  () => store.getters["changeProfileImage/getChangeProfile"], () => {
+    getUattach(store.getters.getUserRoleNumber);
+  }
+)
+
 </script>
 
 <style scoped>

@@ -2,6 +2,8 @@ import { createStore } from "vuex";
 import axiosConfig from "@/apis/axiosConfig";
 import like from "./like";
 import profileImage from "./profileImage";
+import changeProfileImage from "./changeProfileImage";
+
 const store = createStore({
   state: {
     uemail: "",
@@ -86,6 +88,7 @@ const store = createStore({
   modules: {
     like,
     profileImage,
+    changeProfileImage,
   },
 });
 export default store;

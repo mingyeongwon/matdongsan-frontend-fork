@@ -558,7 +558,13 @@ async function handleSubmit() {
     }
   }
 
-  // 프사 바뀌면 nav사진 바로 바꾸기
+  // 프사가 변경되면(변경할 프로필 사진이 있고, 변경이 성공했다면) 이미지 변경을 의미하는 전역 함수 실행
+  console.log("나",store.state.changeProfileImage.changeProfile);
+  store.commit("changeProfileImage/setChangeProfile");
+  console.log("와",store.state.changeProfileImage.changeProfile);
+
+
+
   const updateInfoDoneModal = new Modal(document.getElementById("updateInfoDoneModal"));
   updateInfoDoneModal.show();
   // router.go(0); // nav에 사진 바뀌는거 구현 못하면 차악으로 하기
