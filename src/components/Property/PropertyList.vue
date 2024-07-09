@@ -68,7 +68,7 @@ const emit = defineEmits([
   "update:propertyPositionData",
 ]);
 
-const props = defineProps(["type", "filters", "searchedData"]); // props로부터 type 속성 정의
+const props = defineProps(["type", "filters", "searchedData","propertyPosition"]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
 const displayedFavorites = ref([]); // 표시할 favorite 목록
 const displayedAgents = ref([]); // 표시할 agent 목록
@@ -90,7 +90,9 @@ const loadMoreItems = async () => {
   try {
     // type이 'property'인 경우
     if (props.type === "property") {
-      const response = await propertyAPI.getPropertyList(offset.value, limit);
+      console.log("매물 리스트: " +props.propertyPosition.lat);
+      console.log("매물 리스트: " +props.propertyPosition.lng);
+      const response = await propertyAPI.getPropertyList(offset.value, limit,props.propertyPosition.lat,props.propertyPosition.lng);
       const dataLength = response.data.property.length;
       displayedProperties.value.push(...response.data.property);
       if (dataLength < limit) {
@@ -165,7 +167,7 @@ watch(
   }
 );
 
-//여기 부분 수정해야함 ( 버튼을 눌러야만 변경이 되도록 해야합니다.)
+//여기 부분 수정해야함 ( 버튼을 눌러야만 변경이 되도록 해야합니다.ㄴ)
 watch(
   () => props.filters,
   (newFilters) => {
@@ -210,6 +212,15 @@ watch(
   },
   { deep: true }
 );
+
+watch(
+  () => props.propertyPosition,
+  (newValue) => {
+    loadMoreItems();
+  },
+  { deep: true }
+);
+
 </script>
 
 <style scoped>

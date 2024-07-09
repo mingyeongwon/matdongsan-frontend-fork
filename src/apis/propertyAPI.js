@@ -2,10 +2,10 @@ import axios from "axios";
 import qs from "qs";
 
 // 전체 매물 리스트
-const getPropertyList = (pageNo, size) => {
+const getPropertyList = (pageNo, size,lat,lng) => {
   //GET: http://localhost/board/list?pageNo=1
 
-  return axios.get("/Property", { params: { pageNo, size } });
+  return axios.get("/Property", { params: { pageNo, size,lat,lng } });
 };
 
 // 유저 매물 리스트
