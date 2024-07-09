@@ -36,7 +36,7 @@
           <RouterLink
             class="nav-link fw-bold text-dark border-bottom border-4 border-info rounded-0"
             to="/Agent"
-            >주변 부동산</RouterLink
+            >전체 부동산</RouterLink
           >
         </li>
         <!-- 아이콘들 -->

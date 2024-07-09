@@ -12,7 +12,7 @@
       </li>
       <li class="nav-item">
         <RouterLink class="nav-link fw-bold text-dark" to="/Agent"
-          >주변 부동산</RouterLink
+          >전체 부동산</RouterLink
         >
       </li>
       <div

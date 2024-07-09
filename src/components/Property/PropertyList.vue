@@ -165,6 +165,7 @@ watch(
   }
 );
 
+//여기 부분 수정해야함 ( 버튼을 눌러야만 변경이 되도록 해야합니다.)
 watch(
   () => props.filters,
   (newFilters) => {
@@ -189,8 +190,7 @@ watch(
     offset.value = 1;
     allLoaded.value = false; // 모든 데이터 로드 상태 초기화
     loadMoreItems(); // 검색어에 따라 데이터를 로드
-  },
-  { deep: true }
+  }
 );
 
 // agentList 배열의 변경을 감지하여 emit
