@@ -10,12 +10,12 @@
               placeholder="부동산 검색"
               aria-label="Search"
               v-model="searchKeywordForAgent"
-              @keyup.enter="searchInAgent(1, $event)"
+              @keyup.enter="searchInAgent"
             />
             <button
               class="btn btn-outline-success"
               type="button"
-              @click="searchInAgent(1, $event)"
+              @click="searchInAgent"
             >
               Search
             </button>
@@ -58,8 +58,7 @@
               type="agent"
               @update:positionData="getAgentPositionData"
               :filters="filterData"
-              :searchedData="searchedAgentList"
-              :searchData="searchKeywordForAgent"
+              :searchedData="searchedKeyword"
             />
           </div>
         </div>
@@ -161,6 +160,7 @@ const pagerData = ref({});
 const isCommentMenu = ref(true);
 const selected = "border-bottom border-4 border-warning";
 const searchKeywordForAgent = ref("");
+const searchedKeyword = ref(""); // 검색어를 저장할 새로운 변수
 const memberProfiles = ref({});
 const currentPage = ref(0);
 const filterData = ref({});
@@ -168,7 +168,13 @@ const joinDate = ref("");
 const tradeCount = ref(0);
 const agentReviewFilter = ref("");
 const searchedAgentList = ref([]);
-// 유저 프로필 사진 다운로드
+
+// 검색 함수
+function searchInAgent() {
+  // 검색어를 업데이트
+  searchedKeyword.value = searchKeywordForAgent.value;
+}
+
 const getMattach = async (memberId) => {
   try {
     const response = await memberAPI.memberAttachDownload(memberId);
@@ -253,7 +259,7 @@ watch(
 watch(
   () => agentPositionList.value.length,
   () => {
-    console.log("Agent position list updated:", agentPositionList.value);
+    console.log("Agent position list updated");
     // KakaoMap 컴포넌트는 이미 agentPositionList를 prop으로 받고 있으므로 자동으로 업데이트.
   },
   { deep: true }
@@ -272,21 +278,6 @@ function backToAgentList() {
 
 function subMenuCheck(check) {
   isCommentMenu.value = check;
-}
-
-//검색 기능
-async function searchInAgent(pageNo = 1) {
-  // 검색 키워드 axios로 보내기
-  try {
-    const response = await agentAPI.postSearchKeyword(
-      searchKeywordForAgent.value,
-      pageNo
-    );
-    searchedAgentList.value = response.data.agent;
-  } catch (error) {
-    console.log(error);
-  }
-  searchKeywordForAgent.value = ""; // 검색 버튼에서 내용 사라지게
 }
 
 //리뷰 필터 항목 가져오기

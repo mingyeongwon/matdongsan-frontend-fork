@@ -132,7 +132,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed } from "vue";
 import agentAPI from "@/apis/agentAPI";
 import propertyAPI from "@/apis/propertyAPI";
 

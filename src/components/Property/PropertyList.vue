@@ -1,6 +1,8 @@
 <template>
   <!-- 'property' 타입일 경우에만 렌더링되는 블록 -->
   <div v-if="props.type == 'property'">
+    <!-- 표시할 데이터가 없는 경우 -->
+    <div v-if="!isLoading && displayedProperties.length === 0" class="no-results">검색 결과 없음</div>
     <!-- displayedProperties 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
     <div
       class="p-0"
@@ -18,6 +20,8 @@
 
   <!-- 'agent' 타입일 경우에만 렌더링되는 블록 -->
   <div v-if="props.type == 'agent'">
+    <!-- 표시할 데이터가 없는 경우 -->
+    <div v-if="!isLoading && displayedAgents.length === 0" class="no-results">검색 결과 없음</div>
     <!-- displayedAgents 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
     <div
       class="p-0"
@@ -35,6 +39,8 @@
 
   <!-- 'favorite' 타입일 경우에만 렌더링되는 블록 -->
   <div v-if="props.type == 'favorite'">
+    <!-- 표시할 데이터가 없는 경우 -->
+    <div v-if="!isLoading && displayedFavorites.length === 0" class="no-results">검색 결과 없음</div>
     <!-- displayedFavorites 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
     <div
       class="p-0"
@@ -62,7 +68,7 @@ const emit = defineEmits([
   "update:propertyPositionData",
 ]);
 
-const props = defineProps(["type", "filters","searchedData","searchData"]); // props로부터 type 속성 정의
+const props = defineProps(["type", "filters", "searchedData"]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
 const displayedFavorites = ref([]); // 표시할 favorite 목록
 const displayedAgents = ref([]); // 표시할 agent 목록
@@ -75,7 +81,6 @@ const scrollTrigger = ref(null); // 스크롤 트리거 요소 참조
 
 const loadMoreItems = async () => {
   // 인피니티 스크롤
-  console.log("offset: " + offset.value);
   // 이미 로딩 중이거나 모든 데이터를 로드한 경우 함수를 종료
   if (isLoading.value || allLoaded.value) return;
 
@@ -93,13 +98,14 @@ const loadMoreItems = async () => {
       }
     }
     // type이 'agent'인 경우
-    else if (props.type === "agent" && props.searchData=='') {
+    else if (props.type === "agent") {
       const response = await agentAPI.getAgentList(
         offset.value,
         limit,
         props.filters,
-
+        props.searchedData
       );
+      
       const dataLength = response.data.agent.length;
       displayedAgents.value.push(...response.data.agent);
       if (dataLength < limit) {
@@ -173,6 +179,20 @@ watch(
   { deep: true }
 );
 
+watch(
+  () => props.searchedData,
+  (newSearchData) => {
+    // 검색어가 변경되면 리스트를 초기화하고 다시 로드
+    displayedProperties.value = [];
+    displayedFavorites.value = [];
+    displayedAgents.value = [];
+    offset.value = 1;
+    allLoaded.value = false; // 모든 데이터 로드 상태 초기화
+    loadMoreItems(); // 검색어에 따라 데이터를 로드
+  },
+  { deep: true }
+);
+
 // agentList 배열의 변경을 감지하여 emit
 watch(
   () => displayedAgents.value,
@@ -190,15 +210,6 @@ watch(
   },
   { deep: true }
 );
-
-watch(
-  () => props.searchData,
-  () => {
-    displayedAgents.value = props.searchedData;
-
-  },
-  { immediate: true }
-);
 </script>
 
 <style scoped>
@@ -206,5 +217,11 @@ watch(
   text-align: center;
   padding: 20px;
   font-size: 20px;
+}
+.no-results {
+  text-align: center;
+  padding: 20px;
+  font-size: 20px;
+  color: gray;
 }
 </style>

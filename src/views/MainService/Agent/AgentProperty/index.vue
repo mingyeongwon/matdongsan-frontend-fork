@@ -1,14 +1,23 @@
 <template>
   <div class="list-box mt-5 w-100">
     <div class="justify-content-center">
-      <div class="row row-cols-4 justify-content-start mb-5 mx-auto ms-3 w-100 text-center" v-if="agentProperiesData.length > 0">
+      <div
+        class="row row-cols-4 justify-content-start mb-5 mx-auto ms-3 w-100 text-center"
+        v-if="agentProperiesData.length > 0"
+      >
         <RouterLink
           v-for="(property, index) in agentProperiesData"
           :key="index"
-          :to="property.pstatus !== '거래완료' ? { path: `/Property/${property.pnumber}` } : ''"
-          class="col-3 text-decoration-none text-dark me-4 w-auto"
+          :to="
+            property.pstatus !== '거래완료'
+              ? { path: `/Property/${property.pnumber}` }
+              : ''
+          "
+          class="col-4 text-decoration-none text-dark"
           :class="{ disabled: property.pstatus === '거래완료' }"
-          @click.prevent="property.pstatus === '거래완료' ? handleDisabledClick : null"
+          @click.prevent="
+            property.pstatus === '거래완료' ? handleDisabledClick : null
+          "
         >
           <img
             :src="getPropertyThumbnail(property.pnumber)"
@@ -17,12 +26,23 @@
             height="150"
             alt=""
           />
-          <h5 class="fw-bold">{{ property.ptitle }} {{ property.pcategory }} {{ property.prentalfee }} </h5>
-          <small class="property-status text-dark fw-bold btn btn-warning btn-sm">{{ property.pstatus }}</small>
+          <h5 class="fw-bold text-truncate">
+            {{ property.ptitle }} {{ property.pcategory }}
+            {{ property.prentalfee }}
+          </h5>
+          <small
+            class="property-status"
+            :class="property.pstatus === '거래완료' ? tradeDone : tradeYet"
+            >{{ property.pstatus }}</small
+          >
         </RouterLink>
       </div>
       <div class="mb-5 mx-auto ms-3 w-100 text-center" v-else>
-        <img src="@/assets/free-icon-real-estate-1072301.png" width="50" alt="">
+        <img
+          src="@/assets/free-icon-real-estate-1072301.png"
+          width="50"
+          alt=""
+        />
         <h5 class="mt-3 fw-bold">아직 등록된 매물이 없습니다.</h5>
       </div>
     </div>
@@ -30,22 +50,23 @@
 </template>
 
 <script setup>
-import agentAPI from '@/apis/agentAPI';
-import { onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import propertyAPI from '@/apis/propertyAPI';
+import agentAPI from "@/apis/agentAPI";
+import { onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import propertyAPI from "@/apis/propertyAPI";
 
 const route = useRoute();
 const agentProperiesData = ref([]);
 const pthumbnails = ref({}); // 썸네일 데이터를 객체로 저장
-
+const tradeDone = "text-dark fw-bold btn btn-warning btn-sm";
+const tradeYet = "text-light fw-bold btn btn-success btn-sm";
 // 중개인이 올린 매물 리스트 가져오는 함수
 async function getPropertiesByAgent() {
   try {
     const response = await agentAPI.getAgentProperty(route.params.id, 1);
     agentProperiesData.value = response.data.agentProperty;
     console.log("매물 데이터: ", agentProperiesData.value);
-    agentProperiesData.value.forEach(property => {
+    agentProperiesData.value.forEach((property) => {
       getPthumbnail(property.pnumber);
     });
   } catch (error) {
@@ -80,9 +101,12 @@ onMounted(() => {
   getPropertiesByAgent();
 });
 
-watch(() => route.params.id, () => {
-  getPropertiesByAgent();
-});
+watch(
+  () => route.params.id,
+  () => {
+    getPropertiesByAgent();
+  }
+);
 </script>
 
 <style scoped>
@@ -95,7 +119,7 @@ watch(() => route.params.id, () => {
   cursor: not-allowed;
   opacity: 0.5;
 }
-.property-status{
+.property-status {
   font-size: 10px;
 }
 </style>

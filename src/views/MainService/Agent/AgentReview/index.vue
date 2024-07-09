@@ -362,17 +362,6 @@ const deleteReviewData = async (pageId, reviewId) => {
   }
 };
 
-// 리뷰 댓글 정렬
-const sortReviewData = async (pageId, sort) => {
-  try {
-    await agentAPI.sortAgentReview(pageId, sort);
-
-    emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
-  } catch (error) {
-    console.log("에러 발생");
-  }
-};
-
 // 삭제 모달 열기
 function openDeleteModal() {
   showDeleteModal.value = true;

@@ -7,7 +7,7 @@ function signup(formData) {
 }
 
 //중개인 리스트
-const getAgentList = (pageNo, size, filter) => {
+const getAgentList = (pageNo, size, filter,keyword) => {
   //GET: http://localhost/agent?pageNo=1&size=10
   return axios.get("/Agent", {
     params: {
@@ -16,6 +16,7 @@ const getAgentList = (pageNo, size, filter) => {
       byRate: filter.byRate,
       byComment: filter.byComment,
       byDate: filter.byDate,
+      keyword:keyword,
     },
   });
 };
