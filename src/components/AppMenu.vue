@@ -156,8 +156,8 @@ onMounted(() => {
   loginModal = new Modal(document.querySelector("#LoginModal"));
   if (store.getters.getUserRoleNumber) {
     getUattach(store.getters.getUserRoleNumber);
+    checkPropertyListing();
   }
-  checkPropertyListing();
 });
 watch(
   () => store.getters.getUserRoleNumber,

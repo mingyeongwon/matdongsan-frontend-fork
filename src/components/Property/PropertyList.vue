@@ -92,8 +92,8 @@ const loadMoreItems = async () => {
     if (props.type === "property") {
       const response = await propertyAPI.getPropertyList(offset.value, limit,props.propertyPosition.lat,props.propertyPosition.lng);
       const dataLength = response.data.property.length;
-      console.log(dataLength);
       displayedProperties.value.push(...response.data.property);
+      console.log(displayedProperties.value.length +" 길이");
       if (dataLength < limit) {
         allLoaded.value = true;
       }
