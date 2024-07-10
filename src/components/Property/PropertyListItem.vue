@@ -1,8 +1,8 @@
 <template>
   <RouterLink
-    :to="{ path: `/Property/${favoriteData.id}` }"
+    :to="{ path: `/Property/${favoriteData.pnumber}` }"
     class="row text-decoration-none me-3 text-dark"
-    v-if="props.favoriteData.length > 0"
+    v-if="props.favoriteData.pnumber"
   >
     <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
@@ -11,7 +11,7 @@
             class=""
             width="140"
             height="140"
-            src="https://cdn.ggumim.co.kr/cache/star/600/4f88ed25-b172-4ed7-b1cc-8e959c33d786.jpg"
+            :src="fattach"
             alt=""
           />
         </div>
@@ -25,10 +25,10 @@
               </b>
             </p>
             <p class="listInfo">
-              {{ favoriteData.floor }}층, {{ favoriteData.size }}m<sup>2</sup>,
-              관리비 {{ favoriteData.maintenance }}만
+              {{ favoriteData.pfloor }}층, {{ favoriteData.psize }}m<sup>2</sup>,
+              관리비 {{ favoriteData.pmaintenance }}만
             </p>
-            <p class="listInfo">{{ favoriteData.title }}</p>
+            <p class="listInfo">{{ favoriteData.ptitle }}</p>
             <p
               class="listMemberType text-center border border-danger text-danger mt-2 p-1"
             >
@@ -39,7 +39,8 @@
       </div>
     </div>
   </RouterLink>
-  <div v-if="props.propertyData.pstatus==='활성화'">
+
+  <div v-if="propertyData&&props.propertyData.pstatus==='활성화'">
     <RouterLink
     :to="{ path: `/Property/${propertyData.pnumber}` }"
     class="row text-decoration-none me-3 text-dark"
@@ -138,6 +139,7 @@ import propertyAPI from "@/apis/propertyAPI";
 
 const aattach = ref(null); // 중개인 첨부 사진
 const pattach = ref(null); // 매물 첨부 사진
+const fattach = ref(null); // 관심 첨부 사진
 const agentDetailData = ref({ sum: 0, total: 0 }); // 리뷰 평점 합과 수
 const props = defineProps({
   propertyData: {
@@ -158,15 +160,16 @@ const props = defineProps({
   favoriteData: {
     type: Object,
     default: () => ({
-      id: 0,
+      pnumber: 0,
       pcategory: "월세",
       pdeposite: 3000,
       prentalfee: 20,
-      title: "O성북천변 신축급 풀옵션원룸O성신여대역도보4분거리O",
-      floor: 1,
-      size: 25,
-      maintenance: 8,
-      detailInfo: "",
+      ptitle: "O성북천변 신축급 풀옵션원룸O성신여대역도보4분거리O",
+      pfloor: "",
+      pfloortype:"",
+      psize: 25,
+      pmaintenance: 8,
+      pdetailInfo: "",
     }),
   },
   agentData: {
@@ -211,6 +214,16 @@ const getPttach = async (argPnumber) => {
     console.log(error);
   }
 };
+// 관심상품 첨부 사진 가져오기
+const getFttach = async (argPnumber) => {
+  try {
+    const response = await propertyAPI.propertyAttachDownload(argPnumber);
+    const blob = response.data;
+    fattach.value = URL.createObjectURL(blob);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // 평균 평점 계산
 const averageRating = computed(() => {
@@ -228,6 +241,9 @@ if (props.agentData.anumber) {
   getAgentReviewData(props.agentData.anumber);
 } else if (props.propertyData.pnumber) {
   getPttach(props.propertyData.pnumber);
+} else {
+  console.log(props.favoriteData.pnumber);
+  getFttach(props.favoriteData.pnumber)
 }
 </script>
 
