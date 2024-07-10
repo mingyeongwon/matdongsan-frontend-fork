@@ -3,7 +3,7 @@
     <h4>시설 정보</h4>
     <hr />
     <div class="mt-3">
-      <span class="me-5">난방시설</span>
+      <span class="me-5">난방시설 *</span>
       <div class="form-check form-check-inline">
         <input
           class="form-check-input border border-1 border-secondary"
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="mt-3 mb-3">
-      <span class="me-5">냉방시설</span>
+      <span class="me-5">냉방시설 *</span>
       <div class="form-check form-check-inline">
         <input
           class="form-check-input border border-1 border-secondary"
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="mt-3 mb-3">
-      <span class="me-5">화장실</span>
+      <span class="me-5">화장실 *  </span>
       <div class="form-check form-check-inline">
         <input
           class="form-check-input border border-1 border-secondary"

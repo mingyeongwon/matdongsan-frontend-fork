@@ -207,19 +207,18 @@ async function handleSubmit() {
   if (property.isPmaintenance === "false") {
     property.pmaintenance = 0;
   }
-
   if (propertyDetail.moveIn === "today") {
     propertyDetail.pdmoveindate = dayjs().format('YYYY-MM-DD');
   }
-
   if (property.pcategory === "전세") {
     property.prentalfee = 0;
   }
 
   const formData = new FormData();
 
-  // property 데이터 추가
-  formData.append("property.pdeposite", property.pdeposite);
+// property 데이터 추가
+formData.append("property.pnumber", route.params.id);
+formData.append("property.pdeposite", property.pdeposite);
 formData.append("property.prentalfee", property.prentalfee);
 formData.append("property.pfloortype", property.pfloortype);
 formData.append("property.pfloor", property.pfloor);

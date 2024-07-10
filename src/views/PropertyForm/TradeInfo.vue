@@ -206,7 +206,7 @@
     'property', 'propertyDetail'
   ]);
   const { property, propertyDetail  } = toRefs(props);
-  const emit = defineEmits(['maintenanceChange', 'moveInChange', 'paymentTypeChange', 'update:property', 'update:propertyDetail']);
+  const emit = defineEmits(['maintenanceChange', 'moveInChange', 'paymentTypeChange']);
   
   
   function handleMaintenanceChange() {

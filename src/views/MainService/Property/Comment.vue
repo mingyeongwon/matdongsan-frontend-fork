@@ -11,11 +11,18 @@
       </div>
     </div>
     <div class="d-flex mb-4">
-      <img
+      <img v-if="store.getters.getUemail"
         width="60"
         height="60"
         class="rounded-circle"
         :src="memberProfile"
+        alt=""
+      />
+      <img v-else
+        width="60"
+        height="50"
+        class="rounded-circle"
+        src="@/assets/profileImage.png"
         alt=""
       />
       <div class="ms-3 w-100 align-self-center">

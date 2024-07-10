@@ -31,14 +31,15 @@
               {{ property.pnumber }}
             </th>
             <td class="align-middle text-center">
-              <img v-if="pthumbnails[property.pnumber] != null" :src="pthumbnails[property.pnumber]" width="150" alt="매물 사진" />
+              <img v-if="pthumbnails[property.pnumber] != null" :src="pthumbnails[property.pnumber]" 
+              width="150" alt="매물 사진" class="rounded-1"/>
             </td>
             <td class="align-middle text-muted text-center">
               <div class="fw-bold">{{ property.pcategory }} {{ property.pdeposite }}만원
                 <span v-if="property.pcategory == '월세'"> / {{ property.prentalfee }}만원</span>
               </div>
               <small>
-                {{ property.pfloortype }},{{ property.psize }}m<sup>2</sup>,관리비 {{ property.pmaintenance }}만원
+                {{ property.pfloortype }} {{ property.pfloor }}층, {{ property.psize }}m<sup>2</sup>, 관리비 {{ property.pmaintenance }}만원
               </small>
               <div><small>{{ property.ptitle }}</small></div>
             </td>
@@ -62,15 +63,23 @@
                   <!-- 거래 완료 버튼 누르면 버튼 비활성화 -->
                   거래완료
                 </button>
-                <button
+                <!-- <button
                   :class="[
                     'btn btn-sm fw-bold mb-3',
                     isActive ? 'btn-danger' : 'btn-success',
                   ]"
-                  @click="toggleActive"
+                  @click="toggleActive(property.pnumber)"
                   v-if="property.pstatus !== '거래완료'"
                 >
                   {{ isActive ? "비활성화" : "활성화" }}
+                </button> -->
+                <button class="btn btn-sm fw-bold mb-3 btn-danger" @click="changeStatusActive(property.pnumber)"
+                        v-if="property.pstatus !== '거래완료' && property.pstatus !== '활성화'">
+                  활성화
+                </button>
+                <button class="btn btn-sm fw-bold mb-3 btn-success" @click="changeStatusInactive(property.pnumber)"
+                        v-if="property.pstatus !== '거래완료' && property.pstatus === '활성화'">
+                  비활성화
                 </button>
                 <button
                   class="btn btn-sm btn-outline-secondary fw-bold"
@@ -133,7 +142,7 @@ const properties = ref([]);
 const pthumbnails = ref({});
 const selectedPnumber = ref(0); // 모달에 보내는 pnumber
 const pstatus = ref("");
-const isActive = ref(false);
+const isActive = ref(true); // true : 활성화, false : 비활성화 상태
 
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
@@ -141,13 +150,27 @@ onMounted(() => {
 });
 
 // 활성화 비활성화 버튼 클릭 시 실행
-function toggleActive() {
-  isActive.value = !isActive.value;
-  if(isActive.value) {
-    pstatus.value = "거래완료";
-  } else {
-    pstatus.value = "거래완료";
-  }
+// function toggleActive(pnumber) {
+//   isActive.value = !isActive.value;
+//   if(isActive.value) {
+//     pstatus.value = "활성화";
+//   } else {
+//     pstatus.value = "비활성화";
+//   }
+//   selectedPnumber.value = pnumber;
+//   changePropertyStatus();
+// }
+
+function changeStatusActive(pnumber) {
+  selectedPnumber.value = pnumber;
+  pstatus.value = "활성화";
+  changePropertyStatus();
+}
+
+function changeStatusInactive(pnumber) {
+  selectedPnumber.value = pnumber;
+  pstatus.value = "비활성화";
+  changePropertyStatus();
 }
 
 

@@ -10,8 +10,8 @@
             <ul class="text-muted">
               <li class="listGrid mt-3">
                 <div><p>{{property.pcategory}}</p></div>
-                <div><p>{{property.pdeposite}}
-                  <span v-if="property.pcategory == '월세'"> / {{property.prentalfee}}</span>
+                <div><p>{{property.pdeposite}}만원
+                  <span v-if="property.pcategory == '월세'"> / {{property.prentalfee}}만원</span>
                 </p></div>
               </li>
               <li class="listGrid mt-3">
