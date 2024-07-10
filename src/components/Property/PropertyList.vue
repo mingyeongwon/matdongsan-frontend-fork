@@ -212,20 +212,20 @@ watch(
   { deep: true }
 );
 
-// watch(
-//   () =>[props.propertyPosition],
-//   (newValue) => {
-//     console.log("좌표 변경");
-//     console.log("타입:"+props.type);
-//     displayedProperties.value = [];
-//     displayedFavorites.value = [];
-//     displayedAgents.value = [];
-//     offset.value = 1;
-//     allLoaded.value = false;
-//     loadMoreItems();
-//   },
-//   { deep: true }
-// );
+watch(
+  () =>props.propertyPosition,
+  (newValue) => {
+    console.log("좌표 변경");
+    console.log("타입:"+props.type);
+    displayedProperties.value = [];
+    displayedFavorites.value = [];
+    displayedAgents.value = [];
+    offset.value = 1;
+    allLoaded.value = false;
+    loadMoreItems();
+  },
+  { deep: true }
+);
 
 </script>
 
