@@ -6,7 +6,7 @@
         <h4 class="fw-bold mt-2">내 정보</h4>
       </div>
       <hr class="border border-black border-2" />
-      <form action="" class="w-75 mx-auto" v-on:submit.prevent="handleSubmit">
+      <form action="" class="w-75 mx-auto" v-on:submit.prevent="validCheckBeforeSubmit">
         <div class="d-flex justify-content-between w-75">
           <h6 class="text-muted fw-bold align-self-center me-5">프로필 사진</h6>
           <label class="profile-input" for="profile-input">
@@ -67,8 +67,15 @@
             class="ms-5"
             type="text"
             v-model="agentData.aname"
+            maxLength="20"
           />
-          <input v-else class="ms-5" type="text" v-model="memberData.mname" />
+          <input v-else class="ms-5" type="text" v-model="memberData.mname" maxLength="50" />
+        </div>
+        <div class="d-flex">
+          <div class="align-self-center col-2 fw-bold"></div>
+          <div class="ms-5 mt-2 text-danger">
+            {{ errorMessage.name }}
+          </div>
         </div>
         <hr class="mb-4" />
         <div class="d-flex">
@@ -79,19 +86,28 @@
               class="me-2 ms-5 ps-2"
               v-model="arrPhone[0]"
               size="1"
+               maxLength="3"
             />-
             <input
               type="text"
               class="ms-2 me-2 ps-2"
               v-model="arrPhone[1]"
               size="2"
+               maxLength="4"
             />-
             <input
               type="text"
               class="ms-2 ps-2"
               v-model="arrPhone[2]"
               size="2"
+               maxLength="4"
             />
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="align-self-center col-2 fw-bold"></div>
+          <div class="ms-5 mt-2 text-danger">
+            {{ errorMessage.phone }}
           </div>
         </div>
         <hr class="mb-4" />
@@ -101,6 +117,7 @@
             type="email"
             class="readonly-box"
             v-model="store.getters.getUemail"
+             maxLength="50"
             readonly
           />
         </div>
@@ -108,19 +125,36 @@
           <hr />
           <div class="d-flex">
             <div class="align-self-center col-2 fw-bold">중개소 이름</div>
-            <input class="ms-5" type="text" v-model="agentData.abrand" />
+            <input class="ms-5" type="text" v-model="agentData.abrand" maxLength="50" />
           </div>
           <hr class="mb-4" />
           <div class="d-flex">
-            <div class="align-self-center col-2 me-4 fw-bold">
+            <div class="align-self-center me-4 col-2 fw-bold">
               사업자 등록 번호
             </div>
+            <div class="ms-4">
             <input
               type="text"
-              class="me-2 ms-4 ps-2"
-              v-model="agentDetailData.adbrandnumber"
-              size="30"
+              class="readonly-box ms-2 me-2 ps-2"
+              v-model="arrBrandNumber[0]"
+              size="1"
+               readonly
+            />-
+            <input
+              type="text"
+              class="readonly-box ms-2 me-2 ps-2"
+              v-model="arrBrandNumber[1]"
+              size="1"
+               readonly
+            />-
+            <input
+              type="text"
+              class="readonly-box ms-2 ps-2"
+              v-model="arrBrandNumber[2]"
+              size="3"
+               readonly
             />
+          </div>
           </div>
 
           <hr />
@@ -144,6 +178,7 @@
                   style="width: 60%"
                   placeholder="상세주소"
                   v-model="agentData.aaddressdetail"
+                   maxLength="100"
                 />
                 <div>
                   <input
@@ -178,6 +213,7 @@
                   class="ms-4 w-100"
                   v-model.trim="changePassword.oldPassword"
                   placeholder="현재 비밀번호를 입력하세요."
+                  maxLength="100"
                 />
                 <div class="ms-4 mt-1" :class="oldPasswordValidStyle ? 'text-success' : 'text-danger'">
                   {{ errorMessage.oldPassword }}
@@ -196,6 +232,7 @@
                   v-model.trim="changePassword.newPassword1"
                   placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."
                   @keyup="validNew1Password"
+                   maxLength="100"
                 />
                 <div
                   :class="
@@ -216,6 +253,7 @@
                   class="ms-4 w-100"
                   v-model.trim="changePassword.newPassword2"
                   placeholder="새 비밀번호과 같은 비밀번호를 적어주세요."
+                   maxLength="100"
                   @keyup="validNew2Password"
                 />
                 <div
@@ -302,6 +340,7 @@ const store = useStore();
 const agentData = ref({});
 const memberData = ref({});
 const arrPhone = ref("");
+const arrBrandNumber = ref("");
 const userRole = ref("");
 const memberProfile = ref(null);
 const agentDetailData = ref({});
@@ -317,8 +356,9 @@ async function getUserData() {
     if (userRole.value == "AGENT") {
       agentData.value = response.data.agentSignupData.agent;
       agentDetailData.value = response.data.agentSignupData.agentDetail;
-      // 전화번호 하이픈을 기준으로 나누기
+      // 전화번호, 사업자 번호 하이픈을 기준으로 나누기
       arrPhone.value = agentData.value.aphone.split("-");
+      arrBrandNumber.value = agentDetailData.value.adbrandnumber.split("-");
     } else {
       memberData.value = response.data.member;
       arrPhone.value = memberData.value.mphone.split("-");
@@ -361,6 +401,8 @@ let errorMessage = ref({
   oldPassword: "",
   newPassword1: "",
   newPassword2: "",
+  name:"",
+  phone:""
 });
 
 var oldPasswordValidStyle = ref(false);
@@ -508,9 +550,9 @@ async function changePasswordSubmit(){
   // console.log(JSON.parse(JSON.stringify(changePassword.value)));
   console.log("비밀번호 변경 폼 제출");
 }
-
-// 내 정보 수정 제출
-async function handleSubmit() {
+////////////////////////////////////////////////////////////////////////////////
+// 내 정보 수정 제출 메소드 정의
+async function updateForm() {
   console.log("제출 함수 실행");
   //중개인 제출 데이터 폼
   if (store.getters.getUserRole === "AGENT") {
@@ -558,19 +600,72 @@ async function handleSubmit() {
     }
   }
 
-  // 프사가 변경되면(변경할 프로필 사진이 있고, 변경이 성공했다면) 이미지 변경을 의미하는 전역 함수 실행
-  console.log("나",store.state.changeProfileImage.changeProfile);
-  store.commit("changeProfileImage/setChangeProfile");
-  console.log("와",store.state.changeProfileImage.changeProfile);
-
-
-
+  // 프사가 변경되면 이미지 변경을 의미하는 전역 함수 실행
+  if(imageFilesProfile.value && updateMessage.value){
+    store.commit("changeProfileImage/setChangeProfile");
+  }
+  
   const updateInfoDoneModal = new Modal(document.getElementById("updateInfoDoneModal"));
   updateInfoDoneModal.show();
-  // router.go(0); // nav에 사진 바뀌는거 구현 못하면 차악으로 하기
-   
 }
-//수정 완료 업데이트
+
+var phonePattern = /^[0-9]+$/;
+var namePattern = /^[가-힣]{2,17}$/;
+var validResultName = ref(false);
+var validResultPhone = ref(false);
+
+// 이름 패턴 검사기
+function nameValidator(name) {
+  if (!namePattern.test(name)) {
+    errorMessage.value.name = "실명을 입력하세요";
+    validResultName.value=false;
+  } else {
+    errorMessage.value.name = "";
+    validResultName.value=true;
+
+  }
+} 
+// 휴대폰 번호 패턴 검사기 
+function PhoneValidate(phone) {
+    // 검사 하기전 결과 값 초기화
+  errorMessage.value.phone = "";
+  validResultPhone.value = true;
+  // // 휴대폰 번호 배열 유효성 검사
+  arrPhone.value.forEach(phone => {
+    var result = phonePattern.test(phone);
+    console.log(phone,result,phone.length);
+    if(!result){
+      errorMessage.value.phone = "숫자만 입력하세요";
+      validResultPhone.value=false;
+    } 
+  })
+  // if (!phonePattern.test(phone)) {
+  //   errorMessage.value.phone = "숫자만 입력하세요";
+  //   validResultPhone.value=false;
+  // } else {
+  //   errorMessage.value.phone = "";
+  //   validResultPhone.value=true;
+  // }
+}
+
+// 수정 제출 버튼 누르면 실행
+function validCheckBeforeSubmit(){
+  // 형식 유효성 검사하기
+  if(store.getters.getUserRole === "AGENT"){
+    nameValidator(agentData.value.aname);
+    PhoneValidate(agentData.value.aphone);
+  } else if(store.getters.getUserRole === "MEMBER"){
+    nameValidator(memberData.value.mname);
+    PhoneValidate(memberData.value.mphone);
+  }
+
+  // 검사를 통과하면 수정 폼 제출
+  if(validResultName.value && validResultPhone.value){
+    updateForm()
+  }
+}
+
+//비밀번호 수정 완료 업데이트
 function resetPasswordInfo() {
   changePassword.value.newPassword1 = "";
   changePassword.value.newPassword2 = "";

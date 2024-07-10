@@ -3,7 +3,7 @@
     <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">고객 문의</h2>
   <div class="w-50 container pb-5">
     <div class="row">
-    <div class="col">
+    <div class="col align-content-end">
       <div> 문의 유형: {{ category(customerInquiry.qcategory) }}</div>
     </div>
     <div class="col">
@@ -22,14 +22,17 @@
     </div>
     <hr>
     <div class="row me-5">
-      <span class="col-2 mb-3 text-center mt-5" >문의 내용</span>
-      <div class="col-10 w-75 mt-5 mb-5">{{ customerInquiry.qcontent }}</div>
+      <span class="col-2 mb-3 text-center align-content-center mt-5" >문의 내용</span>
+      <div class="col-10 w-75 mt-5 mb-5">
+        <div class="ms-2">{{ customerInquiry.qcontent }}</div>
+        <img class="mt-5 ms-2 " v-if="qAttach != null" width="150" :src="qAttach"/><div class="mt-5" v-else> *첨부 파일 없음</div>
+      </div>
     </div>
-    <hr>
-    <div class="row me-5">
-      <span class="col-2 mb-3 text-center mt-5" >첨부파일</span>
-      <div class="col-10 w-75 mt-5 mb-5"><img v-if="qAttach != null" width="150" :src="qAttach"/><div v-else> *첨부 파일 없음</div></div>
-    </div>
+    <!-- <hr> -->
+    <!-- <div class="row me-5">
+      <span class="col-2 mb-3 text-center mt-5" ></span>
+      <div class="col-10 w-75 mt-5 mb-5"></div>
+    </div> -->
     
     <hr>
     <!-- 답변 폼 관리자로 로그인 하고 답변이 없을 때만 보이게 하기 -->
