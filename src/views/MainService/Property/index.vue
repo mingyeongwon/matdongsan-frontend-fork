@@ -44,11 +44,11 @@
       <div class="d-flex ps-3 pe-3 pb-3 pt-3">
         <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3">
-            <PropertyList type="property" @update:propertyPositionData="getPropertyPositionData" :propertyPosition="propertyClusterPosition" />
+            <PropertyList type="property" @getTotalPropertyListData="getTotalPropertyData" @update:propertyPositionData="getPropertyPositionData" :propertyPosition="propertyClusterPosition" />
           </div>
         </div>
         <div class="map-box right-box col p-3" v-if="!route.params.id">
-          <KakaoMap page="propertyList" :propertyPositionList="propertyPositionList" @getPropertyClusterPosition="getPropertyClusterPosition"/>
+          <KakaoMap page="propertyList" :propertyPositionList="propertyTotalList" @getPropertyClusterPosition="getPropertyClusterPosition"/>
         </div>
         <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches"/>
@@ -93,8 +93,7 @@ const member = ref({});
 const agent = ref({});
 const propertyCommentFilter = ref("");
 const propertyClusterPosition = ref({ lat: "", lng: "" });
-
-
+const propertyTotalList = ref([]);
 // 뒤로 가기
 function backToPropertyList() {
   router.push("/Property");
@@ -182,7 +181,6 @@ const getPropertyData = async () => {
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
-
     pattaches.value = [];
 
     getPthumbnail(route.params.id);
@@ -246,6 +244,13 @@ function getPropertyClusterPosition(lat, lng) {
   console.log(propertyClusterPosition.value.lng);
 }
 
+//지도에 표시할 전체 매물 데이터 가져오기
+function getTotalPropertyData(data) {
+  propertyTotalList.value =data;
+  console.log("실행된 전체 매물 리스트 get");
+  console.log(propertyTotalList.value);
+}
+
 onMounted(() => {
   if (route.params.id) {
     getPropertyData();
@@ -279,6 +284,13 @@ watch(
   () => propertyClusterPosition.value,
   () => {
     console.log("Property position list updated:", propertyClusterPosition.value);
+  },
+  { deep: true }
+);
+watch(
+  () => propertyTotalList.value,
+  () => {
+    console.log("propertyTotalList:", propertyTotalList.value);
   },
   { deep: true }
 );

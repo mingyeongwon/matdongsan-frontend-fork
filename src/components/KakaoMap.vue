@@ -40,7 +40,7 @@ const initMap = () => {
     displayMarker(props.positionList.map(agent => [agent.alatitude, agent.alongitude]), 'agent');
   } else if (props.page === "propertyList") {
     // 매물 페이지인 경우 매물 마커들 맵에 표시
-      console.log("실행 displaymarker: "+props.propertyPositionList);
+      console.log("실행 displaymarker: "+props.propertyPositionList.length);
     setupPropertyMarkers();
   }
 
@@ -171,7 +171,7 @@ watch(() => props.positionList ? props.positionList.length : 0, (newLength) => {
 });
 watch(() => props.propertyPositionList ? props.propertyPositionList.length : 0, (newLength) => {
   if (map && newLength > 0) {
-  
+
     displayMarker(props.propertyPositionList.map(property => [property.platitude, property.plongitude]), 'property');
   }
 });

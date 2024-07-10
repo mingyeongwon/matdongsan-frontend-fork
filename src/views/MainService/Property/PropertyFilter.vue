@@ -120,7 +120,7 @@
             </div>
             <div class="border-top p-3 d-flex justify-content-end">
                 <button class="btn btn-outline-secondary">초기화</button>
-                <button class="btn btn-warning ms-2">30개의 매물보기</button>
+                <button class="btn btn-warning ms-2">조건검색</button>
             </div>
         </div>
     </form>

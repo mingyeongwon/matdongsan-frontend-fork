@@ -2,7 +2,12 @@
   <!-- 'property' 타입일 경우에만 렌더링되는 블록 -->
   <div v-if="props.type == 'property'">
     <!-- 표시할 데이터가 없는 경우 -->
-    <div v-if="!isLoading && displayedProperties.length === 0" class="no-results">검색 결과 없음</div>
+    <div
+      v-if="!isLoading && displayedProperties.length === 0"
+      class="no-results"
+    >
+      검색 결과 없음
+    </div>
     <!-- displayedProperties 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
     <div
       class="p-0"
@@ -21,7 +26,9 @@
   <!-- 'agent' 타입일 경우에만 렌더링되는 블록 -->
   <div v-if="props.type == 'agent'">
     <!-- 표시할 데이터가 없는 경우 -->
-    <div v-if="!isLoading && displayedAgents.length === 0" class="no-results">검색 결과 없음</div>
+    <div v-if="!isLoading && displayedAgents.length === 0" class="no-results">
+      검색 결과 없음
+    </div>
     <!-- displayedAgents 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
     <div
       class="p-0"
@@ -40,7 +47,12 @@
   <!-- 'favorite' 타입일 경우에만 렌더링되는 블록 -->
   <div v-if="props.type == 'favorite'">
     <!-- 표시할 데이터가 없는 경우 -->
-    <div v-if="!isLoading && displayedFavorites.length === 0" class="no-results">검색 결과 없음</div>
+    <div
+      v-if="!isLoading && displayedFavorites.length === 0"
+      class="no-results"
+    >
+      검색 결과 없음
+    </div>
     <!-- displayedFavorites 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
     <div
       class="p-0"
@@ -66,10 +78,17 @@ import favoriteAPI from "@/apis/favoriteAPI";
 const emit = defineEmits([
   "update:positionData",
   "update:propertyPositionData",
+  "getTotalPropertyListData",
 ]);
 
-const props = defineProps(["type", "filters", "searchedData","propertyPosition"]); // props로부터 type 속성 정의
+const props = defineProps([
+  "type",
+  "filters",
+  "searchedData",
+  "propertyPosition",
+]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
+const displayedTotalProperties = ref([{pnumber:0,platitude:"",plongitude:""}]); // 지도에 표시할 전체 property 목록
 const displayedFavorites = ref([]); // 표시할 favorite 목록
 const displayedAgents = ref([]); // 표시할 agent 목록
 const isLoading = ref(false); // 로딩 상태
@@ -90,10 +109,17 @@ const loadMoreItems = async () => {
   try {
     // type이 'property'인 경우
     if (props.type === "property") {
-      const response = await propertyAPI.getPropertyList(offset.value, limit,props.propertyPosition.lat,props.propertyPosition.lng);
+      const response = await propertyAPI.getPropertyList(
+        offset.value,
+        limit,
+        props.propertyPosition.lat,
+        props.propertyPosition.lng
+      );
       const dataLength = response.data.property.length;
       displayedProperties.value.push(...response.data.property);
-      console.log(displayedProperties.value.length +" 길이");
+      displayedTotalProperties.value = response.data.propertyTotalList;
+      emit("getTotalPropertyListData", displayedTotalProperties.value);
+      console.log(displayedProperties.value.length + " 길이");
       if (dataLength < limit) {
         allLoaded.value = true;
       }
@@ -106,7 +132,7 @@ const loadMoreItems = async () => {
         props.filters,
         props.searchedData
       );
-      
+
       const dataLength = response.data.agent.length;
       displayedAgents.value.push(...response.data.agent);
       if (dataLength < limit) {
@@ -212,11 +238,20 @@ watch(
   { deep: true }
 );
 
+// displayedTotalProperties 배열의 변경을 감지하여 emit
 watch(
-  () =>props.propertyPosition,
+  () => displayedTotalProperties.value,
+  (newValue) => {
+    emit("getTotalPropertyListData", newValue);
+  },
+  { deep: true }
+);
+
+watch(
+  () => props.propertyPosition,
   (newValue) => {
     console.log("좌표 변경");
-    console.log("타입:"+props.type);
+    console.log("타입:" + props.type);
     displayedProperties.value = [];
     displayedFavorites.value = [];
     displayedAgents.value = [];
@@ -226,7 +261,6 @@ watch(
   },
   { deep: true }
 );
-
 </script>
 
 <style scoped>
