@@ -317,7 +317,6 @@ const getUserData = async(uemail) => {
   try {
     const response = await memberAPI.getUserDataByUemail(uemail);
     userCommonData.value = response.data;
-    console.log("userCommonData : " + userCommonData.value);
   } catch(error) {
     console.log(error);
   }

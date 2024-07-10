@@ -65,12 +65,12 @@
                 <button
                   :class="[
                     'btn btn-sm fw-bold mb-3',
-                    property.isActive ? 'btn-danger' : 'btn-success',
+                    isActive ? 'btn-danger' : 'btn-success',
                   ]"
-                  @click="toggleActive(property)"
+                  @click="toggleActive"
                   v-if="property.pstatus !== '거래완료'"
                 >
-                  {{ property.isActive ? "비활성화" : "활성화" }}
+                  {{ isActive ? "비활성화" : "활성화" }}
                 </button>
                 <button
                   class="btn btn-sm btn-outline-secondary fw-bold"
@@ -129,19 +129,25 @@ import dayjs from "dayjs";
 
 let transactionModal = null;
 let deletePropertyModal = null;
-let idNumber = ref(0);
 const properties = ref([]);
 const pthumbnails = ref({});
 const selectedPnumber = ref(0); // 모달에 보내는 pnumber
 const pstatus = ref("");
+const isActive = ref(false);
 
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
   deletePropertyModal = new Modal(document.querySelector("#DeletePropertyModal"));
 });
 
-function toggleActive(property) {
-  property.isActive = !property.isActive;
+// 활성화 비활성화 버튼 클릭 시 실행
+function toggleActive() {
+  isActive.value = !isActive.value;
+  if(isActive.value) {
+    pstatus.value = "거래완료";
+  } else {
+    pstatus.value = "거래완료";
+  }
 }
 
 
