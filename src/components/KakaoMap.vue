@@ -102,7 +102,7 @@ const setupPropertyMarkers = () => {
     averageCenter: true,
   };
   cluster = new kakao.maps.MarkerClusterer(clusterOptions); //클러스터 기능을 쓰기위한 초기화 변수 선언
-  cluster.setMinClusterSize(1); // 클러스터 최소 마커 -> 1개만 있어도 클러스터화
+  cluster.setMinClusterSize(2); // 클러스터 최소 마커 -> 1개만 있어도 클러스터화
   cluster.addMarkers(markers.value); // 마커추가
 
   //클러스터 클릭이벤트 설정

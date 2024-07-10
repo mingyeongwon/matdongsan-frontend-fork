@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden w-75 mx-auto">
-    <PropertyFilter class="w-100 mt-2" />
+    <PropertyFilter class="w-100 mt-2"/>
     <ul class="nav nav-pills mt-3 ms-4">
       <li class="nav-item">
         <RouterLink
@@ -23,8 +23,7 @@
           class="fa-solid fa-arrow-left fa-xl me-3"
           @click="backToPropertyList"
         ></i>
-        <i
-          v-if="store.getters.getUserRole === 'MEMBER'"
+        <i v-if="store.getters.getUserRole === 'MEMBER'"
           :class="[
             isHovered ? 'fa-solid fa-heart' : 'fa-regular fa-heart',
             'fa-xl',
@@ -36,8 +35,7 @@
           style="color: #ff0000"
           @click="isLiked"
           @mouseover="toggleHover(true)"
-          @mouseleave="toggleHover(false)"
-        >
+          @mouseleave="toggleHover(false)">
         </i>
       </div>
     </ul>
@@ -46,29 +44,17 @@
       <div class="d-flex ps-3 pe-3 pb-3 pt-3">
         <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3">
-            <PropertyList
-              type="property"
-              @update:propertyPositionData="getPropertyPositionData"
-              :propertyPosition="propertyClusterPosition"
-            />
+            <PropertyList type="property" @update:propertyPositionData="getPropertyPositionData" :propertyPosition="propertyClusterPosition" />
           </div>
         </div>
         <div class="map-box right-box col p-3" v-if="!route.params.id">
-          <KakaoMap
-            page="propertyList"
-            :propertyPositionList="propertyPositionList"
-            @getPropertyClusterPosition="getPropertyClusterPosition"
-          />
+          <KakaoMap page="propertyList" :propertyPositionList="propertyPositionList" @getPropertyClusterPosition="getPropertyClusterPosition"/>
         </div>
         <div class="right-box col h-100 p-3" v-if="route.params.id">
-          <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches" />
+          <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches"/>
           <DetailInfo :property="property" :propertyDetail="propertyDetail" />
-          <ReportFalse :pnumber="route.params.id" />
-          <Comment
-            :userComment="userComment"
-            @update-property-data="getPropertyData"
-            @get:commentFilter="getPropertyCommentFilter"
-          />
+          <ReportFalse :pnumber="route.params.id"/>
+          <Comment :userComment="userComment" @update-property-data="getPropertyData" @get:commentFilter="getPropertyCommentFilter" />
         </div>
       </div>
     </div>
@@ -93,10 +79,11 @@ const store = useStore();
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
 
+
 const property = ref({});
 const propertyDetail = ref({});
 const propertyPhotos = ref([]);
-const userComment = ref([]); // 문의 댓글
+const userComment = ref([]); // 문의 댓글 
 const pthumbnail = ref(null);
 const pattaches = ref([]);
 const propertyPositionList = ref([]);
@@ -106,6 +93,7 @@ const member = ref({});
 const agent = ref({});
 const propertyCommentFilter = ref("");
 const propertyClusterPosition = ref({ lat: "", lng: "" });
+
 
 // 뒤로 가기
 function backToPropertyList() {
@@ -155,7 +143,8 @@ const cancelLikeProperty = async () => {
 
 // 좋아요 여부
 const isPropertyLiked = async () => {
-  if (store.getters.getUemail) {
+  if(store.getters.getUemail) {
+
     try {
       const response = await propertyAPI.isPropertyLiked(route.params.id);
       isClicked.value = response.data; // 서버에서 boolean 값 반환
@@ -173,9 +162,7 @@ const getUserDataByUnumber = async (unumber) => {
     member.value = response.data.member;
     agent.value = response.data.agent;
     if (userCommonData.value.urole === "MEMBER") {
-      const response = await memberAPI.memberAttachDownload(
-        member.value.mnumber
-      );
+      const response = await memberAPI.memberAttachDownload(member.value.mnumber);
       const blob = response.data;
       userProfiles.value[unumber] = URL.createObjectURL(blob);
     } else {
@@ -191,10 +178,7 @@ const getUserDataByUnumber = async (unumber) => {
 // property 데이터 가져오기
 const getPropertyData = async () => {
   try {
-    const response = await propertyAPI.getPropertyData(
-      route.params.id,
-      propertyCommentFilter.value
-    );
+    const response = await propertyAPI.getPropertyData(route.params.id, propertyCommentFilter.value);
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
@@ -203,11 +187,9 @@ const getPropertyData = async () => {
 
     getPthumbnail(route.params.id);
 
-    await Promise.all(
-      propertyPhotos.value.map(async (photo) => {
-        await getPattaches(photo.ppnumber);
-      })
-    );
+    await Promise.all(propertyPhotos.value.map(async (photo) => {
+      await getPattaches(photo.ppnumber);
+    }));
 
     if (response.data.propertyCommentList) {
       const comments = response.data.propertyCommentList;
@@ -221,6 +203,7 @@ const getPropertyData = async () => {
         profile: userProfiles.value[comment.ucUnumber],
       }));
     }
+
   } catch (error) {
     console.log(error);
   }
@@ -253,10 +236,7 @@ function getPropertyCommentFilter(data) {
 
 // 매물 포지션 리스트 가져오기
 function getPropertyClusterPosition(lat, lng) {
-  if (
-    propertyClusterPosition.value.lat === lat &&
-    propertyClusterPosition.value.lng === lng
-  ) {
+  if (propertyClusterPosition.value.lat === lat && propertyClusterPosition.value.lng === lng) {
     return;
   }
 
@@ -273,26 +253,20 @@ onMounted(() => {
   }
 });
 
-// params로 넘어온 pnumber
-watch(
-  () => route.params.id,
-  (newPnumber) => {
-    if (newPnumber) {
-      propertyPhotos.value = [];
-      pattaches.value = [];
-      propertyCommentFilter.value = "desc";
-      getPropertyData();
-      isPropertyLiked();
-    }
-  }
-);
-
-watch(
-  () => propertyCommentFilter.value,
-  () => {
+// params로 넘어온 pnumber 
+watch(() => route.params.id, (newPnumber) => {
+  if (newPnumber) {
+    propertyPhotos.value = [];
+    pattaches.value = [];
+    propertyCommentFilter.value = "desc";
     getPropertyData();
+    isPropertyLiked();
   }
-);
+});
+
+watch(() => propertyCommentFilter.value, () => {
+  getPropertyData();
+});
 
 watch(
   () => propertyPositionList.value.length,
@@ -304,10 +278,7 @@ watch(
 watch(
   () => propertyClusterPosition.value,
   () => {
-    console.log(
-      "Property position list updated:",
-      propertyClusterPosition.value
-    );
+    console.log("Property position list updated:", propertyClusterPosition.value);
   },
   { deep: true }
 );

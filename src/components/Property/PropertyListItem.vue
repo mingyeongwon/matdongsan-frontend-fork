@@ -39,7 +39,7 @@
       </div>
     </div>
   </RouterLink>
-  <div v-if="props.propertyData.pstatus==='거래완료'">
+  <div v-if="props.propertyData.pstatus==='활성화'">
     <RouterLink
     :to="{ path: `/Property/${propertyData.pnumber}` }"
     class="row text-decoration-none me-3 text-dark"
