@@ -103,7 +103,7 @@ const updateProperty = (pnumber, formData) => {
 // 매물 상태 수정
 const updatePropertyStatus = (pnumber, pstatus) => {
   console.log("pstatus + pnumber in axios : " + pnumber + pstatus);
-  return axios.put("/updatePropertyStatus/" + pnumber, { params: { pstatus } });
+  return axios.put("/updatePropertyStatus/" + pnumber, qs.stringify({ pstatus }));
 };
 
 // 좋아요

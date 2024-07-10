@@ -94,6 +94,7 @@ const loadMoreItems = async () => {
       console.log("매물 리스트: " +props.propertyPosition.lng);
       const response = await propertyAPI.getPropertyList(offset.value, limit,props.propertyPosition.lat,props.propertyPosition.lng);
       const dataLength = response.data.property.length;
+      console.log(dataLength);
       displayedProperties.value.push(...response.data.property);
       if (dataLength < limit) {
         allLoaded.value = true;
@@ -214,8 +215,15 @@ watch(
 );
 
 watch(
-  () => props.propertyPosition,
+  () =>[props.propertyPosition.lat, props.propertyPosition.lng],
   (newValue) => {
+    console.log("좌표 변경");
+    console.log("타입:"+props.type);
+    displayedProperties.value = [];
+    displayedFavorites.value = [];
+    displayedAgents.value = [];
+    offset.value = 1;
+    allLoaded.value = false;
     loadMoreItems();
   },
   { deep: true }
