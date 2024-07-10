@@ -103,9 +103,17 @@ const updateProperty = (pnumber, formData) => {
 // 매물 상태 수정
 const updatePropertyStatus = (pnumber, pstatus) => {
   console.log("pstatus + pnumber in axios : " + pnumber + pstatus);
-  return axios.put("/updatePropertyStatus/" + pnumber, qs.stringify({ pstatus }));
+  return axios.put(
+    "/updatePropertyStatus/" + pnumber,
+    qs.stringify({ pstatus })
+  );
 };
 
+// 해당 좌표 매물 번호 가져오기
+const getPropertyDataByPosition = (lat, lng) => {
+  console.log("lat: " + lat + " lng: " + lng);
+  return axios.get("/Property/Position", { params: { lat, lng } });
+};
 // 좋아요
 const likeProperty = (pnumber) => {
   return axios.post("/likeProperty/" + pnumber);
@@ -143,4 +151,5 @@ export default {
   likeProperty,
   cancelLikeProperty,
   isPropertyLiked,
+  getPropertyDataByPosition,
 };

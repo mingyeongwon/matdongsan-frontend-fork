@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="map-box right-box col p-3" v-if="!route.params.id">
-          <KakaoMap page="propertyList" :propertyPositionList="propertyTotalList" @getPropertyClusterPosition="getPropertyClusterPosition"/>
+          <KakaoMap page="propertyList" :propertyPositionList="propertyTotalList" @getPropertyClusterPosition="getPropertyClusterPosition" @get:clickedPropertyPosition="getPropertyPositionFromMap"/>
         </div>
         <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches"/>
@@ -70,7 +70,7 @@ import KakaoMap from "@/components/KakaoMap.vue";
 import PropertyFilter from "./PropertyFilter.vue";
 import ReportFalse from "@/views/MainService/Property/ReportFalse.vue";
 import propertyAPI from "@/apis/propertyAPI";
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
@@ -248,8 +248,26 @@ function getPropertyClusterPosition(lat, lng) {
 function getTotalPropertyData(data) {
   propertyTotalList.value =data;
   console.log("실행된 전체 매물 리스트 get");
-  console.log(propertyTotalList.value);
 }
+//해당 좌표의 디테일 페이지 이동
+async function movePropertyDetailPageByPosition(lat,lng) {
+  try {
+    console.log("엑시오스: " +lat + " " + lng );
+    const response = await propertyAPI.getPropertyDataByPosition(lat,lng); //pnumber만 가져옴
+    console.log("zmdkdkd"+response.data);
+    router.push("/Property/"+response.data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//지도로 부터 클릭된 마커이벤트 실행
+function getPropertyPositionFromMap(lat,lng) {
+  if(lat && lng){
+    movePropertyDetailPageByPosition(lat,lng);
+  }
+}
+
 
 onMounted(() => {
   if (route.params.id) {
@@ -276,14 +294,14 @@ watch(() => propertyCommentFilter.value, () => {
 watch(
   () => propertyPositionList.value.length,
   () => {
-    console.log("Property position list updated:", propertyPositionList.value);
+    console.log("Property position list updated");
   },
   { deep: true }
 );
 watch(
   () => propertyClusterPosition.value,
   () => {
-    console.log("Property position list updated:", propertyClusterPosition.value);
+    console.log("Property position list updated");
   },
   { deep: true }
 );

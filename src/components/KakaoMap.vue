@@ -5,7 +5,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 
-const emits = defineEmits(["getPropertyData","get:clickedAgentPosition","getPropertyClusterPosition"]);
+const emits = defineEmits(["getPropertyData","get:clickedAgentPosition","getPropertyClusterPosition","get:clickedPropertyPosition"]);
 const props = defineProps(["positionList", "propertyPositionList", "position", "page"]);
 
 let map;
@@ -40,7 +40,6 @@ const initMap = () => {
     displayMarker(props.positionList.map(agent => [agent.alatitude, agent.alongitude]), 'agent');
   } else if (props.page === "propertyList") {
     // 매물 페이지인 경우 매물 마커들 맵에 표시
-      console.log("실행 displaymarker: "+props.propertyPositionList.length);
     setupPropertyMarkers();
   }
 
@@ -112,7 +111,7 @@ const setupPropertyMarkers = () => {
 var level = map.getLevel()-1;
 if(map.getLevel()===2){
   console.log("click: " +cluster.getCenter().getLat());
-  emits("getPropertyClusterPosition",cluster.getCenter().getLat(),cluster.getCenter().getLng())
+  emits("getPropertyClusterPosition",cluster.getCenter().getLat(),cluster.getCenter().getLng()) //지도에서 클러스터로 일정부분 확대가 되면 클릭 이벤트 작동
 }
 // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
 map.setLevel(level, {anchor: cluster.getCenter()});
@@ -123,8 +122,8 @@ map.setLevel(level, {anchor: cluster.getCenter()});
 const handleMarkerClick = (type, position) => {
 if(type=='agent'){
   emits("get:clickedAgentPosition",position[0],position[1]);
-} else{
-        alert(`기타 위치의 좌표는 위도: ${position[0]}, 경도: ${position[1]}입니다.`);
+} else {
+  emits("get:clickedPropertyPosition",position[0],position[1]);
 }
 };
 
