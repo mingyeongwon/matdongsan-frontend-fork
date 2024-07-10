@@ -90,8 +90,6 @@ const loadMoreItems = async () => {
   try {
     // type이 'property'인 경우
     if (props.type === "property") {
-      console.log("매물 리스트: " +props.propertyPosition.lat);
-      console.log("매물 리스트: " +props.propertyPosition.lng);
       const response = await propertyAPI.getPropertyList(offset.value, limit,props.propertyPosition.lat,props.propertyPosition.lng);
       const dataLength = response.data.property.length;
       console.log(dataLength);
@@ -214,20 +212,20 @@ watch(
   { deep: true }
 );
 
-watch(
-  () =>[props.propertyPosition.lat, props.propertyPosition.lng],
-  (newValue) => {
-    console.log("좌표 변경");
-    console.log("타입:"+props.type);
-    displayedProperties.value = [];
-    displayedFavorites.value = [];
-    displayedAgents.value = [];
-    offset.value = 1;
-    allLoaded.value = false;
-    loadMoreItems();
-  },
-  { deep: true }
-);
+// watch(
+//   () =>[props.propertyPosition],
+//   (newValue) => {
+//     console.log("좌표 변경");
+//     console.log("타입:"+props.type);
+//     displayedProperties.value = [];
+//     displayedFavorites.value = [];
+//     displayedAgents.value = [];
+//     offset.value = 1;
+//     allLoaded.value = false;
+//     loadMoreItems();
+//   },
+//   { deep: true }
+// );
 
 </script>
 
