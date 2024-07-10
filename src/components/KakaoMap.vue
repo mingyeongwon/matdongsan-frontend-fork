@@ -152,6 +152,7 @@ onMounted(() => {
     }
   );
 });
+
 //중개인 포지션이 변경되면 상태 업데이트
 watch(() => props.position, (newPosition) => {
   if (map && newPosition) {
