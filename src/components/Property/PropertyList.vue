@@ -2,11 +2,18 @@
   <!-- 'property' 타입일 경우에만 렌더링되는 블록 -->
   <div v-if="props.type == 'property'">
     <!-- 표시할 데이터가 없는 경우 -->
-    <div v-if="!isLoading && displayedProperties.length === 0" class="no-results">
+    <div
+      v-if="!isLoading && displayedProperties.length === 0"
+      class="no-results"
+    >
       검색 결과 없음
     </div>
     <!-- displayedProperties 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
-    <div class="p-0" v-for="PropertyData in displayedProperties" :key="PropertyData.pnumber">
+    <div
+      class="p-0"
+      v-for="PropertyData in displayedProperties"
+      :key="PropertyData.pnumber"
+    >
       <!-- PropertyListItem 컴포넌트에 exampleProperty 데이터를 전달 -->
       <PropertyListItem :propertyData="PropertyData" />
     </div>
@@ -23,7 +30,11 @@
       검색 결과 없음
     </div>
     <!-- displayedAgents 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
-    <div class="p-0" v-for="AgentData in displayedAgents" :key="AgentData.anumber">
+    <div
+      class="p-0"
+      v-for="AgentData in displayedAgents"
+      :key="AgentData.anumber"
+    >
       <!-- PropertyListItem 컴포넌트에 exampleAgent 데이터를 전달 -->
       <PropertyListItem :agentData="AgentData" />
     </div>
@@ -36,11 +47,18 @@
   <!-- 'favorite' 타입일 경우에만 렌더링되는 블록 -->
   <div v-if="props.type == 'favorite'">
     <!-- 표시할 데이터가 없는 경우 -->
-    <div v-if="!isLoading && displayedFavorites.length === 0" class="no-results">
+    <div
+      v-if="!isLoading && displayedFavorites.length === 0"
+      class="no-results"
+    >
       검색 결과 없음
     </div>
     <!-- displayedFavorites 배열을 순회하며 PropertyListItem 컴포넌트를 렌더링 -->
-    <div class="p-0" v-for="favoriteData in displayedFavorites" :key="favoriteData.fPnumber">
+    <div
+      class="p-0"
+      v-for="favoriteData in displayedFavorites"
+      :key="favoriteData.fPnumber"
+    >
       <!-- PropertyListItem 컴포넌트에 exampleFavorite 데이터를 전달 -->
       <PropertyListItem :favoriteData="favoriteData.property" />
     </div>
@@ -61,6 +79,7 @@ const emit = defineEmits([
   "update:positionData",
   "update:propertyPositionData",
   "getTotalPropertyListData",
+  "getFavoriteListData",
 ]);
 
 const props = defineProps([
@@ -70,7 +89,9 @@ const props = defineProps([
   "propertyPosition",
 ]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
-const displayedTotalProperties = ref([{ pnumber: 0, platitude: "", plongitude: "" }]); // 지도에 표시할 전체 property 목록
+const displayedTotalProperties = ref([
+  { pnumber: 0, platitude: "", plongitude: "" },
+]); // 지도에 표시할 전체 property 목록
 const displayedFavorites = ref([]); // 표시할 favorite 목록
 const displayedAgents = ref([]); // 표시할 agent 목록
 const isLoading = ref(false); // 로딩 상태
@@ -127,6 +148,7 @@ const loadMoreItems = async () => {
       const dataLength = response.data.favorite.length;
       console.log(dataLength);
       displayedFavorites.value.push(...response.data.favorite);
+      emit("getFavoriteListData",displayedFavorites.value);
       if (dataLength < limit) {
         allLoaded.value = true;
       }

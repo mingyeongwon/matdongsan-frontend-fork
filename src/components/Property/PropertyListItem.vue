@@ -242,7 +242,6 @@ if (props.agentData.anumber) {
 } else if (props.propertyData.pnumber) {
   getPttach(props.propertyData.pnumber);
 } else {
-  console.log(props.favoriteData.pnumber);
   getFttach(props.favoriteData.pnumber)
 }
 </script>
