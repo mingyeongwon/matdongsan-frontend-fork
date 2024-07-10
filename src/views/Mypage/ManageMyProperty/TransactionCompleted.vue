@@ -20,7 +20,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-warning ms-5 ps-4 pe-4 fw-bold" @click="emit('close')">
+              class="btn btn-warning ms-5 ps-4 pe-4 fw-bold" @click="changePropertyStatus">
               거래완료
             </button>
           </div>
@@ -31,7 +31,18 @@
 </template>
 
 <script setup>
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "change-property-status"]);
+const props = defineProps({
+  pnumber: {
+    type: Number,
+    required: true
+  }
+});
+
+function changePropertyStatus() {
+  emit('change-property-status', props.pnumber);
+  emit('close');
+}
 
 </script>
 

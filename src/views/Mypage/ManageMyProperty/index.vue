@@ -56,7 +56,7 @@
                 </button> </RouterLink>
                 <button
                   class="soldOutBtn btn btn-sm fw-bold mb-3"
-                  @click="showTransactionModal(property)"
+                  @click="showTransactionModal(property.pnumber)"
                   :disabled="property.pstatus === 거래완료"
                 >
                   <!-- 거래 완료 버튼 누르면 버튼 비활성화 -->
@@ -73,7 +73,7 @@
                   {{ property.isActive ? "비활성화" : "활성화" }}
                 </button>
                 <button
-                  class="soldOutBtn btn btn-sm fw-bold"
+                  class="btn btn-sm btn-outline-secondary fw-bold"
                   @click="showDeletePropertyModal(property.pnumber)">
                   삭제
                 </button>                
@@ -104,7 +104,9 @@
   </div>
   <TransactionModal
     id="TransactionModal"
-    @close="hideTransactionModal(properties)"
+    @close="hideTransactionModal"
+    :pnumber = "selectedPnumber"
+    @change-property-status="changePropertyStatus"
   />
   <DeletePropertyModal
     id="DeletePropertyModal"
@@ -128,11 +130,10 @@ import dayjs from "dayjs";
 let transactionModal = null;
 let deletePropertyModal = null;
 let idNumber = ref(0);
-
 const properties = ref([]);
 const pthumbnails = ref({});
-
-const selectedPnumber = ref(0); // 삭제 모달에 보내는 pnumber
+const selectedPnumber = ref(0); // 모달에 보내는 pnumber
+const pstatus = ref("");
 
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
@@ -151,16 +152,16 @@ const property = ref([
 ]);
 
 
-// 거래완료 모달
-function showTransactionModal(data) {
+// 거래완료 모달 열기
+function showTransactionModal(pnumber) {
+  selectedPnumber.value = pnumber;
+  pstatus.value = "거래완료";
   transactionModal.show();
-  idNumber.value=data.id;
-  console.log(idNumber.value);
 }
 
-function hideTransactionModal(data) { // 거래 완료 확인 모달에서 거래 완료 버튼 클릭 시 실행되는 함수
+// 거래완료 모달 닫기
+function hideTransactionModal() { // 거래 완료 확인 모달에서 거래 완료 버튼 클릭 시 실행되는 함수
   transactionModal.hide();
-  data[idNumber.value-1].checkTransactionCompletedData = false;
 }
 
 // 삭제 모달
@@ -206,10 +207,20 @@ onMounted(() => {
 });
 
 
-const deleteProperty = async (selectedPnumber) => {
+const deleteProperty = async () => {
   try {
     await propertyAPI.deleteProperty(selectedPnumber);
     await getUserPropertyList(); // 삭제 후 리스트 갱신
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const changePropertyStatus = async () => {
+  try {
+    console.log("pstatus + pnumber in index : " + selectedPnumber.value + pstatus.value);
+    await propertyAPI.updatePropertyStatus(selectedPnumber.value, pstatus.value);
+    await getUserPropertyList(); // 수정 후 리스트 갱신
   } catch (error) {
     console.log(error);
   }
