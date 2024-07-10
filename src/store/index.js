@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import axiosConfig from "@/apis/axiosConfig";
-import like from "./like";
 import profileImage from "./profileImage";
 import changeProfileImage from "./changeProfileImage";
 
@@ -86,7 +85,6 @@ const store = createStore({
 
   // 루트 하위의 상태 정의
   modules: {
-    like,
     profileImage,
     changeProfileImage,
   },

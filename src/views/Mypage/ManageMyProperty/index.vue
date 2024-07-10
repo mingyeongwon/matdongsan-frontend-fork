@@ -209,7 +209,7 @@ onMounted(() => {
 
 const deleteProperty = async () => {
   try {
-    await propertyAPI.deleteProperty(selectedPnumber);
+    await propertyAPI.deleteProperty(selectedPnumber.value);
     await getUserPropertyList(); // 삭제 후 리스트 갱신
   } catch (error) {
     console.log(error);

@@ -145,11 +145,14 @@ const cancelLikeProperty = async () => {
 
 // 좋아요 여부
 const isPropertyLiked = async () => {
-  try {
-    const response = await propertyAPI.isPropertyLiked(route.params.id);
-    isClicked.value = response.data; // 서버에서 boolean 값 반환
-  } catch (error) {
-    console.log(error);
+  if(store.getters.getUemail) {
+
+    try {
+      const response = await propertyAPI.isPropertyLiked(route.params.id);
+      isClicked.value = response.data; // 서버에서 boolean 값 반환
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
