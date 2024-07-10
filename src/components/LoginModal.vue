@@ -532,11 +532,13 @@ import { Modal } from "bootstrap";
 
 const router = useRouter();
 const emit = defineEmits(["moveToMemberSignup", "moveToAgentSignup", "close"]);
-const props = defineProps(["modalStatus"]);
+const props = defineProps(["modalStatus","question"]);
 let checkStatus = ref(null);
 const store = useStore();
 const emailValidStyle = ref(false);
 const passwordValidStyle = ref(false);
+
+console.log("나와야",props.question);
 
 let checkValid = ref({
   emailValid: "",
@@ -632,7 +634,14 @@ async function loginHandleSubmit() {
       store.dispatch("saveAuth", payload);
 
       emit("close"); 
-      router.push("/"); 
+
+      if(props.question !=  "question"){
+        router.push("/"); 
+      } else {
+        // 1:1 문의 들어가다가 로그인 하면 홈이 아닌 1:1문의로 들어가게 하기
+        router.push("/QNA/CustomerInquiryForm"); 
+      }
+      
     } else if(response.data.result === "removed"){
       console.log("탈퇴한 회원");
       checkValid.value.passwordValid = "탈퇴한 회원입니다. 다시 회원가입 하세요";

@@ -61,15 +61,17 @@
         </div>
         <hr />
         <div class="d-flex">
-          <div class="align-self-center col-2 fw-bold">이름</div>
+          <div class="align-self-center col-2 fw-bold me-5">이름</div>
           <input
             v-if="userRole === 'AGENT'"
-            class="ms-5"
+            
+            class="readonly-box"
             type="text"
             v-model="agentData.aname"
             maxLength="20"
+            readonly
           />
-          <input v-else class="ms-5" type="text" v-model="memberData.mname" maxLength="50" />
+          <input v-else class="readonly-box" type="text" v-model="memberData.mname" maxLength="50" readonly/>
         </div>
         <div class="d-flex">
           <div class="align-self-center col-2 fw-bold"></div>
@@ -195,7 +197,7 @@
         </div>
         <hr />
         <div class="text-end me-5">
-          <button class="btn btn-success me-3">수정하기</button>
+          <button class="btn btn-success me-3" :disabled="!checkForm">수정하기</button>
           <button type="button" @click="resetInfoBtn" class="btn btn-danger">취소</button>
         </div>
       </form>
@@ -416,12 +418,18 @@ var passwordResult = ref(null);
 const fileInputProfile = ref(null);
 const imageFilesProfile = ref(null);
 
-// 변경을 할 때 빈 값이 있으면 제출 버튼 비활성화
+// 비밀번호 변경을 할 때 빈 값이 있으면 제출 버튼 비활성화
 const checkChangePasswordData = computed(() => {
   var result =
   oldPasswordValidStyle.value && new1PasswordValidStyle.value && new2PasswordValidStyle.value;
   return result;
 });
+
+// 내 정보 변경을 할 때 수정 안하고 버튼 누르면 비활성화
+const checkForm = computed(()=>{
+  var result =  changeAgentCount.value > 0;
+  return result;
+})
 
 // 파일을 읽고 URL을 반환하는 함수
 const readFile = (file) => {
@@ -681,6 +689,19 @@ function resetInfoBtn(){
   getUserData(store.getters.getUemail);
   imageFilesProfile.value = null;
 }
+
+// 정보 수정에서 수정된 값 감지
+const changeAgentCount = ref(-2); // 처음 불러올 때 기본적으로 2번 변경되기에 -2를 기본값으로 함
+watch(agentData,()=>{
+  console.log("member객체 변경 감지");
+  changeAgentCount.value += 1;
+  console.log("member 객체 변경 횟수",changeAgentCount.value);
+},{deep:true});
+watch(arrPhone,()=>{
+  console.log("member객체 변경 감지");
+  changeAgentCount.value += 1;
+  console.log("member 객체 변경 횟수",changeAgentCount.value);
+},{deep:true});
 
 </script>
 

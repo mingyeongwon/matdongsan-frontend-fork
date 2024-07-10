@@ -31,13 +31,13 @@
             집이지를 통해 타 사이트보다 <br />
             저렴한 등록비로 집을 홍보하세요.
           </p>
-          <div v-if="user.isRegisterd"><RouterLink to="/PropertyForm" class="btn text-light ps-5 pe-5"
+          <!-- <div v-if="listingRemain > 0"><RouterLink to="/PropertyForm" class="btn text-light ps-5 pe-5"
             >집내놓기</RouterLink
           ></div>
-          <div v-else><RouterLink to="/PropertyForm" class="btn text-light ps-5 pe-5"
+          <div v-else><RouterLink to="/Payment/PaymentInfo" class="btn text-light ps-5 pe-5"
             >집내놓기</RouterLink
-          ></div>
-          
+          ></div> -->
+          <div class="btn text-light ps-5 pe-5" @click="requestAddress" >집내놓기</div>
         </div>
       </div>
       <div class="card border border-2" style="width: 18rem">
@@ -58,16 +58,62 @@
         </div>
       </div>
     </div>
+    <LoginModal id="loginModal" @close="hideLogin"/>
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import propertyAPI from '@/apis/propertyAPI';
+import { onMounted, ref } from 'vue';
+import { useStore } from "vuex";
+import LoginModal from "@/components/LoginModal.vue"
+import { Modal } from 'bootstrap';
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const store =  useStore();
 
-// 등록권을 가지고 있다고 가정
-const user = ref({
-  email : "user123@naver.com",
-  isRegisterd : true,
-})
+// 등록권 수량 가져오기
+async function getListingRemain(){
+  try {
+    const response = await propertyAPI.getListingRemain(store.state.uemail);
+    if(response.data.remain != null){
+      router.push("/PropertyForm");
+    } 
+
+    else if(response.data.result == "noRemain"){
+      console.log("수량없음");
+      router.push("/Payment/PaymentInfo");
+    } 
+    } catch (error) {
+      console.log(error);
+    }
+    }
+
+function requestAddress(){
+  if(store.state.uemail){
+    getListingRemain();
+  } else {
+    // 로그인 정보가 없으면 모달 열기
+    showLogin()
+  }
+}
+
+// 로그인 모달 마운트
+let loginModal = null;
+
+onMounted(() => {
+  loginModal = new Modal(document.querySelector("#loginModal"));
+});
+
+// 모달 닫기
+function hideLogin() {
+  loginModal.hide();
+}
+
+// 삭제 버튼 클릭 시 확인하는 모달 켜짐
+function showLogin(){
+  loginModal.show();
+}
+
 
 </script>
 <style scoped>

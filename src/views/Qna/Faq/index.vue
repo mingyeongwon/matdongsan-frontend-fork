@@ -1,10 +1,22 @@
 <template>
     <div>
-      <NoticeHeader>
-        <template v-slot:header>
-         자주 묻는 질문
-        </template>
-      </NoticeHeader>
+      <div class="container w-50">
+      <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">자주 묻는 질문</h2>
+      <!-- 버튼 tab -->
+      <div class="row" style="height: 50px;">
+          <RouterLink to="/QNA/Notice"  class="askMenu col-4 d-flex"  style="text-decoration: none; padding: none;" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
+            <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">공지 사항</button>
+          </RouterLink>
+  
+          <div @click="requestAddress" class="askMenu col-4 d-flex" style="text-decoration: none;" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
+            <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">1:1 문의</button>
+          </div>
+          
+          <RouterLink to="/QNA/FAQ" :class="isHoverd? 'askMenu col-4 d-flex' : 'selectMenu col-4 d-flex'" style="text-decoration: none;">
+            <button :class="isHoverd? 'askMenuBtn':'selectMenu'" style="background-color: transparent; border: none; width: 100%;">자주 묻는 질문</button>
+          </RouterLink>
+        </div>
+      </div>
       <div class="w-50 container">
       <p style="text-align: center; margin-top: 60px; margin-bottom: 50px">맛동산 사용자의 편의를 위해 <span style="color:#FEC83F; font-weight: bold">자주 묻는 질문과 답변</span>을 모아놓았습니다.<br>원하시는 질문을 찾아보세요!</p>
         <!-- 아코디언 -->
@@ -91,13 +103,57 @@
             </div>
           </div>
         </div>
-      </div>  
+      </div>
+    <LoginModal id="loginModal" @close="hideLogin" question="question"/>
     </div>
   </template>
     
   <script setup>
-    import NoticeHeader from "@/components/NoticeHeader";
-  
+  import { Modal } from "bootstrap";
+  import { onMounted, ref } from "vue";
+  import { useRouter } from "vue-router";
+  import { useStore } from "vuex";
+  import LoginModal from "@/components/LoginModal.vue"
+  const store = useStore();
+  const router = useRouter();
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+
+  // 로그인 모달 마운트
+  let loginModal = null;
+
+  onMounted(() => {
+    loginModal = new Modal(document.querySelector("#loginModal"));
+  });
+
+  // 모달 닫기
+  function hideLogin() {
+    loginModal.hide();
+  }
+
+  // 삭제 버튼 클릭 시 확인하는 모달 켜짐
+  function showLogin(){
+    loginModal.show();
+  }
+
+  // 로그인 안하고 문의하기 폼 누르면 로그인 모달 열기
+  function requestAddress(){
+    if(store.state.uemail){
+      router.push("/QNA/CustomerInquiryForm")
+    } else {
+      // 로그인 정보가 없으면 모달 열기
+      showLogin();
+    }
+  }
+    /////////////////////////////////////////////////////////////////////////////////////////////
+  var isHoverd = ref();
+  function handleMouseOver(){
+  isHoverd.value = true;
+}
+
+function handleMouseOut(){
+  isHoverd.value = false;
+}
   </script>
   
   <style scoped>
@@ -115,5 +171,39 @@
     color: #FEC83F;
     font-weight: bold;
   }
+  .askMenu{
+      background-color: transparent;
+      color: black;
+      border: 1px solid lightgrey;
+  
+    }
+
+     .askMenu:hover{
+      background-color: #2F4858;
+      color: white;
+      border: 2px solid black; 
+    }
+  
+     .askMenuBtn:hover{
+      color: white;
+    } 
+  
+    .selectMenu{
+      background-color: #2F4858;
+      color: white;
+      /* border: 2px solid black; */
+    }
+  
+    /* .selectMenu{
+      color: white;
+    } */
+
+    .routerLink{
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 기본 텍스트 색상 상속 */
+    background: none; /* 배경 제거 */
+    border: none; /* 테두리 제거 */
+    cursor: pointer; /* 커서 스타일 설정 */
+    }
   </style>
     

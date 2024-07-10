@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-between mt-2 mb-3">
         <h4 class="fw-bold">1:1 문의</h4><span style="font-size: small; text-align: start;">답변이 있는 문의는 수정 및 삭제가 불가능 합니다.</span>
         <div>
-          <router-link to="/Qna/CustomerInquiryForm">
+          <router-link to="/QNA/CustomerInquiryForm">
             <button type="button" class="btn btn-warning me-1">
               1:1 문의하기
             </button>

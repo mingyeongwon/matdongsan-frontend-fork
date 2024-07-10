@@ -10,6 +10,8 @@
 import FirstSection from "./FirstSection.vue";
 import MainServiceList from "./FeaturedPropertyList.vue";
 import MainService from "./MainServiceMenuList.vue";
+
+
 </script>
 
 <style scoped></style>

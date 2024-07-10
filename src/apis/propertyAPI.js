@@ -129,6 +129,11 @@ const isPropertyLiked = (pnumber) => {
   return axios.get("/isPropertyLiked/" + pnumber);
 };
 
+// 등록권 수량 가져오기
+const  getListingRemain = (uemail) => {
+  return axios.get("/getListingRemain",{params:{uemail}})
+}
+
 export default {
   getPropertyList,
   getUserPropertyList,
@@ -152,4 +157,5 @@ export default {
   cancelLikeProperty,
   isPropertyLiked,
   getPropertyDataByPosition,
+  getListingRemain
 };
