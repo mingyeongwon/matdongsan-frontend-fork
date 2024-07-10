@@ -48,7 +48,7 @@
                 <RouterLink class="routerLink " :to="{path:`/PropertyForm/${property.pnumber}`}">
                 <button
                   class="btn btn-warning btn-sm w-100 fw-bold mb-3"
-                  v-if="property.pstatus !== 거래완료"
+                  v-if="property.pstatus !== '거래완료'"
                 >
                 <!-- 거래 완료 버튼 누르면 버튼 안 보임 -->
                 <!--버튼 누르면 id값 가지고 수정페이지로 가기-->
@@ -57,7 +57,7 @@
                 <button
                   class="soldOutBtn btn btn-sm fw-bold mb-3"
                   @click="showTransactionModal(property.pnumber)"
-                  :disabled="property.pstatus === 거래완료"
+                  :disabled="property.pstatus === '거래완료'"
                 >
                   <!-- 거래 완료 버튼 누르면 버튼 비활성화 -->
                   거래완료
@@ -68,7 +68,7 @@
                     property.isActive ? 'btn-danger' : 'btn-success',
                   ]"
                   @click="toggleActive(property)"
-                  v-if="property.pstatus !== 거래완료"
+                  v-if="property.pstatus !== '거래완료'"
                 >
                   {{ property.isActive ? "비활성화" : "활성화" }}
                 </button>
