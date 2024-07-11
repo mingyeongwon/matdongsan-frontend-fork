@@ -95,7 +95,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">{{favoriteModalMessage}}</div>
+          <div class="modal-body">{{ favoriteModalMessage }}</div>
           <div class="modal-footer">
             <button
               type="button"
@@ -140,11 +140,12 @@ const userProfiles = ref({});
 const userCommonData = ref({});
 const member = ref({});
 const agent = ref({});
+const names = ref([]);
 const propertyCommentFilter = ref("");
 const propertyClusterPosition = ref({ lat: "", lng: "" });
 const propertyTotalList = ref([]);
 const isClickedReset = ref(true);
-const favoriteModalMessage =ref("");
+const favoriteModalMessage = ref("");
 // 뒤로 가기
 function backToPropertyList() {
   router.push("/Property");
@@ -165,10 +166,10 @@ const isLiked = () => {
 
   if (isClicked.value) {
     postLikeProperty();
-     favoriteModalMessage.value="관심 매물로 추가되었습니다."
+    favoriteModalMessage.value = "관심 매물로 추가되었습니다.";
   } else {
     cancelLikeProperty();
-    favoriteModalMessage.value="관심 매물이 취소되었습니다."
+    favoriteModalMessage.value = "관심 매물이 취소되었습니다.";
   }
   const favoriteModal = new Modal(document.getElementById("favoriteModal"));
   favoriteModal.show();
@@ -215,16 +216,19 @@ const getUserDataByUnumber = async (unumber) => {
     userCommonData.value = response.data.userCommonData;
     member.value = response.data.member;
     agent.value = response.data.agent;
+    console.log("memberList:? " + member.value);
     if (userCommonData.value.urole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(
         member.value.mnumber
       );
       const blob = response.data;
       userProfiles.value[unumber] = URL.createObjectURL(blob);
+      names.value[unumber] = member.value.mname;
     } else {
       const response = await agentAPI.agentAttachDownload(agent.value.anumber);
       const blob = response.data;
       userProfiles.value[unumber] = URL.createObjectURL(blob);
+      names.value[unumber] = agent.value.abrand;
     }
   } catch (error) {
     console.log(error);
@@ -261,6 +265,7 @@ const getPropertyData = async () => {
       userComment.value = comments.map((comment) => ({
         ...comment,
         profile: userProfiles.value[comment.ucUnumber],
+        name: names.value[comment.ucUnumber],
       }));
     }
   } catch (error) {
@@ -334,8 +339,8 @@ function getPropertyPositionFromMap(lat, lng) {
 //지도 초기화 버튼 emit
 function checkResetByMap(data) {
   console.log(data);
-  propertyClusterPosition.value.lat="";
-  propertyClusterPosition.value.lng="";
+  propertyClusterPosition.value.lat = "";
+  propertyClusterPosition.value.lng = "";
   isClickedReset.value = data;
 }
 
@@ -388,11 +393,12 @@ watch(
   },
   { deep: true }
 );
-watch(()=>isClickedReset.value,
-  ()=>{
+watch(
+  () => isClickedReset.value,
+  () => {
     console.log("리셋클릭!");
   }
-  )
+);
 </script>
 
 <style scoped>
@@ -429,7 +435,7 @@ watch(()=>isClickedReset.value,
 
 :deep(.property-list-box::-webkit-scrollbar-thumb) {
   background: #888;
-  border-radius: 10px; 
+  border-radius: 10px;
 }
 
 :deep(.property-list-box::-webkit-scrollbar-thumb:hover) {
