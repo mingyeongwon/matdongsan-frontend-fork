@@ -200,6 +200,8 @@ async function checkPropertyListing() {
     hasHistory.value = response.data;
   } catch (error) {
     console.log(error);
+    store.dispatch("deleteAuth");
+    router.push("/");
   }
 }
 // 사용자가 변경될 때마다 `checkPropertyListing` 호출
