@@ -152,26 +152,26 @@ const filters = ref({
   byDate: "",
 });
 
-watch(
-  () => filters.value.byRate,
-  (newValue) => {
-    console.log("byRate changed:", newValue);
-  }
-);
+// watch(
+//   () => filters.value.byRate,
+//   (newValue) => {
+//     console.log("byRate changed:", newValue);
+//   }
+// );
 
-watch(
-  () => filters.value.byComment,
-  (newValue) => {
-    console.log("byComment changed:", newValue);
-  }
-);
+// watch(
+//   () => filters.value.byComment,
+//   (newValue) => {
+//     console.log("byComment changed:", newValue);
+//   }
+// );
 
-watch(
-  () => filters.value.byDate,
-  (newValue) => {
-    console.log("byDate changed:", newValue);
-  }
-);
+// watch(
+//   () => filters.value.byDate,
+//   (newValue) => {
+//     console.log("byDate changed:", newValue);
+//   }
+// );
 
 function submitFilter() {
   if (

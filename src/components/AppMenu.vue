@@ -171,7 +171,7 @@ const getUattach = async (argAnumber) => {
       const response = await memberAPI.memberAttachDownload(argAnumber);
       const blob = response.data;
       memberProfile.value = URL.createObjectURL(blob);
-    } else {
+    } else if(store.getters.getUserRole === 'AGENT'){
       const response = await agentAPI.agentAttachDownload(argAnumber);
       const blob = response.data;
       memberProfile.value = URL.createObjectURL(blob);
