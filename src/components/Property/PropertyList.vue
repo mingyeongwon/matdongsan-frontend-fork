@@ -80,6 +80,7 @@ const emit = defineEmits([
   "update:propertyPositionData",
   "getTotalPropertyListData",
   "getFavoriteListData",
+  "checkResetBtn",
 ]);
 
 const props = defineProps([
@@ -87,6 +88,7 @@ const props = defineProps([
   "filters",
   "searchedData",
   "propertyPosition",
+  "isClickedReset",
 ]); // props로부터 type 속성 정의
 const displayedProperties = ref([]); // 표시할 property 목록
 const displayedTotalProperties = ref([
@@ -98,7 +100,7 @@ const isLoading = ref(false); // 로딩 상태
 const allLoaded = ref(false); // 모든 데이터를 로드했는지 여부
 const limit = 5; // 한번에 로드할 항목 수
 let offset = ref(1); // 현재 오프셋 값
-
+const resetBtnStatus = ref(true); // 지도초기화 관련 부모 변수 값 초기화를 위한 변수
 const scrollTrigger = ref(null); // 스크롤 트리거 요소 참조
 
 const loadMoreItems = async () => {
@@ -148,7 +150,7 @@ const loadMoreItems = async () => {
       const dataLength = response.data.favorite.length;
       console.log(dataLength);
       displayedFavorites.value.push(...response.data.favorite);
-      emit("getFavoriteListData",displayedFavorites.value);
+      emit("getFavoriteListData", displayedFavorites.value);
       if (dataLength < limit) {
         allLoaded.value = true;
       }
@@ -265,6 +267,19 @@ watch(
     loadMoreItems();
   },
   { deep: true }
+);
+watch(
+  () => props.isClickedReset,
+  () => {
+    emit("checkResetBtn", resetBtnStatus);
+    displayedProperties.value = [];
+    displayedFavorites.value = [];
+    displayedAgents.value = [];
+    offset.value = 1;
+    allLoaded.value = false;
+    
+    loadMoreItems();
+  }
 );
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden w-75 mx-auto">
-    <PropertyFilter class="w-100 mt-2"/>
+    <PropertyFilter class="w-100 mt-2" />
     <ul class="nav nav-pills mt-3 ms-4">
       <li class="nav-item">
         <RouterLink
@@ -23,7 +23,8 @@
           class="fa-solid fa-arrow-left fa-xl me-3"
           @click="backToPropertyList"
         ></i>
-        <i v-if="store.getters.getUserRole === 'MEMBER'"
+        <i
+          v-if="store.getters.getUserRole === 'MEMBER'"
           :class="[
             isHovered ? 'fa-solid fa-heart' : 'fa-regular fa-heart',
             'fa-xl',
@@ -35,7 +36,8 @@
           style="color: #ff0000"
           @click="isLiked"
           @mouseover="toggleHover(true)"
-          @mouseleave="toggleHover(false)">
+          @mouseleave="toggleHover(false)"
+        >
         </i>
       </div>
     </ul>
@@ -44,17 +46,34 @@
       <div class="d-flex ps-3 pe-3 pb-3 pt-3">
         <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3">
-            <PropertyList type="property" @getTotalPropertyListData="getTotalPropertyData" @update:propertyPositionData="getPropertyPositionData" :propertyPosition="propertyClusterPosition" />
+            <PropertyList
+              type="property"
+              @getTotalPropertyListData="getTotalPropertyData"
+              @update:propertyPositionData="getPropertyPositionData"
+              :propertyPosition="propertyClusterPosition"
+              :isClickedReset="isClickedReset"
+              @checkResetBtn="checkResetByMap"
+            />
           </div>
         </div>
         <div class="map-box right-box col p-3" v-if="!route.params.id">
-          <KakaoMap page="propertyList" :propertyPositionList="propertyTotalList" @getPropertyClusterPosition="getPropertyClusterPosition" @get:clickedPropertyPosition="getPropertyPositionFromMap"/>
+          <KakaoMap
+            page="propertyList"
+            :propertyPositionList="propertyTotalList"
+            @getPropertyClusterPosition="getPropertyClusterPosition"
+            @get:clickedPropertyPosition="getPropertyPositionFromMap"
+            @checkResetByMap="checkResetByMap"
+          />
         </div>
         <div class="right-box col h-100 p-3" v-if="route.params.id">
-          <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches"/>
+          <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches" />
           <DetailInfo :property="property" :propertyDetail="propertyDetail" />
-          <ReportFalse :pnumber="route.params.id"/>
-          <Comment :userComment="userComment" @update-property-data="getPropertyData" @get:commentFilter="getPropertyCommentFilter" />
+          <ReportFalse :pnumber="route.params.id" />
+          <Comment
+            :userComment="userComment"
+            @update-property-data="getPropertyData"
+            @get:commentFilter="getPropertyCommentFilter"
+          />
         </div>
       </div>
     </div>
@@ -79,11 +98,10 @@ const store = useStore();
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
 
-
 const property = ref({});
 const propertyDetail = ref({});
 const propertyPhotos = ref([]);
-const userComment = ref([]); // 문의 댓글 
+const userComment = ref([]); // 문의 댓글
 const pthumbnail = ref(null);
 const pattaches = ref([]);
 const propertyPositionList = ref([]);
@@ -94,6 +112,7 @@ const agent = ref({});
 const propertyCommentFilter = ref("");
 const propertyClusterPosition = ref({ lat: "", lng: "" });
 const propertyTotalList = ref([]);
+const isClickedReset = ref(true);
 // 뒤로 가기
 function backToPropertyList() {
   router.push("/Property");
@@ -142,8 +161,7 @@ const cancelLikeProperty = async () => {
 
 // 좋아요 여부
 const isPropertyLiked = async () => {
-  if(store.getters.getUemail) {
-
+  if (store.getters.getUemail) {
     try {
       const response = await propertyAPI.isPropertyLiked(route.params.id);
       isClicked.value = response.data; // 서버에서 boolean 값 반환
@@ -161,7 +179,9 @@ const getUserDataByUnumber = async (unumber) => {
     member.value = response.data.member;
     agent.value = response.data.agent;
     if (userCommonData.value.urole === "MEMBER") {
-      const response = await memberAPI.memberAttachDownload(member.value.mnumber);
+      const response = await memberAPI.memberAttachDownload(
+        member.value.mnumber
+      );
       const blob = response.data;
       userProfiles.value[unumber] = URL.createObjectURL(blob);
     } else {
@@ -177,7 +197,10 @@ const getUserDataByUnumber = async (unumber) => {
 // property 데이터 가져오기
 const getPropertyData = async () => {
   try {
-    const response = await propertyAPI.getPropertyData(route.params.id, propertyCommentFilter.value);
+    const response = await propertyAPI.getPropertyData(
+      route.params.id,
+      propertyCommentFilter.value
+    );
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
@@ -185,9 +208,11 @@ const getPropertyData = async () => {
 
     getPthumbnail(route.params.id);
 
-    await Promise.all(propertyPhotos.value.map(async (photo) => {
-      await getPattaches(photo.ppnumber);
-    }));
+    await Promise.all(
+      propertyPhotos.value.map(async (photo) => {
+        await getPattaches(photo.ppnumber);
+      })
+    );
 
     if (response.data.propertyCommentList) {
       const comments = response.data.propertyCommentList;
@@ -201,7 +226,6 @@ const getPropertyData = async () => {
         profile: userProfiles.value[comment.ucUnumber],
       }));
     }
-
   } catch (error) {
     console.log(error);
   }
@@ -234,7 +258,10 @@ function getPropertyCommentFilter(data) {
 
 // 매물 포지션 리스트 가져오기
 function getPropertyClusterPosition(lat, lng) {
-  if (propertyClusterPosition.value.lat === lat && propertyClusterPosition.value.lng === lng) {
+  if (
+    propertyClusterPosition.value.lat === lat &&
+    propertyClusterPosition.value.lng === lng
+  ) {
     return;
   }
 
@@ -246,28 +273,34 @@ function getPropertyClusterPosition(lat, lng) {
 
 //지도에 표시할 전체 매물 데이터 가져오기
 function getTotalPropertyData(data) {
-  propertyTotalList.value =data;
+  propertyTotalList.value = data;
   console.log("실행된 전체 매물 리스트 get");
 }
 //해당 좌표의 디테일 페이지 이동
-async function movePropertyDetailPageByPosition(lat,lng) {
+async function movePropertyDetailPageByPosition(lat, lng) {
   try {
-    console.log("엑시오스: " +lat + " " + lng );
-    const response = await propertyAPI.getPropertyDataByPosition(lat,lng); //pnumber만 가져옴
-    console.log("zmdkdkd"+response.data);
-    router.push("/Property/"+response.data);
+    console.log("엑시오스: " + lat + " " + lng);
+    const response = await propertyAPI.getPropertyDataByPosition(lat, lng); //pnumber만 가져옴
+    console.log("zmdkdkd" + response.data);
+    router.push("/Property/" + response.data);
   } catch (error) {
     console.log(error);
   }
 }
 
 //지도로 부터 클릭된 마커이벤트 실행
-function getPropertyPositionFromMap(lat,lng) {
-  if(lat && lng){
-    movePropertyDetailPageByPosition(lat,lng);
+function getPropertyPositionFromMap(lat, lng) {
+  if (lat && lng) {
+    movePropertyDetailPageByPosition(lat, lng);
   }
 }
-
+//지도 초기화 버튼 emit
+function checkResetByMap(data) {
+  console.log(data);
+  propertyClusterPosition.value.lat="";
+  propertyClusterPosition.value.lng="";
+  isClickedReset.value = data;
+}
 
 onMounted(() => {
   if (route.params.id) {
@@ -276,20 +309,26 @@ onMounted(() => {
   }
 });
 
-// params로 넘어온 pnumber 
-watch(() => route.params.id, (newPnumber) => {
-  if (newPnumber) {
-    propertyPhotos.value = [];
-    pattaches.value = [];
-    propertyCommentFilter.value = "desc";
-    getPropertyData();
-    isPropertyLiked();
+// params로 넘어온 pnumber
+watch(
+  () => route.params.id,
+  (newPnumber) => {
+    if (newPnumber) {
+      propertyPhotos.value = [];
+      pattaches.value = [];
+      propertyCommentFilter.value = "desc";
+      getPropertyData();
+      isPropertyLiked();
+    }
   }
-});
+);
 
-watch(() => propertyCommentFilter.value, () => {
-  getPropertyData();
-});
+watch(
+  () => propertyCommentFilter.value,
+  () => {
+    getPropertyData();
+  }
+);
 
 watch(
   () => propertyPositionList.value.length,
@@ -312,6 +351,11 @@ watch(
   },
   { deep: true }
 );
+watch(()=>isClickedReset.value,
+  ()=>{
+    console.log("리셋클릭!");
+  }
+  )
 </script>
 
 <style scoped>

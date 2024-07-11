@@ -1,12 +1,14 @@
 //Kakaomap.vue
 <template>
-  <div id="map"></div>
+  <div id="map" class="position-relative">
+    <div v-if="checkReset" class="reset-btn position-absolute bottom-0 mb-3 btn btn-success rounded-pill" @click="clickedResetMap">지도 초기화<i class=" ms-1 fa-solid fa-rotate-left"></i></div>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
 
-const emits = defineEmits(["getPropertyData","get:clickedAgentPosition","getPropertyClusterPosition","get:clickedPropertyPosition"]);
+const emits = defineEmits(["getPropertyData","get:clickedAgentPosition","getPropertyClusterPosition","get:clickedPropertyPosition","checkResetByMap"]);
 const props = defineProps(["positionList", "propertyPositionList", "position", "page","favoriteListData"]);
 
 let map;
@@ -17,7 +19,7 @@ const agentMarker = ref(null);
 const kakao = window.kakao;
 const userLatitude = ref(0);
 const userLongitude = ref(0);
-
+const checkReset = ref(false);
 // 지도 초기화 함수
 const initMap = () => {
   const container = document.getElementById("map");
@@ -120,6 +122,7 @@ var level = map.getLevel()-1;
 if(map.getLevel()===2){
   console.log("click: " +cluster.getCenter().getLat());
   emits("getPropertyClusterPosition",cluster.getCenter().getLat(),cluster.getCenter().getLng()) //지도에서 클러스터로 일정부분 확대가 되면 클릭 이벤트 작동
+  checkReset.value=true;
 }
 // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
 map.setLevel(level, {anchor: cluster.getCenter()});
@@ -201,11 +204,21 @@ const updateAgentMarker = (position) => {
   }
   map.setCenter(newCenter);
 };
+
+function clickedResetMap() {
+  checkReset.value= false;
+  emits("checkResetByMap",checkReset.value); // 리셋이 true값이 되면 다시 지도 리스트 데이터 초기화
+  map.setLevel(8);
+}
 </script>
 
 <style scoped>
 #map {
   width: 100%;
   height: 100%;
+}
+.reset-btn{
+  z-index: 10;
+  right:45%;
 }
 </style>
