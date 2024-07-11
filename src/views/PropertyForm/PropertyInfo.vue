@@ -52,10 +52,11 @@
           />
         </div>
         <div
-          class="map-box col border border-1 border-secondary rounded text-center text-muted"
+          class="map-box col border border-1 border-secondary rounded text-center text-muted position-relative"
           id="map"
-        >
-          여기에 지도가 표시 됩니다.
+        ><div class="loading-font align-self-center fw-bold position-absolute ">
+          Loading...
+        </div>
         </div>
       </div>
     </div>
@@ -66,6 +67,7 @@
 import { toRefs, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 const route = useRoute();
+const kakao = window.kakao;
 
 const props = defineProps({
   property: Object,
@@ -80,7 +82,7 @@ function openPostSearch() {
       property.value.ppostcode = data.zonecode;
       property.value.paddress = data.address;
       emitUpdate();
-      showMap(data.address); // 주소 검색 완료 후 지도에 표시
+     showMap(data.address); // 주소 검색 완료 후 지도에 표시
     },
   }).open();
 }
@@ -88,10 +90,18 @@ function openPostSearch() {
 // 주소 지도 표시
 function showMap(address) {
   const mapContainer = document.getElementById("map");
-  const mapOption = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
-    level: 3,
-  };
+  let mapOption;
+  if (route.params.id) {
+    mapOption = {
+      center: new kakao.maps.LatLng(address.platitude, address.plongitude),
+      level: 3,
+    };
+  } else {
+    mapOption = {
+      center: new kakao.maps.LatLng(33.450701, 126.570667),
+      level: 3,
+    };
+  }
 
   const map = new kakao.maps.Map(mapContainer, mapOption);
   const geocoder = new kakao.maps.services.Geocoder();
@@ -126,17 +136,19 @@ onMounted(async () => {
   const script = document.createElement("script");
   script.onload = () =>
     kakao.maps.load(() => {
-      if(route.params.id) {
+      if (route.params.id) {
         const mapContainer = document.getElementById("map");
-         const mapOption =  {
-          center: new kakao.maps.LatLng(property.value.platitude, property.value.plongitude),
+        const mapOption = {
+          center: new kakao.maps.LatLng(
+            property.value.platitude,
+            property.value.plongitude
+          ),
           level: 3,
           draggable: false,
           disableDoubleClickZoom: true,
         };
         new kakao.maps.Map(mapContainer, mapOption);
       } else {
-
         const mapContainer = document.getElementById("map");
         const mapOption = {
           center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -150,7 +162,13 @@ onMounted(async () => {
   script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_API_KEY}&libraries=services`;
   document.head.appendChild(script);
 });
-const kakao = window.kakao;
+//좌표값을 가지고 있는 경우에는 좌표값으로 지도에 표시함 (예: 매물관리)
+watch(
+  () => [property.value.platitude, property.value.plongitude],
+  () => {
+   showMap(property.value);
+  }
+);
 </script>
 
 <style scoped>
@@ -164,5 +182,9 @@ const kakao = window.kakao;
 }
 .address-search-btn {
   width: 100px;
+}
+.loading-font{
+  top:45%;
+  right:40%;
 }
 </style>

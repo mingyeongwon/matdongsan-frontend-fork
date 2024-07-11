@@ -76,7 +76,6 @@ const getPropertyData = async () => {
   if(route.params.id) {
     try {
       const response = await propertyAPI.getPropertyData(route.params.id);
-      console.log("response : " + response);
       Object.assign(property, response.data.totalProperty.property);
       // property.value = response.data.totalProperty.property;
       Object.assign(propertyDetail, response.data.totalProperty.propertyDetail);
@@ -152,31 +151,31 @@ const propertyDetail = reactive({
 
 
 // 부동산 정보 객체
-const propertyInfo = reactive({
-  address: "",
-  addressDetail: "",// 디테일 부분은 빈 값이 들어와도 제출이 되어야함
-  postcode: "",
-  paymentType: "",
-  deposite: "",
-  price: "",
-  maintenance: "",
-  maintenanceCost: "",
-  moveIn: "",
-  moveInDate: "",
-  floor: "",
-  totalFloor: "",
-  elevator: "",
-  parkingLot: "",
-  heating: "",
-  cooling: "",
-  utility: [],
-  thumbnail: [],  // 썸네일 이미지를 저장할 배열
-  ppattach: [],  // 디테일 이미지를 저장할 배열
-  title: "",
-  content: "",
-  lat: "",
-  lon: "",
-});
+// const propertyInfo = reactive({
+//   address: "",
+//   addressDetail: "",// 디테일 부분은 빈 값이 들어와도 제출이 되어야함
+//   postcode: "",
+//   paymentType: "",
+//   deposite: "",
+//   price: "",
+//   maintenance: "",
+//   maintenanceCost: "",
+//   moveIn: "",
+//   moveInDate: "",
+//   floor: "",
+//   totalFloor: "",
+//   elevator: "",
+//   parkingLot: "",
+//   heating: "",
+//   cooling: "",
+//   utility: [],
+//   thumbnail: [],  // 썸네일 이미지를 저장할 배열
+//   ppattach: [],  // 디테일 이미지를 저장할 배열
+//   title: "",
+//   content: "",
+//   lat: "",
+//   lon: "",
+// });
 
 const validForm = ref([]);
 

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MyPage from "./MyPage";
-import Product from "./Product";
 import MainService from "./MainService";
 import Qna from "./Qna";
 import Payment from "./Payment";
@@ -30,7 +29,6 @@ const routes = [
     component: InvalidAccess
   },
   ...MyPage,
-  ...Product,
   ...MainService,
   ...Qna,
   ...Payment,
