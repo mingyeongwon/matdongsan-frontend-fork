@@ -111,7 +111,8 @@
               <p>신발장</p>
             </div>
             <div class="col-2 me-2 text-center">
-              <img src="@/assets/icons/free-icon-font-screen-3917420.svg" width="25" alt="">
+           
+              <img src="@/assets/icons/free-icon-font-tv-retro-11270138.png" width="25" alt="">
               <p>TV</p>
             </div>
             <div class="col-2 me-2 text-center">
@@ -119,7 +120,7 @@
               <p>옷장</p>
             </div>
             <div class="col-2 me-2 text-center">
-
+              <img src="@/assets/icons/free-icon-font-screen-3917178.svg" width="25" alt="">
               <p>식탁</p>
             </div>
             <div class="col-2 me-2 text-center">
@@ -131,6 +132,7 @@
               <p>세탁기</p>
             </div>
             <div class="col-2 me-2 text-center">
+              <img src="@/assets/icons/free-icon-electric-stove-8618565.png" width="25" alt="">
               <p>인덕션</p>
             </div>
 
