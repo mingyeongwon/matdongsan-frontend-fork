@@ -23,7 +23,7 @@
     문의 내용과 답변은 <span style="color:#FEC83F; font-weight: bold">'1:1 문의 내역'</span>에서 확인하실 수 있습니다.</p>
   <div class="w-50 container">
     <hr>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit"> 
     <div class="row me-5">
       <span class="col-2" style="text-align: center;">문의 유형</span>
       <select name="askType" id="askType" class="col-10" v-model="customerInquiry.qcategory">
@@ -52,7 +52,12 @@
     <div class="row me-5">
       <span class="col-2" style="text-align: center;">사진</span>
       <div class="col-10">
-        <div class="row">
+        <ImagePreview
+        imagePurpose="single"
+        @update:image="handleSingleImageUpdate"
+        class="mt-3 mb-3"
+      />
+        <!-- <div class="row">
         <div class="col-4">
           <input type="file" id="agentProfile" ref="qattach" @change="changeAttach">
           <label class="agentProfile-label border border-1 border-secondary me-5" for="agentProfile">
@@ -61,8 +66,8 @@
           </label>
           
       </div>
-      <img class="col-3" v-if="imageFiles !== null"
-              :src="imageFiles.src"
+      <img class="col-3" v-if="imageURL !== null"
+              :src="imageURL.src"
               width="100px"
               alt=""
             />
@@ -72,7 +77,7 @@
         <div style="margin-top: 10px">
           <span>- 사진 용량은 최대 10MB까지 등록이 가능합니다.</span><br>
           <span>- 사진은 1장만 등록 가능합니다.</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <hr>
@@ -94,6 +99,7 @@
 
 <script setup>
 import LoginModal from "@/components/LoginModal.vue"
+import ImagePreview from "@/components/ImagePreview.vue"; // ImagePreview 컴포넌트 가져오기
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import VueQuillEditor from "@/components/VueQuillEditor.vue";
@@ -105,10 +111,15 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 
-const customerInquiry = ref({});
+const customerInquiry = ref({
+  qcategory:"",
+  qtitle:"",
+  content:""
+});
+// 브라우저에서 받아오는 이미지 담는 변수
 const qattach = ref();
 
-const imageFiles = ref(null);
+const imageURL = ref(null);
 
 // 문의 타입, 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
@@ -126,18 +137,22 @@ const formData = new FormData();
 // 문자 데이터 formData에 넣기
 formData.append("qcategory", customerInquiry.value.qcategory);
 formData.append("qtitle", customerInquiry.value.qtitle);
-formData.append("qcontent", customerInquiry.value.content);
+const pattern = /<[^>]*>/g;
+const qcontent = customerInquiry.value.content.replace(pattern, '');
+formData.append("qcontent", qcontent);
 
-const elAttach = qattach.value;
-
-// 파일 데이터 formData에 넣기
-if(elAttach != null){
-
-  for(var i=0; i<qattach.value.files.length; i++){
-    formData.append("qattach", elAttach.files[i]);
-  }
+if(qattach.value != null){
+  formData.append("qattach", qattach.value[0]);
 }
-console.log("FileList로 나옴",qattach.value.files.length);
+// const elAttach = qattach.value;
+// 파일 데이터 formData에 넣기
+// if(elAttach != null){
+
+//   for(var i=0; i<qattach.value.files.length; i++){
+//     formData.append("qattach", elAttach.files[i]);
+//   }
+// }
+console.log("FileList로 나옴",qattach.value);
 console.log("customerInquiry: ", customerInquiry.value);
 
 // 고객문의 insert 요청
@@ -149,32 +164,45 @@ try {
 }
 }
 
-// 파일을 읽고 URL을 반환하는 함수
-const readFile = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      resolve({ file, src: e.target.result }); // 파일과 데이터 URL을 포함한 객체 반환
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file); // 파일의 데이터 URL을 읽기 시작
-  });
-};
+// // 파일을 읽고 URL을 반환하는 함수
+// const readFile = (file) => {
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.onload = (e) => {
+//       resolve({ file, src: e.target.result }); // 파일과 데이터 URL을 포함한 객체 반환
+//     };
+//     reader.onerror = reject;
+//     reader.readAsDataURL(file); // 파일의 데이터 URL을 읽기 시작
+//   });
+// };
 
-// input태그에 이미지 들어오면 실행
-const changeAttach = async (event) => {
-  console.log("profile실행");
-  const file = qattach.value.files[0]; // 선택된 파일 가져오기
+// // input태그에 이미지 들어오면 실행
+// const changeAttach = async (event) => {
+//   console.log("profile실행");
+//   const file = qattach.value.files[0]; // 선택된 파일 가져오기
+//   console.log("나와",qattach.value);
+//   console.log("나와1",qattach.value.files[0]);
 
-  if (file) {
-    try {
-      const newImage = await readFile(file); // 파일 읽기
-      imageFiles.value = newImage; // imageFiles에 할당
-    } catch (error) {
-      console.error("파일을 읽는 중 오류 발생:", error);
-    }
+//   if (file) {
+//     try {
+//       const newImage = await readFile(file); // 파일 읽기
+//       imageURL.value = newImage; // imageURL에 할당
+//     } catch (error) {
+//       console.error("파일을 읽는 중 오류 발생:", error);
+//     }
+//   }
+// };
+// 
+function handleSingleImageUpdate(files) {
+  console.log('Received single image files:', files);
+  if(files.length == 0){
+    qattach.value = null;
+    console.log("첨부파일 없음");
+  }else{
+    qattach.value = files;  // 단일 이미지 파일 정보 저장
+    console.log(" DB업로드 할 파일",qattach.value);
   }
-};
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 // 로그인 모달 마운트

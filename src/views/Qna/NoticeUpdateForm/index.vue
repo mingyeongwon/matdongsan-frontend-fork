@@ -65,6 +65,7 @@ async function getNoticeDetail(nnumber){
   try {
     const response = await qnaAPI.getNotice(nnumber);
     notice.value = response.data;
+    console.log(notice.value);
   } catch (error) {
     console.log("수정 할 공지 안가져와 짐",error);
   }
@@ -95,7 +96,9 @@ function handleSubmit(){
   
   const formData = new FormData();
   formData.append("ntitle",notice.value.ntitle);
-  formData.append("ncontent",notice.value.ncontent);
+  const pattern = /<[^>]*>/g;
+    const ncontent = notice.value.ncontent.replace(pattern, '');
+  formData.append("ncontent",ncontent);
   formData.append("nnumber",notice.value.nnumber);
   updateNewNotice(formData);
   // 이 밑의 실행문은 만들지 말기 -> update메소드에서 디테일로 페이지 이동 함
@@ -107,6 +110,8 @@ const checkForm = computed(() => {
   console.log('result: ',result);
   return result;
 });
+
+
 
 </script>
 

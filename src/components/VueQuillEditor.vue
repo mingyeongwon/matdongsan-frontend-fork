@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { reactive, watch } from "vue";
+import { onMounted, reactive, toRefs, watch } from "vue";
 
 const props = defineProps({
   modelValue: String,
@@ -40,13 +40,23 @@ const state = reactive({
   },
 });
 
+// reactive안의 속성을 사용하기 위한 구조분해 할당
+const { content } = toRefs(state);
+
 function onEditorChange({ quill, html, text }) {
-  emit('update:modelValue', text);
+  emit('update:modelValue', html); // html로 하니가 거꾸로 써지는건 방지 됨
 }
 
+// v-model 바인딩 한 content가 바뀌면 감지하여 content에 넣기
 watch(() => props.modelValue, (newValue) => {
   state.content = newValue;
 });
+
+// 마운트 할 때 v-model 바인딩 한 content가 있으면 content에 넣기
+onMounted(() => {
+  state.content = props.modelValue || ""; // modelValue가 없으면 빈 문자열로 설정
+});
+
 </script>
 
 <style scoped>

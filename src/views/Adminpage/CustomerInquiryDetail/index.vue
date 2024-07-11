@@ -47,7 +47,10 @@
         </div>
         
         <div class="row d-flex me-4" style=" justify-content: center; align-items: end; ">
-          <button class="mt-3" type="submit" :disabled="!checkForm">완료</button>
+          <button class="mt-3 me-2" type="submit" :disabled="!answerCheckForm">완료</button>
+          <button class="mt-3 me-2" type="button" @click="goBack">뒤로가기</button>
+          <button class="mt-3 me-2" type="button" @click="updateQuestion">수정</button>
+          <button class="mt-3" type="button" @click="deleteQuestion">삭제</button>
         </div>
         
       </form>
@@ -82,18 +85,14 @@
         
         <div class="row d-flex me-4" style=" justify-content: center; align-items: end;">
           <button class="mt-3 me-2" type="button" @click="goBack">뒤로가기</button>
-          <button class="mt-3" type="submit" :disabled="!checkForm">수정 완료</button>
+          <button class="mt-3" type="submit" :disabled="!answerCheckForm">수정 완료</button>
         </div>
       </form>
     </div>
     <!-- 답변이 없으면 문의 수정 삭제가 가능 -->
-    <div v-if="getAnswer == '' ">
-      <div class="row d-flex me-4" style=" justify-content: center; align-items: end;">
-        <button class="mt-3 me-2" type="button" @click="goBack">뒤로가기</button>
-        <button class="mt-3 me-2" type="button" @click="updateQuestion">수정</button>
-        <button class="mt-3" type="button" @click="deleteQuestion">삭제</button>
-      </div>
-    </div>
+    <!-- <div v-if="getAnswer == '' ">
+      
+    </div> -->
     </div>
     <!-- 모달 컴포넌트 삽입 -->
     <AgreeDeleteModal id="DeleteAnswerModal" @delete="agreeDeleteAnswer" @close="hideAnswerModal">
@@ -219,7 +218,7 @@ getAttach()
 const answer = ref({});
 
 // 답변이 비어있으면 제출 버튼 비활성화
-const checkForm = computed(() => {
+const answerCheckForm = computed(() => {
   var result = answer.value.content !== ""
   return result;
   });
@@ -228,9 +227,10 @@ const checkForm = computed(() => {
 async function handleInsertSubmit(){
   console.log("생성 폼 제출 함수 실행");
   try {
-    
     const formData = new FormData();
-    formData.append("acontent",answer.value.content);
+    const pattern = /<[^>]*>/g;
+    const acontent = answer.value.content.replace(pattern, '');
+    formData.append("acontent",acontent);
     formData.append("aQnumber",qnumber);
     await qnaAPI.createAnswer(formData);
     console.log("답변 생성 성공");
@@ -268,7 +268,9 @@ async function handleUpdateSubmit(){
   try {
     
     const formData = new FormData();
-    formData.append("acontent",answer.value.content);
+    const pattern = /<[^>]*>/g;
+    const acontent = answer.value.content.replace(pattern, '');
+    formData.append("acontent",acontent);
     formData.append("aQnumber",qnumber);
     await qnaAPI.updateAnswer(formData);
     console.log("수정답변 생성 성공");

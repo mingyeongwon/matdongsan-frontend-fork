@@ -4,9 +4,9 @@
     <td style="font-size: small">{{ category(rowData.item.qcategory) }}</td>
     <td class="fw-bold">{{ rowData.item.qtitle || rowData.item.title }}</td>
     <td class="text-muted">{{ formatDate(rowData.item.qdate) || rowData.item.date }}</td>
-    <td v-if="rowData.item.qnumber != null" class="text-muted"><RouterLink class="routerLink" :to="`/CustomerInquiryDetail?qnumber=${rowData.item.qnumber}&qunumber=${rowData.item.qunumber}`">
+    <!-- <td v-if="rowData.item.qnumber != null" class="text-muted"><RouterLink class="routerLink" :to="`/CustomerInquiryDetail?qnumber=${rowData.item.qnumber}&qunumber=${rowData.item.qunumber}`">
       <small class="bg-success p-2 rounded fw-bold text-light">상세보기</small></RouterLink>
-    </td>
+    </td> -->
     
     <td v-if="rowData.item.qnumber != null" class="text-muted">
       <small class="p-2 rounded fw-bold text-light" :class="rowData.item.qisAnswer == 1 ? 'bg-danger' : 'bg-warning'">{{ hasAnswer(rowData.item.qisAnswer) }}</small>
@@ -28,7 +28,7 @@
       }}</small>
     </td> -->
   </tr>
-  <tr v-if="rowData.isOpen">
+  <!-- <tr v-if="rowData.isOpen">
     <td colspan="6">
       <div class="p-3 text-start ps-5">
         <p class="fw-bold">내용:</p>
@@ -39,7 +39,7 @@
         </div>
       </div>
     </td> 
-  </tr>
+  </tr> -->
  
   
 </template>

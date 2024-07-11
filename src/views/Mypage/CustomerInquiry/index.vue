@@ -20,7 +20,7 @@
             <th>문의 유형</th>
             <th>제목</th>
             <th>등록일</th>
-            <th>상세</th>
+            <!-- <th>상세</th> -->
             <th>답변상태</th>
           </tr>
         </thead>
@@ -32,11 +32,12 @@
             :rowData="{
               index,
               item,
-              isOpen: isOpen(index),
-              toggle: () => toggle(index),
+              // isOpen: isOpen(index),
+              // toggle: () => toggle(index),
             }"
-            @show-deleteQnaModal="showDeleteQnaModal" 
+            @click="goDetail(item.qnumber, item.qunumber)"
           />
+
         </tbody>
       </table>
       <Pagination
@@ -151,6 +152,15 @@ async function getList(){
 
 // 리스트 가져오기
 getList();
+
+// 리스트 누르면 디테일 들어가기 
+function goDetail(qnumber, qunumber){
+  router.push({
+    path: "/CustomerInquiryDetail",
+    query: {qnumber, qunumber}
+    }
+  )
+}
 
 // 페이지가 변하면 게시물 가져오는 메소드 실행하기
 watch(currentPage, () => {

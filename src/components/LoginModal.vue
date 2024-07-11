@@ -538,8 +538,6 @@ const store = useStore();
 const emailValidStyle = ref(false);
 const passwordValidStyle = ref(false);
 
-console.log("나와야",props.question);
-
 let checkValid = ref({
   emailValid: "",
   passwordValid: "",
