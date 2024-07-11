@@ -1,5 +1,5 @@
 <template>
-  <div class="AgentMap-container w-75 mx-auto">
+  <div class="AgentMap-container w-75 mx-auto mb-5">
     <div class="h-100">
       <div class="mt-2 w-100">
         <div class="d-flex justify-content-end">
@@ -327,5 +327,21 @@ function getClickAgentPosition(lat,lng) {
 .fa-arrow-left:hover {
   color: #b8b8b8;
   transition: 0.25s;
+}
+::v-deep .property-list-box::-webkit-scrollbar {
+  width: 12px;
+}
+
+::v-deep .property-list-box::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::v-deep .property-list-box::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px; 
+}
+
+::v-deep .property-list-box::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 </style>

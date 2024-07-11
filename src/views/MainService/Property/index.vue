@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden w-75 mx-auto">
+  <div class="overflow-hidden w-75 mx-auto mb-5">
     <PropertyFilter class="w-100 mt-2" />
     <ul class="nav nav-pills mt-3 ms-4">
       <li class="nav-item">
