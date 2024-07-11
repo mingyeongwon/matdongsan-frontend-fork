@@ -122,13 +122,13 @@ watch(
   }
 );
 
-onMounted(() => {
+onMounted(async () => {
   const script = document.createElement("script");
   script.onload = () =>
     kakao.maps.load(() => {
       if(route.params.id) {
         const mapContainer = document.getElementById("map");
-        const mapOption = {
+         const mapOption =  {
           center: new kakao.maps.LatLng(property.value.platitude, property.value.plongitude),
           level: 3,
           draggable: false,
