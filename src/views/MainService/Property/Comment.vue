@@ -10,7 +10,7 @@
         </select>
       </div>
     </div>
-    <div class="d-flex mb-4">
+    <div class="d-flex mb-4 justify-content-around">
       <img v-if="store.getters.getUemail"
         width="60"
         height="60"
@@ -25,17 +25,17 @@
         src="@/assets/profileImage.png"
         alt=""
       />
-      <div class="ms-3 w-100 align-self-center">
+      <div class="ms-3 w-75 align-self-center">
         <input
-          class="w-75 p-2 rounded align-middle me-2"
+          class="w-100 p-2 rounded align-middle me-2"
           v-model="userComment.uccomment"
           type="text"
           placeholder="댓글을 입력해주세요..."
         />
-        <button class="btn py-2 btn-sm btn-secondary" @click="submitComment">
-          작성하기
-        </button>
       </div>
+      <button class="btn ms-3 py-2 h-75 align-self-center btn-sm btn-secondary" @click="submitComment">
+        작성하기
+      </button>
     </div>
 
     <!-- 댓글 -->
@@ -43,7 +43,7 @@
       <div>
         <div>
           <hr />
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between" :class="comment.ucparentnumber? 'ps-5':''">
             <div class="d-flex">
               <img
                 v-if="comment.ucremoved !== true"
@@ -54,7 +54,7 @@
                 alt=""
               />
               <p class="align-self-center fw-bold ms-2 h6 m-0">
-                <span v-if="comment.ucremoved !== true">권성환</span>
+                <span v-if="comment.ucremoved !== true">{{ comment.name }}</span>
               </p>
             </div>
             <span class="align-self-center">{{comment.ucdate}}</span>
@@ -62,7 +62,7 @@
           <div class="d-flex justify-content-end">
             <div v-if="comment.ucremoved !== true" class="ms-5 justify-content-end d-flex">
               <div class="d-flex">
-                <div
+                <div v-if="!comment.ucparentnumber"
                   class="btn btn-sm text-decoration-underline"
                   @click="toggleReplyForm(index)"
                 >
@@ -71,22 +71,22 @@
 
                 <div v-if="comment.ucUnumber == userCommonData.unumber">
                   <div class="btn btn-sm btn-success me-2" @click="editCommentButton(comment)">
-                    수정하기
+                    수정
                   </div>
                   <div class="btn btn-sm btn-danger" @click="[openDeleteModal(), getCommentId(comment.ucnumber)]">
-                    삭제하기
+                    삭제
                   </div>
                 </div>
-
+                
               </div>
             </div>
           </div>
 
           <div class="ms-5 mt-1">
-            <p v-if="!editingComment || editingComment.ucnumber !== comment.ucnumber" class="fw-bold">
-              <span v-if="comment.ucremoved === true">삭제된 댓글입니다.</span>
-              <span v-else>{{comment.uccomment}}</span>
-            </p>
+            <div v-if="!editingComment || editingComment.ucnumber !== comment.ucnumber" class="fw-bold text-break">
+              <p v-if="comment.ucremoved === true" :class="comment.ucparentnumber? parentComment: childComment">삭제된 댓글입니다.</p>
+              <p v-else>{{comment.uccomment}}</p>
+            </div>
             <div v-else>
               <textarea v-model="editingComment.uccomment" class="form-control mb-2"></textarea>
               <button class="btn btn-sm btn-primary me-2" @click="submitEditComment">
@@ -115,7 +115,7 @@
         </div>
       </div>
     </div>
-
+<!-- 페이지네이션 -->
     <div class="mt-5">
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
@@ -366,4 +366,5 @@ onMounted(() => {
 .modal-dialog {
   margin: 10% auto;
 }
+
 </style>

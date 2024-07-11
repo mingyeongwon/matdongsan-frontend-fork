@@ -84,7 +84,7 @@
       aria-labelledby="favoriteModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="favoriteModalLabel">알림</h5>
@@ -168,7 +168,7 @@ const isLiked = () => {
      favoriteModalMessage.value="관심 매물로 추가되었습니다."
   } else {
     cancelLikeProperty();
-    favoriteModalMessage.value="관심 매물로 취소되었습니다."
+    favoriteModalMessage.value="관심 매물이 취소되었습니다."
   }
   const favoriteModal = new Modal(document.getElementById("favoriteModal"));
   favoriteModal.show();
@@ -247,7 +247,7 @@ const getPropertyData = async () => {
 
     await Promise.all(
       propertyPhotos.value.map(async (photo) => {
-        await getPattaches(photo.ppnumber);
+        await getPattaches(photo);
       })
     );
 
