@@ -217,7 +217,7 @@ async function handleSubmit() {
   const formData = new FormData();
 
 // property 데이터 추가
-formData.append("property.pnumber", route.params.id);
+
 formData.append("property.pdeposite", property.pdeposite);
 formData.append("property.prentalfee", property.prentalfee);
 formData.append("property.pfloortype", property.pfloortype);
@@ -236,10 +236,10 @@ if(property.pthumbnail) {
   formData.append("property.pthumbnail", property.pthumbnail[0]);
 }
 
-if(property.ppattach) {
-  property.ppattach.forEach((file, index) => {
-      formData.append(`propertyPhoto.ppattach[${index}]`, file);
-    });
+if (property.ppattach) {
+  property.ppattach.forEach(file => {
+    formData.append("property.ppattach", file);
+  });
 }
 
 
@@ -250,6 +250,7 @@ Object.entries(propertyDetail).forEach(([key, value]) => {
 
 try {
     if(route.params.id) {
+      formData.append("property.pnumber", route.params.id);
       const response = await propertyAPI.updateProperty(route.params.id, formData);
       console.log(response);
     } else {
