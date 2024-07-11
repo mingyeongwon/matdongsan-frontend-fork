@@ -64,6 +64,8 @@
 
 <script setup>
 import { toRefs, watch, onMounted } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 
 const props = defineProps({
   property: Object,
@@ -124,14 +126,26 @@ onMounted(() => {
   const script = document.createElement("script");
   script.onload = () =>
     kakao.maps.load(() => {
-      const mapContainer = document.getElementById("map");
-      const mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3,
-        draggable: false,
-        disableDoubleClickZoom: true,
-      };
-      new kakao.maps.Map(mapContainer, mapOption);
+      if(route.params.id) {
+        const mapContainer = document.getElementById("map");
+        const mapOption = {
+          center: new kakao.maps.LatLng(property.value.platitude, property.value.plongitude),
+          level: 3,
+          draggable: false,
+          disableDoubleClickZoom: true,
+        };
+        new kakao.maps.Map(mapContainer, mapOption);
+      } else {
+
+        const mapContainer = document.getElementById("map");
+        const mapOption = {
+          center: new kakao.maps.LatLng(33.450701, 126.570667),
+          level: 3,
+          draggable: false,
+          disableDoubleClickZoom: true,
+        };
+        new kakao.maps.Map(mapContainer, mapOption);
+      }
     });
   script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.VUE_APP_KAKAO_API_KEY}&libraries=services`;
   document.head.appendChild(script);

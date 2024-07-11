@@ -29,7 +29,7 @@
             class="btn btn-sm text-dark fw-bold nav-link"
             aria-current="page"
             to="/Property"
-            >전체방</RouterLink
+            >전체 방</RouterLink
           >
         </li>
         <li class="nav-item">

@@ -32,7 +32,7 @@
             </th>
             <td class="align-middle text-center">
               <img v-if="pthumbnails[property.pnumber] != null" :src="pthumbnails[property.pnumber]" 
-              width="150" alt="매물 사진" class="rounded-1"/>
+              width="150" height="150" alt="매물 사진" class="rounded-1"/>
             </td>
             <td class="align-middle text-muted text-center">
               <div class="fw-bold">{{ property.pcategory }} {{ property.pdeposite }}만원

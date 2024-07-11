@@ -29,7 +29,8 @@
               {{ report.rpnumber }}
             </th>
             <td class="align-middle text-center">
-              <img v-if="pthumbnails[report.rpnumber] != null" :src="pthumbnails[report.rpnumber]" width="150" alt="매물 사진" />
+              <img v-if="pthumbnails[report.rpnumber] != null" :src="pthumbnails[report.rpnumber]" 
+              width="150" height="150" class="rounded-1" alt="매물 사진" />
             </td>
             <td class="align-middle text-muted">
               <div class="fw-bold">{{ report.rcontent }}</div>

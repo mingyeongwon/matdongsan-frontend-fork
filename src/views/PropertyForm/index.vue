@@ -207,7 +207,7 @@ async function handleSubmit() {
   if (property.isPmaintenance === "false") {
     property.pmaintenance = 0;
   }
-  if (propertyDetail.moveIn === "today") {
+  if (propertyDetail.moveIn === "true") {
     propertyDetail.pdmoveindate = dayjs().format('YYYY-MM-DD');
   }
   if (property.pcategory === "전세") {
@@ -238,7 +238,7 @@ if(property.pthumbnail) {
 
 if (property.ppattach) {
   property.ppattach.forEach(file => {
-    formData.append("property.ppattach", file);
+    formData.append("propertyPhoto.ppattach", file);
   });
 }
 

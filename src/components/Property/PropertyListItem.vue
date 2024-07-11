@@ -55,9 +55,9 @@
           <div class="listInfo-box ms-2">
             <p class="listPrice mb-2 mt-2">
               <b>
-                {{ propertyData.pcategory }} {{ propertyData.pdeposite }}
+                {{ propertyData.pcategory }} {{ propertyData.pdeposite }}만원
                 <span v-if="propertyData.prentalfee > 0">
-                  /{{ propertyData.prentalfee }}
+                  / {{ propertyData.prentalfee }}만원
 
                  
                 </span>

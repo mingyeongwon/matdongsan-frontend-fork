@@ -90,7 +90,7 @@
             type="radio"
             name="move-in-date-Options"
             id="move-in1"
-            value="today"
+            value="true"
             v-model="propertyDetail.moveIn"
             @change="handleMoveInChange"
           />
@@ -102,13 +102,13 @@
             type="radio"
             name="move-in-date-Options"
             id="move-in2"
-            value="notToday"
+            value="false"
             v-model="propertyDetail.moveIn"
           />
           <label class="form-check-label me-3" for="move-in2">일자 선택</label>
           <input
             type="date"
-            :disabled="propertyDetail.moveIn !== 'notToday'"
+            :disabled="propertyDetail.moveIn !== 'false'"
             v-model="propertyDetail.pmoveindate"
             required :min="minDate"
           />
@@ -200,13 +200,20 @@
   </template>
   
   <script setup>
-  import { computed, toRefs } from 'vue';
+  import { computed, onMounted, toRefs } from 'vue';
   import dayjs from 'dayjs';
   const props = defineProps([
     'property', 'propertyDetail'
   ]);
   const { property, propertyDetail  } = toRefs(props);
   const emit = defineEmits(['maintenanceChange', 'moveInChange', 'paymentTypeChange']);
+  import { useRoute } from "vue-router";
+  const route = useRoute();
+
+  
+  // const computedMaintenance = computed(() => {
+  //   return props.property.pmaintenance > 0 ? true : false;
+  // })
   
   
   function handleMaintenanceChange() {
@@ -220,6 +227,13 @@
 
   const minDate = computed(() => {
     return dayjs().format('YYYY-MM-DD');
+  })
+
+  onMounted(() => {
+    if(route.params.id) {
+      property.value.isPmaintenance = props.property.pmaintenance > 0 ? true : false;
+      propertyDetail.value.moveIn = dayjs(props.propertyDetail.pmoveindate).format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD') ? true : false;
+    }
   })
 
 
