@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden w-75 mx-auto mb-5">
+  <div class="overflow-hidden w-75 mx-auto">
     <PropertyFilter class="w-100 mt-2" />
     <ul class="nav nav-pills mt-3 ms-4">
       <li class="nav-item">
@@ -77,6 +77,37 @@
         </div>
       </div>
     </div>
+    <div
+      class="modal fade"
+      id="favoriteModal"
+      tabindex="-1"
+      aria-labelledby="favoriteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="favoriteModalLabel">알림</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">{{favoriteModalMessage}}</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -97,7 +128,7 @@ const router = useRouter();
 const store = useStore();
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
-
+import { Modal } from "bootstrap";
 const property = ref({});
 const propertyDetail = ref({});
 const propertyPhotos = ref([]);
@@ -113,6 +144,7 @@ const propertyCommentFilter = ref("");
 const propertyClusterPosition = ref({ lat: "", lng: "" });
 const propertyTotalList = ref([]);
 const isClickedReset = ref(true);
+const favoriteModalMessage =ref("");
 // 뒤로 가기
 function backToPropertyList() {
   router.push("/Property");
@@ -130,11 +162,16 @@ const isClicked = ref(false);
 // 좋아요
 const isLiked = () => {
   isClicked.value = !isClicked.value;
+
   if (isClicked.value) {
     postLikeProperty();
+     favoriteModalMessage.value="관심 매물로 추가되었습니다."
   } else {
     cancelLikeProperty();
+    favoriteModalMessage.value="관심 매물로 취소되었습니다."
   }
+  const favoriteModal = new Modal(document.getElementById("favoriteModal"));
+  favoriteModal.show();
 };
 
 const toggleHover = (state) => {
@@ -382,20 +419,20 @@ watch(()=>isClickedReset.value,
   height: 708px;
 }
 
-::v-deep .property-list-box::-webkit-scrollbar {
+:deep(.property-list-box::-webkit-scrollbar) {
   width: 12px;
 }
 
-::v-deep .property-list-box::-webkit-scrollbar-track {
+:deep(.property-list-box::-webkit-scrollbar-track) {
   background: #f1f1f1;
 }
 
-::v-deep .property-list-box::-webkit-scrollbar-thumb {
+:deep(.property-list-box::-webkit-scrollbar-thumb) {
   background: #888;
   border-radius: 10px; 
 }
 
-::v-deep .property-list-box::-webkit-scrollbar-thumb:hover {
+:deep(.property-list-box::-webkit-scrollbar-thumb:hover) {
   background: #555;
 }
 </style>

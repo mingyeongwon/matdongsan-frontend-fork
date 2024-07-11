@@ -328,20 +328,20 @@ function getClickAgentPosition(lat,lng) {
   color: #b8b8b8;
   transition: 0.25s;
 }
-::v-deep .property-list-box::-webkit-scrollbar {
+:deep(.property-list-box::-webkit-scrollbar) {
   width: 12px;
 }
 
-::v-deep .property-list-box::-webkit-scrollbar-track {
+:deep(.property-list-box::-webkit-scrollbar-track) {
   background: #f1f1f1;
 }
 
-::v-deep .property-list-box::-webkit-scrollbar-thumb {
+:deep(.property-list-box::-webkit-scrollbar-thumb) {
   background: #888;
   border-radius: 10px; 
 }
 
-::v-deep .property-list-box::-webkit-scrollbar-thumb:hover {
+:deep(.property-list-box::-webkit-scrollbar-thumb:hover) {
   background: #555;
 }
 </style>
