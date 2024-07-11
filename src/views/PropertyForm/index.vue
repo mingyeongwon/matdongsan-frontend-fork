@@ -24,7 +24,7 @@
       <!-- 이미지 미리보기 컴포넌트 -->
       <ImagePreview
         imagePurpose="single"
-        :thumbnailImage="thumbnailImage"
+        :initialImages="initialImages"
         @update:image="handleSingleImageUpdate"
         class="mt-3 mb-3"
       />
@@ -70,6 +70,7 @@ const route = useRoute();
 let requiredInfoModal = null;
 const propertyPhotos = ref([]);
 const thumbnailImage = ref(null);
+const initialImages = ref();
 
 // property 데이터 가져오기
 const getPropertyData = async () => {
@@ -77,16 +78,14 @@ const getPropertyData = async () => {
     try {
       const response = await propertyAPI.getPropertyData(route.params.id);
       Object.assign(property, response.data.totalProperty.property);
-      // property.value = response.data.totalProperty.property;
       Object.assign(propertyDetail, response.data.totalProperty.propertyDetail);
-
 
       // propertyDetail.value = response.data.totalProperty.propertyDetail;
       // property.ppattach = response.data.propertyPhotos;
   
       // property.pthumbnail = [];
   
-      // getPthumbnail(route.params.id);
+      getPthumbnail(route.params.id);
   
       // await Promise.all(propertyPhotos.value.map(async (photo) => {
       //   await getPattaches(photo.ppnumber);
@@ -97,6 +96,27 @@ const getPropertyData = async () => {
     }
   }
 };
+
+// 썸네일 사진 출력
+const getPthumbnail = async (pnumber) => {
+  try {
+    const response = await propertyAPI.propertyAttachDownload(pnumber);
+    initialImages.value = URL.createObjectURL(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 디테일 사진 출력
+// const getPattaches = async (ppnumber) => {
+//   try {
+//     const response = await propertyAPI.detailPropertyAttachDownload(ppnumber);
+//     const pattach = URL.createObjectURL(response.data);
+//     pattaches.value.push(pattach);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 
 

@@ -12,7 +12,7 @@
           />
         </div>
         <div class="d-flex">
-          <button class="btn btn-outline-success">필터</button>
+          <button class="btn btn-outline-success">Search</button>
         </div>
       </div>
       <div class="mt-2">
@@ -23,13 +23,13 @@
               <ul class="">
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pcategory" id="" />
                     전세
                   </label>
                 </li>
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pcategory" id="" />
                     월세
                   </label>
                 </li>
@@ -42,13 +42,13 @@
               <ul class="">
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="sellerType" id="" />
                     직거래
                   </label>
                 </li>
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="sellerType" id="" />
                     중개
                   </label>
                 </li>
@@ -61,19 +61,19 @@
               <ul class="">
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pfloortype" id="" />
                     반지하
                   </label>
                 </li>
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pfloortype" id="" />
                     지상
                   </label>
                 </li>
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pfloortype" id="" />
                     옥탑방
                   </label>
                 </li>
@@ -86,13 +86,13 @@
               <ul class="">
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pprice" id="" />
                     낮은순
                   </label>
                 </li>
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pprice" id="" />
                     높은순
                   </label>
                 </li>
@@ -105,13 +105,13 @@
               <ul class="">
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pdate" id="" />
                     최신순
                   </label>
                 </li>
                 <li>
                   <label for="">
-                    <input type="checkbox" name="" id="" />
+                    <input type="radio" name="pdate" id="" />
                     오래된순
                   </label>
                 </li>
