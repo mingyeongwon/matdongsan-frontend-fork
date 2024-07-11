@@ -1,5 +1,5 @@
 <template>
-  <div class="detailCss pt-5 ps-5">
+  <div class="detailCss pt-5">
     <div class="container">
       <div class="row row-cols-2 mt-4">
         <div class="d-flex col-7 w-100">
@@ -154,89 +154,8 @@
           <div>
             <h4 class="fw-bold">상세설명</h4>
           </div>
-          <div class="detailInfo">
+          <div class="detailInfo bg-light">
             <h6 class="fw-bold">{{property.ptitle}}</h6>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
             <small>
               {{propertyDetail.pdcontent}}
             </small>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="col-7 ps-4 mt-5 mb-3">
-      <button class="reportBtn p-3 w-100 text-start fw-bold" @click="showReportFalseModal">허위매물 신고하기</button>
+      <button class="reportBtn p-3 w-100 text-start fw-bold bg-light" @click="showReportFalseModal">허위매물 신고하기</button>
     </section>
   </div>
 
