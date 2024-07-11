@@ -5,7 +5,7 @@
     <div>
       <router-view />
     </div>
-    <CommonFooter v-if="path !== '/Agent' && path !== '/Property'" />
+    <CommonFooter v-if="path !== '/Agent' && path !== '/Property' &&path!='/FavoriteProperty'" />
   </div>
 </template>
 
