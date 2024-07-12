@@ -147,6 +147,8 @@ const propertyClusterPosition = ref({ lat: "", lng: "" });
 const propertyTotalList = ref([]);
 const isClickedReset = ref(true);
 const favoriteModalMessage = ref("");
+const pUnumber = ref();
+
 // 뒤로 가기
 function backToPropertyList() {
   router.push("/Property");
@@ -247,6 +249,9 @@ const getPropertyData = async () => {
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     propertyPhotos.value = response.data.propertyPhotos;
     pattaches.value = [];
+
+    pUnumber.value = response.data.totalProperty.property.pUnumber;
+    console.log("pUnumber : " + pUnumber.value);
 
     getPthumbnail(route.params.id);
 

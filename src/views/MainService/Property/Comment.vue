@@ -58,9 +58,8 @@
         <div>
           <hr />
           <div class="d-flex justify-content-between" :class="comment.ucparentnumber? 'ps-5':''">
-            <div class="d-flex">
+            <div v-if="comment.ucUnumber == userCommonData.unumber && comment.ucremoved !== true" class="d-flex">
               <img
-                v-if="comment.ucremoved !== true"
                 width="40"
                 height="40"
                 class="align-self-center rounded-circle"
@@ -68,7 +67,7 @@
                 alt=""
               />
               <p class="align-self-center fw-bold ms-2 h6 m-0">
-                <span v-if="comment.ucremoved !== true">{{ comment.name }}</span>
+                <span>{{ comment.name }}</span>
               </p>
             </div>
             <span class="align-self-center">{{comment.ucdate}}</span>
@@ -76,7 +75,7 @@
           <div class="d-flex justify-content-end">
             <div v-if="comment.ucremoved !== true" class="ms-5 justify-content-end d-flex">
               <div class="d-flex">
-                <div v-if="!comment.ucparentnumber"
+                <div v-if="!comment.ucparentnumber && store.getters.getUemail"
                   class="btn btn-sm text-decoration-underline"
                   @click="toggleReplyForm(index)"
                 >
@@ -99,7 +98,13 @@
           <div class="ms-5 mt-1">
             <div v-if="!editingComment || editingComment.ucnumber !== comment.ucnumber" class="fw-bold text-break">
               <p v-if="comment.ucremoved === true" :class="comment.ucparentnumber? parentComment: childComment">삭제된 댓글입니다.</p>
-              <p v-else>{{comment.uccomment}}</p>
+              <p v-else>
+                <!-- 판매자도 댓글 가능하게 하기 -->
+                <span v-if="comment.ucUnumber == userCommonData.unumber">                
+                  {{comment.uccomment}}
+                </span>
+                <span v-else>비밀 댓글입니다.</span>
+              </p>
             </div>
             <div v-else>
               <textarea v-model="editingComment.uccomment" class="form-control mb-2"></textarea>
