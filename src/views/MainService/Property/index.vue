@@ -71,6 +71,7 @@
           <ReportFalse :pnumber="route.params.id" />
           <Comment
             :userComment="userComment"
+            :pUnumber="property.punumber"
             @update-property-data="getPropertyData"
             @update:currentPage="handlePageChange"
             @get:commentFilter="getPropertyCommentFilter"
@@ -147,7 +148,6 @@ const propertyClusterPosition = ref({ lat: "", lng: "" });
 const propertyTotalList = ref([]);
 const isClickedReset = ref(true);
 const favoriteModalMessage = ref("");
-const pUnumber = ref();
 
 // 뒤로 가기
 function backToPropertyList() {
@@ -219,7 +219,6 @@ const getUserDataByUnumber = async (unumber) => {
     userCommonData.value = response.data.userCommonData;
     member.value = response.data.member;
     agent.value = response.data.agent;
-    console.log("memberList:? " + member.value);
     if (userCommonData.value.urole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(
         member.value.mnumber
@@ -250,8 +249,7 @@ const getPropertyData = async () => {
     propertyPhotos.value = response.data.propertyPhotos;
     pattaches.value = [];
 
-    pUnumber.value = response.data.totalProperty.property.pUnumber;
-    console.log("pUnumber : " + pUnumber.value);
+    console.log("pUnumber : " + property.value.punumber);
 
     getPthumbnail(route.params.id);
 

@@ -234,10 +234,10 @@ const router = useRouter();
 const route = useRoute();
 const store = useStore();
 const props = defineProps([
-  'userComment', 'pager'
+  'userComment', 'pager', 'pUnumber'
 ]);
 const emits = defineEmits(['update-property-data', 'update:currentPage', 'get:commentFilter'])
-
+console.log("pUnumber in comment : " + props.pUnumber);
 
 const memberProfile = ref(null);
 const comment = ref("");
