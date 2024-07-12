@@ -10,19 +10,13 @@
         </select>
       </div>
     </div>
-    <div class="d-flex mb-4 justify-content-around">
-      <img v-if="store.getters.getUemail"
+    <!--  && store.getters.getUemail !== userCommonData.uemail -->
+    <div v-if="store.getters.getUserRole === 'MEMBER'" class="d-flex mb-4 justify-content-around">
+      <img
         width="60"
         height="60"
         class="rounded-circle"
         :src="memberProfile"
-        alt=""
-      />
-      <img v-else
-        width="60"
-        height="50"
-        class="rounded-circle"
-        src="@/assets/profileImage.png"
         alt=""
       />
       <div class="ms-3 w-75 align-self-center">
@@ -34,6 +28,26 @@
         />
       </div>
       <button class="btn ms-3 py-2 h-75 align-self-center btn-sm btn-secondary" @click="submitComment">
+        작성하기
+      </button>
+    </div>
+    <div v-else-if="!store.getters.getUemail" class="d-flex mb-4 justify-content-around">
+      <img
+        width="60"
+        height="50"
+        class="rounded-circle"
+        src="@/assets/profileImage.png"
+        alt=""
+      />
+      <div class="ms-3 w-75 align-self-center">
+        <input
+          class="w-100 p-2 rounded align-middle me-2"
+          type="text"
+          placeholder="로그인후 이용해주세요..."
+          readonly
+        />
+      </div>
+      <button class="btn ms-3 py-2 h-75 align-self-center btn-sm btn-secondary" disabled>
         작성하기
       </button>
     </div>
@@ -117,25 +131,58 @@
     </div>
 <!-- 페이지네이션 -->
     <div class="mt-5">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <!-- <Pagination
+        :currentPage="pager.pageNo"
+        :totalPages="pager.totalPageNo"
+        :maxVisiblePages="5"
+        @update:currentPage="(page) => emits('update:currentPage', page)"
+      /> -->
+    </div>
+    <div v-if="props.userComment.length == 0" class="text-center">
+      <img
+        src="@/assets/none_comment_icon.png"
+        alt=""
+        width="100"
+        class="mb-3"
+      />
+      <div class="fw-bold">아직 아무런 문의가 없어요</div>
     </div>
   </div>
+
+  <!-- 경고 모달 -->
+  <div
+    class="modal fade"
+    id="commentWarningModal"
+    tabindex="-1"
+    aria-labelledby="commentWarningModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="commentWarningModalLabel">경고</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          {{ warningMessage }}
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            닫기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>  
 
   <!-- 삭제 확인 모달 -->
   <div
@@ -143,7 +190,7 @@
     class="modal fade show d-block"
     tabindex="-1"
     role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">삭제 확인</h5>
@@ -173,21 +220,22 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import { useStore } from "vuex";
+import { Modal } from "bootstrap";
 import propertyAPI from "@/apis/propertyAPI";
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
+import Pagination from "@/components/Pagination.vue";
 const router = useRouter();
 const route = useRoute();
 const store = useStore();
 const props = defineProps([
-  'userComment',
+  'userComment', 'pager'
 ]);
-const emits = defineEmits(['update-property-data', 'get:commentFilter'])
+const emits = defineEmits(['update-property-data', 'update:currentPage', 'get:commentFilter'])
 
-const data = 1;
+
 const memberProfile = ref(null);
 const comment = ref("");
-const reply = ref("");
 const showDeleteModal = ref(false);
 const clickedModalId = ref("");
 const userComment = ref({
@@ -195,18 +243,12 @@ const userComment = ref({
   ucPnumber: route.params.id,
   ucparentnumber: 0,
 });
-const userRoleNumber = computed(() => store.getters.getUserRoleNumber);
-// const userEmail = computed(() => store.getters.getUemail);
 const userCommonData = ref({});
 const editingComment = ref();
 const replyComment = ref(Array(props.userComment.length).fill(""));
 const showReplyForm = ref(Array(userComment.value.length).fill(false));
 const selectedSortOption = ref('desc');
-
-// console.log("props.userComment : " + JSON.parse(JSON.stringify(props.userComment)))
-// console.log("props.userComment.ucUnumber : " + props.userComment.ucUnumber);
-// console.log("userRoleNumber : " + userRoleNumber.value);
-// console.log("userEmail : " + userEmail.value);
+const warningMessage = ref(""); // 경고 메시지 상태 추가
 
 
 // ucnumber 얻기
@@ -217,11 +259,20 @@ function getCommentId(ucnumber) {
 
 //댓글 작성
 function submitComment() {
-  postPropertyComment(userComment);
+  if(userComment.value.uccomment == "") {
+    warningMessage.value = "댓글을 작성하셔야 합니다.";
+    const warningModal = new Modal(
+      document.getElementById("commentWarningModal")
+    );
+    warningModal.show();
+    return;
+  } else {
+    postPropertyComment();
+  }
 }
 
 // 댓글 작성 데이터 전송
-const postPropertyComment = async (userComment) => {
+const postPropertyComment = async () => {
   try {
     const data = JSON.parse(JSON.stringify(userComment.value));
     console.log("userComment.value.uccomment : " + userComment.value.uccomment);
@@ -309,7 +360,7 @@ const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
       const response = await memberAPI.memberAttachDownload(userTypeNumber);
       const blob = response.data;
       memberProfile.value = URL.createObjectURL(blob);
-    } else {
+    } else if(store.getters.getUserRole === "AGENT") {
       const response = await agentAPI.agentAttachDownload(userTypeNumber);
       const blob = response.data;
       memberProfile.value = URL.createObjectURL(blob);
@@ -335,22 +386,15 @@ const getUserData = async(uemail) => {
 watch(() => route.params.id, (newPnumber) => {
   if(newPnumber) {
     selectedSortOption.value = 'desc';
+    userComment.value.uccomment = '';
   }
 });
-
-
-
-
-
 
 onMounted(() => {
   selectedSortOption.value = 'desc';
   if (store.getters.getUserRoleNumber) {
     getUattach(store.getters.getUserRoleNumber);
-  }
-  if(store.getters.getUemail) {
     getUserData(store.getters.getUemail);
-    console.log("store.getters.getUemail : " + store.getters.getUemail);
   }
 });
 </script>

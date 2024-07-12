@@ -72,6 +72,7 @@
           <Comment
             :userComment="userComment"
             @update-property-data="getPropertyData"
+            @update:currentPage="handlePageChange"
             @get:commentFilter="getPropertyCommentFilter"
           />
         </div>
