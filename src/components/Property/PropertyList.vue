@@ -74,7 +74,6 @@ import { ref, onMounted, watch } from "vue";
 import PropertyListItem from "./PropertyListItem.vue";
 import agentAPI from "@/apis/agentAPI";
 import propertyAPI from "@/apis/propertyAPI";
-import favoriteAPI from "@/apis/favoriteAPI";
 const emit = defineEmits([
   "update:positionData",
   "update:propertyPositionData",
@@ -146,7 +145,7 @@ const loadMoreItems = async () => {
     }
     // type이 'favorite'인 경우
     else if (props.type === "favorite") {
-      const response = await favoriteAPI.getFavoriteList(offset.value, limit);
+      const response = await propertyAPI.getFavoriteList(offset.value, limit);
       const dataLength = response.data.favorite.length;
       console.log(dataLength);
       displayedFavorites.value.push(...response.data.favorite);

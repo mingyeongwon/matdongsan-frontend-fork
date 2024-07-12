@@ -743,7 +743,7 @@ async function findEmailHandleSubmit() {
     try {
       formData.append("aname", findEmail.value.uname);
       formData.append("aphone", findEmail.value.uphone);
-      const response = await agentAPI.findAgentEmail(formData);
+      const response = await memberAPI.findAgentEmail(formData);
       getEmail.value = response.data.success;
       console.log("중개인 이메일 찾기 성공", getEmail.value);
       console.log("해당하는 회원이 없으면 반환", response.data.fail);

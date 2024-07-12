@@ -10,26 +10,26 @@ const getPropertyList = (pageNo, size, lat, lng) => {
 
 // 유저 매물 리스트
 const getUserPropertyList = () => {
-  return axios.get("/Mypage/ManageMyProperty");
+  return axios.get("/Property/Mypage/ManageMyProperty");
 };
 
 // 매물 썸네일 사진 다운로드
 const propertyAttachDownload = (pnumber) =>
   //PathVariable로 데이터 전송
-  axios.get("/pattach/" + pnumber, { responseType: "blob" });
+  axios.get("/Property/pattach/" + pnumber, { responseType: "blob" });
 
 // 매물 디테일 사진 다운로드
 const detailPropertyAttachDownload = (ppnumber) =>
-  axios.get("/detailPattach/" + ppnumber, { responseType: "blob" });
+  axios.get("/Property/detailPattach/" + ppnumber, { responseType: "blob" });
 
 // 매물 삭제
 const deleteProperty = (pnumber) => {
-  return axios.delete("/deleteProperty/" + pnumber);
+  return axios.delete("/Property/deleteProperty/" + pnumber);
 };
 
 // 인기 매물 리스트
 const getPopularPropertyList = () => {
-  return axios.get("/popularProperty");
+  return axios.get("/Property/popularProperty");
 };
 
 // 매물 데이터
@@ -64,47 +64,47 @@ const postReportProperty = (report) => {
   console.log("report : " + report.rcontent);
   console.log("report : " + report.rPnumber);
   return axios.post(
-    "/createPropertyReport/" + report.rPnumber,
+    "/Property/createPropertyReport/" + report.rPnumber,
     qs.stringify(report)
   );
 };
 
 // 매물 신고 리스트
 const getReportList = () => {
-  return axios.get("/Mypage/ReportFalseListing");
+  return axios.get("/Property/Mypage/ReportFalseListing");
 };
 
 // 매물 신고 삭제
 const deletePropertyReport = (pnumber) => {
   console.log("pnumber : " + pnumber);
-  return axios.delete("/deletePropertyReport/" + pnumber);
+  return axios.delete("/Property/deletePropertyReport/" + pnumber);
 };
 
 //매물 등록권 소유 여부 체크
 const checkPropertyListing = () => {
-  return axios.get("/paymentHistory");
+  return axios.get("/Property/paymentHistory");
 };
 
 //매물 등록권 구매
 const purchasePropertyListing = (product) => {
-  return axios.post("/Payment/PaymentResult/" + product);
+  return axios.post("/Property/Payment/PaymentResult/" + product);
 };
 
 // 매물 등록
 const postProperty = (formData) => {
-  return axios.post("/PropertyForm", formData);
+  return axios.post("/Property/PropertyForm", formData);
 };
 
 //  매물 수정
 const updateProperty = (pnumber, formData) => {
-  return axios.put("/PropertyForm/" + pnumber, formData);
+  return axios.put("/Property/PropertyForm/" + pnumber, formData);
 };
 
 // 매물 상태 수정
 const updatePropertyStatus = (pnumber, pstatus) => {
   console.log("pstatus + pnumber in axios : " + pnumber + pstatus);
   return axios.put(
-    "/updatePropertyStatus/" + pnumber,
+    "/Property/updatePropertyStatus/" + pnumber,
     qs.stringify({ pstatus })
   );
 };
@@ -116,23 +116,29 @@ const getPropertyDataByPosition = (lat, lng) => {
 };
 // 좋아요
 const likeProperty = (pnumber) => {
-  return axios.post("/likeProperty/" + pnumber);
+  return axios.post("/Property/likeProperty/" + pnumber);
 };
 
 // 좋아요 취소
 const cancelLikeProperty = (pnumber) => {
-  return axios.delete("/cancelLikeProperty/" + pnumber);
+  return axios.delete("/Property/cancelLikeProperty/" + pnumber);
 };
 
 // 좋아요 확인
 const isPropertyLiked = (pnumber) => {
-  return axios.get("/isPropertyLiked/" + pnumber);
+  return axios.get("/Property/isPropertyLiked/" + pnumber);
 };
 
 // 등록권 수량 가져오기
 const  getListingRemain = (uemail) => {
-  return axios.get("/getListingRemain",{params:{uemail}})
+  return axios.get("/Property/getListingRemain",{params:{uemail}})
 }
+
+const getFavoriteList = (pageNo = 1,size) => {
+  //GET: http://localhost/board/list?pageNo=1
+
+  return axios.get(`/Property/FavoriteProperty`, { params: { pageNo,size } });
+};
 
 export default {
   getPropertyList,
@@ -157,5 +163,6 @@ export default {
   cancelLikeProperty,
   isPropertyLiked,
   getPropertyDataByPosition,
-  getListingRemain
+  getListingRemain,
+  getFavoriteList
 };

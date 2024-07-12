@@ -1,10 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 
-//중개인 회원가입
-function signup(formData) {
-  return axios.post("/Signup/AgentSignup", formData);
-}
+
 
 //중개인 리스트
 const getAgentList = (pageNo, size, filter, keyword) => {
@@ -36,7 +33,7 @@ const getAgentReviewData = (anumber) => {
 //중개인 프로필 사진 다운로드
 const agentAttachDownload = (anumber) =>
   //PathVariable로 데이터 전송
-  axios.get("/aattach/" + anumber, { responseType: "blob" });
+  axios.get("/Agent/aattach/" + anumber, { responseType: "blob" });
 
 //중개인 리뷰 작성
 const postAgentReview = (reviewData) => {
@@ -61,10 +58,7 @@ const getAgentProperty = (anumber, pageNo) => {
 const sortAgentReview = (anumber, sort) => {
   return axios.get("/Agent", { params: { anumber, sort } });
 };
-// 아이디 찾기
-const findAgentEmail = (formData) => {
-  return axios.post("/login/findAgentEmail", formData);
-};
+
 // 부동산 검색
 const postSearchKeyword = (keyword, pageNo) => {
   return axios.get("/Agent", { params: { pageNo, keyword } });
@@ -74,7 +68,6 @@ const getAgentDataByPosition = (lat, lng) => {
   return axios.get("/Agent/Position", { params: { lat, lng } });
 };
 export default {
-  signup,
   getAgentList,
   agentAttachDownload,
   getAgentDataByNumber,
@@ -85,7 +78,6 @@ export default {
   updateAgentData,
   getAgentReviewData,
   getAgentProperty,
-  findAgentEmail,
   postSearchKeyword,
   getAgentDataByPosition,
 };

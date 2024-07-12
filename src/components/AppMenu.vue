@@ -147,6 +147,7 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
+import propertyAPI from "@/apis/propertyAPI";
 const memberProfile = ref(null);
 const router = useRouter();
 const store = useStore();
@@ -196,7 +197,7 @@ function handleLogout() {
 
 async function checkPropertyListing() {
   try {
-    const response = await memberAPI.checkPaymentHistory();
+    const response = await propertyAPI.checkPropertyListing();
     hasHistory.value = response.data;
   } catch (error) {
     console.log(error);
