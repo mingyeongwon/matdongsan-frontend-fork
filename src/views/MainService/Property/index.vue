@@ -43,7 +43,7 @@
     </ul>
 
     <div>
-      <div class="d-flex ps-3 pe-3 pb-3 pt-3">
+      <div class="d-flex ps-3 pe-3 pb-3 pt-3 mb-5">
         <div class="property-list-box w-25 overflow-auto">
           <div class="col mt-3">
             <PropertyList
