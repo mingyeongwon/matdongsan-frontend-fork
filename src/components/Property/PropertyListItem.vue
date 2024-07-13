@@ -7,26 +7,24 @@
     <div class="border-bottom p-0">
       <div class="w-100 d-flex justify-content-center p-3">
         <div class="w-50">
-          <img
-            class=""
-            width="140"
-            height="140"
-            :src="fattach"
-            alt=""
-          />
+          <img class="" width="140" height="140" :src="fattach" alt="" />
         </div>
         <div class="w-50">
           <div class="listInfo-box ms-2">
             <p class="listPrice mb-2 mt-2">
-              <b
-                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }} /{{
+              <b v-if="favoriteData.prentalfee == 0"
+                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}만원
+              </b>
+              <b v-else
+                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}만원 /{{
                   favoriteData.prentalfee
-                }}
+                }}만원
               </b>
             </p>
             <p class="listInfo">
-              {{ favoriteData.pfloor }}층, {{ favoriteData.psize }}m<sup>2</sup>,
-              관리비 {{ favoriteData.pmaintenance }}만
+              {{ favoriteData.pfloor }}층,
+              {{ favoriteData.psize }}m<sup>2</sup>, 관리비
+              {{ favoriteData.pmaintenance }}만
             </p>
             <p class="listInfo">{{ favoriteData.ptitle }}</p>
             <p
@@ -40,48 +38,46 @@
     </div>
   </RouterLink>
 
-  <div v-if="propertyData&&props.propertyData.pstatus==='활성화'">
+  <div v-if="propertyData && props.propertyData.pstatus === '활성화'">
     <RouterLink
-    :to="{ path: `/Property/${propertyData.pnumber}` }"
-    class="row text-decoration-none me-3 text-dark"
-    v-if="props.propertyData.pnumber"
-  >
-    <div class="border-bottom p-0">
-      <div class="w-100 d-flex justify-content-center p-3">
-        <div class="w-50">
-          <img class="" width="140" height="140" :src="pattach" alt="" />
-        </div>
-        <div class="w-50">
-          <div class="listInfo-box ms-2">
-            <p class="listPrice mb-2 mt-2">
-              <b>
-                {{ propertyData.pcategory }} {{ propertyData.pdeposite }}만원
-                <span v-if="propertyData.prentalfee > 0">
-                  / {{ propertyData.prentalfee }}만원
-
-                 
-                </span>
-              </b>
-            </p>
-            <p class="listInfo">
-              {{ propertyData.pfloor }}층,
-              {{ propertyData.psize }}m<sup>2</sup>, 관리비
-              {{ propertyData.pmaintenance }}만
-            </p>
-            <p class="listInfo">{{ propertyData.ptitle }}</p>
-            <p
-            v-if="getRole == 'MEMBER'"
-              class="listMemberType text-center border border-danger text-danger mt-2 p-1"
-            >
-            방주인
-            </p>
+      :to="{ path: `/Property/${propertyData.pnumber}` }"
+      class="row text-decoration-none me-3 text-dark"
+      v-if="props.propertyData.pnumber"
+    >
+      <div class="border-bottom p-0">
+        <div class="w-100 d-flex justify-content-center p-3">
+          <div class="w-50">
+            <img class="" width="140" height="140" :src="pattach" alt="" />
+          </div>
+          <div class="w-50">
+            <div class="listInfo-box ms-2">
+              <p class="listPrice mb-2 mt-2">
+                <b>
+                  {{ propertyData.pcategory }} {{ propertyData.pdeposite }}만원
+                  <span v-if="propertyData.prentalfee > 0">
+                    / {{ propertyData.prentalfee }}만원
+                  </span>
+                </b>
+              </p>
+              <p class="listInfo">
+                {{ propertyData.pfloor }}층,
+                {{ propertyData.psize }}m<sup>2</sup>, 관리비
+                {{ propertyData.pmaintenance }}만
+              </p>
+              <p class="listInfo">{{ propertyData.ptitle }}</p>
+              <p
+                v-if="getRole == 'MEMBER'"
+                class="listMemberType text-center border border-danger text-danger mt-2 p-1"
+              >
+                방주인
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </RouterLink>
+    </RouterLink>
   </div>
- 
+
   <RouterLink
     :to="{ path: `/Agent/${agentData.anumber}` }"
     class="row text-decoration-none me-3 text-dark"
@@ -156,7 +152,7 @@ const props = defineProps({
       psize: 25,
       pmaintenance: 8,
       detailInfo: "",
-      pstatus:"",
+      pstatus: "",
     }),
   },
   favoriteData: {
@@ -168,7 +164,7 @@ const props = defineProps({
       prentalfee: 20,
       ptitle: "O성북천변 신축급 풀옵션원룸O성신여대역도보4분거리O",
       pfloor: "",
-      pfloortype:"",
+      pfloortype: "",
       psize: 25,
       pmaintenance: 8,
       pdetailInfo: "",
@@ -246,18 +242,18 @@ if (props.agentData.anumber) {
 } else if (props.propertyData.pnumber) {
   getPttach(props.propertyData.pnumber);
 } else {
-  getFttach(props.favoriteData.pnumber)
+  getFttach(props.favoriteData.pnumber);
 }
 
 // punumber로 role가져오는 메소드 정의
-async function getUserDataByPunumber(qunumber){
+async function getUserDataByPunumber(qunumber) {
   const response = await memberAPI.getUserDataByUnumber(qunumber);
   getRole.value = response.data.userCommonData.urole;
 }
 
 // propertyData에 pnumber가 있으면 role가져오기
-if(props.propertyData.pnumber){
-  getUserDataByPunumber(props.propertyData.punumber)
+if (props.propertyData.pnumber) {
+  getUserDataByPunumber(props.propertyData.punumber);
 }
 </script>
 
