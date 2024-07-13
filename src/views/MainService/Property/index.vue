@@ -1,6 +1,8 @@
 <template>
   <div class="overflow-hidden w-75 mx-auto">
-    <PropertyFilter @update:filterData="getFilterData" class="w-100 mt-2" />
+    <PropertyFilter @update:filterData="getFilterData" 
+                    @update:keywordData="getKeywordData"
+                    class="w-100 mt-2" />
     <ul class="nav nav-pills mt-3 ms-4">
       <li class="nav-item">
         <RouterLink
@@ -49,6 +51,7 @@
             <PropertyList
               type="property"
               :propertyfilters="filterPropertyData"
+              :searchedPropertyKeywordData="keywordPropertyData"
               @getTotalPropertyListData="getTotalPropertyData"
               @update:propertyPositionData="getPropertyPositionData"
               :propertyPosition="propertyClusterPosition"
@@ -153,6 +156,8 @@ const favoriteModalMessage = ref("");
 const pagerData = ref({});
 const currentPage = ref(0);
 const filterPropertyData = ref({});
+const keywordPropertyData = ref({});
+
 
 const handlePageChange = (page) => {
   currentPage.value = page;
@@ -162,7 +167,9 @@ const handlePageChange = (page) => {
 //필터값 자식으로부터 가져오기
 function getFilterData(data) {
   filterPropertyData.value = data;
-  console.log("filterPropertyData.value : " + JSON.stringify(filterPropertyData));
+}
+function getKeywordData(data) {
+  keywordPropertyData.value = data;
 }
 
 // 뒤로 가기

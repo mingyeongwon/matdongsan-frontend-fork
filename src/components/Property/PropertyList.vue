@@ -88,6 +88,7 @@ const props = defineProps([
   "filters",
   "propertyfilters",
   "searchedData",
+  "searchedPropertyKeywordData",
   "propertyPosition",
   "isClickedReset",
 ]); // props로부터 type 속성 정의
@@ -119,6 +120,7 @@ const loadMoreItems = async () => {
         offset.value,
         limit,
         props.propertyfilters,
+        props.searchedPropertyKeywordData,
         props.propertyPosition.lat,
         props.propertyPosition.lng
       );
@@ -235,6 +237,17 @@ watch(
     displayedProperties.value = [];
     displayedFavorites.value = [];
     displayedAgents.value = [];
+    offset.value = 1;
+    allLoaded.value = false; // 모든 데이터 로드 상태 초기화
+    loadMoreItems(); // 검색어에 따라 데이터를 로드
+  }
+);
+
+watch(
+  () => props.searchedPropertyKeywordData,
+  (newSearchData) => {
+    // 검색어가 변경되면 리스트를 초기화하고 다시 로드
+    displayedProperties.value = [];
     offset.value = 1;
     allLoaded.value = false; // 모든 데이터 로드 상태 초기화
     loadMoreItems(); // 검색어에 따라 데이터를 로드

@@ -1,6 +1,6 @@
 <template>
   <div class="filter-popup">
-    <form @submit.prevent="submitFilter">
+    <form @submit.prevent="searchKeywordInProperty">
       <div class="d-flex justify-content-end w-100">
         <div class="d-flex">
           <input
@@ -8,13 +8,16 @@
             type="search"
             placeholder="주소 검색"
             aria-label="Search"
+            @keyup.enter="searchKeywordInProperty"
             v-model="searchKeyword"
           />
         </div>
         <div class="d-flex">
-          <button class="btn btn-outline-success">Search</button>
+          <button type="button" class="btn btn-outline-success" @click="searchKeywordInProperty">Search</button>
         </div>
       </div>
+    </form>
+    <form @submit.prevent="submitFilter">
       <div class="mt-2">
         <div class="d-flex border-top">
           <div class="filter-box border-start">
@@ -129,7 +132,7 @@
           </div>
         </div>
         <div class="border-top p-3 d-flex justify-content-end">
-          <button class="btn btn-outline-secondary" type="reset">초기화</button>
+          <button class="btn btn-outline-secondary" type="reset" @click="filterReset">초기화</button>
           <button class="btn btn-warning ms-2" type="button" @click="submitFilter">조건검색</button>
         </div>
       </div>
@@ -154,7 +157,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">하나 이상의 필터를 선택해 주세요.</div>
+          <div class="modal-body">{{warningMessage}}</div>
           <div class="modal-footer">
             <button
               type="button"
@@ -173,7 +176,7 @@
 <script setup>
 import { ref } from "vue";
 import { Modal } from "bootstrap";
-const emits = defineEmits(["update:filterData"]);
+const emits = defineEmits(["update:filterData", "reset:propertyList", "update:keywordData"]);
 
 const searchKeyword = ref("");
 const filters = ref({
@@ -182,7 +185,24 @@ const filters = ref({
   byPrice: "",
   byDate: "",
 });
+const warningMessage = ref(""); // 경고 메시지 상태 추가
 
+// 필터 초기화 버튼 클릭
+// function filterReset() {
+// }
+
+function searchKeywordInProperty() {
+  console.log("searchKeyword.value : " + searchKeyword.value);
+    if(searchKeyword.value == "") {
+      warningMessage.value = "한 글자 이상의 단어를 검색해 주세요.";
+      const warningModal = new Modal(document.getElementById("warningModal"));
+      warningModal.show();
+    } else {
+      emits("update:keywordData", searchKeyword.value);
+    }
+}
+
+// 필터 검색 버튼 클릭
 function submitFilter() {
   if (
     !filters.value.byCategory &&
@@ -190,6 +210,7 @@ function submitFilter() {
     !filters.value.byPrice &&
     !filters.value.byDate
   ) {
+    warningMessage.value = "하나 이상의 필터를 선택해 주세요.";
     const warningModal = new Modal(document.getElementById("warningModal"));
     warningModal.show();
   } else {
@@ -209,7 +230,7 @@ ul {
 
 .filter-box {
   padding: 24px 10px 7px 17px;
-  width: 20%;
+  width: 25%;
   border-right: 1px solid #e0e0e0;
 }
 </style>
