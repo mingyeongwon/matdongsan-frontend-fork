@@ -8,6 +8,11 @@ const getPropertyList = (pageNo, size, lat, lng) => {
   return axios.get("/Property", { params: { pageNo, size, lat, lng } });
 };
 
+//매물 데이터 가져오기
+const getPropertyDataByPnumber =(pnumber) => {
+  return axios.get("/Property/DetailData/"+pnumber);
+}
+
 // 유저 매물 리스트
 const getUserPropertyList = (pageNo) => {
   return axios.get("/Property/Mypage/ManageMyProperty", { params: { pageNo } });
@@ -143,6 +148,7 @@ const getFavoriteList = (pageNo = 1,size) => {
 export default {
   getPropertyList,
   getUserPropertyList,
+  getPropertyDataByPnumber,
   propertyAttachDownload,
   deleteProperty,
   getPopularPropertyList,
