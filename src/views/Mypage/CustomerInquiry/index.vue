@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-between mt-2 mb-3">
         <h4 class="fw-bold">1:1 문의</h4><span style="font-size: small; text-align: start;">답변이 있는 문의는 수정 및 삭제가 불가능 합니다.</span>
         <div>
-          <router-link to="/QNA/CustomerInquiryForm">
+           <router-link to="/QNA/CustomerInquiryForm">
             <button type="button" class="btn btn-warning me-1">
               1:1 문의하기
             </button>
@@ -13,15 +13,15 @@
         </div>
       </div>
       <hr>
-      <table class="table">
-        <thead class="text-center">
+      <table class="table text-center">
+        <thead class="">
           <tr>
-            <th>번호</th>
-            <th>문의 사진</th>
-            <th>제목</th>
-            <th>등록일</th>
+            <th scope="col">번호</th>
+            <th scope="col">문의 사진</th>
+            <th scope="col">제목</th>
+            <th scope="col">등록일</th>
             <!-- <th>상세</th> -->
-            <th>답변상태</th>
+            <th scope="col">답변상태</th>
           </tr>
         </thead>
         <tbody>
@@ -37,10 +37,10 @@
               <div><small>{{ item.qtitle }}</small></div>
             </td>
             <td class="fw-bold align-middle text-center"> {{ item.qdate }}</td>
-            <td class="fw-bold align-middle ps-3 pe-3">
-              <div class="d-flex flex-column">
-                <small class="p-2 rounded fw-bold text-light text-center" :class="item.qisAnswer == 1 ? 'bg-success' : 'bg-warning'">{{ hasAnswer(item.qisAnswer) }}</small>                
-                <small class="p-2 rounded fw-bold text-light text-center mt-3" style="background-color: #2f4858;" @click="goDetail(item.qnumber, item.qunumber)" >상세보기</small>                
+            <td class="fw-bold align-middle">
+              <div class="d-flex flex-column buttons-box mx-auto">
+                <div class="btn btn-dark btn-sm w-100 fw-bold mb-3 border-0" :class="item.qisAnswer == 1 ? 'bg-warning' : 'bg-success'" style="cursor:default">{{ hasAnswer(item.qisAnswer) }}</div>                
+                <div class="btn btn-sm fw-bold text-white" style="background-color: #2f4858;" @click="goDetail(item.qnumber, item.qunumber)" >상세보기</div>                
               </div>
             </td>
           </tr>
@@ -229,5 +229,7 @@ table {
   width: 100%;
   margin-top: 20px;
 }
-
+.buttons-box{
+  width: 130px;
+}
 </style>

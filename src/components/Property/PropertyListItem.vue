@@ -70,9 +70,10 @@
             </p>
             <p class="listInfo">{{ propertyData.ptitle }}</p>
             <p
+            v-if="getRole == 'MEMBER'"
               class="listMemberType text-center border border-danger text-danger mt-2 p-1"
             >
-              방주인
+            방주인
             </p>
           </div>
         </div>
@@ -136,6 +137,7 @@
 import { ref, computed } from "vue";
 import agentAPI from "@/apis/agentAPI";
 import propertyAPI from "@/apis/propertyAPI";
+import memberAPI from "@/apis/memberAPI";
 
 const aattach = ref(null); // 중개인 첨부 사진
 const pattach = ref(null); // 매물 첨부 사진
@@ -182,6 +184,8 @@ const props = defineProps({
     }),
   },
 });
+
+const getRole = ref();
 
 // 중개인 첨부 사진 가져오기
 const getAttach = async (argAnumber) => {
@@ -244,6 +248,13 @@ if (props.agentData.anumber) {
 } else {
   getFttach(props.favoriteData.pnumber)
 }
+
+// punumber로 role가져오기
+async function getUserDataByPunumber(qunumber){
+  const response = await memberAPI.getUserDataByUnumber(qunumber);
+  getRole.value = response.data.userCommonData.urole;
+}
+getUserDataByPunumber(props.propertyData.punumber)
 </script>
 
 <style scoped>
