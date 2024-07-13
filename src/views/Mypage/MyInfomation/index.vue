@@ -197,8 +197,8 @@
         </div>
         <hr />
         <div class="text-end me-5">
-          <button class="btn btn-success me-3" :disabled="!checkForm">수정하기</button>
-          <button type="button" @click="resetInfoBtn" class="btn btn-danger">취소</button>
+          <button class="btn btn-warning me-3" :disabled="!checkForm">수정하기</button>
+          <button type="button" @click="resetInfoBtn" class="btn btn-outline-warning text-dark">취소</button>
         </div>
       </form>
       <!-- 비밀번호 변경 -->
@@ -429,7 +429,7 @@ const checkChangePasswordData = computed(() => {
 
 // 내 정보 변경을 할 때 수정 안하고 버튼 누르면 비활성화
 const checkForm = computed(()=>{
-  var result =  changeAgentCount.value > 0;
+  var result =  changeAgentCount.value > 0 || changeMemberCount.value > 0;
   return result;
 })
 
@@ -588,6 +588,8 @@ async function updateForm() {
     try {
       await agentAPI.updateAgentData(formData);
       updateMessage.value = "회원 정보 업데이트 성공";
+      changeAgentCount.value = 0; // 변경 감지하는 변수 초기화
+      changeMemberCount.value = 0;
     } catch (error) {
       console.log(error.response ? error.response.data : error.message);
     }
@@ -604,6 +606,8 @@ async function updateForm() {
     try {
       await memberAPI.updateMemberData(formData);
       updateMessage.value = "회원 정보 업데이트 성공"
+      changeAgentCount.value = 0; // 변경 감지하는 변수 초기화
+      changeMemberCount.value = 0;
 
     } catch (error) {
       console.log(error.response ? error.response.data : error.message);
@@ -690,19 +694,50 @@ function resetPasswordInfo() {
 function resetInfoBtn(){
   getUserData(store.getters.getUemail);
   imageFilesProfile.value = null;
+  changeAgentCount.value = -2; // 변경 감지하는 변수 초기화
+  changeMemberCount.value = -2;
 }
 
-// 정보 수정에서 수정된 값 감지
+// 정보 수정에서 수정된 값 감지(Agent)
 const changeAgentCount = ref(-2); // 처음 불러올 때 기본적으로 2번 변경되기에 -2를 기본값으로 함
 watch(agentData,()=>{
-  console.log("member객체 변경 감지");
+  console.log("agent객체 변경 감지");
   changeAgentCount.value += 1;
-  console.log("member 객체 변경 횟수",changeAgentCount.value);
+  console.log("agent 객체 변경 횟수",changeAgentCount.value);
+},{deep:true});
+watch(arrPhone,()=>{
+  console.log("agent객체 변경 감지");
+  changeAgentCount.value += 1;
+  console.log("agent 객체 변경 횟수",changeAgentCount.value);
+},{deep:true});
+watch(imageFilesProfile,()=>{
+  // 이미지가 들어오는 값만 사용
+  if(imageFilesProfile.value != null){
+    console.log("member객체 변경 감지");
+    changeMemberCount.value += 1;
+    console.log("member 객체 변경 횟수",changeMemberCount.value);
+  }
+},{deep:true});
+
+// 정보 수정에서 수정된 값 감지(member)
+const changeMemberCount = ref(-2);
+watch(memberData,()=>{
+  console.log("member객체 변경 감지");
+  changeMemberCount.value += 1;
+  console.log("member 객체 변경 횟수",changeMemberCount.value);
 },{deep:true});
 watch(arrPhone,()=>{
   console.log("member객체 변경 감지");
-  changeAgentCount.value += 1;
-  console.log("member 객체 변경 횟수",changeAgentCount.value);
+  changeMemberCount.value += 1;
+  console.log("member 객체 변경 횟수",changeMemberCount.value);
+},{deep:true});
+watch(imageFilesProfile,()=>{
+  // 이미지가 들어오는 값만 사용
+  if(imageFilesProfile.value != null){
+    console.log("member객체 변경 감지");
+    changeMemberCount.value += 1;
+    console.log("member 객체 변경 횟수",changeMemberCount.value);
+  }
 },{deep:true});
 
 </script>

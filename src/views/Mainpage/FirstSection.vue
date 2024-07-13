@@ -26,8 +26,14 @@
         <p class="text-center mt-3 text-muted">가입을 하고 더 많은 정보를 얻으세요</p>
         <div class="text-center">
 
-            <RouterLink to="/Signup/SignupAgreement" class="btn btn-warning fw-bold mt-3 me-3">일반 회원</RouterLink>
-            <RouterLink to="/Signup" class="btn btn-warning fw-bold mt-3 ms-3">업체 회원</RouterLink>
+            <RouterLink :to="{
+                  name: 'SignupAgreement',
+                  params: { signupType: 'member' },
+                }" class="btn btn-warning fw-bold mt-3 me-3">일반 회원</RouterLink>
+            <RouterLink :to="{
+                  name: 'SignupAgreement',
+                  params: { signupType: 'agent' },
+                }" class="btn btn-warning fw-bold mt-3 ms-3">업체 회원</RouterLink>
         </div>
       </div>
       <img src="@/assets/page-info-img.png" width="600" height="400" alt="" />
