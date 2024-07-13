@@ -216,6 +216,7 @@
                   v-model.trim="changePassword.oldPassword"
                   placeholder="현재 비밀번호를 입력하세요."
                   maxLength="100"
+                
                 />
                 <div class="ms-4 mt-1" :class="oldPasswordValidStyle ? 'text-success' : 'text-danger'">
                   {{ errorMessage.oldPassword }}
@@ -235,6 +236,7 @@
                   placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."
                   @keyup="validNew1Password"
                    maxLength="100"
+
                 />
                 <div
                   :class="

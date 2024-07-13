@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex w-100 mx-auto">
     <MyPageSideBar />
-    <div class="titleNcontent w-75 mx-auto h-auto">
+    <div class="titleNcontent w-75 mx-auto h-auto min-vh-100">
       <div class="d-flex justify-content-between">
         <h4 class="col h4 mt-2 fw-bold">매물 관리</h4>
         <div class="align-self-center">

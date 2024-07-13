@@ -1,25 +1,25 @@
 <template>
-  <div class="d-flex vh-100 w-100 mx-auto">
+  <div class="d-flex vh-100 w-100 mx-auto min-vh-100">
     <MyPageSideBar />
     <div class="titleNcontent w-75 mx-auto">
       <div class="d-flex justify-content-between">
         <h4 class="col h4 mt-2 fw-bold">허위매물 신고</h4>
         <div class="align-self-center">
           <select class="form-select" name="filter" id="">
-            <option value="날짜순" selected>최신순</option>
-            <option value="날짜순">오래된순</option>
+            <option value="desc" selected>최신순</option>
+            <option value="asc">오래된순</option>
           </select>
         </div>
       </div>
       <hr />
-      <table class="table mt-2">
+      <table class="table mt-2 text-center">
         <thead>
           <tr>
             <th scope="col" class="text-center">매물번호</th>
-            <th scope="col" class="text-center">대표사진</th>
-            <th scope="col" class="text-center">가격 / 제목</th>
+            <th scope="col" class="text-center">매물사진</th>
+            <th scope="col" class="text-center"> 제목</th>
             <th scope="col" class="text-center">신고한 날짜</th>
-            <th scope="col" class="text-center">신고 내용</th>
+            <th scope="col" class="text-center"></th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -37,7 +37,7 @@
             </td>
             <td class="fw-bold align-middle text-center"> {{ report.formattedDate }}</td>
             <td class="fw-bold align-middle">
-              <div class="d-flex flex-column">
+              <div class="d-flex flex-column buttons-box mx-auto">
                 <RouterLink class="routerLink " :to="{path:'/PropertyForm', query:{pnumber:report.rPnumber}}">
                 <button
                   class="btn btn-dark btn-sm w-100 fw-bold mb-3">
@@ -183,7 +183,9 @@ const deleteReportProperty = async (pnumber) => {
   width: 80%;
   padding: 20px;
 }
-
+.buttons-box{
+  width: 150px;
+}
 .routerLink{
   text-decoration: none; /* 밑줄 제거 */
   color: inherit; /* 기본 텍스트 색상 상속 */
