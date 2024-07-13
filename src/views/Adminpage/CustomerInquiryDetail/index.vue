@@ -24,7 +24,7 @@
     <div class="row me-5">
       <span class="col-2 mb-3 text-center align-content-center mt-5" >문의 내용</span>
       <div class="col-10 w-75 mt-5 mb-5">
-        <div class="ms-2">{{ customerInquiry.qcontent }}</div>
+        <div class="ms-2" v-html="sanitizedQuestionContent"></div>
         <img class="mt-5 ms-2 " v-if="qAttach != null" width="150" :src="qAttach"/><div class="mt-5" v-else> *첨부 파일 없음</div>
       </div>
     </div>
@@ -57,7 +57,7 @@
       <div class="row me-5">
         <span class="col-2 mb-3 text-center mt-3" >답변 ↳</span>
         <div class="col-10 mb-3 mt-3">
-          <div>{{ getAnswer.acontent }}</div>
+          <div v-html="sanitizedAnswerContent"></div>
         </div>
       </div>
       <div v-if="!openUpdate" class="row me-5 mt-5 mb-5 justify-content-end">
@@ -162,9 +162,10 @@ async function getQuestion(){
 }
 
 //태그가 출력되는 것을 html태그로 인식하도록 바꾸는 함수
-const sanitizedContent = computed(() => {
-  return DOMPurify.sanitize();
+const sanitizedQuestionContent = computed(() => {
+  return DOMPurify.sanitize(customerInquiry.value.qcontent);
 });
+
 // 작성자 가져오기
 async function getWriter(){
   try {
@@ -236,9 +237,9 @@ async function handleInsertSubmit(){
   try {
     
     const formData = new FormData();
-    const pattern = /<[^>]*>/g;
-    const acontent = answer.value.content.replace(pattern, '');
-    formData.append("acontent",acontent);
+    // const pattern = /<[^>]*>/g;
+    // const acontent = answer.value.content.replace(pattern, '');
+    formData.append("acontent",answer.value.content);
     formData.append("aQnumber",qnumber);
     await qnaAPI.createAnswer(formData);
     console.log("답변 생성 성공");
@@ -262,6 +263,11 @@ async function readAnswer(aQnumber){
 
 readAnswer(qnumber);
 
+//태그가 출력되는 것을 html태그로 인식하도록 바꾸는 함수
+const sanitizedAnswerContent = computed(() => {
+  return DOMPurify.sanitize(getAnswer.value.acontent);
+});
+
 // 답변 수정하기 /////////////////////////////////////////////////////////////////////
 let openUpdate = ref(false);
 
@@ -276,9 +282,9 @@ async function handleUpdateSubmit(){
   try {
     
     const formData = new FormData();
-    const pattern = /<[^>]*>/g;
-    const acontent = answer.value.content.replace(pattern, '');
-    formData.append("acontent",acontent);
+    // const pattern = /<[^>]*>/g;
+    // const acontent = answer.value.content.replace(pattern, '');
+    formData.append("acontent",answer.value.content);
     formData.append("aQnumber",qnumber);
     await qnaAPI.updateAnswer(formData);
     console.log("수정답변 생성 성공");

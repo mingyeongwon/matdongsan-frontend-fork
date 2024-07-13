@@ -146,14 +146,14 @@
     }
   }
     /////////////////////////////////////////////////////////////////////////////////////////////
-  var isHoverd = ref();
-  function handleMouseOver(){
-  isHoverd.value = true;
-}
+//   var isHoverd = ref();
+//   function handleMouseOver(){
+//   isHoverd.value = true;
+// }
 
-function handleMouseOut(){
-  isHoverd.value = false;
-}
+// function handleMouseOut(){
+//   isHoverd.value = false;
+// }
   </script>
   
   <style scoped>
@@ -181,7 +181,7 @@ function handleMouseOut(){
      .askMenu:hover{
       background-color: #2F4858;
       color: white;
-      border: 2px solid black; 
+      /* border: 2px solid black;  */
     }
   
      .askMenuBtn:hover{
