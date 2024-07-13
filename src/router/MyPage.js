@@ -27,7 +27,7 @@ const routes = [
   {
     path: "/MyPage/MyInfomation",
     component: () =>
-      import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/MyInfomation/Member"),
+      import(/* webpackChunkName: "MyPage" */ "@/views/Mypage/MyInfomation"),
   },
 
   // //아래 틀로 나중에 바꿀수 있음 후에 안쓰이면 삭제 해야함

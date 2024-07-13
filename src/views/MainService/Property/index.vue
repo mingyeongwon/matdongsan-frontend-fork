@@ -69,7 +69,8 @@
           <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches" />
           <DetailInfo :property="property" :propertyDetail="propertyDetail" />
           <ReportFalse :pnumber="route.params.id" />
-          <Comment
+          <Comment v-if="property.punumber"
+            :pager="pagerData"
             :userComment="userComment"
             :pUnumber="property.punumber"
             @update-property-data="getPropertyData"
@@ -148,6 +149,13 @@ const propertyClusterPosition = ref({ lat: "", lng: "" });
 const propertyTotalList = ref([]);
 const isClickedReset = ref(true);
 const favoriteModalMessage = ref("");
+const pagerData = ref({});
+const currentPage = ref(0);
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+  getPropertyData(page);
+};
 
 // 뒤로 가기
 function backToPropertyList() {
@@ -238,18 +246,18 @@ const getUserDataByUnumber = async (unumber) => {
 };
 
 // property 데이터 가져오기
-const getPropertyData = async () => {
+const getPropertyData = async (pageNo = 1) => {
   try {
     const response = await propertyAPI.getPropertyData(
       route.params.id,
-      propertyCommentFilter.value
+      propertyCommentFilter.value,
+      pageNo
     );
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
+    pagerData.value = response.data.pager;
     propertyPhotos.value = response.data.propertyPhotos;
     pattaches.value = [];
-
-    console.log("pUnumber : " + property.value.punumber);
 
     getPthumbnail(route.params.id);
 

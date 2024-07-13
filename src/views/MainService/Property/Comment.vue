@@ -10,8 +10,9 @@
         </select>
       </div>
     </div>
-    <!--  && store.getters.getUemail !== userCommonData.uemail -->
-    <div v-if="store.getters.getUserRole === 'MEMBER'" class="d-flex mb-4 justify-content-around">
+    <div v-if="store.getters.getUserRole === 'MEMBER' 
+          && (store.getters.getUemail !== propertyUser.uemail)" 
+          class="d-flex mb-4 justify-content-around">
       <img
         width="60"
         height="60"
@@ -75,7 +76,8 @@
           <div class="d-flex justify-content-end">
             <div v-if="comment.ucremoved !== true" class="ms-5 justify-content-end d-flex">
               <div class="d-flex">
-                <div v-if="!comment.ucparentnumber && store.getters.getUemail"
+                <div v-if="!comment.ucparentnumber 
+                          && (userCommonData.unumber == props.pUnumber || comment.ucUnumber == userCommonData.unumber)"
                   class="btn btn-sm text-decoration-underline"
                   @click="toggleReplyForm(index)"
                 >
@@ -100,7 +102,7 @@
               <p v-if="comment.ucremoved === true" :class="comment.ucparentnumber? parentComment: childComment">삭제된 댓글입니다.</p>
               <p v-else>
                 <!-- 판매자도 댓글 가능하게 하기 -->
-                <span v-if="comment.ucUnumber == userCommonData.unumber">                
+                <span v-if="comment.ucUnumber == userCommonData.unumber || userCommonData.unumber == props.pUnumber">                
                   {{comment.uccomment}}
                 </span>
                 <span v-else>비밀 댓글입니다.</span>
@@ -135,13 +137,13 @@
       </div>
     </div>
 <!-- 페이지네이션 -->
-    <div class="mt-5">
-      <!-- <Pagination
+    <div v-if="props.userComment.length !== 0" class="mt-5">
+      <Pagination
         :currentPage="pager.pageNo"
         :totalPages="pager.totalPageNo"
         :maxVisiblePages="5"
         @update:currentPage="(page) => emits('update:currentPage', page)"
-      /> -->
+      />
     </div>
     <div v-if="props.userComment.length == 0" class="text-center">
       <img
@@ -254,11 +256,23 @@ const replyComment = ref(Array(props.userComment.length).fill(""));
 const showReplyForm = ref(Array(userComment.value.length).fill(false));
 const selectedSortOption = ref('desc');
 const warningMessage = ref(""); // 경고 메시지 상태 추가
+const propertyUser = ref({});
 
 
 // ucnumber 얻기
 function getCommentId(ucnumber) {
   clickedModalId.value = ucnumber;
+}
+
+// 매물 올린 사람 정보
+async function getUserDataByUnumber() {
+  try {
+    const response = await memberAPI.getUserDataByUnumber(props.pUnumber);
+    propertyUser.value = response.data.userCommonData;
+    console.log("propertyUser.value.uemail : " + propertyUser.value.uemail);
+  } catch(error) {
+      console.log(error);
+  }
 }
 
 
@@ -379,7 +393,7 @@ const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
 const getUserData = async(uemail) => {
   try {
     const response = await memberAPI.getUserDataByUemail(uemail);
-    userCommonData.value = response.data;
+    userCommonData.value = response.data
   } catch(error) {
     console.log(error);
   }
@@ -400,6 +414,7 @@ onMounted(() => {
   if (store.getters.getUserRoleNumber) {
     getUattach(store.getters.getUserRoleNumber);
     getUserData(store.getters.getUemail);
+    getUserDataByUnumber();
   }
 });
 </script>

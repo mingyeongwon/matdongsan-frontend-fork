@@ -9,8 +9,8 @@ const getPropertyList = (pageNo, size, lat, lng) => {
 };
 
 // 유저 매물 리스트
-const getUserPropertyList = () => {
-  return axios.get("/Property/Mypage/ManageMyProperty");
+const getUserPropertyList = (pageNo) => {
+  return axios.get("/Property/Mypage/ManageMyProperty", { params: { pageNo } });
 };
 
 // 매물 썸네일 사진 다운로드
@@ -33,8 +33,8 @@ const getPopularPropertyList = () => {
 };
 
 // 매물 데이터
-const getPropertyData = (pnumber, date) => {
-  return axios.get("/Property/" + pnumber, { params: { date } });
+const getPropertyData = (pnumber, date, pageNo) => {
+  return axios.get("/Property/" + pnumber, { params: { date, pageNo } });
 };
 
 // 댓글 작성
@@ -70,8 +70,8 @@ const postReportProperty = (report) => {
 };
 
 // 매물 신고 리스트
-const getReportList = () => {
-  return axios.get("/Property/Mypage/ReportFalseListing");
+const getReportList = (pageNo) => {
+  return axios.get("/Property/Mypage/ReportFalseListing", { params: { pageNo } });
 };
 
 // 매물 신고 삭제

@@ -17,9 +17,9 @@
           <tr>
             <th scope="col" class="text-center">매물번호</th>
             <th scope="col" class="text-center">대표사진</th>
-            <th scope="col" class="text-center">신고 내용</th>
+            <th scope="col" class="text-center">가격 / 제목</th>
             <th scope="col" class="text-center">신고한 날짜</th>
-            <th scope="col" class="text-center">신고 상태</th>
+            <th scope="col" class="text-center">신고 내용</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -50,27 +50,16 @@
                 </button>                
               </div>
             </td>
-          </tr>
-          <!-- 페이지네이션 -->
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav> 
+          </tr> 
         </tbody>
       </table>
+      <Pagination
+        class="mt-5"
+        :currentPage="pager.pageNo"
+        :totalPages="pager.totalPageNo"
+        :maxVisiblePages="4"
+        @update:currentPage="handlePageChange"
+      />        
     </div>
   </div>
 
@@ -116,10 +105,18 @@ import propertyAPI from "@/apis/propertyAPI";
 import axios from "axios";
 import dayjs from "dayjs";
 import { Modal } from "bootstrap";
+import Pagination from "@/components/Pagination.vue";
 
 const reports = ref([]);
 const pthumbnails = ref({});
 const selectedRpnumber = ref(0);
+const currentPage = ref(0);
+const pager = ref({});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+  getUserReportList(page);
+};
 
 // 모달 열기
 function openDeleteReportModal(pnumber) {
@@ -130,15 +127,15 @@ function openDeleteReportModal(pnumber) {
 }
 
 // 허위 매물 리스트
-async function getUserReportList() {
+async function getUserReportList(pageNo = 1) {
   try {
-    const response = await propertyAPI.getReportList();
-    reports.value = response.data;
-console.log(reports.value)
+    const response = await propertyAPI.getReportList(pageNo);
+    reports.value = response.data.userReportList;
     reports.value.forEach(report => {
         getPthumbnail(report.rpnumber);
         report.formattedDate = dayjs(report.rdate).format('YYYY-MM-DD');
     });
+    pager.value = response.data.pager;
   } catch (error) {
     console.log(error);
   }

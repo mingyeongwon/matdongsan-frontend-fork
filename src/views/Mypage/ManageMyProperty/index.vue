@@ -89,26 +89,15 @@
               </div>
             </td>
           </tr>
-          <!-- 페이지네이션 -->
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav> 
         </tbody>
       </table>
+      <Pagination
+        class="mt-5"
+        :currentPage="pager.pageNo"
+        :totalPages="pager.totalPageNo"
+        :maxVisiblePages="3"
+        @update:currentPage="handlePageChange"
+      />      
     </div>
   </div>
   <TransactionModal
@@ -134,6 +123,7 @@ import { Modal } from "bootstrap";
 import propertyAPI from "@/apis/propertyAPI";
 import axios from "axios";
 import dayjs from "dayjs";
+import Pagination from "@/components/Pagination.vue";
 
 
 let transactionModal = null;
@@ -143,6 +133,30 @@ const pthumbnails = ref({});
 const selectedPnumber = ref(0); // 모달에 보내는 pnumber
 const pstatus = ref("");
 const isActive = ref(true); // true : 활성화, false : 비활성화 상태
+const currentPage = ref(0);
+const pager = ref({});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+  getUserPropertyList(page);
+};
+
+//유저 매물 리스트 목록을 가져오는 메소드 정의
+async function getUserPropertyList(pageNo = 1) {
+  try {
+    const response = await propertyAPI.getUserPropertyList(pageNo);
+    properties.value = response.data.userPropertyList;
+    properties.value.forEach(property => {
+      if (property.pthumbnailoname != null) {
+        getPthumbnail(property.pnumber);
+      }
+      property.formattedDate = dayjs(property.pdate).format('YYYY-MM-DD');
+    });
+    pager.value = response.data.pager;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
@@ -203,23 +217,7 @@ function hideDeletePropertyModal() {
   deletePropertyModal.hide();
 }
 
-//유저 매물 리스트 목록을 가져오는 메소드 정의
-async function getUserPropertyList() {
-  try {
-    const response = await propertyAPI.getUserPropertyList();
-    properties.value = response.data;
-    properties.value.forEach(property => {
-      if (property.pthumbnailoname != null) {
-        getPthumbnail(property.pnumber);
-      }
-    });
-    properties.value.forEach(property => {
-      property.formattedDate = dayjs(property.pdate).format('YYYY-MM-DD')
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
+
 
 // 사진 출력
 const getPthumbnail = async (pnumber) => {
