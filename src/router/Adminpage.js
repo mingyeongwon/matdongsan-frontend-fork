@@ -1,6 +1,6 @@
 const routes = [
     {
-      path: "/Adminpage/CusomerInquiry",
+      path: "/Adminpage/CustomerInquiry",
       component: () =>
         import(/* webpackChunkName: "MainService" */ "@/views/Adminpage/CustomerInquiry"),
     },

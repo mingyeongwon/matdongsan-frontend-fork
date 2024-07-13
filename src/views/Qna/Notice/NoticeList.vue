@@ -7,11 +7,10 @@
         <th>제목</th><th>날짜</th>
         </thead>
         <tbody>
-            <tr v-for="(item, index) in noticeList" :key="index">
+            <tr v-for="(item, index) in noticeList" :key="index" @click="goDetail(item.nnumber)" class="noticeListItem">
                     
                     <!-- <td style="text-align: center;">[공지사항]</td> -->
-                    <td class="ps-5"><RouterLink class="routerLink" :to="`/QNA/noticedetail?nnumber=${item.nnumber}`">{{ item.ntitle }}</RouterLink></td>
-                
+                    <td class="ps-5">{{ item.ntitle }}</td>
                     <td style="text-align: center;">{{ item.ndate }}</td>
                 </tr>
         
@@ -27,6 +26,9 @@
 
 <script setup>
 import { toRefs } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const props = defineProps({
     noticeList: Object,
@@ -34,7 +36,9 @@ const props = defineProps({
 
 const { noticeList } = toRefs(props);
 
-
+function goDetail(nnumber){
+    router.push(`/QNA/noticedetail?nnumber=${nnumber}`);
+}
 </script>
 
 <style scoped>
@@ -56,5 +60,8 @@ const { noticeList } = toRefs(props);
         background: none; /* 배경 제거 */
         border: none; /* 테두리 제거 */
         cursor: pointer; /* 커서 스타일 설정 */
+    }
+    .noticeListItem:hover{
+        background-color: #FAF6F6;
     }
 </style>

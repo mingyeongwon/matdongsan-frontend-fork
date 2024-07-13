@@ -1,13 +1,9 @@
 <template>
   <div>
-    <!-- 공용 컴포넌트 -->
-    <NoticeHeader>
-      <template v-slot:header>
-       문의하기
-      </template>
-    </NoticeHeader>
   
-  <p style="text-align: center; margin-top: 60px; margin-bottom: 50px;">맛동산에 궁금하신 점을 문의해주세요 <br>
+  <h2 style="text-align: center; margin-top: 70px; margin-bottom: 20px; font-weight: bold">문의 수정하기</h2>
+
+  <p style="text-align: center; margin-top: 20px; margin-bottom: 50px;">맛동산에 궁금하신 점을 문의해주세요 <br>
     문의 내용과 답변은 <span style="color:#FEC83F; font-weight: bold">'1:1 문의 내역'</span>에서 확인하실 수 있습니다.</p>
   <div class="w-50 container">
     <hr>
@@ -80,7 +76,6 @@
 
 <script setup>
 import ImagePreview from "@/components/ImagePreview.vue"; // ImagePreview 컴포넌트 가져오기
-import NoticeHeader from "@/components/NoticeHeader";
 import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import VueQuillEditor from "@/components/VueQuillEditor.vue";

@@ -17,27 +17,33 @@
         <thead class="text-center">
           <tr>
             <th>번호</th>
-            <th>문의 유형</th>
+            <th>문의 사진</th>
             <th>제목</th>
             <th>등록일</th>
             <!-- <th>상세</th> -->
             <th>답변상태</th>
           </tr>
         </thead>
-        <tbody class="text-center">
-          <AccordionRow
-            v-for="(item, index) in page.question"
-            kindOf="qna"
-            :key="item.qnumber"
-            :rowData="{
-              index,
-              item,
-              // isOpen: isOpen(index),
-              // toggle: () => toggle(index),
-            }"
-            @click="goDetail(item.qnumber, item.qunumber)"
-          />
-
+        <tbody>
+          <tr v-for="item in page.question" :key="item.qnumber">
+            <th scope="row" class="text-center align-middle">
+              {{ item.qnumber }}
+            </th>
+            <td class="align-middle text-center">
+              <img v-if="qattach[item.qnumber] != null" :src="qattach[item.qnumber]" 
+              width="150" height="150" alt="문의 사진" class="rounded-1"/>
+            </td>
+            <td class="align-middle text-muted text-center">
+              <div><small>{{ item.qtitle }}</small></div>
+            </td>
+            <td class="fw-bold align-middle text-center"> {{ item.qdate }}</td>
+            <td class="fw-bold align-middle ps-3 pe-3">
+              <div class="d-flex flex-column">
+                <small class="p-2 rounded fw-bold text-light text-center" :class="item.qisAnswer == 1 ? 'bg-success' : 'bg-warning'">{{ hasAnswer(item.qisAnswer) }}</small>                
+                <small class="p-2 rounded fw-bold text-light text-center mt-3" style="background-color: #2f4858;" @click="goDetail(item.qnumber, item.qunumber)" >상세보기</small>                
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
       <Pagination
@@ -54,7 +60,7 @@
     </div>
     </div>
   </div>
-  <AgreeDeleteModal id="DeleteQuestionModal" @delete="agreeDeleteQuestion" @close="hideModal">
+  <!-- <AgreeDeleteModal id="DeleteQuestionModal" @delete="agreeDeleteQuestion" @close="hideModal">
     <template v-slot:body>
         <div class="modal-body">
           <p class="fw-bold p-4 h-4 text-center">
@@ -63,30 +69,33 @@
           </p>
         </div>
       </template>
-  </AgreeDeleteModal>
+  </AgreeDeleteModal> -->
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { Modal } from "bootstrap";
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
-import AccordionRow from "@/components/AccordionItem.vue";
-import AgreeDeleteModal from "@/components/AgreeDeleteModal.vue"
+// import AccordionRow from "@/components/AccordionItem.vue";
+// import AgreeDeleteModal from "@/components/AgreeDeleteModal.vue"
 import qnaAPI from "@/apis/qnaAPI";
 import Pagination from "@/components/Pagination";
 import { useRoute, useRouter } from "vue-router";
+import dayjs from "dayjs";
+
 
 const router = useRouter();
-const route = useRoute();
+// const route = useRoute();
 
-let deleteQnaModal = null;
+// let deleteQnaModal = null;
 
 let currentPage = ref(1);
 let totalPages = ref();
 
-const deleteQnumber = ref();
-const deleteQunumber = ref();
-const deleteIndex = ref();
+let qattach = ref({});
+// const deleteQnumber = ref();
+// const deleteQunumber = ref();
+// const deleteIndex = ref();
 
 // DB에서 가져온 리스트
 const page = ref({
@@ -94,42 +103,52 @@ const page = ref({
   pager : {},
 });
 
-onMounted(() => {
-  deleteQnaModal = new Modal(document.querySelector("#DeleteQuestionModal"));
-});
+// onMounted(() => {
+//   deleteQnaModal = new Modal(document.querySelector("#DeleteQuestionModal"));
+// });
 
-// 삭제 버튼 클릭 시 실행되는 함수
-function showDeleteQnaModal(qnumber,qunumber,index) {
-  deleteQnaModal.show();
-  // 아코디언에서 해당하는 게시물의 qnumber와 qunumber를 가져옴
-  deleteQnumber.value = qnumber;
-  deleteQunumber.value = qunumber;
-  deleteIndex.value = index;
-
-  console.log("삭제 버튼 클릭 시 실행되는 함수", deleteQnumber.value, deleteQunumber.value);
+// 게시물 첨부 가져오기
+async function getImage(qnumber){
+  
+    const response = await qnaAPI.getAttach(qnumber);
+    qattach.value[qnumber] = URL.createObjectURL(response.data);
+    console.log("실행은 됨");
+  
 
 }
 
-function hideModal() {
-  deleteQnaModal.hide();
-}
+// // 삭제 버튼 클릭 시 실행되는 함수
+// function showDeleteQnaModal(qnumber,qunumber,index) {
+//   deleteQnaModal.show();
+//   // 아코디언에서 해당하는 게시물의 qnumber와 qunumber를 가져옴
+//   deleteQnumber.value = qnumber;
+//   deleteQunumber.value = qunumber;
+//   deleteIndex.value = index;
+
+//   console.log("삭제 버튼 클릭 시 실행되는 함수", deleteQnumber.value, deleteQunumber.value);
+
+// }
+
+// function hideModal() {
+//   deleteQnaModal.hide();
+// }
 
 
-// 게시물 삭제
-async function agreeDeleteQuestion(){
+// // 게시물 삭제
+// async function agreeDeleteQuestion(){
 
-  console.log("삭제 실행");
-  try {
-    await qnaAPI.deleteQuestion(deleteQnumber.value, deleteQunumber.value);
-    console.log("삭제 완료");  
-    hideModal();
-    getList()
-    isOpen();
-  } catch (error) {
-    console.log("삭제 실패",error);
-    hideModal()
-  }
-}
+//   console.log("삭제 실행");
+//   try {
+//     await qnaAPI.deleteQuestion(deleteQnumber.value, deleteQunumber.value);
+//     console.log("삭제 완료");  
+//     hideModal();
+//     getList()
+//     isOpen();
+//   } catch (error) {
+//     console.log("삭제 실패",error);
+//     hideModal()
+//   }
+// }
 
 function handlePageChange(page){
     currentPage.value = page;
@@ -142,12 +161,22 @@ async function getList(){
   try {
     const response = await qnaAPI.getQuestionListForUser(currentPage.value);
     page.value.question = response.data.question;
+    page.value.question.forEach(question => {
+      if (question.qattachoname != null) {
+        getImage(question.qnumber);
+      }
+      question.qdate = dayjs(page.value.question.qdate).format('YYYY-MM-DD');
+    });
+
+
     page.value.pager = response.data.pager;
     totalPages.value = page.value.pager.totalPageNo
-    console.log("가져온 첫번째 문의 객체", page.value.question[0]);
+    console.log("가져온 첫번째 문의 객체", page.value.question[0].qattach);
   } catch (error) {
     console.log(error);
   }
+
+  console.log("뭐나옴",page.value.question);
 }
 
 // 리스트 가져오기
@@ -168,17 +197,26 @@ watch(currentPage, () => {
   getList();
 })
 
-const openIndex = ref(null);
+// const openIndex = ref(null);
 
-function toggle(index) {
-  openIndex.value = openIndex.value === index ? null : index;
-  console.log("아코디언 닫기",openIndex.value);
-}
+// function toggle(index) {
+//   openIndex.value = openIndex.value === index ? null : index;
+//   console.log("아코디언 닫기",openIndex.value);
+// }
 
-function isOpen(index) {
-  console.log("아코디언 열기",openIndex.value);
+// function isOpen(index) {
+//   console.log("아코디언 열기",openIndex.value);
 
-  return openIndex.value === index;
+//   return openIndex.value === index;
+// }
+
+// 답변 여부 반환
+function hasAnswer(isAnswer){
+  if(isAnswer == 1 ){
+    return "답변 완료";
+  } else {
+    return "답변 미완료";
+  }
 }
 </script>
 
@@ -191,4 +229,5 @@ table {
   width: 100%;
   margin-top: 20px;
 }
+
 </style>

@@ -46,20 +46,20 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { Modal } from "bootstrap";
 import { useRoute } from "vue-router";
 import propertyAPI from "@/apis/propertyAPI";
-
+import memberAPI from "@/apis/memberAPI";
 const route = useRoute();
-
 const props = defineProps([
   "itemDetails",
-  "pnumber"
+  "pnumber",
+  "pUnumber"
 ]);
 
 const editReportDetails = ref(props.itemDetails);
-
+const propertyUser = ref({});
 // 매물 데이터
 const report = ref({
   rcontent: '',
@@ -67,24 +67,31 @@ const report = ref({
   checkbox: '',
 });
 
+// 매물 올린 사람 정보
+async function getUserDataByUnumber() {
+  try {
+    const response = await memberAPI.getUserDataByUnumber(props.pUnumber);
+    propertyUser.value = response.data.userCommonData;
+  } catch(error) {
+      console.log(error);
+  }
+}
+
 // 모달 열기
 function showReportFalseModal() {
   const reportFalseModal = new Modal(document.getElementById("ReportFalseModal"));
   reportFalseModal.show();
 }
 
-// pnumber 잘 전달되는지 확인
-console.log("report false modal received pnumber : " + props.pnumber);
-
 // 부모 컴포넌트에서 itemDetails 변경될 때마다 해당 변경 사항을 반영
 watch(() => props.itemDetails, (newItemDetails) => {
   editReportDetails.value = newItemDetails;
 });
 
-const reportFalse = ref({
-  content: "",
-  checkbox: ""
+onMounted(() => {
+    getUserDataByUnumber();
 });
+
 
 const checkReportFalseData = computed(() => {
   return report.value.checkbox !== "" && report.value.rcontent !== "";

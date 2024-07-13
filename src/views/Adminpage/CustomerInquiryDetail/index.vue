@@ -236,7 +236,7 @@ async function handleInsertSubmit(){
     formData.append("aQnumber",qnumber);
     await qnaAPI.createAnswer(formData);
     console.log("답변 생성 성공");
-    router.go(0) // 새로고침
+    router.go(0) // 새로고침 -> 추후 수정
   } catch (error) {
     console.log("답변 생성 실패",error);
   }
@@ -276,7 +276,7 @@ async function handleUpdateSubmit(){
     formData.append("aQnumber",qnumber);
     await qnaAPI.updateAnswer(formData);
     console.log("수정답변 생성 성공");
-    router.go(0) // 새로고침
+    router.go(0) // 새로고침 -> 추후 수ㅈ정
   } catch (error) {
     console.log("수정답변 생성 실패",error);
   }

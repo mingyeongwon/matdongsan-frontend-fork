@@ -132,11 +132,11 @@ return result;
 async function handleSubmit(){
 //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
 const formData = new FormData();
-// content에 p태그 붙는거 삭제하기
 
 // 문자 데이터 formData에 넣기
 formData.append("qcategory", customerInquiry.value.qcategory);
 formData.append("qtitle", customerInquiry.value.qtitle);
+// content에 p태그 붙는거 삭제하기
 const pattern = /<[^>]*>/g;
 const qcontent = customerInquiry.value.content.replace(pattern, '');
 formData.append("qcontent", qcontent);

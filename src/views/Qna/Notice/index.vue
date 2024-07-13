@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!-- <NoticeHeader>
-      <template v-slot:header> 공지사항 </template>
-    </NoticeHeader> -->
     <div class="container w-50">
     <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold">공지사항</h2>
       <!-- 버튼 tab -->

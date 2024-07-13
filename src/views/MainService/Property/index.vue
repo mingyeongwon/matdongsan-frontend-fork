@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden w-75 mx-auto">
-    <PropertyFilter class="w-100 mt-2" />
+    <PropertyFilter @update:filterData="getFilterData" class="w-100 mt-2" />
     <ul class="nav nav-pills mt-3 ms-4">
       <li class="nav-item">
         <RouterLink
@@ -48,6 +48,7 @@
           <div class="col mt-3">
             <PropertyList
               type="property"
+              :propertyfilters="filterPropertyData"
               @getTotalPropertyListData="getTotalPropertyData"
               @update:propertyPositionData="getPropertyPositionData"
               :propertyPosition="propertyClusterPosition"
@@ -68,7 +69,7 @@
         <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches" />
           <DetailInfo :property="property" :propertyDetail="propertyDetail" />
-          <ReportFalse :pnumber="route.params.id" />
+          <ReportFalse v-if="property.punumber" :pUnumber="property.punumber" :pnumber="route.params.id" />
           <Comment v-if="property.punumber"
             :pager="pagerData"
             :userComment="userComment"
@@ -151,11 +152,18 @@ const isClickedReset = ref(true);
 const favoriteModalMessage = ref("");
 const pagerData = ref({});
 const currentPage = ref(0);
+const filterPropertyData = ref({});
 
 const handlePageChange = (page) => {
   currentPage.value = page;
   getPropertyData(page);
 };
+
+//필터값 자식으로부터 가져오기
+function getFilterData(data) {
+  filterPropertyData.value = data;
+  console.log("filterPropertyData.value : " + JSON.stringify(filterPropertyData));
+}
 
 // 뒤로 가기
 function backToPropertyList() {
@@ -328,8 +336,8 @@ function getPropertyClusterPosition(lat, lng) {
 //지도에 표시할 전체 매물 데이터 가져오기
 function getTotalPropertyData(data) {
   propertyTotalList.value = data;
-  console.log("실행된 전체 매물 리스트 get");
 }
+
 //해당 좌표의 디테일 페이지 이동
 async function movePropertyDetailPageByPosition(lat, lng) {
   try {
@@ -375,6 +383,16 @@ watch(
       isPropertyLiked();
     }
   }
+);
+
+watch(
+  () => {
+    filterPropertyData.value.byCategory,
+    filterPropertyData.value.byFloortype,
+    filterPropertyData.value.byPrice,
+    filterPropertyData.value.byDate;
+  },
+  { deep: true }
 );
 
 watch(
