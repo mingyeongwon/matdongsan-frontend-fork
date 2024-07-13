@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-5 container mb-5">
-        <h4 class="fw-bold">인기 매물</h4>
+    <div class="mt-5 container py-5">
+        <h4 class="fw-bold text-light">인기 매물</h4>
         <div class="d-flex w-100">
             
                 <div v-for="popularProperty in popularProperties" :key="popularProperty.pnumber" class="w-25 m-2">
@@ -10,12 +10,12 @@
                                 width="230" height="230"  alt="인기매물" class="rounded-1">
                         </div>
                         <div class="featuredlistInfo-box">
-                            <p class="featuredlist-title mb-2 mt-2"><b>
+                            <p class="text-light featuredlist-title mb-2 mt-2"><b>
                                 {{ popularProperty.pcategory }} {{ popularProperty.pdeposite }}만원
                                 <span v-if="popularProperty.prentalfee > 0"> / {{ popularProperty.prentalfee }}만원</span>
                             </b></p>
-                            <p class="featuredlist-info">{{ popularProperty.pfloor }}층, {{ popularProperty.psize }}m<sup>2</sup>, 관리비 {{ popularProperty.pmaintenance }}만원</p>
-                            <p class="featuredlist-info">{{ popularProperty.ptitle }}</p>
+                            <p class="text-light featuredlist-info">{{ popularProperty.pfloor }}층, {{ popularProperty.psize }}m<sup>2</sup>, 관리비 {{ popularProperty.pmaintenance }}만원</p>
+                            <p class="text-light featuredlist-info">{{ popularProperty.ptitle }}</p>
                         </div>
                     </router-link>
                 </div>

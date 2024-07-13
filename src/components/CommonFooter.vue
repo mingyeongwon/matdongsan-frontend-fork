@@ -83,7 +83,7 @@ a {
   font-size: 12px;
 }
 .container-fluid {
-  background-color: #2f4858;
+  background-color: rgb(55, 55, 55);
   color: #fff;
 }
 .container-fluid p {

@@ -1,12 +1,13 @@
 <template>
   <div class="mt-5 container mb-5">
-    <h4 class="fw-bold mb-4">메인 서비스</h4>
-    <div class="d-flex justify-content-evenly mx-auto">
-      <div class="card border border-2" style="width: 18rem">
+    <h4 class="fw-bold mb-4 ps-2">메인 서비스</h4>
+    <div class="d-flex justify-content-between mx-auto px-2">
+      <div class="card border border-2 border-secondary" style="width: 18rem">
         <img
           src="@/assets/main-service1.png"
           class="card-img pt-2 ps-5 pe-5"
           alt="..."
+          height="176"
         />
         <div class="card-body text-center mb-5">
           <h5 class="card-title fw-bold">원룸</h5>
@@ -19,11 +20,11 @@
           >
         </div>
       </div>
-      <div class="card border border-2" style="width: 18rem">
+      <div class="card border border-2 border-secondary" style="width: 18rem">
         <img
           src="@/assets/main-service2.png"
           class="card-img pt-2 ps-5 pe-5"
-          alt="..."
+          alt="..." height="176"
         />
         <div class="card-body text-center">
           <h5 class="card-title fw-bold">전/월세</h5>
@@ -40,7 +41,7 @@
           <div class="btn text-light ps-5 pe-5" @click="requestAddress" >집내놓기</div>
         </div>
       </div>
-      <div class="card border border-2" style="width: 18rem">
+      <div class="card border border-2 border-secondary" style="width: 18rem">
         <img
           src="@/assets/main-service3.png"
           class="card-img pt-2 ps-5 pe-5"
@@ -58,6 +59,7 @@
         </div>
       </div>
     </div>
+   
     <LoginModal id="loginModal" @close="hideLogin"/>
   </div>
 </template>
