@@ -15,7 +15,7 @@ const memberJoin = (formData) => {
 
 
 const getUserData = () => {
-  return axios.get("/Member/Mypage/MyInfomation");
+  return axios.get("/Agent/Mypage/MyInfomation");
 };
 
 // 유저 정보 불러오기 by uemail
