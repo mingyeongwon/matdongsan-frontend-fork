@@ -159,9 +159,7 @@
           </div>
           <div class="detailInfo bg-light">
             <h6 class="fw-bold">{{property.ptitle}}</h6>
-            <small>
-              {{propertyDetail.pdcontent}}
-            </small>
+            <small v-html="sanitizedContent"></small>
           </div>
         </section>
         
@@ -181,13 +179,12 @@
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import dayjs from "dayjs";
+import DOMPurify from "dompurify"; // DOMPurify를 임포트합니다
 import KakaoMap from "@/components/KakaoMap.vue";
 import PropertyItem from "@/components/Property/PropertyListItem.vue";
 
@@ -200,12 +197,13 @@ watch(() => props.property, (newProperty) => {
   propertyPosition.value = {lat: newProperty.platitude, lng: newProperty.plongitude};
 }, {immediate: true}); // immediate: true를 설정하여 처음 로드될 때도 반영되도록 설정
 
-// const formattedDate = dayjs(props.property.pdate).format('YYYY-MM-DD');
-// console.log(formattedDate);
+//태그가 출력되는 것을 html태그로 인식하도록 바꾸는 함수
+const sanitizedContent = computed(() => {
+  return DOMPurify.sanitize(props.propertyDetail.pdcontent);
+});
 </script>
 
 <style scoped>
-
 .reportBtn {
   background-color: rgb(250, 250, 250);
   border: none;
