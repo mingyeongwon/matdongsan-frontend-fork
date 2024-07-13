@@ -87,10 +87,9 @@ const postReportProperty = (report) => {
 };
 
 // 매물 신고 리스트
-const getReportList = (pageNo) => {
-  return axios.get("/Property/Mypage/ReportFalseListing", { params: { pageNo } });
+const getReportList = (pageNo,filterKeyword) => {
+  return axios.get("/Property/Mypage/ReportFalseListing", { params: { pageNo,filterKeyword } });
 };
-
 // 매물 신고 삭제
 const deletePropertyReport = (pnumber) => {
   console.log("pnumber : " + pnumber);

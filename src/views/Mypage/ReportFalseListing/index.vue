@@ -5,7 +5,13 @@
       <div class="d-flex justify-content-between">
         <h4 class="col h4 mt-2 fw-bold">허위매물 신고</h4>
         <div class="align-self-center">
-          <select class="form-select" name="filter" id="">
+          <select
+            class="form-select"
+            @change="SelectedFilter"
+            name="filter"
+            id=""
+            v-model="filterKeyword"
+          >
             <option value="desc" selected>최신순</option>
             <option value="asc">오래된순</option>
           </select>
@@ -30,18 +36,23 @@
             </th>
             <td class="align-middle text-center">
               <router-link :to="`/Property/${report.rpnumber}`">
-              <img
-                v-if="pthumbnails[report.rpnumber] != null"
-                :src="pthumbnails[report.rpnumber]"
-                width="150"
-                height="150"
-                class="rounded-1"
-                alt="매물 사진"
-              />
-            </router-link>
+                <img
+                  v-if="pthumbnails[report.rpnumber] != null"
+                  :src="pthumbnails[report.rpnumber]"
+                  width="150"
+                  height="150"
+                  class="rounded-1"
+                  alt="매물 사진"
+                />
+              </router-link>
             </td>
             <td class="align-middle text-muted">
-              <div v-if="propertyTitles[report.rpnumber] != null" class="fw-bold">{{ propertyTitles[report.rpnumber].ptitle }}</div>
+              <div
+                v-if="propertyTitles[report.rpnumber] != null"
+                class="fw-bold"
+              >
+                {{ propertyTitles[report.rpnumber].ptitle }}
+              </div>
             </td>
             <td class="fw-bold align-middle text-center">
               {{ report.formattedDate }}
@@ -66,7 +77,8 @@
           </tr>
         </tbody>
       </table>
-      <Pagination v-if="reports"
+      <Pagination
+        v-if="reports"
         class="mt-5"
         :currentPage="pager.pageNo"
         :totalPages="pager.totalPageNo"
@@ -76,8 +88,8 @@
     </div>
   </div>
   <!-- 디테일 모달 -->
-   <!-- 모달 -->
-   <div class="modal" id="ReportDetailModal">
+  <!-- 모달 -->
+  <div class="modal" id="ReportDetailModal">
     <div class="modalDialog modal-dialog modal-fullsize modal-dialog-centered">
       <div class="modalContent modal-content modal-fullsize">
         <div class="modal-body">
@@ -86,26 +98,52 @@
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
-              aria-label="Close">
-            </button>
+              aria-label="Close"
+            ></button>
           </div>
-          <div class=" ms-5 me-5">
-              <h5 style="font-weight: bold; text-align: center; margin-bottom: 20px;">허위매물 신고하기</h5>
-              <div class="row">
-                <div class="col-2">신고<br>내용</div>
-                <textarea placeholder="정확한 확인을 위해 신고내용을 구체적으로 기재해 주세요. (20자 이상) 본 신고 내용은 해당 중개업소에게 전달되므로, 개인정보(연락처, 이름 등)는 기재하지 말아주세요." 
-                  class="col-10" style="height: 100px; font-size: small;" :value="reportData.rcontent" disabled>
-                </textarea>
-              </div>
-              <hr>
-              <p style="font-weight: bold;">신고하기전에 확인해주세요!!</p>
-              <div class="row">
-                <input class="col-1" type="checkbox" id="checkbox1" v-model="checkbox" disabled>
-                <label class="col-11" for="checkbox1" style="font-size: small;">2020년 2월 21일부터, 정당한 이유 없이 시세에 영향을 주기 위해 공인중개사 등의 광고를 방해하면 3년 이하 징역 또는 3,000만원 이하 벌금에 처해집니다. 신고 시 명확한 사실을 기재해 주세요.</label>
-              </div>
-              <div class="row mt-5">
-                <button class="col btn btn-sm" style="background-color: grey; color: white" data-bs-dismiss="modal">확인</button>
-              </div>
+          <div class="ms-5 me-5">
+            <h5
+              style="font-weight: bold; text-align: center; margin-bottom: 20px"
+            >
+              허위매물 신고하기
+            </h5>
+            <div class="row">
+              <div class="col-2">신고<br />내용</div>
+              <textarea
+                placeholder="정확한 확인을 위해 신고내용을 구체적으로 기재해 주세요. (20자 이상) 본 신고 내용은 해당 중개업소에게 전달되므로, 개인정보(연락처, 이름 등)는 기재하지 말아주세요."
+                class="col-10"
+                style="height: 100px; font-size: small"
+                :value="reportData.rcontent"
+                disabled
+              >
+              </textarea>
+            </div>
+            <hr />
+            <p style="font-weight: bold">신고하기전에 확인해주세요!!</p>
+            <div class="row">
+              <input
+                class="col-1"
+                type="checkbox"
+                id="checkbox1"
+                v-model="checkbox"
+                disabled
+              />
+              <label class="col-11" for="checkbox1" style="font-size: small"
+                >2020년 2월 21일부터, 정당한 이유 없이 시세에 영향을 주기 위해
+                공인중개사 등의 광고를 방해하면 3년 이하 징역 또는 3,000만원
+                이하 벌금에 처해집니다. 신고 시 명확한 사실을 기재해
+                주세요.</label
+              >
+            </div>
+            <div class="row mt-5">
+              <button
+                class="col btn btn-sm"
+                style="background-color: grey; color: white"
+                data-bs-dismiss="modal"
+              >
+                확인
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -155,7 +193,7 @@ import propertyAPI from "@/apis/propertyAPI";
 import dayjs from "dayjs";
 import { Modal } from "bootstrap";
 import Pagination from "@/components/Pagination.vue";
-const checkbox=true;
+const checkbox = true;
 const reports = ref([]);
 const pthumbnails = ref([]);
 const selectedRpnumber = ref(0); //
@@ -163,6 +201,7 @@ const currentPage = ref(0);
 const pager = ref({});
 const reportData = ref({});
 const propertyTitles = ref([]);
+const filterKeyword = ref("desc"); //필터 키워드
 const handlePageChange = (page) => {
   currentPage.value = page;
   getUserReportList(page);
@@ -179,9 +218,9 @@ function openDeleteReportModal(pnumber) {
 }
 
 // 허위 매물 리스트
-async function getUserReportList(pageNo = 1) {
+async function getUserReportList(pageNo = 1,filterKeyword) {
   try {
-    const response = await propertyAPI.getReportList(pageNo);
+    const response = await propertyAPI.getReportList(pageNo,filterKeyword);
     reports.value = response.data.userReportList;
     reports.value.forEach((report) => {
       getPthumbnail(report.rpnumber);
@@ -196,7 +235,6 @@ async function getUserReportList(pageNo = 1) {
 // 매물 제목 가져오기
 async function getPropertyTitle(pnumber) {
   try {
-
     const response = await propertyAPI.getPropertyDataByPnumber(pnumber);
     propertyTitles.value[pnumber] = response.data;
     console.log(propertyTitles.value[pnumber]);
@@ -245,9 +283,13 @@ function openRepotyDetailModal(number) {
   );
   reportData.value = reports.value[number];
   getPropertyTitle(number);
-  console.log("숫자는"+ reportData.value);
+  console.log("숫자는" + reportData.value);
   reportDetailModal.show();
-
+}
+//필터값 바뀌면 실행
+function SelectedFilter() {
+  console.log(filterKeyword.value);
+  getUserReportList(1,filterKeyword.value);
 }
 </script>
 
@@ -266,7 +308,7 @@ function openRepotyDetailModal(number) {
   border: none; /* 테두리 제거 */
   cursor: pointer; /* 커서 스타일 설정 */
 }
-input[type=checkbox] {
+input[type="checkbox"] {
   transform: scale(0.5);
 }
 </style>
