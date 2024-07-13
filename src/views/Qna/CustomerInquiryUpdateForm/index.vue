@@ -151,9 +151,9 @@ async function handleSubmit(){
   // 문자 데이터 formData에 넣기
   formData.append("qcategory", customerInquiry.value.qcategory);
   formData.append("qtitle", customerInquiry.value.qtitle);
-  const pattern = /<[^>]*>/g;
-  const qcontent = customerInquiry.value.qcontent.replace(pattern, '');
-  formData.append("qcontent", qcontent);
+  // const pattern = /<[^>]*>/g;
+  // const qcontent = customerInquiry.value.qcontent.replace(pattern, '');
+  formData.append("qcontent", customerInquiry.value.qcontent);
   formData.append("qnumber", customerInquiry.value.qnumber);
   formData.append("qUnumber", customerInquiry.value.qunumber);
   if(qattach.value != null){

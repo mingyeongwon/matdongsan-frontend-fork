@@ -249,12 +249,16 @@ if (props.agentData.anumber) {
   getFttach(props.favoriteData.pnumber)
 }
 
-// punumber로 role가져오기
+// punumber로 role가져오는 메소드 정의
 async function getUserDataByPunumber(qunumber){
   const response = await memberAPI.getUserDataByUnumber(qunumber);
   getRole.value = response.data.userCommonData.urole;
 }
-getUserDataByPunumber(props.propertyData.punumber)
+
+// propertyData에 pnumber가 있으면 role가져오기
+if(props.propertyData.pnumber){
+  getUserDataByPunumber(props.propertyData.punumber)
+}
 </script>
 
 <style scoped>

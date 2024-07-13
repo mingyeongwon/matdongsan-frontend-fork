@@ -74,9 +74,9 @@ function handleSubmit(){
   // content에 p태그 붙는거 삭제하기
   const formData = new FormData();
   formData.append("ntitle",notice.value.title);
-  const pattern = /<[^>]*>/g;
-    const ncontent = notice.value.content.replace(pattern, '');
-  formData.append("ncontent",ncontent);
+  // const pattern = /<[^>]*>/g;
+  //   const ncontent = notice.value.content.replace(pattern, '');
+  formData.append("ncontent",notice.value.content);
   insertNotice(formData);
   // 이 밑의 실행문은 만들지 말기 -> insert메소드에서 뒤로가기 함
 }

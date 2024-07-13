@@ -96,9 +96,9 @@ function handleSubmit(){
   
   const formData = new FormData();
   formData.append("ntitle",notice.value.ntitle);
-  const pattern = /<[^>]*>/g;
-    const ncontent = notice.value.ncontent.replace(pattern, '');
-  formData.append("ncontent",ncontent);
+  // const pattern = /<[^>]*>/g;
+  //   const ncontent = notice.value.ncontent.replace(pattern, '');
+  formData.append("ncontent",notice.value.ncontent);
   formData.append("nnumber",notice.value.nnumber);
   updateNewNotice(formData);
   // 이 밑의 실행문은 만들지 말기 -> update메소드에서 디테일로 페이지 이동 함

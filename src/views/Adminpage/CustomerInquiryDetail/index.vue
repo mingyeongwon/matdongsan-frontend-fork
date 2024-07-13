@@ -126,6 +126,7 @@ import qnaAPI from "@/apis/qnaAPI";
 import VueQuillEditor from "@/components/VueQuillEditor.vue";
 import AgreeDeleteModal from "@/components/AgreeDeleteModal.vue"
 import { Modal } from "bootstrap";
+import DOMPurify from "dompurify";
 
 const router = useRouter();
 const route = useRoute();
@@ -159,6 +160,11 @@ async function getQuestion(){
   }
   
 }
+
+//태그가 출력되는 것을 html태그로 인식하도록 바꾸는 함수
+const sanitizedContent = computed(() => {
+  return DOMPurify.sanitize();
+});
 // 작성자 가져오기
 async function getWriter(){
   try {

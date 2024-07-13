@@ -13,7 +13,7 @@
       <hr>
       <div class="row me-5">
         <span class="col-2 mb-3 text-center mt-5" >공지 내용</span>
-        <div class="col-10 w-75 mt-5 mb-5">{{ notice.ncontent }}</div>
+        <div class="col-10 w-75 mt-5 mb-5" v-html="sanitizedContent"></div>
       </div>
       
       <hr>
@@ -38,11 +38,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { Modal } from "bootstrap";
 import { useRouter, useRoute } from "vue-router";
 import AgreeDeleteModal from "@/components/AgreeDeleteModal.vue"
 import qnaAPI from "@/apis/qnaAPI";
+import DOMPurify from "dompurify";
 const router = useRouter();
 const route = useRoute();
 
@@ -107,6 +108,10 @@ async function agreeDeleteQuestion(){
   }
 }
 
+//태그가 출력되는 것을 html태그로 인식하도록 바꾸는 함수
+const sanitizedContent = computed(() => {
+  return DOMPurify.sanitize(notice.value.ncontent);
+});
 
 </script>
 

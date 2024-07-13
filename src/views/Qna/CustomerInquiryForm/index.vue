@@ -137,9 +137,9 @@ const formData = new FormData();
 formData.append("qcategory", customerInquiry.value.qcategory);
 formData.append("qtitle", customerInquiry.value.qtitle);
 // content에 p태그 붙는거 삭제하기
-const pattern = /<[^>]*>/g;
-const qcontent = customerInquiry.value.content.replace(pattern, '');
-formData.append("qcontent", qcontent);
+// const pattern = /<[^>]*>/g;
+// const qcontent = customerInquiry.value.content.replace(pattern, '');
+formData.append("qcontent", customerInquiry.value.content);
 
 if(qattach.value != null){
   formData.append("qattach", qattach.value[0]);
