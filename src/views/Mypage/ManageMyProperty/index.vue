@@ -22,15 +22,14 @@
             <th scope="col" class="text-center">가격 / 제목</th>
             <th scope="col" class="text-center">등록한 날짜</th>
             <th scope="col" class="text-center">매물 상태</th>
-            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="property in properties" :key="property.pnumber">
-            <th scope="row" class="text-center align-middle th-width">
+          <tr v-for="property in properties" :key="property.pnumber" >
+            <th scope="row" class="text-center align-middle th-width" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
               {{ property.pnumber }}
             </th>
-            <td class="align-middle text-center img-tablepart">
+            <td class="align-middle text-center img-tablepart" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
               <RouterLink :to="`/Property/${property.pnumber}`">
                 <img
                   v-if="pthumbnails[property.pnumber] != null"
@@ -42,7 +41,7 @@
                 />
               </RouterLink>
             </td>
-            <td class="align-middle text-muted text-center">
+            <td class="align-middle text-muted text-center" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
               <div class="fw-bold">
                 {{ property.pcategory }} {{ property.pdeposite }}만원
                 <span v-if="property.pcategory == '월세'">
@@ -58,10 +57,10 @@
                 <small>{{ property.ptitle }}</small>
               </div>
             </td>
-            <td class="fw-bold align-middle text-center">
+            <td class="fw-bold align-middle text-center" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
               {{ property.formattedDate }}
             </td>
-            <td class="fw-bold align-middle buttons-height">
+            <td class="fw-bold align-middle buttons-height" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
               <div class="d-flex flex-column">
                 <RouterLink
                   class="routerLink"
