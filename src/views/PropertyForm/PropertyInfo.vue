@@ -54,9 +54,10 @@
         <div
           class="map-box col border border-1 border-secondary rounded text-center text-muted position-relative"
           id="map"
-        ><div class="loading-font align-self-center fw-bold position-absolute ">
-          Loading...
-        </div>
+        >
+          <div class="loading-font align-self-center fw-bold position-absolute">
+            Loading...
+          </div>
         </div>
       </div>
     </div>
@@ -82,7 +83,7 @@ function openPostSearch() {
       property.value.ppostcode = data.zonecode;
       property.value.paddress = data.address;
       emitUpdate();
-     showMap(data.address); // 주소 검색 완료 후 지도에 표시
+      showMap(data.address); // 주소 검색 완료 후 지도에 표시
     },
   }).open();
 }
@@ -96,15 +97,28 @@ function showMap(address) {
       center: new kakao.maps.LatLng(address.platitude, address.plongitude),
       level: 3,
     };
+  } else if (!address) {
+    return;
   } else {
     mapOption = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+      center: new kakao.maps.LatLng(address.platitude, address.plongitude),
     };
   }
 
   const map = new kakao.maps.Map(mapContainer, mapOption);
   const geocoder = new kakao.maps.services.Geocoder();
+  var markerPosition = new kakao.maps.LatLng(
+    address.platitude,
+    address.plongitude
+  );
+
+  // 마커를 생성합니다
+  var marker = new kakao.maps.Marker({
+    position: markerPosition,
+  });
+
+  // 마커가 지도 위에 표시되도록 설정합니다
+  marker.setMap(map);
 
   geocoder.addressSearch(address, function (result, status) {
     if (status === kakao.maps.services.Status.OK) {
@@ -166,7 +180,7 @@ onMounted(async () => {
 watch(
   () => [property.value.platitude, property.value.plongitude],
   () => {
-   showMap(property.value);
+    showMap(property.value);
   }
 );
 </script>
@@ -183,8 +197,8 @@ watch(
 .address-search-btn {
   width: 100px;
 }
-.loading-font{
-  top:45%;
-  right:40%;
+.loading-font {
+  top: 45%;
+  right: 40%;
 }
 </style>
