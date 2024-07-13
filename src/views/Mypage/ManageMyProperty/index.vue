@@ -1,15 +1,15 @@
 <template>
-  <div class="d-flex vh-100 w-100 mx-auto">
+  <div class="d-flex w-100 mx-auto">
     <MyPageSideBar />
-    <div class="titleNcontent w-75 mx-auto">
+    <div class="titleNcontent w-75 mx-auto h-auto">
       <div class="d-flex justify-content-between">
         <h4 class="col h4 mt-2 fw-bold">매물 관리</h4>
         <div class="align-self-center">
           <select class="form-select" name="filter" id="">
-            <option value="날짜순" selected>최신순</option>
-            <option value="날짜순">오래된순</option>
-            <option value="날짜순">거래완료</option>
-            <option value="날짜순">거래중</option>
+            <option value="desc" selected>최신순</option>
+            <option value="asc">오래된순</option>
+            <option value="거래완료">거래완료</option>
+            <option value="활성화">거래중</option>
           </select>
         </div>
       </div>
@@ -27,10 +27,10 @@
         </thead>
         <tbody>
           <tr v-for="property in properties" :key="property.pnumber">
-            <th scope="row" class="text-center align-middle">
+            <th scope="row" class="text-center align-middle th-width">
               {{ property.pnumber }}
             </th>
-            <td class="align-middle text-center">
+            <td class="align-middle text-center img-tablepart">
               <RouterLink :to="`/Property/${property.pnumber}`">
                 <img
                   v-if="pthumbnails[property.pnumber] != null"
@@ -61,7 +61,7 @@
             <td class="fw-bold align-middle text-center">
               {{ property.formattedDate }}
             </td>
-            <td class="fw-bold align-middle">
+            <td class="fw-bold align-middle buttons-height">
               <div class="d-flex flex-column">
                 <RouterLink
                   class="routerLink"
@@ -115,7 +115,7 @@
                   비활성화
                 </button>
                 <button
-                  class="btn btn-sm btn-outline-secondary fw-bold"
+                  class="btn btn-sm btn-outline-danger fw-bold"
                   @click="showDeletePropertyModal(property.pnumber)"
                 >
                   삭제
@@ -299,12 +299,22 @@ const changePropertyStatus = async () => {
   width: 80%;
   padding: 20px;
 }
-
+.buttons-height{
+  height: 189px;
+  width: 150px;
+}
 .routerLink {
   text-decoration: none; /* 밑줄 제거 */
   color: inherit; /* 기본 텍스트 색상 상속 */
   background: none; /* 배경 제거 */
   border: none; /* 테두리 제거 */
   cursor: pointer; /* 커서 스타일 설정 */
+}
+.img-tablepart{
+  width: 200px;
+  height: 189px;
+}
+.th-width{
+  width: 90px;
 }
 </style>

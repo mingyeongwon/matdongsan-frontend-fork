@@ -1,7 +1,7 @@
 <template>
-  <div class="d-flex vh-100 w-100 mx-auto">
+  <div class="d-flex w-100 mx-auto">
     <MyPageSidebar />
-    <div class="titleNcontent w-75 mx-auto">
+    <div class="titleNcontent w-75 mx-auto min-vh-100">
       <div class="d-flex justify-content-between mt-2 mb-3">
         <h4 class="fw-bold">1:1 문의</h4><span style="font-size: small; text-align: start;">답변이 있는 문의는 수정 및 삭제가 불가능 합니다.</span>
         <div>

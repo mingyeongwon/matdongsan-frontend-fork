@@ -2,26 +2,26 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       <li :class="['page-item', { disabled: currentPage === 1 }]">
-        <a class="page-link" href="#" @click.prevent="goToPage(1)" tabindex="-1" :aria-disabled="currentPage === 1">처음</a>
+        <button class="page-link" @click.prevent="goToPage(1)" :disabled="currentPage === 1">처음</button>
       </li>
-      <li :class="['page-item', { disabled: currentPage === 1 }]">
-        <a class="page-link" href="#" @click.prevent="prevPage" tabindex="-1" :aria-disabled="currentPage === 1">이전</a>
+      <li :class="['page-item', { disabled: currentPageGroup === 0 }]">
+        <button class="page-link" @click.prevent="prevPageGroup" :disabled="currentPageGroup === 0">이전</button>
       </li>
       <li v-for="page in visiblePages" :key="page" :class="['page-item', { active: page === currentPage }]">
-        <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
+        <button class="page-link" @click.prevent="goToPage(page)">{{ page }}</button>
+      </li>
+      <li :class="['page-item', { disabled: isNextDisabled }]">
+        <button class="page-link" @click.prevent="nextPageGroup" :disabled="isNextDisabled">다음</button>
       </li>
       <li :class="['page-item', { disabled: currentPage === totalPages }]">
-        <a class="page-link" href="#" @click.prevent="nextPage" :aria-disabled="currentPage === totalPages">다음</a>
-      </li>
-      <li :class="['page-item', { disabled: currentPage === totalPages }]">
-        <a class="page-link" href="#" @click.prevent="goToPage(totalPages)" :aria-disabled="currentPage === totalPages">끝</a>
+        <button class="page-link" @click.prevent="goToPage(totalPages)" :disabled="currentPage === totalPages">끝</button>
       </li>
     </ul>
   </nav>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
   currentPage: {
@@ -42,39 +42,48 @@ const props = defineProps({
 
 const emit = defineEmits(['update:currentPage']);
 
+const currentPageGroup = ref(0);
+
+watch(() => props.currentPage, (newPage) => {
+  currentPageGroup.value = Math.floor((newPage - 1) / props.maxVisiblePages);
+});
+
 const goToPage = (page) => {
   if (page < 1 || page > props.totalPages) return;
   emit('update:currentPage', page);
 };
 
-const prevPage = () => {
-  if (props.currentPage > 1) {
-    goToPage(props.currentPage - 1);
+const prevPageGroup = () => {
+  if (currentPageGroup.value > 0) {
+    currentPageGroup.value--;
+    goToPage(currentPageGroup.value * props.maxVisiblePages + 1);
   }
 };
 
-const nextPage = () => {
-  if (props.currentPage < props.totalPages) {
-    goToPage(props.currentPage + 1);
+const nextPageGroup = () => {
+  const nextGroupStart = (currentPageGroup.value + 1) * props.maxVisiblePages + 1;
+  if (nextGroupStart <= props.totalPages) {
+    currentPageGroup.value++;
+    goToPage(nextGroupStart);
+  } else {
+    goToPage(props.totalPages);
   }
 };
 
 const visiblePages = computed(() => {
-  const half = Math.floor(props.maxVisiblePages / 2);
-  let start = props.currentPage - half;
-  let end = props.currentPage + half;
-
-  if (start < 1) {
-    start = 1;
-    end = Math.min(props.maxVisiblePages, props.totalPages);
+  const start = currentPageGroup.value * props.maxVisiblePages + 1;
+  const end = Math.min(start + props.maxVisiblePages - 1, props.totalPages);
+  const pages = [];
+  
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
   }
 
-  if (end > props.totalPages) {
-    end = props.totalPages;
-    start = Math.max(1, props.totalPages - props.maxVisiblePages + 1);
-  }
+  return pages;
+});
 
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+const isNextDisabled = computed(() => {
+  return currentPageGroup.value * props.maxVisiblePages + props.maxVisiblePages >= props.totalPages;
 });
 </script>
 
