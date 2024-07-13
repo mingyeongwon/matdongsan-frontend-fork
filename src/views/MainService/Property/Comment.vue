@@ -239,7 +239,6 @@ const props = defineProps([
   'userComment', 'pager', 'pUnumber'
 ]);
 const emits = defineEmits(['update-property-data', 'update:currentPage', 'get:commentFilter'])
-console.log("pUnumber in comment : " + props.pUnumber);
 
 const memberProfile = ref(null);
 const comment = ref("");
@@ -269,7 +268,6 @@ async function getUserDataByUnumber() {
   try {
     const response = await memberAPI.getUserDataByUnumber(props.pUnumber);
     propertyUser.value = response.data.userCommonData;
-    console.log("propertyUser.value.uemail : " + propertyUser.value.uemail);
   } catch(error) {
       console.log(error);
   }

@@ -74,6 +74,7 @@ import { ref, onMounted, watch } from "vue";
 import PropertyListItem from "./PropertyListItem.vue";
 import agentAPI from "@/apis/agentAPI";
 import propertyAPI from "@/apis/propertyAPI";
+import { stringify } from "qs";
 const emit = defineEmits([
   "update:positionData",
   "update:propertyPositionData",
@@ -85,6 +86,7 @@ const emit = defineEmits([
 const props = defineProps([
   "type",
   "filters",
+  "propertyfilters",
   "searchedData",
   "propertyPosition",
   "isClickedReset",
@@ -116,6 +118,7 @@ const loadMoreItems = async () => {
       const response = await propertyAPI.getPropertyList(
         offset.value,
         limit,
+        props.propertyfilters,
         props.propertyPosition.lat,
         props.propertyPosition.lng
       );
@@ -206,6 +209,18 @@ watch(
     displayedProperties.value = [];
     displayedFavorites.value = [];
     displayedAgents.value = [];
+    offset.value = 1;
+    allLoaded.value = false; // 모든 데이터 로드 상태 초기화
+    loadMoreItems(); // 필터에 따라 데이터를 로드
+  },
+  { deep: true }
+);
+
+watch(
+  () => props.propertyfilters,
+  (newFilters) => {
+    // 필터가 변경되면 리스트를 초기화하고 다시 로드
+    displayedProperties.value = [];
     offset.value = 1;
     allLoaded.value = false; // 모든 데이터 로드 상태 초기화
     loadMoreItems(); // 필터에 따라 데이터를 로드

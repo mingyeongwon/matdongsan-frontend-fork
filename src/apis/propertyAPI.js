@@ -2,10 +2,21 @@ import axios from "axios";
 import qs from "qs";
 
 // 전체 매물 리스트
-const getPropertyList = (pageNo, size, lat, lng) => {
+const getPropertyList = (pageNo, size, filter, lat, lng) => {
   //GET: http://localhost/board/list?pageNo=1
 
-  return axios.get("/Property", { params: { pageNo, size, lat, lng } });
+  console.log("FILTER IN AXIOS : " + JSON.stringify(filter));
+
+  return axios.get("/Property", { params: { 
+    pageNo, 
+    size, 
+    rentType: filter.byCategory,
+    floorType: filter.byFloortype,
+    price: filter.byPrice,
+    date: filter.byDate,
+    lat, 
+    lng },
+   });
 };
 
 // 유저 매물 리스트
