@@ -31,30 +31,51 @@
               {{ property.pnumber }}
             </th>
             <td class="align-middle text-center">
-              <img v-if="pthumbnails[property.pnumber] != null" :src="pthumbnails[property.pnumber]" 
-              width="150" height="150" alt="매물 사진" class="rounded-1"/>
+              <RouterLink :to="`/Property/${property.pnumber}`">
+                <img
+                  v-if="pthumbnails[property.pnumber] != null"
+                  :src="pthumbnails[property.pnumber]"
+                  width="150"
+                  height="150"
+                  alt="매물 사진"
+                  class="rounded-1"
+                />
+              </RouterLink>
             </td>
             <td class="align-middle text-muted text-center">
-              <div class="fw-bold">{{ property.pcategory }} {{ property.pdeposite }}만원
-                <span v-if="property.pcategory == '월세'"> / {{ property.prentalfee }}만원</span>
+              <div class="fw-bold">
+                {{ property.pcategory }} {{ property.pdeposite }}만원
+                <span v-if="property.pcategory == '월세'">
+                  / {{ property.prentalfee }}만원</span
+                >
               </div>
               <small>
-                {{ property.pfloortype }} {{ property.pfloor }}층, {{ property.psize }}m<sup>2</sup>, 관리비 {{ property.pmaintenance }}만원
+                {{ property.pfloortype }} {{ property.pfloor }}층,
+                {{ property.psize }}m<sup>2</sup>, 관리비
+                {{ property.pmaintenance }}만원
               </small>
-              <div><small>{{ property.ptitle }}</small></div>
+              <div>
+                <small>{{ property.ptitle }}</small>
+              </div>
             </td>
-            <td class="fw-bold align-middle text-center"> {{ property.formattedDate }}</td>
+            <td class="fw-bold align-middle text-center">
+              {{ property.formattedDate }}
+            </td>
             <td class="fw-bold align-middle">
               <div class="d-flex flex-column">
-                <RouterLink class="routerLink " :to="{path:`/PropertyForm/${property.pnumber}`}">
-                <button
-                  class="btn btn-warning btn-sm w-100 fw-bold mb-3"
-                  v-if="property.pstatus !== '거래완료'"
+                <RouterLink
+                  class="routerLink"
+                  :to="{ path: `/PropertyForm/${property.pnumber}` }"
                 >
-                <!-- 거래 완료 버튼 누르면 버튼 안 보임 -->
-                <!--버튼 누르면 id값 가지고 수정페이지로 가기-->
-                  수정
-                </button> </RouterLink>
+                  <button
+                    class="btn btn-warning btn-sm w-100 fw-bold mb-3"
+                    v-if="property.pstatus !== '거래완료'"
+                  >
+                    <!-- 거래 완료 버튼 누르면 버튼 안 보임 -->
+                    <!--버튼 누르면 id값 가지고 수정페이지로 가기-->
+                    수정
+                  </button>
+                </RouterLink>
                 <button
                   class="soldOutBtn btn btn-sm fw-bold mb-3"
                   @click="showTransactionModal(property.pnumber)"
@@ -73,19 +94,32 @@
                 >
                   {{ isActive ? "비활성화" : "활성화" }}
                 </button> -->
-                <button class="btn btn-sm fw-bold mb-3 btn-danger" @click="changeStatusActive(property.pnumber)"
-                        v-if="property.pstatus !== '거래완료' && property.pstatus !== '활성화'">
+                <button
+                  class="btn btn-sm fw-bold mb-3 btn-danger"
+                  @click="changeStatusActive(property.pnumber)"
+                  v-if="
+                    property.pstatus !== '거래완료' &&
+                    property.pstatus !== '활성화'
+                  "
+                >
                   활성화
                 </button>
-                <button class="btn btn-sm fw-bold mb-3 btn-success" @click="changeStatusInactive(property.pnumber)"
-                        v-if="property.pstatus !== '거래완료' && property.pstatus === '활성화'">
+                <button
+                  class="btn btn-sm fw-bold mb-3 btn-success"
+                  @click="changeStatusInactive(property.pnumber)"
+                  v-if="
+                    property.pstatus !== '거래완료' &&
+                    property.pstatus === '활성화'
+                  "
+                >
                   비활성화
                 </button>
                 <button
                   class="btn btn-sm btn-outline-secondary fw-bold"
-                  @click="showDeletePropertyModal(property.pnumber)">
+                  @click="showDeletePropertyModal(property.pnumber)"
+                >
                   삭제
-                </button>                
+                </button>
               </div>
             </td>
           </tr>
@@ -97,21 +131,21 @@
         :totalPages="pager.totalPageNo"
         :maxVisiblePages="3"
         @update:currentPage="handlePageChange"
-      />      
+      />
     </div>
   </div>
   <TransactionModal
     id="TransactionModal"
     @close="hideTransactionModal"
-    :pnumber = "selectedPnumber"
+    :pnumber="selectedPnumber"
     @change-property-status="changePropertyStatus"
   />
   <DeletePropertyModal
     id="DeletePropertyModal"
-    :pnumber = "selectedPnumber"
+    :pnumber="selectedPnumber"
     @close="hideDeletePropertyModal"
-    @delete-property="deleteProperty" />
-
+    @delete-property="deleteProperty"
+  />
 </template>
 
 <script setup>
@@ -124,7 +158,6 @@ import propertyAPI from "@/apis/propertyAPI";
 import axios from "axios";
 import dayjs from "dayjs";
 import Pagination from "@/components/Pagination.vue";
-
 
 let transactionModal = null;
 let deletePropertyModal = null;
@@ -146,11 +179,11 @@ async function getUserPropertyList(pageNo = 1) {
   try {
     const response = await propertyAPI.getUserPropertyList(pageNo);
     properties.value = response.data.userPropertyList;
-    properties.value.forEach(property => {
+    properties.value.forEach((property) => {
       if (property.pthumbnailoname != null) {
         getPthumbnail(property.pnumber);
       }
-      property.formattedDate = dayjs(property.pdate).format('YYYY-MM-DD');
+      property.formattedDate = dayjs(property.pdate).format("YYYY-MM-DD");
     });
     pager.value = response.data.pager;
   } catch (error) {
@@ -160,7 +193,9 @@ async function getUserPropertyList(pageNo = 1) {
 
 onMounted(() => {
   transactionModal = new Modal(document.querySelector("#TransactionModal"));
-  deletePropertyModal = new Modal(document.querySelector("#DeletePropertyModal"));
+  deletePropertyModal = new Modal(
+    document.querySelector("#DeletePropertyModal")
+  );
 });
 
 // 활성화 비활성화 버튼 클릭 시 실행
@@ -187,13 +222,11 @@ function changeStatusInactive(pnumber) {
   changePropertyStatus();
 }
 
-
 const property = ref([
-  { id: 1, isActive: false,checkTransactionCompletedData:true },
-  { id: 2, isActive: false,checkTransactionCompletedData:true },
+  { id: 1, isActive: false, checkTransactionCompletedData: true },
+  { id: 2, isActive: false, checkTransactionCompletedData: true },
   // 추가 매물 데이터
 ]);
-
 
 // 거래완료 모달 열기
 function showTransactionModal(pnumber) {
@@ -203,7 +236,8 @@ function showTransactionModal(pnumber) {
 }
 
 // 거래완료 모달 닫기
-function hideTransactionModal() { // 거래 완료 확인 모달에서 거래 완료 버튼 클릭 시 실행되는 함수
+function hideTransactionModal() {
+  // 거래 완료 확인 모달에서 거래 완료 버튼 클릭 시 실행되는 함수
   transactionModal.hide();
 }
 
@@ -213,11 +247,9 @@ function showDeletePropertyModal(pnumber) {
   deletePropertyModal.show();
 }
 
-function hideDeletePropertyModal() { 
+function hideDeletePropertyModal() {
   deletePropertyModal.hide();
 }
-
-
 
 // 사진 출력
 const getPthumbnail = async (pnumber) => {
@@ -233,7 +265,6 @@ onMounted(() => {
   getUserPropertyList();
 });
 
-
 const deleteProperty = async () => {
   try {
     await propertyAPI.deleteProperty(selectedPnumber.value);
@@ -245,15 +276,18 @@ const deleteProperty = async () => {
 
 const changePropertyStatus = async () => {
   try {
-    console.log("pstatus + pnumber in index : " + selectedPnumber.value + pstatus.value);
-    await propertyAPI.updatePropertyStatus(selectedPnumber.value, pstatus.value);
+    console.log(
+      "pstatus + pnumber in index : " + selectedPnumber.value + pstatus.value
+    );
+    await propertyAPI.updatePropertyStatus(
+      selectedPnumber.value,
+      pstatus.value
+    );
     await getUserPropertyList(); // 수정 후 리스트 갱신
   } catch (error) {
     console.log(error);
   }
 };
-
-
 </script>
 
 <style scoped>
@@ -266,7 +300,7 @@ const changePropertyStatus = async () => {
   padding: 20px;
 }
 
-.routerLink{
+.routerLink {
   text-decoration: none; /* 밑줄 제거 */
   color: inherit; /* 기본 텍스트 색상 상속 */
   background: none; /* 배경 제거 */
