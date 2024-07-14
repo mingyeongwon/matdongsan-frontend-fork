@@ -26,8 +26,8 @@ const getPropertyDataByPnumber =(pnumber) => {
 }
 
 // 유저 매물 리스트
-const getUserPropertyList = (pageNo) => {
-  return axios.get("/Property/Mypage/ManageMyProperty", { params: { pageNo } });
+const getUserPropertyList = (pageNo, filterKeyword) => {
+  return axios.get("/Property/Mypage/ManageMyProperty", { params: { pageNo, filterKeyword } });
 };
 
 // 매물 썸네일 사진 다운로드
@@ -94,6 +94,11 @@ const getReportList = (pageNo,filterKeyword) => {
 const deletePropertyReport = (pnumber) => {
   console.log("pnumber : " + pnumber);
   return axios.delete("/Property/deletePropertyReport/" + pnumber);
+};
+
+// 매물 신고 여부
+const checkIsReported = (pnumber) => {
+  return axios.get("/Property/isReported/" + pnumber);
 };
 
 //매물 등록권 소유 여부 체크
@@ -168,6 +173,7 @@ export default {
   postReportProperty,
   getReportList,
   deletePropertyReport,
+  checkIsReported,
   checkPropertyListing,
   purchasePropertyListing,
   postProperty,

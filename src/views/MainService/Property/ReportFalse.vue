@@ -43,6 +43,39 @@
       </div>
     </div>
   </div>
+
+      <!-- 경고 모달 -->
+      <div
+      class="modal fade"
+      id="warningModal"
+      tabindex="-1"
+      aria-labelledby="warningModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="warningModalLabel">경고</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">이미 신고한 매물입니다.</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> 
 </template>
 
 <script setup>
@@ -57,6 +90,7 @@ const props = defineProps([
   "pnumber",
   "pUnumber"
 ]);
+const isReported = ref();
 
 const editReportDetails = ref(props.itemDetails);
 const propertyUser = ref({});
@@ -78,9 +112,22 @@ async function getUserDataByUnumber() {
 }
 
 // 모달 열기
-function showReportFalseModal() {
-  const reportFalseModal = new Modal(document.getElementById("ReportFalseModal"));
-  reportFalseModal.show();
+async function showReportFalseModal() {
+  try {
+    const response = await propertyAPI.checkIsReported(props.pnumber);
+    isReported.value = response.data
+    console.log("isReported.value : " + isReported.value);
+
+    if(isReported.value) {
+      const warningModal = new Modal(document.getElementById("warningModal"));
+      warningModal.show();
+    } else {
+      const reportFalseModal = new Modal(document.getElementById("ReportFalseModal"));
+      reportFalseModal.show();
+    }
+  } catch(error) {
+    console.log(error);
+  }
 }
 
 // 부모 컴포넌트에서 itemDetails 변경될 때마다 해당 변경 사항을 반영

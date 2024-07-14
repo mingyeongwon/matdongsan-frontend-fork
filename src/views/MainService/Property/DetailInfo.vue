@@ -71,13 +71,13 @@
               <li class="listGrid">
                 <div><p>입주가능일</p></div>
                 <div><p>
-                  <span v-if="propertyDetail.pdmoveindate == dayjs().format('YYYY-MM-DD')">즉시 입주 (협의 가능)</span>
-                  <span ></span>
+                  <span v-if="propertyDetail.formattedDate == dayjs().format('YYYY-MM-DD')">즉시 입주 (협의 가능)</span>
+                  <span v-else>{{ propertyDetail.formattedDate }}</span>
                 </p></div>
               </li>
               <li class="listGrid">
                 <div><p>등록일</p></div>
-                <div><p>{{ property.pdate }}</p></div>
+                <div><p>{{ property.formattedDate }}</p></div>
               </li>
             </ul>
           </section>

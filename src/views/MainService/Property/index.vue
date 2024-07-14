@@ -72,7 +72,7 @@
         <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches" />
           <DetailInfo :property="property" :propertyDetail="propertyDetail" />
-          <ReportFalse v-if="property.punumber" :pUnumber="property.punumber" :pnumber="route.params.id" />
+          <ReportFalse v-if="property.punumber && (store.getters.getUemail != propertyUser.uemail)" :pUnumber="property.punumber" :pnumber="route.params.id" />
           <Comment v-if="property.punumber"
             :pager="pagerData"
             :userComment="userComment"
@@ -136,6 +136,8 @@ const store = useStore();
 import memberAPI from "@/apis/memberAPI";
 import agentAPI from "@/apis/agentAPI";
 import { Modal } from "bootstrap";
+import dayjs from "dayjs";
+
 const property = ref({});
 const propertyDetail = ref({});
 const propertyPhotos = ref([]);
@@ -157,6 +159,16 @@ const pagerData = ref({});
 const currentPage = ref(0);
 const filterPropertyData = ref({});
 const keywordPropertyData = ref({});
+const propertyUser = ref({});
+
+async function getPropertyUserDataByUnumber(unumber) {
+  try {
+    const response = await memberAPI.getUserDataByUnumber(unumber);
+    propertyUser.value = response.data.userCommonData;
+  } catch(error) {
+      console.log(error);
+  }
+}
 
 
 const handlePageChange = (page) => {
@@ -274,7 +286,11 @@ const getPropertyData = async (pageNo = 1) => {
     propertyPhotos.value = response.data.propertyPhotos;
     pattaches.value = [];
 
+    property.value.formattedDate = dayjs(property.value.pdate).format("YYYY-MM-DD");
+    propertyDetail.value.formattedDate = dayjs(propertyDetail.value.pdmoveindate).format("YYYY-MM-DD");
+
     getPthumbnail(route.params.id);
+    getPropertyUserDataByUnumber(property.value.punumber);
 
     await Promise.all(
       propertyPhotos.value.map(async (photo) => {

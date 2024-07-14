@@ -5,7 +5,8 @@
       <div class="d-flex justify-content-between">
         <h4 class="col h4 mt-2 fw-bold">매물 관리</h4>
         <div class="align-self-center">
-          <select class="form-select" name="filter" id="">
+          <select class="form-select" name="filter" id=""
+                  @change="selectedFilter" v-model="filterKeyword">
             <option value="desc" selected>최신순</option>
             <option value="asc">오래된순</option>
             <option value="거래완료">거래완료</option>
@@ -124,6 +125,7 @@
           </tr>
         </tbody>
       </table>
+      <!-- 페이지네이션 v-if 설정하기 -->
       <Pagination
         class="mt-5"
         :currentPage="pager.pageNo"
@@ -167,6 +169,12 @@ const pstatus = ref("");
 const isActive = ref(true); // true : 활성화, false : 비활성화 상태
 const currentPage = ref(0);
 const pager = ref({});
+const filterKeyword = ref("desc"); //필터 키워드
+
+//필터값 바뀌면 실행
+function selectedFilter() {
+  getUserPropertyList(1, filterKeyword.value);
+}
 
 const handlePageChange = (page) => {
   currentPage.value = page;
@@ -174,9 +182,9 @@ const handlePageChange = (page) => {
 };
 
 //유저 매물 리스트 목록을 가져오는 메소드 정의
-async function getUserPropertyList(pageNo = 1) {
+async function getUserPropertyList(pageNo = 1, filterKeyword) {
   try {
-    const response = await propertyAPI.getUserPropertyList(pageNo);
+    const response = await propertyAPI.getUserPropertyList(pageNo, filterKeyword);
     properties.value = response.data.userPropertyList;
     properties.value.forEach((property) => {
       if (property.pthumbnailoname != null) {
@@ -220,12 +228,6 @@ function changeStatusInactive(pnumber) {
   pstatus.value = "비활성화";
   changePropertyStatus();
 }
-
-const property = ref([
-  { id: 1, isActive: false, checkTransactionCompletedData: true },
-  { id: 2, isActive: false, checkTransactionCompletedData: true },
-  // 추가 매물 데이터
-]);
 
 // 거래완료 모달 열기
 function showTransactionModal(pnumber) {
