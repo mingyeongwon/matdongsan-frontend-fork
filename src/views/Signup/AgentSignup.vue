@@ -25,7 +25,7 @@
           <button
             type="button"
             class="ms-2 btn btn-sm agentSignupPassword-btn text-light"
-            @click="uniqueCheck"
+            @click="uniqueAndValidCheckUemail"
           >
             중복확인
           </button>
@@ -130,7 +130,7 @@
 
         <!-- 대표 사진 업로드 -->
         <div class="d-flex mb-4 agentProfile-box">
-          <span class="col-2 agentInputTitle mt-4">대표 사진</span>
+          <span class="col-2 agentInputTitle mt-4">대표 사진<span class="text-danger fs-5 fw-bold">*</span></span>
           <ImagePreview
             imagePurpose="single"
             @update:image="handleProfileImageUpdate"
@@ -246,7 +246,6 @@ let errorMessage = ref({
 });
 
 // 이메일, 비밀번호, 전화번호 등 유효성 검사 패턴 정의
-let tempEmail = "user@gmail.com";
 var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 var passwordPattern =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
@@ -284,58 +283,114 @@ var brandNumResult = ref(false);
 var passwordResult = ref(false);
 var nameResult = ref(false);
 
-// 이메일 중복 확인 함수
-function uniqueCheck() {
+// 이메일 검사
+async function uniqueAndValidCheckUemail() {
+  // axios 통신으로 중복 확인하기 
   // 중복 확인을 하면서 전체적인 이메일 유효성 검사도 실행
   emailResult.value = emailPattern.test(agentSignup.value.agentEmail);
+  const uniqueCheck = ref();
+  try {
+    const response = await memberAPI.getEmailUniqueCheck(agentSignup.value.agentEmail);
+    uniqueCheck.value =  response.data;
+  } catch (error) {
+    console.log(error);
+  }
+
   if (!emailResult.value) {
     errorMessage.value.emailValid = "유효하지 않은 이메일 입니다.";
     emailValidStyle.value = false;
-  } else if (agentSignup.value.agentEmail === tempEmail) {
+  } else if (uniqueCheck.value == 1) {
     errorMessage.value.emailValid = "이미 사용중인 이메일 입니다.";
     emailValidStyle.value = false;
   } else {
     errorMessage.value.emailValid = "사용 가능한 이메일 입니다.";
     emailValidStyle.value = true;
   }
+  console.log("출력", emailValidStyle.value);
 }
 
 // 중복 확인을 아예 하지 않았을 경우와, 비밀번호와 휴대폰 번호, 사업자 번호, 이름 정규식 검사
 async function handleSubmit() {
-  const formData = new FormData();
-  formData.append("userEmail.uemail", agentSignup.value.agentEmail);
-  formData.append("userEmail.upassword", agentSignup.value.agentPassword1);
-  formData.append("userEmail.urole", "AGENT");
-  formData.append("userEmail.uremoved", false);
+  // 아이디를 제외한 유효성 검사
 
-  formData.append("agent.abrand", agentSignup.value.agentBrandName);
-  formData.append("agent.aname", agentSignup.value.agentName);
-  formData.append("agent.aphone", agentSignup.value.agentPhone);
-  formData.append("agent.aaddress", agentSignup.value.address);
-  formData.append("agent.aaddressdetail", agentSignup.value.addressDetail);
-  formData.append("agent.apostcode", agentSignup.value.postcode);
-  formData.append("agent.alatitude", agentSignup.value.alatitude);
-  formData.append("agent.alongitude", agentSignup.value.alongitude);
-  formData.append("agent.aprofile", agentSignup.value.profileImage[0]);
-
-  formData.append("agentDetail.adattach", agentSignup.value.documentImage[0]);
-
-  formData.append("agentDetail.adbrandnumber", agentSignup.value.agentBrandNum);
-  for (let pair of formData.entries()) {
-    console.log(pair[0] + ": " + pair[1]);
+  // // 휴대폰 번호 유효성 검사
+  phoneResult.value = phonePattern.test(agentSignup.value.agentPhone);
+  if (!phoneResult.value) {
+    errorMessage.value.phoneValid = "유효하지 않은 휴대폰 번호 입니다.";
+    phoneValidStyle.value = false;
+  } else {
+    errorMessage.value.phoneValid = "사용 가능한 휴대폰 번호 입니다.";
+    phoneValidStyle.value = true;
   }
 
-  try {
-    const response = await memberAPI.signup(formData);
+  // // 비밀번호 유효성 검사
+  passwordResult.value = passwordPattern.test(agentSignup.value.agentPassword1);
+  if (!passwordResult.value) {
+    errorMessage.value.passwordValid = "유효하지 않은 비밀번호 입니다.";
+    passwordValidStyle.value = false;
+  } else if (agentSignup.value.agentPassword1 !== agentSignup.value.agentPassword2) {
+    errorMessage.value.passwordValid = "비밀번호와 비밀번호 확인이 같지 않습니다.";
+    passwordValidStyle.value = false;
+  } else {
+    errorMessage.value.passwordValid = "사용 가능한 비밀번호 입니다.";
+    passwordValidStyle.value = true;
+  }
 
-    console.log(response);
-    router.push("/");
-  } catch (error) {
-    console.log(error.response ? error.response.data : error.message);
+  // // 이름 유효성 검사
+  nameResult.value = namePattern.test(agentSignup.value.agentName);
+  if (!nameResult.value) {
+    errorMessage.value.nameValid = "유효하지 않은 이름 입니다.";
+    nameValidStyle.value = false;
+  } else {
+    errorMessage.value.nameValid = "사용 가능한 이름 입니다.";
+    nameValidStyle.value = true;
+  }
+
+  // // 사업자 번호 유효성 검사
+  brandNumResult.value = brandNumPattern.test(agentSignup.value.agentBrandNum);
+  if(!brandNumResult.value){
+    errorMessage.value.brandNumValid = "유효하지 않은 사업자 번호 입니다.";
+    brandNumValidStyle.value = false;
+  } else{
+    errorMessage.value.brandNumValid = "사용 가능한 사업자 번호 입니다.";
+    brandNumValidStyle.value = true;
+  }
+
+  if(emailValidStyle.value && phoneValidStyle.value && passwordValidStyle.value && brandNumValidStyle.value && nameValidStyle.value){
+    // 제출
+    const formData = new FormData();
+    formData.append("userEmail.uemail", agentSignup.value.agentEmail);
+    formData.append("userEmail.upassword", agentSignup.value.agentPassword1);
+    formData.append("userEmail.urole", "AGENT");
+    formData.append("userEmail.uremoved", false);
+  
+    formData.append("agent.abrand", agentSignup.value.agentBrandName);
+    formData.append("agent.aname", agentSignup.value.agentName);
+    formData.append("agent.aphone", agentSignup.value.agentPhone);
+    formData.append("agent.aaddress", agentSignup.value.address);
+    formData.append("agent.aaddressdetail", agentSignup.value.addressDetail);
+    formData.append("agent.apostcode", agentSignup.value.postcode);
+    formData.append("agent.alatitude", agentSignup.value.alatitude);
+    formData.append("agent.alongitude", agentSignup.value.alongitude);
+    formData.append("agent.aprofile", agentSignup.value.profileImage[0]);
+  
+    formData.append("agentDetail.adattach", agentSignup.value.documentImage[0]);
+  
+    formData.append("agentDetail.adbrandnumber", agentSignup.value.agentBrandNum);
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
+  
+    try {
+      const response = await memberAPI.signup(formData);
+  
+      console.log(response);
+      router.push("/");
+    } catch (error) {
+      console.log(error.response ? error.response.data : error.message);
+    }
   }
 }
-
-//}
 
 // 다음 주소 검색 API 사용
 function openPostSearch() {

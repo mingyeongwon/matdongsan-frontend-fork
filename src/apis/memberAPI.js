@@ -85,6 +85,12 @@ const findAgentEmail = (formData) => {
   return axios.post("/Member/login/findAgentEmail", formData);
 };
 
+// 아이디 중복 확인
+function getEmailUniqueCheck(uemail){
+  return axios.get("/Member/signup/emailUniqueCheck",{params:{uemail:uemail}});
+}
+
+
 
 export default {
   memberJoin,
@@ -101,4 +107,5 @@ export default {
   updatePassword,
   checkOldPassword,
   findAgentEmail,
+  getEmailUniqueCheck
 };

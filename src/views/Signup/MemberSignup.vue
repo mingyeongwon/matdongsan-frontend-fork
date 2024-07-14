@@ -24,7 +24,7 @@
           <button
             type="button"
             class="btn btn-sm ms-2 memberSignupPassword-btn text-light"
-            @click="uniqueCheck"
+            @click="uniqueAndValidCheckUemail"
           >
             중복확인
           </button>
@@ -40,13 +40,13 @@
               class="mb-2 ps-2 border border-1 border-secondary rounded"
               type="password"
               placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."
-              v-model.trim="memberPassword1"
+              v-model.trim="userCommonData.upassword"
             />
             <input
               class="ps-2 border border-1 border-secondary rounded"
               type="password"
               placeholder="비밀번호를 재입력하세요."
-              v-model.trim="userCommonData.upassword"
+              v-model.trim="memberPassword1"
             />
             <span :style="passwordValidStyle ? 'color:green': 'color:red'">
               {{ errorMessage.passwordValid }}
@@ -139,6 +139,13 @@ function handleFileInput(fileInput) {
   mprofile.value = fileInput;
 }
 
+// function checkEmail(){
+//   if(userCommonData.value.uemail != null){
+//     return true;
+//   }
+//   return false;
+// }
+
 let tempEmail = "user@gmail.com";
 var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
@@ -148,7 +155,7 @@ var namePattern = /^[가-힣]{2,17}$/;
 // 회원가입 필수 양식이 빈 값이 아닌 경우에 제출 버튼을 활성화 함
 const checkMemberSignupData = computed(() => {
   var result = member.value.memberEmail !== "" && member.value.mphone !== "" && memberPassword1.value !== "" 
-              && userCommonData.value.upassword !== "" && member.value.mname !== "";
+              && userCommonData.value.upassword !== "" && member.value.mname !== "" && emailResult.value !== null;
   return result;
 });
 
@@ -162,13 +169,23 @@ var phoneResult = ref(null);
 var passwordResult = ref(null);
 var nameResult = ref(null);
 
-function uniqueCheck() {
+// 이메일 검사
+async function uniqueAndValidCheckUemail() {
+  // axios 통신으로 중복 확인하기 
   // 중복 확인을 하면서 전체적인 이메일 유효성 검사도 실행
-  emailResult.value = emailPattern.test(member.value.memberEmail);
+  emailResult.value = emailPattern.test(userCommonData.value.uemail);
+  const uniqueCheck = ref();
+  try {
+    const response = await memberAPI.getEmailUniqueCheck(userCommonData.value.uemail);
+    uniqueCheck.value =  response.data;
+  } catch (error) {
+    console.log(error);
+  }
+
   if (!emailResult.value) {
     errorMessage.value.emailValid = "유효하지 않은 이메일 입니다.";
     emailValidStyle.value = false;
-  } else if (member.value.memberEmail === tempEmail) {
+  } else if (uniqueCheck.value == 1) {
     errorMessage.value.emailValid = "이미 사용중인 이메일 입니다.";
     emailValidStyle.value = false;
   } else {
@@ -188,49 +205,43 @@ function handleImageUpdate(files) {
 
 // 중복 확인을 아예 하지 않았을 경우와, 비밀번호와 휴대폰 번호의 정규식 검사
 async function handleSubmit() {
-  // // email 중복확인을 했는가
-  // if (errorMessage.value.emailValid === "") {
-  //   errorMessage.value.emailValid = "중복 확인을 해주세요";
-  //   emailValidStyle.value = false;
-  // }
-
   // // 휴대폰 번호 유효성 검사
-  // phoneResult.value = phonePattern.test(member.value.mphone);
-  // if (!phoneResult.value) {
-  //   errorMessage.value.phoneValid = "유효하지 않은 휴대폰 번호 입니다.";
-  //   phoneValidStyle.value = false;
-  // } else {
-  //   errorMessage.value.phoneValid = "사용 가능한 휴대폰 번호 입니다.";
-  //   phoneValidStyle.value = true;
-  // }
+  phoneResult.value = phonePattern.test(member.value.mphone);
+  if (!phoneResult.value) {
+    errorMessage.value.phoneValid = "유효하지 않은 휴대폰 번호 입니다.";
+    phoneValidStyle.value = false;
+  } else {
+    errorMessage.value.phoneValid = "사용 가능한 휴대폰 번호 입니다.";
+    phoneValidStyle.value = true;
+  }
 
   // // 비밀번호 유효성 검사
-  // passwordResult.value = passwordPattern.test(memberPassword1);
-  // if (!passwordResult.value) {
-  //   errorMessage.value.passwordValid = "유효하지 않은 비밀번호 입니다.";
-  //   passwordValidStyle.value = false;
-  // } else if (memberPassword1.value !== userCommonData.value.upassword) {
-  //   errorMessage.value.passwordValid = "비밀번호와 비밀번호 확인이 같지 않습니다.";
-  //   passwordValidStyle.value = false;
-  // } else {
-  //   errorMessage.value.passwordValid = "사용 가능한 비밀번호 입니다.";
-  //   passwordValidStyle.value = true;
-  // }
+  passwordResult.value = passwordPattern.test(userCommonData.value.upassword);
+  if (!passwordResult.value) {
+    errorMessage.value.passwordValid = "유효하지 않은 비밀번호 입니다.";
+    passwordValidStyle.value = false;
+  } else if (memberPassword1.value !== userCommonData.value.upassword) {
+    errorMessage.value.passwordValid = "비밀번호와 비밀번호 확인이 같지 않습니다.";
+    passwordValidStyle.value = false;
+  } else {
+    errorMessage.value.passwordValid = "사용 가능한 비밀번호 입니다.";
+    passwordValidStyle.value = true;
+  }
 
   // // 이름 유효성 검사
-  // nameResult.value = namePattern.test(member.value.mname);
-  // if (!nameResult.value) {
-  //   errorMessage.value.nameValid = "유효하지 않은 이름 입니다.";
-  //   nameValidStyle.value = false;
-  // } else {
-  //   errorMessage.value.nameValid = "사용 가능한 이름 입니다.";
-  //   nameValidStyle.value = true;
-  // }
+  nameResult.value = namePattern.test(member.value.mname);
+  if (!nameResult.value) {
+    errorMessage.value.nameValid = "유효하지 않은 이름 입니다.";
+    nameValidStyle.value = false;
+  } else {
+    errorMessage.value.nameValid = "사용 가능한 이름 입니다.";
+    nameValidStyle.value = true;
+  }
 
   // console.log(JSON.parse(JSON.stringify(member.value)));
 
   // // 유효성 검사가 모두 통과되면
-  // if (emailValidStyle.value && passwordValidStyle.value && phoneValidStyle.value && nameValidStyle.value) {
+  if (emailValidStyle.value && passwordValidStyle.value && phoneValidStyle.value && nameValidStyle.value) {
     // axios로 통신하여 폼 보내고
     const formData = new FormData();
     formData.append("mphone", member.value.mphone);
@@ -252,7 +263,7 @@ async function handleSubmit() {
     }
 
     
-  // }
+  }
 }
 </script>
 

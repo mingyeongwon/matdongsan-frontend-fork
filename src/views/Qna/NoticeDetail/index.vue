@@ -75,7 +75,7 @@ function goBack(){
 function updateNotice(){
   router.push({
     path:"/QNA/NoticeUpdateForm",
-    query:{nnumber: notice.value.nnumber}
+    query:{nnumber: notice.value.nnumber, pageNo:pageNo}
   });
 }
 
