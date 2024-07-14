@@ -1,35 +1,30 @@
 <template>
   <RouterLink
     :to="{ path: `/Property/${favoriteData.pnumber}` }"
-    class="row text-decoration-none me-3 text-dark"
+    class="property-link text-decoration-none me-3 text-dark"
     v-if="props.favoriteData.pnumber"
   >
-    <div class="border-bottom p-0">
-      <div class="w-100 d-flex justify-content-center p-3">
-        <div class="w-50">
+    <div class="property-item border-bottom p-0">
+      <div class="property-content d-flex justify-content-center p-3">
+        <div class="property-image">
           <img class="" width="140" height="140" :src="fattach" alt="" />
         </div>
-        <div class="w-50">
+        <div class="property-info">
           <div class="listInfo-box ms-2">
             <p class="listPrice mb-2 mt-2">
-              <b v-if="favoriteData.prentalfee == 0"
-                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}만원
+              <b v-if="favoriteData.prentalfee == 0">
+                {{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}만원
               </b>
-              <b v-else
-                >{{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}만원 /{{
-                  favoriteData.prentalfee
-                }}만원
+              <b v-else>
+                {{ favoriteData.pcategory }} {{ favoriteData.pdeposite }}만원 /{{ favoriteData.prentalfee }}만원
               </b>
             </p>
             <p class="listInfo">
               {{ favoriteData.pfloor }}층,
-              {{ favoriteData.psize }}m<sup>2</sup>, 관리비
-              {{ favoriteData.pmaintenance }}만
+              {{ favoriteData.psize }}m<sup>2</sup>, 관리비 {{ favoriteData.pmaintenance }}만
             </p>
             <p class="listInfo">{{ favoriteData.ptitle }}</p>
-            <p
-              class="listMemberType text-center border border-danger text-danger mt-2 p-1"
-            >
+            <p class="listMemberType text-center border border-danger text-danger mt-2 p-1">
               방주인
             </p>
           </div>
@@ -41,28 +36,25 @@
   <div v-if="propertyData && props.propertyData.pstatus === '활성화'">
     <RouterLink
       :to="{ path: `/Property/${propertyData.pnumber}` }"
-      class="row text-decoration-none me-3 text-dark"
+      class="property-link text-decoration-none me-3 text-dark"
       v-if="props.propertyData.pnumber"
     >
-      <div class="border-bottom p-0">
-        <div class="w-100 d-flex justify-content-center p-3">
-          <div class="w-50">
+      <div class="property-item border-bottom p-0">
+        <div class="property-content d-flex justify-content-center p-3">
+          <div class="property-image">
             <img class="" width="140" height="140" :src="pattach" alt="" />
           </div>
-          <div class="w-50">
+          <div class="property-info">
             <div class="listInfo-box ms-2">
               <p class="listPrice mb-2 mt-2">
                 <b>
                   {{ propertyData.pcategory }} {{ propertyData.pdeposite }}만원
-                  <span v-if="propertyData.prentalfee > 0">
-                    / {{ propertyData.prentalfee }}만원
-                  </span>
+                  <span v-if="propertyData.prentalfee > 0"> / {{ propertyData.prentalfee }}만원</span>
                 </b>
               </p>
               <p class="listInfo">
                 {{ propertyData.pfloor }}층,
-                {{ propertyData.psize }}m<sup>2</sup>, 관리비
-                {{ propertyData.pmaintenance }}만
+                {{ propertyData.psize }}m<sup>2</sup>, 관리비 {{ propertyData.pmaintenance }}만
               </p>
               <p class="listInfo">{{ propertyData.ptitle }}</p>
               <p
@@ -80,42 +72,30 @@
 
   <RouterLink
     :to="{ path: `/Agent/${agentData.anumber}` }"
-    class="row text-decoration-none me-3 text-dark"
+    class="property-link text-decoration-none me-3 text-dark"
     v-if="props.agentData.anumber"
   >
-    <div class="border-bottom p-0">
-      <div class="w-100 d-flex justify-content-center p-3">
-        <div class="w-50">
-          <img
-            v-if="aattach"
-            class=""
-            width="140"
-            height="140"
-            :src="aattach"
-            alt=""
-          />
+    <div class="property-item border-bottom p-0">
+      <div class="property-content d-flex justify-content-center p-3">
+        <div class="property-image">
+          <img v-if="aattach" class="" width="140" height="140" :src="aattach" alt="" />
         </div>
-        <div class="w-50">
+        <div class="property-info">
           <div class="listInfo-box ms-2">
             <p class="listPrice mb-2 mt-2 ms-2">
-              <b>{{ agentData.abrand }} </b>
+              <b>{{ agentData.abrand }}</b>
             </p>
             <p class="listInfo ms-2">{{ agentData.aname }},</p>
             <p class="listInfo ms-2">{{ agentData.aphone }}</p>
             <p class="listInfo ms-2">댓글 ({{ agentDetailData.total }})</p>
             <p class="listInfo ms-2">
               평점
-
-              <!-- 빈별 -->
               <span v-for="index in 5" :key="index">
                 <span v-if="averageRating >= index">
                   <i class="fa-solid fa-star" style="color: #ffd43b"></i>
                 </span>
                 <span v-else-if="averageRating >= index - 0.5">
-                  <i
-                    class="fa-solid fa-star-half-stroke"
-                    style="color: #ffd43b"
-                  ></i>
+                  <i class="fa-solid fa-star-half-stroke" style="color: #ffd43b"></i>
                 </span>
                 <span v-else>
                   <i class="fa-regular fa-star" style="color: #ffd43b"></i>
@@ -258,6 +238,49 @@ if (props.propertyData.pnumber) {
 </script>
 
 <style scoped>
+.property-link {
+  display: block;
+}
+
+.property-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.property-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.property-image {
+  flex: 0 0 auto;
+}
+
+.property-info {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .property-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .property-image {
+    margin-bottom: 10px;
+  }
+
+  .property-info {
+    text-align: center;
+  }
+
+  .listMemberType {
+    margin: 10px auto 0;
+  }
+}
+
 .listMemberType {
   width: 50px;
   font-size: 12px;

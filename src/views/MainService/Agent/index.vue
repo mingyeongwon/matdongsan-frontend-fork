@@ -52,7 +52,7 @@
       </ul>
 
       <div class="d-flex p-3 h-100 w-100 mx-auto">
-        <div class="property-list-box w-25 overflow-auto">
+        <div class="property-list-box overflow-auto">
           <div class="col mt-3">
             <PropertyList
               type="agent"
