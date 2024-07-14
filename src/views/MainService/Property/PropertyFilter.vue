@@ -174,11 +174,13 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Modal } from "bootstrap";
+import { useRoute, useRouter } from "vue-router";
 const emits = defineEmits(["update:filterData", "reset:propertyList", "update:keywordData"]);
-
+const route = useRoute();
 const searchKeyword = ref("");
+const router = useRouter();
 const filters = ref({
   byCategory: "",
   byFloortype: "",
@@ -190,6 +192,12 @@ const warningMessage = ref(""); // 경고 메시지 상태 추가
 // 필터 초기화 버튼 클릭
 // function filterReset() {
 // }
+
+  if(route.query.keyword){
+    searchKeyword.value = route.query.keyword;
+    searchKeywordInProperty();
+    router.push({ path: route.path, query: {} });
+  }
 
 function searchKeywordInProperty() {
   console.log("searchKeyword.value : " + searchKeyword.value);
@@ -216,9 +224,17 @@ function submitFilter() {
   } else {
     emits("update:filterData", filters.value);
     console.log("filters in propertyFilter : " + JSON.stringify(filters));
+    
   }
 }
 
+// watch(()=>{
+//   searchKeyword.value
+// },
+// ()=>{
+//   searchKeywordInProperty();
+//   router.push({ path: route.path, query: {} });
+// })
 </script>
 
 <style scoped>
