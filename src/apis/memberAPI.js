@@ -31,7 +31,7 @@ const getUserDataByUnumber = (unumber) => {
 
 //중개인 회원가입
 function signup(formData) {
-  return axios.post("/Signup/AgentSignup", formData);
+  return axios.post("/Member/Signup/AgentSignup", formData);
 }
 
 //일반 유저 프로파일

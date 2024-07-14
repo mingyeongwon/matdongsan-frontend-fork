@@ -214,7 +214,7 @@
 import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import ImagePreview from "@/components/ImagePreview.vue"; // ImagePreview 컴포넌트 가져오기
-import agentAPI from "@/apis/agentAPI";
+import memberAPI from "@/apis/memberAPI";
 const router = useRouter();
 const kakao = window.kakao;
 
@@ -326,7 +326,7 @@ async function handleSubmit() {
   }
 
   try {
-    const response = await agentAPI.signup(formData);
+    const response = await memberAPI.signup(formData);
 
     console.log(response);
     router.push("/");
