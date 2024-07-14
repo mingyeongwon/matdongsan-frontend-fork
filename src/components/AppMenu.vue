@@ -36,7 +36,7 @@
           <li class="nav-item">
             <RouterLink class="nav-link fw-bold" to="/Agent">부동산</RouterLink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="store.getters.getUemail">
             <RouterLink class="nav-link fw-bold" to="/FavoriteProperty"
               >관심목록</RouterLink
             >
