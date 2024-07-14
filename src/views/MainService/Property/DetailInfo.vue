@@ -160,8 +160,8 @@
           <div>
             <h4 class="fw-bold">상세설명</h4>
           </div>
-          <div class="detailInfo bg-light">
-            <h6 class="fw-bold">{{property.ptitle}}</h6>
+          <div class="detailInfo bg-light p-3 mt-3">
+            <h6 class="fw-bold mb-3">{{property.ptitle}}</h6>
             <small v-html="sanitizedContent"></small>
           </div>
         </section>

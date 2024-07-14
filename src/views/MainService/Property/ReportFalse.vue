@@ -47,7 +47,7 @@
       <!-- 경고 모달 -->
       <div
       class="modal fade"
-      id="warningModal"
+      id="warningModalInReport"
       tabindex="-1"
       aria-labelledby="warningModalLabel"
       aria-hidden="true"
@@ -119,7 +119,7 @@ async function showReportFalseModal() {
     console.log("isReported.value : " + isReported.value);
 
     if(isReported.value) {
-      const warningModal = new Modal(document.getElementById("warningModal"));
+      const warningModal = new Modal(document.getElementById("warningModalInReport"));
       warningModal.show();
     } else {
       const reportFalseModal = new Modal(document.getElementById("ReportFalseModal"));
