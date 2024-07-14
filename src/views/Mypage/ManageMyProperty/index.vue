@@ -10,7 +10,7 @@
             <option value="desc" selected>최신순</option>
             <option value="asc">오래된순</option>
             <option value="거래완료">거래완료</option>
-            <option value="활성화">거래중</option>
+            <option value="거래중">거래중</option>
           </select>
         </div>
       </div>
@@ -27,10 +27,10 @@
         </thead>
         <tbody>
           <tr v-for="property in properties" :key="property.pnumber" >
-            <th scope="row" class="text-center align-middle th-width" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
+            <th scope="row" class="text-center align-middle th-width" :class="(property.pstatus =='거래완료' || property.pstatus =='비활성화')? 'table-secondary' : ''">
               {{ property.pnumber }}
             </th>
-            <td class="align-middle text-center img-tablepart" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
+            <td class="align-middle text-center img-tablepart" :class="(property.pstatus =='거래완료' || property.pstatus =='비활성화')? 'table-secondary' : ''">
               <RouterLink :to="`/Property/${property.pnumber}`">
                 <img
                   v-if="pthumbnails[property.pnumber] != null"
@@ -42,7 +42,7 @@
                 />
               </RouterLink>
             </td>
-            <td class="align-middle text-muted text-center" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
+            <td class="align-middle text-muted text-center" :class="(property.pstatus =='거래완료' || property.pstatus =='비활성화')? 'table-secondary' : ''">
               <div class="fw-bold">
                 {{ property.pcategory }} {{ property.pdeposite }}만원
                 <span v-if="property.pcategory == '월세'">
@@ -60,10 +60,10 @@
                 <small>{{ property.ptitle }}</small>
               </div>
             </td>
-            <td class="fw-bold align-middle text-center" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
+            <td class="fw-bold align-middle text-center" :class="(property.pstatus =='거래완료' || property.pstatus =='비활성화')? 'table-secondary' : ''">
               {{ property.formattedDate }}
             </td>
-            <td class="fw-bold align-middle buttons-height" :class="property.pstatus =='거래완료'? 'table-secondary' : ''">
+            <td class="fw-bold align-middle buttons-height" :class="(property.pstatus =='거래완료' || property.pstatus =='비활성화')? 'table-secondary' : ''">
               <div class="d-flex flex-column">
                 <RouterLink
                   class="routerLink"
@@ -128,11 +128,11 @@
         </tbody>
       </table>
       <!-- 페이지네이션 v-if 설정하기 -->
-      <Pagination
+      <Pagination v-if="properties"
         class="mt-5"
         :currentPage="pager.pageNo"
         :totalPages="pager.totalPageNo"
-        :maxVisiblePages="3"
+        :maxVisiblePages="5"
         @update:currentPage="handlePageChange"
       />
     </div>
@@ -188,6 +188,7 @@ async function getUserPropertyList(pageNo = 1, filterKeyword) {
   try {
     const response = await propertyAPI.getUserPropertyList(pageNo, filterKeyword);
     properties.value = response.data.userPropertyList;
+   
     properties.value.forEach((property) => {
       if (property.pthumbnailoname != null) {
         getPthumbnail(property.pnumber);

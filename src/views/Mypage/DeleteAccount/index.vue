@@ -86,8 +86,9 @@
 import MyPageSideBar from "@/components/MyPageSidebar.vue";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import memberAPI from "@/apis/memberAPI";
-
+const store = useStore();
 const router = useRouter();
 
 let deleteAccount = ref({
@@ -105,6 +106,7 @@ async function handleSubmit() {
   try {
     const data = deleteAccount.value.deletePassword;
     const response = await memberAPI.deleteAccount(data);
+    store.dispatch("deleteAuth");
     router.push("/");
   } catch(error) {
     console.log(error);
