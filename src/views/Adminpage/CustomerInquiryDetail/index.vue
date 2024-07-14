@@ -235,7 +235,6 @@ const checkForm = computed(() => {
 async function handleInsertSubmit(){
   console.log("생성 폼 제출 함수 실행");
   try {
-    
     const formData = new FormData();
     // const pattern = /<[^>]*>/g;
     // const acontent = answer.value.content.replace(pattern, '');

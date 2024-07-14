@@ -60,24 +60,12 @@
     </div>
     </div>
   </div>
-  <!-- <AgreeDeleteModal id="DeleteQuestionModal" @delete="agreeDeleteQuestion" @close="hideModal">
-    <template v-slot:body>
-        <div class="modal-body">
-          <p class="fw-bold p-4 h-4 text-center">
-            해당 문의사항을 삭제 하시겠습니까? <br />
-            삭제 후에 수정 불가합니다.
-          </p>
-        </div>
-      </template>
-  </AgreeDeleteModal> -->
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import { Modal } from "bootstrap";
+import { ref, watch } from "vue";
+
 import MyPageSidebar from "@/components/MyPageSidebar.vue";
-// import AccordionRow from "@/components/AccordionItem.vue";
-// import AgreeDeleteModal from "@/components/AgreeDeleteModal.vue"
 import qnaAPI from "@/apis/qnaAPI";
 import Pagination from "@/components/Pagination";
 import { useRoute, useRouter } from "vue-router";
@@ -85,17 +73,19 @@ import dayjs from "dayjs";
 
 
 const router = useRouter();
-// const route = useRoute();
-
-// let deleteQnaModal = null;
+const route = useRoute();
 
 let currentPage = ref(1);
 let totalPages = ref();
 
+const pageNo = route.query.page;
+
+if(pageNo != null){
+  currentPage.value = pageNo;
+}
+
 let qattach = ref({});
-// const deleteQnumber = ref();
-// const deleteQunumber = ref();
-// const deleteIndex = ref();
+console.log("index 현재 페이지", currentPage.value);
 
 // DB에서 가져온 리스트
 const page = ref({
@@ -103,9 +93,7 @@ const page = ref({
   pager : {},
 });
 
-// onMounted(() => {
-//   deleteQnaModal = new Modal(document.querySelector("#DeleteQuestionModal"));
-// });
+
 
 // 게시물 첨부 가져오기
 async function getImage(qnumber){
@@ -116,40 +104,6 @@ async function getImage(qnumber){
   
 
 }
-
-// // 삭제 버튼 클릭 시 실행되는 함수
-// function showDeleteQnaModal(qnumber,qunumber,index) {
-//   deleteQnaModal.show();
-//   // 아코디언에서 해당하는 게시물의 qnumber와 qunumber를 가져옴
-//   deleteQnumber.value = qnumber;
-//   deleteQunumber.value = qunumber;
-//   deleteIndex.value = index;
-
-//   console.log("삭제 버튼 클릭 시 실행되는 함수", deleteQnumber.value, deleteQunumber.value);
-
-// }
-
-// function hideModal() {
-//   deleteQnaModal.hide();
-// }
-
-
-// // 게시물 삭제
-// async function agreeDeleteQuestion(){
-
-//   console.log("삭제 실행");
-//   try {
-//     await qnaAPI.deleteQuestion(deleteQnumber.value, deleteQunumber.value);
-//     console.log("삭제 완료");  
-//     hideModal();
-//     getList()
-//     isOpen();
-//   } catch (error) {
-//     console.log("삭제 실패",error);
-//     hideModal()
-//   }
-// }
-
 function handlePageChange(page){
     currentPage.value = page;
     router.push(`/Mypage/CustomerInquiry?page=${currentPage.value}`);
@@ -196,19 +150,6 @@ watch(currentPage, () => {
   console.log("페이지 변함 감지");
   getList();
 })
-
-// const openIndex = ref(null);
-
-// function toggle(index) {
-//   openIndex.value = openIndex.value === index ? null : index;
-//   console.log("아코디언 닫기",openIndex.value);
-// }
-
-// function isOpen(index) {
-//   console.log("아코디언 열기",openIndex.value);
-
-//   return openIndex.value === index;
-// }
 
 // 답변 여부 반환
 function hasAnswer(isAnswer){

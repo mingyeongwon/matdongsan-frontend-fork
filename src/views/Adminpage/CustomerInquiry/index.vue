@@ -1,11 +1,11 @@
 <template>
     <div>
       <div class="container w-50">
-      <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold"><slot name="header">Qna 헤더 내용</slot></h2>
+      <h2 style="text-align: center; margin-top: 70px; margin-bottom: 50px; font-weight: bold"><slot name="header">고객 문의 리스트</slot></h2>
       <!-- 버튼 tab -->
       <div class="row" style="height: 50px;">
-        <RouterLink to="/Adminpage/CusomerInquiry" class="askMenu col-6 d-flex" style="text-decoration: none; padding: none;">
-          <button class="askMenuBtn" style="background-color: transparent; border: none; width: 100%;">고객 문의 리스트</button>
+        <RouterLink to="/Adminpage/CustomerInquiry" class="askMenuSelectd col-6 d-flex" style="text-decoration: none; padding: none;">
+          <button class="askMenuBtnSelected" style="background-color: transparent; border: none; width: 100%;">고객 문의 리스트</button>
         </RouterLink>
 
         <RouterLink to="/Adminpage/ReportFalse" class="askMenu col-6 d-flex" style="text-decoration: none;">
@@ -14,13 +14,21 @@
       </div>
     </div>
       <div  class="w-50 container">
-        <select  name="sortType" id="sortType" v-model="filter.type">
-          <option value="" disabled hidden selected>문의 유형</option>
+        <select  name="filterType" id="filterType" v-model="filter.filter">
+          <option value="">전체</option>
           <option value="useage">서비스 이용문의</option>
           <option value="reportFalse">허위매물 신고</option>
           <option value="complex">단지정보 문의</option>
           <option value="etc">기타 문의</option>
           <option value="failure-error">장애/오류 신고</option>
+        </select>
+        <select  name="isAnswer" id="isAnswer" v-model="isAnswer.isAnswer">
+          <option value="">전체</option>
+          <option value="noAnswer">답변 미완료</option>
+        </select>
+        <select  name="sortType" id="sortType" v-model="sort.sort">
+          <option value="desc">최신순</option>
+          <option value="asc">오래된 순</option>
         </select>
       </div>
       <CustomerInquiryList class="mb-5" :question="page.question"/>
@@ -54,7 +62,13 @@
   let totalPages = ref();
 
   let filter = ref({
-  type : ""
+    filter : ""
+});
+let isAnswer = ref({
+  isAnswer : ""
+});
+let sort = ref({
+  sort : "desc"
 });
 
   // DB에서 가져온 리스트
@@ -65,14 +79,14 @@
 
   function handlePageChange(page){
     currentPage.value = page;
-    router.push(`/Adminpage/CusomerInquiry?page=${currentPage.value}`);
+    router.push(`/Adminpage/CustomerInquiry?pageNo=${currentPage.value}`);
   }
 
   //게시물 가져오는 메소드 정의
-  async function getQuestionList(pageNo, type){
+  async function getQuestionList(pageNo, filter, isAnswer, sort){
       console.log("// 게시물 가져오기 실행");
     try {
-      const response = await qnaAPI.getAllQuestionListWithFilter(pageNo, type);
+      const response = await qnaAPI.getAllQuestionListWithFilter(pageNo, filter, isAnswer, sort);
       page.value.question = response.data.question;
       page.value.pager = response.data.pager;
       totalPages.value = page.value.pager.totalPageNo
@@ -85,21 +99,35 @@
     }
   }
   // 처음 페이지 들어갈 때 실행
-  getQuestionList(currentPage.value, filter.value.type);
+  getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
 
   // 페이지가 변하면 게시물 가져오는 메소드 실행하기
   watch(currentPage, () => {
     console.log("페이지가 변하면 게시물 가져오는 메소드 실행");
-    getQuestionList(currentPage.value, filter.value.type);
-  })
+    getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
+  },{deep:true})
 
   
   // 필터가 변하면 게시물 가져오는 메소드 실행하기
   watch(filter, () => {
     console.log("필터가 변하면 게시물 가져오는 메소드 실행");
     currentPage.value = 1; // 첫 페이지로 이동
-    getQuestionList(currentPage.value, filter.value.type);
+    getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
   },{deep:true});
+
+  // 답변여부가 변하면 게시물 가져오는 메소드 실행하기
+  watch(isAnswer, () => {
+  console.log("답변여부가 변하면 게시물 가져오는 메소드 실행");
+  currentPage.value = 1; // 첫 페이지로 이동
+  getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
+},{deep:true});
+
+  // 정렬이 변하면 게시물 가져오는 메소드 실행하기
+  watch(sort, () => {
+  console.log("정렬이 변하면 게시물 가져오는 메소드 실행");
+  currentPage.value = 1; // 첫 페이지로 이동
+  getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
+},{deep:true});
 
 
 
@@ -133,6 +161,18 @@ border: 1px solid lightgrey;
   color: white;
 }
 
+.askMenuSelectd{
+  background-color: #2F4858;
+  color: white;
+  /* border: 2px solid black; */
+}
+
+.askMenuBtnSelected{
+  color: white;
+}
+*{
+    white-space: nowrap;
+}
     
     </style>
     

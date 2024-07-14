@@ -52,7 +52,7 @@ let noticeList = ref([
     }
     td{
       height: 60px;
-      border-bottom: 1px solid gray
+      border-bottom: 1px solid gray;
     }
     .routerLink{
         text-decoration: none; /* 밑줄 제거 */
@@ -61,4 +61,8 @@ let noticeList = ref([
         border: none; /* 테두리 제거 */
         cursor: pointer; /* 커서 스타일 설정 */
     }
+    *{
+        white-space: nowrap;
+    }
+    
 </style>

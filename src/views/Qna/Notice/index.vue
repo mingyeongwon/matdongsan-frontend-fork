@@ -18,7 +18,7 @@
         </div>
 </div>
     <NoticeListFilter :noticeFilter="noticeFilter" />
-    <NoticeList :noticeList="page.notice" />
+    <NoticeList :noticeList="page.notice" :currentPage="currentPage" />
     <Pagination
       v-if="page.pager.totalPageNo != 0"
       :currentPage="currentPage"
@@ -45,12 +45,28 @@ import { useRoute, useRouter } from "vue-router";
 import qnaAPI from "@/apis/qnaAPI";
 import { Modal } from "bootstrap";
 import { useStore } from "vuex";
+const route = useRoute();
 const store = useStore();
 const router = useRouter();
-const route = useRoute();
 
 let currentPage = ref(1);
 let totalPageNo = ref();
+
+const pageNo = route.query.pageNo;
+
+if(pageNo != null){
+  console.log("공지사항 쿼리 값 있음");
+  currentPage.value = pageNo;
+}
+
+watch(pageNo, ()=>{
+  console.log("실행 안되냐");
+  if(pageNo == null){
+    console.log("처음 공지사항 들어옴");
+    currentPage.value = 1;
+  }
+})
+
 
 // DB에서 가져온 리스트
 const page = ref({
@@ -83,11 +99,19 @@ const handlePageChange = (page) => {
   // 검색어랑 정렬 값도 보내야 하나?
 };
 
-  // 페이지가 변하면 게시물 가져오는 메소드 실행하기
-  watch(currentPage, () => {
-    console.log("페이지가 변하면 게시물 가져오는 메소드 실행");
-    getAllNoticeList(currentPage.value, noticeFilter.value.searchKeyword, noticeFilter.value.sort);
-  })
+// 페이지가 변하면 게시물 가져오는 메소드 실행하기
+watch(currentPage, () => {
+  console.log("페이지가 변하면 게시물 가져오는 메소드 실행");
+  console.log("index 현재 페이지", currentPage.value);
+  getAllNoticeList(currentPage.value, noticeFilter.value.searchKeyword, noticeFilter.value.sort);
+})
+
+// // 페이지가 변하면 게시물 가져오는 메소드 실행하기
+// watch(pageNo, () => {
+//   console.log("페이지가 변하면 게시물 가져오는 메소드 실행");
+//   console.log("index 현재 페이지", currentPage.value);
+//   getAllNoticeList(currentPage.value, noticeFilter.value.searchKeyword, noticeFilter.value.sort);
+// })
 
 
 // 필터 변경 핸들러??필요한가..
@@ -98,6 +122,7 @@ const handlePageChange = (page) => {
 
 //리스트 가져오는 메소드 정의
 async function getAllNoticeList(pageNo, searchKeyword, sort){
+
   try {
     const response = await qnaAPI.getNoticeList(pageNo, searchKeyword, sort);
     page.value.notice = response.data.notice;
@@ -111,7 +136,6 @@ async function getAllNoticeList(pageNo, searchKeyword, sort){
 
 // 리스트 가져오기
 getAllNoticeList(currentPage.value, noticeFilter.value.searchKeyword, noticeFilter.value.sort);
-///////////////////////////////////////////////////////////////////////////////////////////////
 
 // 로그인 모달 마운트
 let loginModal = null;

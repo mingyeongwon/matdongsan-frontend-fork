@@ -42,7 +42,7 @@
             >
           </li>
           <li v-if="$store.state.userRole == 'ADMIN'" class="nav-item">
-            <RouterLink class="nav-link fw-bold" to="/Adminpage/CusomerInquiry"
+            <RouterLink class="nav-link fw-bold" to="/Adminpage/CustomerInquiry"
               >관리자</RouterLink
             >
           </li>

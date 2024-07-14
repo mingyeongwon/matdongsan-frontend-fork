@@ -26,19 +26,22 @@
 
 <script setup>
 import { toRefs } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
 
 const props = defineProps({
     noticeList: Object,
+    currentPage: String
 });
 
-const { noticeList } = toRefs(props);
+const { noticeList, currentPage } = toRefs(props);
 
 function goDetail(nnumber){
-    router.push(`/QNA/noticedetail?nnumber=${nnumber}`);
+    router.push(`/QNA/noticedetail?nnumber=${nnumber}&pageNo=${currentPage.value}`);
 }
+
 </script>
 
 <style scoped>
@@ -63,5 +66,6 @@ function goDetail(nnumber){
     }
     .noticeListItem:hover{
         background-color: #FAF6F6;
+        cursor: pointer;
     }
 </style>

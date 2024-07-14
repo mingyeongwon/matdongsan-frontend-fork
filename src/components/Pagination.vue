@@ -7,7 +7,7 @@
       <li :class="['page-item', { disabled: currentPageGroup === 0 }]">
         <button class="page-link" @click.prevent="prevPageGroup" :disabled="currentPageGroup === 0">이전</button>
       </li>
-      <li v-for="page in visiblePages" :key="page" :class="['page-item', { active: page === currentPage }]">
+      <li v-for="page in visiblePages" :key="page" :class="['page-item', { active: page == currentPage }]">
         <button class="page-link" @click.prevent="goToPage(page)">{{ page }}</button>
       </li>
       <li :class="['page-item', { disabled: isNextDisabled }]">
@@ -40,11 +40,16 @@ const props = defineProps({
   }
 });
 
+
+
 const emit = defineEmits(['update:currentPage']);
 
 const currentPageGroup = ref(0);
 
+console.log("페이지네이션 현재 페이지밖", props.currentPage);
+
 watch(() => props.currentPage, (newPage) => {
+  console.log("페이지네이션 현재 페이지 변함 감지", props.currentPage);
   currentPageGroup.value = Math.floor((newPage - 1) / props.maxVisiblePages);
 });
 
@@ -85,6 +90,8 @@ const visiblePages = computed(() => {
 const isNextDisabled = computed(() => {
   return currentPageGroup.value * props.maxVisiblePages + props.maxVisiblePages >= props.totalPages;
 });
+
+
 </script>
 
 <style scoped>

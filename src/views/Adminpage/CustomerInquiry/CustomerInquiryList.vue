@@ -5,13 +5,13 @@
     <table style="width: 100%; margin-top: 20px; ">
         <thead class="row pt-2">
         <!-- <th>카테고리</th> -->
-        <th class="col-2">문의 유형</th><th class="col-6" >제목</th><th class="col-2">날짜</th><th class="col-2">답변 여부</th>
+        <th class="col-3">문의 유형</th><th class="col-5" >제목</th><th class="col-2">날짜</th><th class="col-2">답변 여부</th>
         </thead>
         <tbody>
             <tr class="row" v-for="question in props.question" :key="question.qnumber">
                     
-                <td class="col-2" style="text-align: center;">{{ category(question.qcategory) }}</td>
-                <td class="col-6"><RouterLink class="routerLink" :to="`/CustomerInquiryDetail?qnumber=${question.qnumber}&qunumber=${question.qunumber}`">{{ question.qtitle }}</RouterLink></td>
+                <td class="col-3" style="text-align: center;">{{ category(question.qcategory) }}</td>
+                <td class="col-5"><RouterLink class="routerLink" :to="`/CustomerInquiryDetail?qnumber=${question.qnumber}&qunumber=${question.qunumber}`">{{ question.qtitle }}</RouterLink></td>
             
                 <td class="col-2" style="text-align: center;">{{ formatDate(question.qdate) }}</td>
                 <td style="text-align: center;" :class="question.qisAnswer == 1 ? '' : 'text-danger'" class="answer col-2">{{ hasAnswer(question.qisAnswer) }}</td>
@@ -89,5 +89,7 @@ const props = defineProps({
         border: none; /* 테두리 제거 */
         cursor: pointer; /* 커서 스타일 설정 */
     }
-
+    *{
+        white-space: nowrap;
+    }
 </style>

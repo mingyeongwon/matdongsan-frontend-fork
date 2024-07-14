@@ -49,6 +49,7 @@ const route = useRoute();
 
 // 쿼리에서 nnumber가져오기
 const nnumber = route.query.nnumber;
+const pageNo = route.query.pageNo;
 
 const notice = ref({});
 
@@ -67,7 +68,7 @@ getterNotice(nnumber);
 
 // 뒤로가기 버튼
 function goBack(){
-  router.back();
+  router.push(`/QNA/Notice?pageNo=${pageNo}`);
 }
 
 // 수정하기 버튼
