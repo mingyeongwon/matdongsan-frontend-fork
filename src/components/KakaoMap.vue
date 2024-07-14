@@ -108,6 +108,7 @@ const setupPropertyMarkers = () => {
   displayMarker(props.propertyPositionList.map(property => [property.platitude, property.plongitude]), 'property');
   const clusterOptions = {
     map: map,
+    level: 3,
     averageCenter: true,
   };
   cluster = new kakao.maps.MarkerClusterer(clusterOptions); //클러스터 기능을 쓰기위한 초기화 변수 선언

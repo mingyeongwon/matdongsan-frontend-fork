@@ -71,7 +71,7 @@
               <img
                 v-if="pthumbnail != null"
                 :src="pthumbnail"
-                class="d-block w-100"
+                class="d-block w-100 thumbnail-photo"
                 width="798"
                 height="776"
                 alt="상세 사진"
@@ -136,9 +136,11 @@ function showDetailPhotoModal() {
 .thumbnail {
   height: 502px;
   width: 466px;
+  margin-right:490px;
 }
 .property-img {
   width: 256px;
   height: 248px;
 }
+
 </style>

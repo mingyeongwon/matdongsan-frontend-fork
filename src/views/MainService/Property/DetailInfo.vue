@@ -152,11 +152,11 @@
             <p class="m-0">{{property.paddress}}</p>
             <p class="" v-if="property.paddressdetail !== ''">{{ property.paddressdetail }}</p>
           </div>
-          <div class="h-100">
+          <div class="map-box">
             <KakaoMap :position="propertyPosition" page="property" class="h-75"/>
           </div>
         </section>
-        <section class="col-10 mt-5 pt-5 w-75 ">
+        <section class="col-10 w-75 ">
           <div>
             <h4 class="fw-bold">상세설명</h4>
           </div>
@@ -230,5 +230,8 @@ const sanitizedContent = computed(() => {
 .listGrid {
   display: grid;
   grid-template-columns: 160px minmax(0px, 1fr);
+}
+.map-box{
+  height: 400px;
 }
 </style>
