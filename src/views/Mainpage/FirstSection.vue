@@ -44,17 +44,14 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import { useStore } from 'vuex';
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const store = useStore();
 
 // 검색
 const searchKeyword = ref("");
 
-function searchInMain() { // vuex
-  store.dispatch("search/updateSearchKeyword", {searchKeyword : searchKeyword.value});
+function searchInMain() {
   router.push({
     path: "/Property",
     query: {keyword: searchKeyword.value}
