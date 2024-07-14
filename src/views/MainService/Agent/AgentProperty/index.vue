@@ -13,7 +13,7 @@
               ? { path: `/Property/${property.pnumber}` }
               : ''
           "
-          class="col-4 text-decoration-none text-dark"
+          class="property-grid col-3 text-decoration-none text-dark"
           :class="{ disabled: property.pstatus === '거래완료' }"
           @click.prevent="
             property.pstatus === '거래완료' ? handleDisabledClick : null
@@ -121,5 +121,11 @@ watch(
 }
 .property-status {
   font-size: 10px;
+}
+
+@media (max-width: 768px) {
+  .property-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
