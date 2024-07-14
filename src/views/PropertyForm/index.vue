@@ -42,17 +42,19 @@
     <DetailDescription :propertyDetail="propertyDetail" :property="property"/>
     <!-- 폼 제출 버튼 -->
     <!-- :disabled="!validForm.value" -->
-    <button type="submit" class="mt-4 btn btn-warning btn-lg w-75 fw-bold" @click="handleSubmit" >
     
-      등록하기
+    <button type="submit" class="mt-4 btn btn-warning btn-lg w-75 fw-bold" 
+            @click="handleSubmit" :disabled="!isFormDisabled ">
+        등록하기
     </button>
+
   </div>
   <!-- 필수 정보 입력 안내 모달 -->
   <CommonModal id="requiredInfo">필수 정보를 모두 입력하세요</CommonModal>
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
 import PropertyInfo from "./PropertyInfo.vue";
 import TradeInfo from "./TradeInfo.vue";
 import FacilityInfo from "./FacilityInfo.vue";
@@ -62,10 +64,12 @@ import CommonModal from "@/components/CommonModal.vue";
 import { onMounted } from "vue";
 import { Modal } from "bootstrap";
 import dayjs from "dayjs";
+import { useRouter } from "vue-router";
 import propertyAPI from "@/apis/propertyAPI";
 import ImagePreview from "@/components/ImagePreview.vue"; // ImagePreview 컴포넌트 가져오기
 import { useRoute } from "vue-router";
 const route = useRoute();
+const router = useRouter();
 
 let requiredInfoModal = null;
 const propertyPhotos = ref([]);
@@ -122,9 +126,41 @@ const getPthumbnail = async (pnumber) => {
 
 
 // 필수 정보 입력 안내 모달 표시 함수
-function showLoginModal() {
-  requiredInfoModal.show();
-}
+// function showLoginModal() {
+//   requiredInfoModal.show();
+// }
+
+// 비어있는 필수 값이 있다면 제출 버튼을 비활성화
+const checkPropertyFormData = computed(() => {
+  return (
+    propertyDetail.moveIn !== "" &&
+    propertyDetail.pdbath !== "" &&
+    propertyDetail.pdlift !== "" &&
+    propertyDetail.pdlot !== "" &&
+    propertyDetail.pdheating !== "" &&
+    propertyDetail.pdcooling !== "" &&
+    propertyDetail.pdcontent !== "" &&
+    property.pdeposite !== "" &&
+    property.pfloortype !== "" &&
+    property.psize !== "" &&
+    property.ptitle !== "" &&
+    property.pcategory !== "" &&
+    property.paddress !== "" &&
+    property.ppostcode !== "" &&
+    property.platitude !== "" &&
+    property.plongitude !== "" &&
+    property.pthumbnail.length > 0 && // 프로필 이미지가 업로드되었는지 확인
+    property.ppattach.length > 0
+  ); 
+});
+
+    // route.params.id가 없으면 checkPropertyFormData 값을 사용하여 비활성화 여부를 결정
+    const isFormDisabled = computed(() => {
+      if (!route.params.id) {
+        return checkPropertyFormData.value;
+      }
+      return true; // route.params.id가 있을 때는 무조건 활성화
+    });
 
 // property
 const property = reactive({
@@ -197,7 +233,7 @@ const propertyDetail = reactive({
 //   lon: "",
 // });
 
-const validForm = ref([]);
+// const validForm = ref([]);
 
 // 이미지 업데이트 핸들러
 // function handleImageUpdate({ single, multi }) {
@@ -218,6 +254,23 @@ function handleMultiImageUpdate(files) {
   property.ppattach = files;  // 다중 이미지 파일 정보 저장
 }
 
+  // 필수 값이 빈값이 아닌지 검사
+  // for (let key in property) {
+  //   let value = property[key];
+  //   if (!Array.isArray(value) && value === "") {
+  //     validForm.value = false;
+  //   } else {
+  //     if(!propertyDetail.pdmoveindate === "" && !propertyDetail.pdbath === ""
+  //       && !propertyDetail.pdlift === "" && !propertyDetail.pdlot === "" 
+  //       && !propertyDetail.pdheating === "" && !propertyDetail.pdcooling === ""
+  //     ) {
+  //       validForm.value = true;
+  //     } else {
+  //       validForm.value = false;
+  //     }
+  //   }
+  // }
+
 
 // 폼 제출 핸들러
 // propertyForm 데이터 전송
@@ -231,6 +284,10 @@ async function handleSubmit() {
   }
   if (property.pcategory === "전세") {
     property.prentalfee = 0;
+  }
+
+  if(property.pfloortype === "옥탑방") {
+    property.pfloor = 0;
   }
 
   const formData = new FormData();
@@ -267,14 +324,22 @@ Object.entries(propertyDetail).forEach(([key, value]) => {
   formData.append(`propertyDetail.${key}`, value);
 });
 
+  // 필수 값이 모두 들어오지 않으면 모달 표시
+  // if (!validForm.value) {
+  //   showLoginModal();
+  // }
+
+
 try {
     if(route.params.id) {
       formData.append("property.pnumber", route.params.id);
       const response = await propertyAPI.updateProperty(route.params.id, formData);
       console.log(response);
+      router.push("/Mypage/ManageMyProperty");
     } else {
       const response = await propertyAPI.postProperty(formData);
       console.log(response);
+      router.push("/Property");
     }
 
   
@@ -282,27 +347,6 @@ try {
     console.log(error);
   }
 
-  // 필수 값이 빈값이 아닌지 검사
-  // for (let key in propertyInfo) {
-  //   let value = propertyInfo[key];
-  //   if (!Array.isArray(value) && value === "") {
-  //     validForm.value = false;
-  //     console.log("false 반환");
-  //     break;
-  //   } else {
-  //     validForm.value = true;
-  //     console.log("모두 반환 됨");
-  //   }
-  // }
-
-  // 필수 값이 모두 들어오지 않으면 모달 표시
-  // if (!validForm.value) {
-  //   showLoginModal();
-  // }
-
-  console.log("제출버튼", JSON.parse(JSON.stringify(property)));
-  console.log("제출버튼2", JSON.parse(JSON.stringify(propertyDetail)));
-  console.log(validForm.value, "폼 유효성 결과");
 }
 
 // 관리비 변경 핸들러

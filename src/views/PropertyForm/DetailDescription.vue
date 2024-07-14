@@ -14,7 +14,7 @@
       </div>
   
       <div class="w-75">
-        <span class="me-5 align-self-center"></span>
+        <span class="me-5 align-self-center">내용 *</span>
         <VueQuillEditor v-model="propertyDetail.pdcontent" />
       </div>
     </div>

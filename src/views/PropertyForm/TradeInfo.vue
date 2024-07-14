@@ -135,7 +135,7 @@
           <option value="옥탑방">옥탑방</option>
         </select>
       </div>
-      <div class="col-1 ms-5">
+      <div v-if="property.pfloortype == '지상' || property.pfloortype == '지하'" class="col-1 ms-5">
         <small class="">해당 층수</small>
         <input
           type="text"

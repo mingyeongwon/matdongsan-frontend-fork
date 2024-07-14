@@ -12,9 +12,14 @@
                         <div class="featuredlistInfo-box">
                             <p class="text-light featuredlist-title mb-2 mt-2"><b>
                                 {{ popularProperty.pcategory }} {{ popularProperty.pdeposite }}만원
-                                <span v-if="popularProperty.prentalfee > 0"> / {{ popularProperty.prentalfee }}만원</span>
+                                <span v-if="popularProperty.prentalfee"> / {{ popularProperty.prentalfee }}만원</span>
                             </b></p>
-                            <p class="text-light featuredlist-info">{{ popularProperty.pfloor }}층, {{ popularProperty.psize }}m<sup>2</sup>, 관리비 {{ popularProperty.pmaintenance }}만원</p>
+                            <p class="text-light featuredlist-info">
+                                <span v-if="!(popularProperty.pfloortype === '옥탑방')">{{ popularProperty.pfloortype }} {{ popularProperty.pfloor }}층,</span>
+                                <span v-if="(popularProperty.pfloortype === '옥탑방')">{{ popularProperty.pfloortype }},</span>
+                                {{ popularProperty.psize }}m<sup>2</sup>, 관리비 
+                                <span v-if="popularProperty.pmaintenance">{{ popularProperty.pmaintenance }}만원</span>
+                                <span v-else>없음</span></p>
                             <p class="text-light featuredlist-info">{{ popularProperty.ptitle }}</p>
                         </div>
                     </router-link>

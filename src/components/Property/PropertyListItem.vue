@@ -7,7 +7,7 @@
     <div class="property-item border-bottom p-0">
       <div class="property-content d-flex justify-content-center p-3">
         <div class="property-image">
-          <img class="" width="140" height="140" :src="fattach" alt="" />
+          <img class="rounded-1" width="140" height="140" :src="fattach" alt="" />
         </div>
         <div class="property-info">
           <div class="listInfo-box ms-2">
@@ -20,8 +20,11 @@
               </b>
             </p>
             <p class="listInfo">
-              {{ favoriteData.pfloor }}층,
-              {{ favoriteData.psize }}m<sup>2</sup>, 관리비 {{ favoriteData.pmaintenance }}만
+              <span v-if="!(favoriteData.pfloortype === '옥탑방')">{{ favoriteData.pfloortype }} {{ favoriteData.pfloor }}층,</span>
+              <span v-if="(favoriteData.pfloortype === '옥탑방')">{{ favoriteData.pfloortype }},</span>
+              {{ favoriteData.psize }}m<sup>2</sup>, 관리비 
+                <span v-if="favoriteData.pmaintenance">{{ favoriteData.pmaintenance }}만원</span>
+                <span v-else>없음</span>
             </p>
             <p class="listInfo">{{ favoriteData.ptitle }}</p>
             <p class="listMemberType text-center border border-danger text-danger mt-2 p-1">
@@ -42,19 +45,23 @@
       <div class="property-item border-bottom p-0">
         <div class="property-content d-flex justify-content-center p-3">
           <div class="property-image">
-            <img class="" width="140" height="140" :src="pattach" alt="" />
+            <img class="rounded-1" width="140" height="140" :src="pattach" alt="" />
           </div>
           <div class="property-info">
             <div class="listInfo-box ms-2">
               <p class="listPrice mb-2 mt-2">
                 <b>
                   {{ propertyData.pcategory }} {{ propertyData.pdeposite }}만원
-                  <span v-if="propertyData.prentalfee > 0"> / {{ propertyData.prentalfee }}만원</span>
+                  <span v-if="propertyData.prentalfee"> / {{ propertyData.prentalfee }}만원</span>
                 </b>
               </p>
               <p class="listInfo">
-                {{ propertyData.pfloor }}층,
-                {{ propertyData.psize }}m<sup>2</sup>, 관리비 {{ propertyData.pmaintenance }}만
+                <span v-if="!(propertyData.pfloortype === '옥탑방')">{{ propertyData.pfloortype }} {{ propertyData.pfloor }}층,</span>
+                <span v-if="(propertyData.pfloortype === '옥탑방')">{{ propertyData.pfloortype }},</span>
+                {{ propertyData.psize }}m<sup>2</sup>, 관리비 
+                <span v-if="propertyData.pmaintenance">{{ propertyData.pmaintenance }}만원</span>
+                <span v-else>없음</span>
+                
               </p>
               <p class="listInfo">{{ propertyData.ptitle }}</p>
               <p
@@ -78,7 +85,7 @@
     <div class="property-item border-bottom p-0">
       <div class="property-content d-flex justify-content-center p-3">
         <div class="property-image">
-          <img v-if="aattach" class="" width="140" height="140" :src="aattach" alt="" />
+          <img v-if="aattach" class="rounded-1" width="140" height="140" :src="aattach" alt="" />
         </div>
         <div class="property-info">
           <div class="listInfo-box ms-2">
@@ -234,7 +241,7 @@ async function getUserDataByPunumber(qunumber) {
 // propertyData에 pnumber가 있으면 role가져오기
 if (props.propertyData.pnumber) {
   getUserDataByPunumber(props.propertyData.punumber);
-}
+} 
 </script>
 
 <style scoped>

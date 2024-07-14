@@ -16,14 +16,18 @@
               </li>
               <li class="listGrid mt-3">
                 <div><p>관리비</p></div>
-                <div><p>{{property.pmaintenance}}만원</p></div>
+                <div><p>
+                  <span v-if="property.pmaintenance">{{property.pmaintenance}}만원</span>
+                  <span v-else>없음</span>
+                  
+                </p></div>
               </li>
               <li class="listGrid mt-3">
-                <div><p>방 수 / 욕실 수</p></div>
+                <div><p>방 / 욕실</p></div>
                 <div>
                   <p>1개 / 
-                    <span v-if="propertyDetail.pdbath === true">1</span>
-                    <span v-else>0</span>개
+                    <span v-if="propertyDetail.pdbath === true">1개</span>
+                    <span v-else>없음</span>
                   </p>
                 </div>
               </li>

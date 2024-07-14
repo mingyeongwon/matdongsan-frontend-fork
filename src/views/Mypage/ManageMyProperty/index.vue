@@ -50,9 +50,11 @@
                 >
               </div>
               <small>
-                {{ property.pfloortype }} {{ property.pfloor }}층,
-                {{ property.psize }}m<sup>2</sup>, 관리비
-                {{ property.pmaintenance }}만원
+                <span v-if="!(property.pfloortype === '옥탑방')">{{ property.pfloortype }} {{ property.pfloor }}층,</span>
+                <span v-if="(property.pfloortype === '옥탑방')">{{ property.pfloortype }},</span>
+                {{ property.psize }}m<sup>2</sup>, 관리비 
+                <span v-if="property.pmaintenance">{{ property.pmaintenance }}만원</span>
+                <span v-else>없음</span>
               </small>
               <div>
                 <small>{{ property.ptitle }}</small>
