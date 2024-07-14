@@ -52,21 +52,13 @@ const router = useRouter();
 let currentPage = ref(1);
 let totalPageNo = ref();
 
-const pageNo = route.query.pageNo;
+const pageNo = ref(1);
+pageNo.value = route.query.pageNo;
 
-if(pageNo != null){
+if(pageNo.value){
   console.log("공지사항 쿼리 값 있음");
-  currentPage.value = pageNo;
-}
-
-watch(pageNo, ()=>{
-  console.log("실행 안되냐");
-  if(pageNo == null){
-    console.log("처음 공지사항 들어옴");
-    currentPage.value = 1;
-  }
-})
-
+  currentPage.value = pageNo.value;
+} 
 
 // DB에서 가져온 리스트
 const page = ref({
