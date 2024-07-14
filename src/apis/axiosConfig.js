@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost";
+axios.defaults.baseURL = "http://localhost/api";
 
 function addAuthHeader(accessToken) {
     axios.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
