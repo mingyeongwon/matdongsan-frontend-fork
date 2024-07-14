@@ -1,6 +1,6 @@
 <template>
   
-  <div>
+  <div class="mt-5">
     <div class="d-flex justify-content-between mb-3">
       <h4 class="mt-3 fw-bold">문의하기 ({{ props.userComment.length }})</h4>
       <div class="align-self-center">

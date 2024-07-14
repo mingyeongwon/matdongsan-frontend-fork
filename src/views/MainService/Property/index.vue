@@ -237,7 +237,7 @@ const cancelLikeProperty = async () => {
 
 // 좋아요 여부
 const isPropertyLiked = async () => {
-  if (store.getters.getUemail) {
+  if (store.getters.getUserRole == 'MEMBER') {
     try {
       const response = await propertyAPI.isPropertyLiked(route.params.id);
       isClicked.value = response.data; // 서버에서 boolean 값 반환
