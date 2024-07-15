@@ -16,6 +16,7 @@
               type="text"
               placeholder="이메일 형식으로 입력하세요."
               v-model.trim="userCommonData.uemail"
+              maxLength="50"
             />
             <span :style="emailValidStyle ? 'color:green': 'color:red'">
               <small>{{ errorMessage.emailValid }}</small>
@@ -39,8 +40,9 @@
             <input
               class="mb-2 ps-2 border border-1 border-secondary rounded"
               type="password"
-              placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."
+              placeholder="4 ~ 20자 이내의 숫자만 입력하세요."
               v-model.trim="userCommonData.upassword"
+              maxLength="100"
             />
             <input
               class="ps-2 border border-1 border-secondary rounded"
@@ -83,6 +85,7 @@
               type="text"
               placeholder="하이픈을 포함하여 입력하세요."
               v-model.trim="member.mphone"
+              @keyup="formatPhoneNumber"
             />
             <span :style="phoneValidStyle ? 'color:green': 'color:red'">
               {{ errorMessage.phoneValid }}
@@ -146,7 +149,6 @@ function handleFileInput(fileInput) {
 //   return false;
 // }
 
-let tempEmail = "user@gmail.com";
 var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{4,20}$/;
 var phonePattern = /^(01[016789])-(\d{3,4})-(\d{4})$/;
@@ -202,6 +204,18 @@ function handleImageUpdate(files) {
     member.value.mprofile = null;
   }
 }
+
+// 휴대폰 번호 하이픈 자동으로 붙이기
+const formatPhoneNumber = () => {
+  let cleaned = ('' + member.value.mphone).replace(/\D/g, '');
+  if (cleaned.length <= 3) {
+    member.value.mphone = cleaned;
+  } else if (cleaned.length <= 7) {
+    member.value.mphone = `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+  } else {
+    member.value.mphone = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7, 11)}`;
+  }
+};
 
 // 중복 확인을 아예 하지 않았을 경우와, 비밀번호와 휴대폰 번호의 정규식 검사
 async function handleSubmit() {

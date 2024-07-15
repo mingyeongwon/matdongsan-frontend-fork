@@ -17,6 +17,7 @@
               type="text"
               placeholder="영대소문자, 숫자, 언더바(_) 혼용 4~12자 가능합니다."
               v-model.trim="agentSignup.agentEmail"
+              maxLength="12"
             />
             <span :style="emailValidStyle ? 'color:green' : 'color:red'">{{
               errorMessage.emailValid
@@ -43,12 +44,14 @@
               type="password"
               placeholder="영문, 숫자, 특수문자 혼합 4~20자 가능합니다."
               v-model.trim="agentSignup.agentPassword1"
+              maxLength="20"
             />
             <input
               class="ps-2 border border-dark rounded"
               type="password"
               placeholder="비밀번호를 재입력하세요."
               v-model.trim="agentSignup.agentPassword2"
+              maxLength="20"
             />
             <span :style="passwordValidStyle ? 'color:green' : 'color:red'">{{
               errorMessage.passwordValid
@@ -68,6 +71,7 @@
               type="text"
               placeholder="본명을 작성하세요."
               v-model.trim="agentSignup.agentName"
+              maxLength="20"
             />
             <span :style="nameValidStyle ? 'color:green' : 'color:red'">{{
               errorMessage.nameValid
@@ -85,8 +89,10 @@
             <input
               class="ps-2 border border-dark rounded"
               type="text"
-              placeholder="하이픈을 포함하여 작성하세요."
+              placeholder="숫자만 입력하세요."
               v-model.trim="agentSignup.agentPhone"
+              @keyup="formatPhoneNumber"
+              maxLength="13"
             />
             <span :style="phoneValidStyle ? 'color:green' : 'color:red'">{{
               errorMessage.phoneValid
@@ -105,6 +111,7 @@
               class="ps-2 border border-dark rounded"
               type="text"
               v-model.trim="agentSignup.agentBrandName"
+              maxLength="50"
             />
           </div>
         </div>
@@ -121,6 +128,8 @@
               type="text"
               placeholder="하이픈을 포함하여 작성하세요."
               v-model.trim="agentSignup.agentBrandNum"
+              @keyup="formatBusinessNumber"
+              maxLength="12"
             />
             <span :style="brandNumValidStyle ? 'color:green' : 'color:red'">{{
               errorMessage.brandNumValid
@@ -178,6 +187,7 @@
               v-model="agentSignup.addressDetail"
               size="20"
               @input="emitUpdate"
+              maxLength="100"
             />
           </div>
         </div>
@@ -308,6 +318,30 @@ async function uniqueAndValidCheckUemail() {
   }
   console.log("출력", emailValidStyle.value);
 }
+
+// 휴대폰 번호 하이픈 자동으로 붙이기
+const formatPhoneNumber = () => {
+  let cleaned = ('' + agentSignup.value.agentPhone).replace(/\D/g, '');
+  if (cleaned.length <= 3) {
+    agentSignup.value.agentPhone = cleaned;
+  } else if (cleaned.length <= 7) {
+    agentSignup.value.agentPhone = `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+  } else {
+    agentSignup.value.agentPhone = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7, 11)}`;
+  }
+};
+
+// 사업자 번호 하이픈 자동으로 붙이기
+const formatBusinessNumber = () => {
+      let cleaned = ('' + agentSignup.value.agentBrandNum).replace(/\D/g, '');
+      if (cleaned.length <= 3) {
+        agentSignup.value.agentBrandNum = cleaned;
+      } else if (cleaned.length <= 5) {
+        agentSignup.value.agentBrandNum = `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+      } else {
+        agentSignup.value.agentBrandNum = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 5)}-${cleaned.slice(5, 10)}`;
+      }
+    };
 
 // 중복 확인을 아예 하지 않았을 경우와, 비밀번호와 휴대폰 번호, 사업자 번호, 이름 정규식 검사
 async function handleSubmit() {

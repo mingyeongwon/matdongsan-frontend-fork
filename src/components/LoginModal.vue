@@ -178,9 +178,10 @@
                     class="h-100 w-100 p-3"
                     type="text"
                     name="text"
-                    placeholder="하이픈을 포함하여 입력하세요"
+                    placeholder="숫자만 입력하세요."
                     maxLength="14"
                     v-model.trim="findEmail.uphone"
+                    @keyup="formatEmailPhoneNumber"
                   />
                 </div>
               </div>
@@ -266,9 +267,10 @@
                     class="h-100 w-100 p-3"
                     type="text"
                     name="phone"
-                    placeholder="하이픈을 포함하여 입력하세요"
+                    placeholder="숫자만 입력하세요."
                     maxLength="14"
                     v-model.trim="findPassword.phone"
+                    @keyup="formatPasswordPhoneNumber"
                   />
                 </div>
               </div>
@@ -875,33 +877,28 @@ onBeforeUnmount(() => {
   modal.value.removeEventListener('hide.bs.modal', cancelUserData);
 });
 
-// 전화번호 하이픈 자동으로 붙이기
-// function autoHypenPhone(event){
-//   var phone = event.target.value
-//   phone = phone.replace(/[^0-9]/g, '');
-//   var tmpPhone = '';
-//   if (phone.length < 4) {
-//   tmpPhone = phone;
-// } else if (phone.length < 7) {
-//   tmpPhone += phone.substr(0, 3);
-//   tmpPhone += '-';
-//   tmpPhone += phone.substr(3);
-// } else if (phone.length < 11) {
-//   tmpPhone += phone.substr(0, 3);
-//   tmpPhone += '-';
-//   tmpPhone += phone.substr(3, 3);
-//   tmpPhone += '-';
-//   tmpPhone += phone.substr(6);
-// } else {
-//   tmpPhone += phone.substr(0, 3);
-//   tmpPhone += '-';
-//   tmpPhone += phone.substr(3, 4);
-//   tmpPhone += '-';
-//   tmpPhone += phone.substr(7);
-// }
-//   findEmail.value.uphone = tmpPhone;
-//   return tmpPhone;
-// }
+// 휴대폰 번호 하이픈 자동으로 붙이기
+const formatEmailPhoneNumber = () => {
+  let cleaned = ('' + findEmail.value.uphone).replace(/\D/g, '');
+  if (cleaned.length <= 3) {
+    findEmail.value.uphone = cleaned;
+  } else if (cleaned.length <= 7) {
+    findEmail.value.uphone = `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+  } else {
+    findEmail.value.uphone = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7, 11)}`;
+  }
+};
+
+const formatPasswordPhoneNumber = () => {
+  let cleaned = ('' + findPassword.value.phone).replace(/\D/g, '');
+  if (cleaned.length <= 3) {
+    findPassword.value.phone = cleaned;
+  } else if (cleaned.length <= 7) {
+    findPassword.value.phone = `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+  } else {
+    findPassword.value.phone = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7, 11)}`;
+  }
+};
 </script>
 
 <style scoped>
