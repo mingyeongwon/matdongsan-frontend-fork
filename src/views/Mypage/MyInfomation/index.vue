@@ -65,13 +65,13 @@
           <input
             v-if="userRole === 'AGENT'"
             
-            class="readonly-box"
+            class="readonly-box ps-2"
             type="text"
             v-model="agentData.aname"
             maxLength="20"
             readonly
           />
-          <input v-else class="readonly-box" type="text" v-model="memberData.mname" maxLength="50" readonly/>
+          <input v-else class="readonly-box ps-2" type="text" v-model="memberData.mname" maxLength="50" readonly/>
         </div>
         <div class="d-flex">
           <div class="align-self-center col-2 fw-bold"></div>
@@ -117,7 +117,7 @@
           <div class="align-self-center me-5 col-2 fw-bold">이메일 주소</div>
           <input
             type="email"
-            class="readonly-box"
+            class="readonly-box ps-2"
             v-model="store.getters.getUemail"
              maxLength="50"
             readonly

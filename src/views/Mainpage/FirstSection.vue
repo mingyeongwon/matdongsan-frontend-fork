@@ -7,7 +7,7 @@
               <input
                 type="text"
                 class="form-control form-control-lg mx-auto search-bar focus-ring"
-                placeholder="원하시는 지역명, 원룸을 입력해주세요"
+                placeholder="원하시는 지역명을 입력해주세요"
                 aria-label="search-bar"
                 aria-describedby="button-addon2"
                 style="--bs-focus-ring-color: none"

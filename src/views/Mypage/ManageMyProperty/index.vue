@@ -128,13 +128,18 @@
         </tbody>
       </table>
       <!-- 페이지네이션 v-if 설정하기 -->
-      <Pagination v-if="properties"
+      <Pagination v-if="properties.length"
         class="mt-5"
         :currentPage="pager.pageNo"
         :totalPages="pager.totalPageNo"
         :maxVisiblePages="5"
         @update:currentPage="handlePageChange"
       />
+      <div v-else class="w-75 container">
+      <div class="text-center mt-5 mb-5">
+        등록한 매물이 없습니다.
+      </div>
+    </div>
     </div>
   </div>
   <TransactionModal

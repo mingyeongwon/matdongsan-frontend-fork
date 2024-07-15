@@ -78,13 +78,18 @@
         </tbody>
       </table>
       <Pagination
-        v-if="reports"
+        v-if="reports.length"
         class="mt-5"
         :currentPage="pager.pageNo"
         :totalPages="pager.totalPageNo"
         :maxVisiblePages="4"
         @update:currentPage="handlePageChange"
       />
+      <div v-else class="w-75 container">
+      <div class="text-center mt-5 mb-5">
+        신고한 내역이 없습니다.
+      </div>
+    </div>
     </div>
   </div>
   <!-- 디테일 모달 -->

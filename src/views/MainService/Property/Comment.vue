@@ -59,7 +59,7 @@
         <div>
           <hr />
           <div class="d-flex justify-content-between" :class="comment.ucparentnumber? 'ps-5':''">
-            <div v-if="comment.ucUnumber == userCommonData.unumber && comment.ucremoved !== true" class="d-flex">
+            <div v-if="(comment.ucUnumber == userCommonData.unumber || userCommonData.unumber == props.pUnumber) && comment.ucremoved !== true" class="d-flex">
               <img
                 width="40"
                 height="40"
