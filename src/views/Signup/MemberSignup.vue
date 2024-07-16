@@ -65,7 +65,7 @@
             <input
               class="ps-2 border border-1 border-secondary rounded"
               type="text"
-              placeholder="본명을 입력하세요."
+              placeholder="한글로 입력하세요."
               v-model.trim="member.mname"
             />
             <span :style="nameValidStyle ? 'color:green': 'color:red'">

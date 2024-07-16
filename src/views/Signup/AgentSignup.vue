@@ -69,7 +69,7 @@
             <input
               class="ps-2 border border-dark rounded"
               type="text"
-              placeholder="본명을 작성하세요."
+              placeholder="한글로 작성하세요."
               v-model.trim="agentSignup.agentName"
               maxLength="20"
             />
