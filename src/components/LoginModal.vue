@@ -534,7 +534,7 @@ import { Modal } from "bootstrap";
 
 const router = useRouter();
 const emit = defineEmits(["moveToMemberSignup", "moveToAgentSignup", "close"]);
-const props = defineProps(["modalStatus","question"]);
+const props = defineProps(["modalStatus","question","paymentInfo"]);
 let checkStatus = ref(null);
 const store = useStore();
 const emailValidStyle = ref(false);
@@ -635,11 +635,13 @@ async function loginHandleSubmit() {
 
       emit("close"); 
 
-      if(props.question !=  "question"){
+      if(props.question !=  "question" && props.paymentInfo != "paymentInfo"){
         router.push("/"); 
-      } else {
+      } else if(props.question ==  "question"){
         // 1:1 문의 들어가다가 로그인 하면 홈이 아닌 1:1문의로 들어가게 하기
         router.push("/QNA/CustomerInquiryForm"); 
+      } else if(props.paymentInfo == "paymentInfo"){
+        router.push("/Payment/PaymentInfo"); 
       }
       
     } else if(response.data.result === "removed"){

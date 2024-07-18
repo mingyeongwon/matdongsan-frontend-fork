@@ -38,7 +38,7 @@
           <div v-else><RouterLink to="/Payment/PaymentInfo" class="btn text-light ps-5 pe-5"
             >집내놓기</RouterLink
           ></div> -->
-          <div class="btn text-light ps-5 pe-5" @click="requestAddress" >집내놓기</div>
+          <div class="btn text-light ps-5 pe-5" @click="getListingRemain" >집내놓기</div>
         </div>
       </div>
       <div class="card border border-2 border-secondary" style="width: 18rem">
@@ -75,46 +75,24 @@ const store =  useStore();
 
 // 등록권 수량 가져오기
 async function getListingRemain(){
-  try {
-    const response = await propertyAPI.getListingRemain(store.state.uemail);
-    if(response.data.remain != null){
-      router.push("/PropertyForm");
-    } 
-
-    else if(response.data.result == "noRemain"){
-      console.log("수량없음");
-      router.push("/Payment/PaymentInfo");
-    } 
-    } catch (error) {
-      console.log(error);
-    }
-    }
-
-function requestAddress(){
   if(store.state.uemail){
-    getListingRemain();
+    try {
+      const response = await propertyAPI.getListingRemain(store.state.uemail);
+      if(response.data.remain != null){
+        router.push("/PropertyForm");
+      } 
+  
+      else if(response.data.result == "noRemain"){
+        console.log("수량없음");
+        router.push("/Payment/PaymentInfo");
+      } 
+      } catch (error) {
+        console.log(error);
+      }
   } else {
-    // 로그인 정보가 없으면 모달 열기
-    showLogin()
+    router.push("/Payment/PaymentInfo");
   }
-}
-
-// 로그인 모달 마운트
-let loginModal = null;
-
-onMounted(() => {
-  loginModal = new Modal(document.querySelector("#loginModal"));
-});
-
-// 모달 닫기
-function hideLogin() {
-  loginModal.hide();
-}
-
-// 삭제 버튼 클릭 시 확인하는 모달 켜짐
-function showLogin(){
-  loginModal.show();
-}
+    }
 
 
 </script>

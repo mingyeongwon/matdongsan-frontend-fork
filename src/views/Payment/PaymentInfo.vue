@@ -61,7 +61,7 @@
                         </div>
                     </li>
                 </ul>
-                <RouterLink class="btn btn-warning btn-lg w-50 container fw-bold mt-3" style=" font-size: 0.9rem;" to="/Payment">구매하기</RouterLink>
+                <div class="btn btn-warning btn-lg w-50 container fw-bold mt-3" style=" font-size: 0.9rem;" @click="requestAddress">구매하기</div>
             </div>
         </div>
         <div class="row mt-5 mb-5" style="margin-left: 50px; height: 260px">
@@ -79,10 +79,63 @@
             <p style="font-size: small;">광고 상품 및 이용에 대한 문의는 언제든지 고객센터에 문의해 주세요.</p>
             <RouterLink to="/QNA/Notice"><button class="btn  btn-outline-secondary mt-4">고객센터 바로가기</button></RouterLink>
         </div>
+    <LoginModal id="loginModal" @close="hideLogin" paymentInfo="paymentInfo"/>
     </div>
     </template>
     
     <script setup>
+import { useStore } from "vuex";
+import { Modal } from 'bootstrap';
+import LoginModal from "@/components/LoginModal.vue"
+import { onMounted } from 'vue';
+import propertyAPI from "@/apis/propertyAPI";
+import { useRouter } from "vue-router";
+const store = useStore();
+const router = useRouter()
+
+// 등록권 수량 가져오기
+async function getListingRemain(){
+    try {
+      const response = await propertyAPI.getListingRemain(store.state.uemail);
+      if(response.data.remain != null){
+        router.push("/PropertyForm");
+      } 
+  
+      else if(response.data.result == "noRemain"){
+        console.log("수량없음");
+        router.push("/Payment");
+      } 
+      } catch (error) {
+        console.log(error);
+      }
+  
+    }
+
+function requestAddress(){
+  if(store.state.uemail){
+    getListingRemain()
+  } else {
+    // 로그인 정보가 없으면 모달 열기
+    showLogin()
+  }
+}
+
+// 로그인 모달 마운트
+let loginModal = null;
+
+onMounted(() => {
+  loginModal = new Modal(document.querySelector("#loginModal"));
+});
+
+// 모달 닫기
+function hideLogin() {
+  loginModal.hide();
+}
+
+// 삭제 버튼 클릭 시 확인하는 모달 켜짐
+function showLogin(){
+  loginModal.show();
+}
     </script>
     
     <style scoped>
