@@ -32,7 +32,7 @@
       </tbody>
     </table>
     <span
-      class="btn btn-dark position-absolute bottom-0 end-0 m-3 opacity-75"
+      class="btn btn-dark position-absolute bottom-0 end-0 ms-4 mb-4 opacity-75"
       @click="showDetailPhotoModal"
       >사진 모두 보기</span
     >

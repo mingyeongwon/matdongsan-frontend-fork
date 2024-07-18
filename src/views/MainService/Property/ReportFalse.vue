@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="col-7 ps-4 mt-5 mb-3">
+    <section class="col-7 mt-5 mb-3 ms-3">
       <button class="reportBtn p-3 w-100 text-start fw-bold bg-light" @click="showReportFalseModal">허위매물 신고하기</button>
     </section>
   </div>
@@ -162,6 +162,7 @@ async function handleReportSubmit() {
 </script>
 
 <style scoped>
+
 .reportBtn {
   background-color: rgb(250, 250, 250);
   border: none;
