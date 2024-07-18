@@ -22,7 +22,4 @@ import MainService from "./MainServiceMenuList.vue";
   background-color: #2f4858;
 }
 
-.mainServiceContainer{
-  
-}
 </style>
