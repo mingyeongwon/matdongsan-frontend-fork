@@ -149,7 +149,7 @@ const userProfiles = ref({});
 const userCommonData = ref({});
 const member = ref({});
 const agent = ref({});
-const names = ref([]);
+const names = ref({});
 const propertyCommentFilter = ref("");
 const propertyClusterPosition = ref({ lat: "", lng: "" });
 const propertyTotalList = ref([]);
@@ -165,11 +165,10 @@ async function getPropertyUserDataByUnumber(unumber) {
   try {
     const response = await memberAPI.getUserDataByUnumber(unumber);
     propertyUser.value = response.data.userCommonData;
-  } catch(error) {
-      console.log(error);
+  } catch (error) {
+    console.log(error);
   }
 }
-
 
 const handlePageChange = (page) => {
   currentPage.value = page;
@@ -251,22 +250,21 @@ const isPropertyLiked = async () => {
 const getUserDataByUnumber = async (unumber) => {
   try {
     const response = await memberAPI.getUserDataByUnumber(unumber);
-    userCommonData.value = response.data.userCommonData;
-    member.value = response.data.member;
-    agent.value = response.data.agent;
-    if (userCommonData.value.urole === "MEMBER") {
-      const response = await memberAPI.memberAttachDownload(
-        member.value.mnumber
-      );
-      const blob = response.data;
-      userProfiles.value[unumber] = URL.createObjectURL(blob);
-      names.value[unumber] = member.value.mname;
+    const userCommonData = response.data.userCommonData;
+    const member = response.data.member;
+    const agent = response.data.agent;
+    if (userCommonData.urole === "MEMBER") {
+      const memberResponse = await memberAPI.memberAttachDownload(member.mnumber);
+      const memberBlob = memberResponse.data;
+      userProfiles.value[unumber] = URL.createObjectURL(memberBlob);
+      names.value[unumber] = member.mname;
     } else {
-      const response = await agentAPI.agentAttachDownload(agent.value.anumber);
-      const blob = response.data;
-      userProfiles.value[unumber] = URL.createObjectURL(blob);
-      names.value[unumber] = agent.value.abrand;
+      const agentResponse = await agentAPI.agentAttachDownload(agent.anumber);
+      const agentBlob = agentResponse.data;
+      userProfiles.value[unumber] = URL.createObjectURL(agentBlob);
+      names.value[unumber] = agent.abrand;
     }
+    console.log("이름: " + names.value[unumber]);
   } catch (error) {
     console.log(error);
   }
@@ -275,11 +273,7 @@ const getUserDataByUnumber = async (unumber) => {
 // property 데이터 가져오기
 const getPropertyData = async (pageNo = 1) => {
   try {
-    const response = await propertyAPI.getPropertyData(
-      route.params.id,
-      propertyCommentFilter.value,
-      pageNo
-    );
+    const response = await propertyAPI.getPropertyData(route.params.id, propertyCommentFilter.value, pageNo);
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     pagerData.value = response.data.pager;
@@ -289,8 +283,8 @@ const getPropertyData = async (pageNo = 1) => {
     property.value.formattedDate = dayjs(property.value.pdate).format("YYYY-MM-DD");
     propertyDetail.value.formattedDate = dayjs(propertyDetail.value.pdmoveindate).format("YYYY-MM-DD");
 
-    getPthumbnail(route.params.id);
-    getPropertyUserDataByUnumber(property.value.punumber);
+    await getPthumbnail(route.params.id);
+    await getPropertyUserDataByUnumber(property.value.punumber);
 
     await Promise.all(
       propertyPhotos.value.map(async (photo) => {
@@ -343,15 +337,10 @@ function getPropertyCommentFilter(data) {
 
 // 매물 포지션 리스트 가져오기
 function getPropertyClusterPosition(lat, lng) {
-  if (
-    propertyClusterPosition.value.lat === lat &&
-    propertyClusterPosition.value.lng === lng
-  ) {
+  if (propertyClusterPosition.value.lat === lat && propertyClusterPosition.value.lng === lng) {
     return;
   }
-
   propertyClusterPosition.value = { lat, lng };
-
   console.log(propertyClusterPosition.value.lat);
   console.log(propertyClusterPosition.value.lng);
 }
@@ -379,6 +368,7 @@ function getPropertyPositionFromMap(lat, lng) {
     movePropertyDetailPageByPosition(lat, lng);
   }
 }
+
 //지도 초기화 버튼 emit
 function checkResetByMap(data) {
   console.log(data);
@@ -409,11 +399,9 @@ watch(
 );
 
 watch(
+  () => filterPropertyData.value,
   () => {
-    filterPropertyData.value.byCategory,
-    filterPropertyData.value.byFloortype,
-    filterPropertyData.value.byPrice,
-    filterPropertyData.value.byDate;
+    getPropertyData();
   },
   { deep: true }
 );
@@ -432,6 +420,7 @@ watch(
   },
   { deep: true }
 );
+
 watch(
   () => propertyClusterPosition.value,
   () => {
@@ -439,6 +428,7 @@ watch(
   },
   { deep: true }
 );
+
 watch(
   () => propertyTotalList.value,
   () => {
@@ -446,6 +436,7 @@ watch(
   },
   { deep: true }
 );
+
 watch(
   () => isClickedReset.value,
   () => {
