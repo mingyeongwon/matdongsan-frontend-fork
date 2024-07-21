@@ -16,7 +16,7 @@
 
     <div class="mt-5">
     <div class="d-flex">
-      <h4 class="col">사진 등록</h4>
+      <h4 class="col fw-bold">사진 등록</h4>
     </div>
     <hr />
     <div class="image-box">

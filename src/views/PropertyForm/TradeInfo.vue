@@ -1,6 +1,6 @@
 <template>
     <div class="mt-5">
-      <h4>거래 정보</h4>
+      <h4 class="fw-bold">거래 정보</h4>
       <hr />
       <span class="me-5">거래 종류 *</span>
       <div class="form-check form-check-inline">
