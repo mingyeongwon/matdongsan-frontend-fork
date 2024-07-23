@@ -9,7 +9,7 @@
             placeholder="주소 검색"
             aria-label="Search"
             @keyup.enter="searchKeywordInProperty"
-            v-model="searchInput"
+            v-model="searchKeyword"
           />
         </div>
         <div class="d-flex">
@@ -27,20 +27,39 @@
                 <li>
                   <label for="category1">
                     <input type="radio" name="pcategory" id="category1"
-                            value="전세" v-model="selectedCategory" />
+                            value="전세" v-model="filters.byCategory" />
                     전세
                   </label>
                 </li>
                 <li>
                   <label for="category2">
                     <input type="radio" name="pcategory" id="category2"
-                    value="월세" v-model="selectedCategory" />
+                    value="월세" v-model="filters.byCategory" />
                     월세
                   </label>
                 </li>
               </ul>
             </div>
           </div>
+          <!-- <div class="filter-box">
+            <div>거래종류</div>
+            <div>
+              <ul class="">
+                <li>
+                  <label for="">
+                    <input type="radio" name="sellerType" id="" />
+                    직거래
+                  </label>
+                </li>
+                <li>
+                  <label for="">
+                    <input type="radio" name="sellerType" id="" />
+                    중개
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div> -->
           <div class="filter-box">
             <div>층수</div>
             <div>
@@ -48,21 +67,21 @@
                 <li>
                   <label for="floortype1">
                     <input type="radio" name="pfloortype" id="floortype1"
-                    value="반지하" v-model="selectedFloortype" />
+                    value="반지하" v-model="filters.byFloortype" />
                     반지하
                   </label>
                 </li>
                 <li>
                   <label for="floortype2">
                     <input type="radio" name="pfloortype" id="floortype2"
-                    value="지상" v-model="selectedFloortype" />
+                    value="지상" v-model="filters.byFloortype" />
                     지상
                   </label>
                 </li>
                 <li>
                   <label for="floortype3">
                     <input type="radio" name="pfloortype" id="floortype3"
-                    value="옥탑방" v-model="selectedFloortype" />
+                    value="옥탑방" v-model="filters.byFloortype" />
                     옥탑방
                   </label>
                 </li>
@@ -76,14 +95,14 @@
                 <li>
                   <label for="price1">
                     <input type="radio" name="pprice" id="price1"
-                    value="low" v-model="selectedPrice" />
+                    value="low" v-model="filters.byPrice" />
                     낮은순
                   </label>
                 </li>
                 <li>
                   <label for="price2">
                     <input type="radio" name="pprice" id="price2"
-                    value="high" v-model="selectedPrice" />
+                    value="high" v-model="filters.byPrice" />
                     높은순
                   </label>
                 </li>
@@ -97,14 +116,14 @@
                 <li>
                   <label for="date1">
                     <input type="radio" name="pdate" id="date1"
-                    value="desc" v-model="selectedDate" />
+                    value="desc" v-model="filters.byDate" />
                     최신순
                   </label>
                 </li>
                 <li>
                   <label for="date2">
                     <input type="radio" name="pdate" id="date2"
-                    value="asc" v-model="selectedDate" />
+                    value="asc" v-model="filters.byDate" />
                     오래된순
                   </label>
                 </li>
@@ -160,72 +179,62 @@ import { Modal } from "bootstrap";
 import { useRoute, useRouter } from "vue-router";
 const emits = defineEmits(["update:filterData", "reset:propertyList", "update:keywordData"]);
 const route = useRoute();
-const router = useRouter();
-
 const searchKeyword = ref("");
-const searchInput = ref("");
-
+const router = useRouter();
 const filters = ref({
   byCategory: "",
   byFloortype: "",
   byPrice: "",
   byDate: "",
 });
-
-const selectedCategory = ref("");
-const selectedFloortype = ref("");
-const selectedPrice = ref("");
-const selectedDate = ref("");
 const warningMessage = ref(""); // 경고 메시지 상태 추가
 
-if(route.query.keyword){
-  searchKeyword.value = route.query.keyword;
-  searchKeywordInProperty();
-  router.push({ path: route.path, query: {} });
-}
+// 필터 초기화 버튼 클릭
+// function filterReset() {
+// }
+
+  if(route.query.keyword){
+    searchKeyword.value = route.query.keyword;
+    searchKeywordInProperty();
+    router.push({ path: route.path, query: {} });
+  }
 
 function searchKeywordInProperty() {
-  if(searchInput.value === "") {
-    warningMessage.value = "한 글자 이상의 단어를 검색해 주세요.";
-    const warningModal = new Modal(document.getElementById("warningModal"));
-    warningModal.show();
-  } else {
-    searchKeyword.value = searchInput.value;
-    emits("update:keywordData", searchKeyword.value);
-  }
+  console.log("searchKeyword.value : " + searchKeyword.value);
+    if(searchKeyword.value == "") {
+      warningMessage.value = "한 글자 이상의 단어를 검색해 주세요.";
+      const warningModal = new Modal(document.getElementById("warningModal"));
+      warningModal.show();
+    } else {
+      emits("update:keywordData", searchKeyword.value);
+    }
 }
 
 // 필터 검색 버튼 클릭
 function submitFilter() {
   if (
-    !selectedCategory.value &&
-    !selectedFloortype.value &&
-    !selectedPrice.value &&
-    !selectedDate.value
+    !filters.value.byCategory &&
+    !filters.value.byFloortype &&
+    !filters.value.byPrice &&
+    !filters.value.byDate
   ) {
     warningMessage.value = "하나 이상의 필터를 선택해 주세요.";
     const warningModal = new Modal(document.getElementById("warningModal"));
     warningModal.show();
   } else {
-    filters.value.byCategory = selectedCategory.value;
-    filters.value.byFloortype = selectedFloortype.value;
-    filters.value.byPrice = selectedPrice.value;
-    filters.value.byDate = selectedDate.value;
     emits("update:filterData", filters.value);
+    console.log("filters in propertyFilter : " + JSON.stringify(filters));
+    
   }
 }
 
-function filterReset() {
-  selectedCategory.value = "";
-  selectedFloortype.value = "";
-  selectedPrice.value = "";
-  selectedDate.value = "";
-  filters.value.byCategory = "";
-  filters.value.byFloortype = "";
-  filters.value.byPrice = "";
-  filters.value.byDate = "";
-  emits("reset:propertyList");
-}
+// watch(()=>{
+//   searchKeyword.value
+// },
+// ()=>{
+//   searchKeywordInProperty();
+//   router.push({ path: route.path, query: {} });
+// })
 </script>
 
 <style scoped>
