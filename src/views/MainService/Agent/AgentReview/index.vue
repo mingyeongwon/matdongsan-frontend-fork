@@ -23,12 +23,18 @@
       class="d-flex mb-4"
       v-if="logedinUser && store.getters.getUserRole !== 'AGENT'"
     >
-      <img
+      <img v-if="memberProfile"
         width="60"
         height="60"
         class="rounded-circle"
         :src="memberProfile"
         alt=""
+      />
+      <img v-else
+        src="@/assets/profileImage.png"
+        width="60"
+        height="60"
+        class="rounded-circle"
       />
       <div class="ms-3 w-100 align-self-center">
         <div class="d-flex flex-column">
@@ -389,12 +395,16 @@ const getUattach = async (argAnumber) => {
   try {
     if (store.getters.getUserRole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(argAnumber);
-      const blob = response.data;
-      memberProfile.value = URL.createObjectURL(blob);
+      if(response.headers["Content-Length"]) {
+        const blob = response.data;
+        memberProfile.value = URL.createObjectURL(blob);
+      }
     } else {
       const response = await agentAPI.agentAttachDownload(argAnumber);
-      const blob = response.data;
-      memberProfile.value = URL.createObjectURL(blob);
+      if(response.headers["Content-Length"]) {
+        const blob = response.data;
+        memberProfile.value = URL.createObjectURL(blob);
+      }
     }
   } catch (error) {
     console.log(error);
