@@ -74,13 +74,13 @@
                 :src="comment.profile"
                 alt=""
               />
-              <img v-else 
+              <!-- <img v-else 
                 width="40"
                 height="40"
                 class="align-self-center rounded-circle"
                 src="@/assets/profileImage.png"
                 alt=""
-              />
+              /> -->
               <p class="align-self-center fw-bold ms-2 h6 m-0">
                 <span>{{ comment.name }}</span>
               </p>
@@ -389,16 +389,16 @@ const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
   try {
     if (store.getters.getUserRole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(userTypeNumber);
-      if(response.headers["Content-Length"]) {
+      // if(response.headers["Content-Length"]) {
         const blob = response.data;
         memberProfile.value = URL.createObjectURL(blob);
-      }
+      // }
     } else if(store.getters.getUserRole === "AGENT") {
       const response = await agentAPI.agentAttachDownload(userTypeNumber);
-      if(response.headers["Content-Length"]) {
+      // if(response.headers["Content-Length"]) {
         const blob = response.data;
         memberProfile.value = URL.createObjectURL(blob);
-      }
+      // }
     }
   } catch (error) {
     console.log(error);

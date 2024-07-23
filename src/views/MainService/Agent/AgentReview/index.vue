@@ -30,12 +30,12 @@
         :src="memberProfile"
         alt=""
       />
-      <img v-else
+      <!-- <img v-else
         src="@/assets/profileImage.png"
         width="60"
         height="60"
         class="rounded-circle"
-      />
+      /> -->
       <div class="ms-3 w-100 align-self-center">
         <div class="d-flex flex-column">
           <div class="star-rating d-flex mb-2">
@@ -106,13 +106,20 @@
           <hr />
           <div class="d-flex justify-content-between">
             <div class="d-flex">
-              <img
+              <img v-if="review.profile"
                 width="40"
                 height="40"
                 class="align-self-center rounded-circle"
                 :src="review.profile"
                 alt=""
               />
+              <!-- <img v-else 
+                width="40"
+                height="40"
+                class="align-self-center rounded-circle"
+                src="@/assets/profileImage.png"
+                alt=""
+              />               -->
               <p class="align-self-center fw-bold ms-2 h6 m-0">
                 {{ review.membername }}
               </p>
@@ -395,16 +402,16 @@ const getUattach = async (argAnumber) => {
   try {
     if (store.getters.getUserRole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(argAnumber);
-      if(response.headers["Content-Length"]) {
+      // if(response.headers["Content-Length"]) {
         const blob = response.data;
         memberProfile.value = URL.createObjectURL(blob);
-      }
+      // }
     } else {
       const response = await agentAPI.agentAttachDownload(argAnumber);
-      if(response.headers["Content-Length"]) {
+      // if(response.headers["Content-Length"]) {
         const blob = response.data;
         memberProfile.value = URL.createObjectURL(blob);
-      }
+      // }
     }
   } catch (error) {
     console.log(error);

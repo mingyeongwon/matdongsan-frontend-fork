@@ -177,8 +177,10 @@ function searchInAgent() {
 const getMattach = async (memberId) => {
   try {
     const response = await memberAPI.memberAttachDownload(memberId);
-    const blob = response.data;
-    memberProfiles.value[memberId] = URL.createObjectURL(blob);
+    // if(response.headers["Content-Length"]) {
+      const blob = response.data;
+      memberProfiles.value[memberId] = URL.createObjectURL(blob);
+    // }
   } catch (error) {
     console.log(error);
   }

@@ -255,17 +255,17 @@ const getUserDataByUnumber = async (unumber) => {
     const agent = response.data.agent;
     if (userCommonData.urole === "MEMBER") {
       const memberResponse = await memberAPI.memberAttachDownload(member.mnumber);
-      if(memberResponse.headers["Content-Length"]) {
+      // if(memberResponse.headers["Content-Length"]) {
         const memberBlob = memberResponse.data;
         userProfiles.value[unumber] = URL.createObjectURL(memberBlob);
-      }
+      // }
       names.value[unumber] = member.mname;
     } else {
       const agentResponse = await agentAPI.agentAttachDownload(agent.anumber);
-      if(agentResponse.headers["Content-Length"]) {
+      // if(agentResponse.headers["Content-Length"]) {
         const agentBlob = agentResponse.data;
         userProfiles.value[unumber] = URL.createObjectURL(agentBlob);
-      }
+      // }
       names.value[unumber] = agent.abrand;
     }
     console.log("이름: " + names.value[unumber]);
