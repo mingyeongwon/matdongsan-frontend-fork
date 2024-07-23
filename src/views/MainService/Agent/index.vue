@@ -262,15 +262,6 @@ watch(
     console.log("Agent position list updated");
     // KakaoMap 컴포넌트는 이미 agentPositionList를 prop으로 받고 있으므로 자동으로 업데이트.
   },
-  { deep: true }
-);
-watch(
-  () => {
-    filterData.value.byComment,
-      filterData.value.byRate,
-      filterData.value.byDate;
-  },
-  { deep: true }
 );
 function backToAgentList() {
   router.push("/Agent");
