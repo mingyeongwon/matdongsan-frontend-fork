@@ -137,7 +137,7 @@
             <div class="ms-4">
             <input
               type="text"
-              class="readonly-box ms-2 me-2 ps-2"
+              class="readonly-box me-2 ps-2"
               v-model="arrBrandNumber[0]"
               size="1"
                readonly
