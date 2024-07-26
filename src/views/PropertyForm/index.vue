@@ -164,36 +164,36 @@ const checkPropertyFormData = computed(() => {
 
 // property
 const property = reactive({
-  pdeposite: 9000,
-  prentalfee: 0,
-  pfloortype: "지상",
-  pfloor: 16,
-  psize: 30,
-  pmaintenance:  0,
-  ptitle: "it 벤처타워 잘나가는 전세 매물",
-  pcategory: "전세",
+  pdeposite: "",
+  prentalfee: "",
+  pfloortype: "",
+  pfloor: "",
+  psize: "",
+  pmaintenance:  "",
+  ptitle: "",
+  pcategory: "",
   paddress: "",
-  paddressdetail: "서관 16층",
+  paddressdetail: "",
   ppostcode: "",
   platitude: "",
   plongitude: "",
-  isPmaintenance: false,
+  isPmaintenance: "",
   pthumbnail: [],  // 썸네일 이미지
   ppattach: [],  // 디테일 이미지를 저장할 배열
 });
 
 // propertyDetail
 const propertyDetail = reactive({
-  pdcontent: "it 벤처타워 관심 있으신 분은 댓글로 문의 부탁드립니다.",
+  pdcontent: "",
   pdmoveindate: "",
-  pdbath: true,
-  pdlift: false,
-  pdbed: true,
-  pdlot: false,
-  pdheating: true,
-  pdcooling: true,
-  pdmicrowave: true,
-  pdburner: true,
+  pdbath: "",
+  pdlift: "",
+  pdbed: false,
+  pdlot: "",
+  pdheating: "",
+  pdcooling: "",
+  pdmicrowave: false,
+  pdburner: false,
   pdfridge: false,
   pdshoecloset: false,
   pdtv: false,
@@ -202,7 +202,7 @@ const propertyDetail = reactive({
   pdtable: false,
   pdwasher: false,
   pdinduction: false,
-  moveIn: true,
+  moveIn: "",
 });
 
 
