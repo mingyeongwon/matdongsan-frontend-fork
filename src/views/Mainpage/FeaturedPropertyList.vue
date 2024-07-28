@@ -53,6 +53,7 @@ async function getPopularPropertyList() {
 // 사진 출력
 async function getPthumbnail(pnumber) {
     try {
+    
         const response = await propertyAPI.propertyAttachDownload(pnumber);
         pthumbnails.value[pnumber] = URL.createObjectURL(response.data);
     } catch (error) {

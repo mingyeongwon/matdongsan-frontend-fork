@@ -3,13 +3,16 @@
     <div>
       <div class="d-flex ps-3 pe-3 pb-3">
         <div class="property-list-box w-25 h-100">
-          <div class="col mt-3" @click="backToPropertyList" >
-            <PropertyList type="favorite" @getFavoriteListData="getFavoriteList" />
+          <div class="col mt-3" @click="backToPropertyList">
+            <PropertyList
+              type="favorite"
+              @getFavoriteListData="getFavoriteList"
+            />
           </div>
         </div>
         <!-- 카카오맵 -->
         <div class="right-box ms-4 col map-box p-3" v-if="status">
-          <KakaoMap page="favorite" :favoriteListData="favoriteList"/>
+          <KakaoMap page="favorite" :favoriteListData="favoriteList" />
         </div>
       </div>
     </div>
@@ -28,9 +31,9 @@ function backToPropertyList() {
   status.value = !status.value;
 }
 
-//PropertyList에서 가져오는 favorite 리스트 
-function getFavoriteList(data){
-  favoriteList.value=data;
+//PropertyList에서 가져오는 favorite 리스트
+function getFavoriteList(data) {
+  favoriteList.value = data;
 }
 </script>
 
@@ -51,7 +54,7 @@ function getFavoriteList(data){
 
 :deep(.property-list-box::-webkit-scrollbar-thumb) {
   background: #888;
-  border-radius: 10px; 
+  border-radius: 10px;
 }
 
 :deep(.property-list-box::-webkit-scrollbar-thumb:hover) {

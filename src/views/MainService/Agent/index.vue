@@ -130,7 +130,11 @@
           v-if="!route.params.id"
           class="map-box right-box col p-3 w-75 mx-auto"
         >
-          <KakaoMap page="agentList" :positionList="agentPositionList" @get:clickedAgentPosition="getClickAgentPosition"/>
+          <KakaoMap
+            page="agentList"
+            :positionList="agentPositionList"
+            @get:clickedAgentPosition="getClickAgentPosition"
+          />
         </div>
       </div>
     </div>
@@ -251,7 +255,7 @@ watch(
   (newId) => {
     if (newId) {
       getAgentData();
-      isCommentMenu.value=true;
+      isCommentMenu.value = true;
     }
   }
 );
@@ -293,23 +297,23 @@ watch(
 );
 
 //좌표를 가지고 해당 되는 부동산페이지로 이동
-async function moveAgentDetailByPosition(lat,lng){
+async function moveAgentDetailByPosition(lat, lng) {
   try {
-    const response = await agentAPI.getAgentDataByPosition(lat,lng);
+    const response = await agentAPI.getAgentDataByPosition(lat, lng);
     console.log(response.data);
-    router.push("/Agent/"+response.data);
+    router.push("/Agent/" + response.data);
   } catch (error) {
     console.log(error);
   }
 }
 
 //지도에서 클릭된 마커의 좌표 값 가져오기
-function getClickAgentPosition(lat,lng) {
+function getClickAgentPosition(lat, lng) {
   console.log("좌표 가져오기 함수 실행");
   console.log(lat);
   console.log(lng);
-  if(lat && lng){
-    moveAgentDetailByPosition(lat,lng);
+  if (lat && lng) {
+    moveAgentDetailByPosition(lat, lng);
   }
 }
 </script>
@@ -338,7 +342,7 @@ function getClickAgentPosition(lat,lng) {
 
 :deep(.property-list-box::-webkit-scrollbar-thumb) {
   background: #888;
-  border-radius: 10px; 
+  border-radius: 10px;
 }
 
 :deep(.property-list-box::-webkit-scrollbar-thumb:hover) {
