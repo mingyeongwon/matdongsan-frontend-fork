@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5">
-    <h4>시설 정보</h4>
+    <h4 class="fw-bold">시설 정보</h4>
     <hr />
     <div class="mt-3">
       <span class="me-5">난방시설 *</span>

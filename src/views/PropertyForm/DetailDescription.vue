@@ -1,6 +1,6 @@
 <template>
     <div class="mt-5">
-      <h4>상세 설명</h4>
+      <h4 class="fw-bold">상세 설명</h4>
       <hr />
       <div class="d-flex mb-3">
         <span class="me-5 align-self-center">제목 *</span>

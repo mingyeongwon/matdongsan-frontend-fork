@@ -13,7 +13,7 @@
                     name="date"
                     id="date1"
                     value="desc"
-                    v-model="filters.byDate"
+                    v-model="selectedDate"
                   />
                   최신순
                 </label>
@@ -25,7 +25,7 @@
                     name="date"
                     id="date2"
                     value="asc"
-                    v-model="filters.byDate"
+                    v-model="selectedDate"
                   />
                   오래된순
                 </label>
@@ -43,7 +43,7 @@
                     name="comment"
                     id="comment1"
                     value="many"
-                    v-model="filters.byComment"
+                    v-model="selectedComment"
                   />
                   댓글 많은 순
                 </label>
@@ -55,7 +55,7 @@
                     name="comment"
                     id="comment2"
                     value="less"
-                    v-model="filters.byComment"
+                    v-model="selectedComment"
                   />
                   댓글 적은 순
                 </label>
@@ -72,7 +72,7 @@
                     name="rate"
                     id="rate1"
                     value="high"
-                    v-model="filters.byRate"
+                    v-model="selectedRate"
                   />
                   별점 높은 순
                 </label>
@@ -84,7 +84,7 @@
                     name="rate"
                     id="rate2"
                     value="low"
-                    v-model="filters.byRate"
+                    v-model="selectedRate"
                   />
                   별점 낮은 순
                 </label>
@@ -141,7 +141,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { Modal } from "bootstrap";
 
 const emits = defineEmits(["update:filterData"]);
@@ -152,39 +152,20 @@ const filters = ref({
   byDate: "",
 });
 
-// watch(
-//   () => filters.value.byRate,
-//   (newValue) => {
-//     console.log("byRate changed:", newValue);
-//   }
-// );
-
-// watch(
-//   () => filters.value.byComment,
-//   (newValue) => {
-//     console.log("byComment changed:", newValue);
-//   }
-// );
-
-// watch(
-//   () => filters.value.byDate,
-//   (newValue) => {
-//     console.log("byDate changed:", newValue);
-//   }
-// );
+const selectedDate = ref("");
+const selectedComment = ref("");
+const selectedRate = ref("");
 
 function submitFilter() {
-  if (
-    !filters.value.byRate &&
-    !filters.value.byComment &&
-    !filters.value.byDate
-  ) {
+  if (!selectedDate.value && !selectedComment.value && !selectedRate.value) {
     console.log("No filters selected");
     const warningModal = new Modal(document.getElementById("warningModal"));
     warningModal.show();
   } else {
+    filters.value.byDate = selectedDate.value;
+    filters.value.byComment = selectedComment.value;
+    filters.value.byRate = selectedRate.value;
     emits("update:filterData", filters.value);
-    //filters.value = { byRate: "", byComment: "", byDate: "" };
   }
 }
 </script>

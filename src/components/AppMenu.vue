@@ -36,7 +36,7 @@
           <li class="nav-item">
             <RouterLink class="nav-link fw-bold" to="/Agent">부동산</RouterLink>
           </li>
-          <li class="nav-item" v-if="store.getters.getUemail">
+          <li class="nav-item" v-if="store.getters.getUserRole == 'MEMBER'">
             <RouterLink class="nav-link fw-bold" to="/FavoriteProperty"
               >관심목록</RouterLink
             >
@@ -170,13 +170,17 @@ const getUattach = async (argAnumber) => {
   try {
     if (store.getters.getUserRole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(argAnumber);
-      const blob = response.data;
-      memberProfile.value = URL.createObjectURL(blob);
+      // if(response.headers["Content-Length"]) {
+        const blob = response.data;
+        memberProfile.value = URL.createObjectURL(blob);
+      // }
       console.log("memberProfile : " + memberProfile.value);
     } else if(store.getters.getUserRole === 'AGENT'){
       const response = await agentAPI.agentAttachDownload(argAnumber);
-      const blob = response.data;
-      memberProfile.value = URL.createObjectURL(blob);
+      // if(response.headers["Content-Length"]) {
+        const blob = response.data;
+        memberProfile.value = URL.createObjectURL(blob);
+      // }
     }
   } catch (error) {
     console.log(error);

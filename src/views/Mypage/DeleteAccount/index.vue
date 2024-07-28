@@ -36,7 +36,7 @@
         <form
           action="#"
           class="deleteUserForm w-75 mx-auto mt-5"
-          v-on:submit.prevent="handleSubmit"
+          v-on:submit.prevent="handleDeleteSubmit"
         >
           <div class="mx-auto form-group mt-5 w-50">
             <h6>비밀번호</h6>
@@ -88,6 +88,7 @@
               type="submit"
               class="ms-3 btn btn-warning w-25"
               :disabled="!checkDeleteAccountData"
+              @click="openDeleteAccountModal()"
             >
               탈퇴하기
             </button>
@@ -96,6 +97,39 @@
       </div>
     </div>
   </div>
+
+
+  <!-- 탈퇴 확인 모달 -->
+  <div
+    v-if="showDeleteAccountModal"
+    class="modal fade show d-block"
+    tabindex="-1"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">탈퇴 확인</h5>
+          
+        </div>
+        <div class="modal-body">
+          <p>정말 탈퇴하시겠습니까?</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            @click="closeDeleteAccountModal"
+          >
+            취소
+          </button>
+          <button type="button" class="btn btn-danger" @click="confirmDeleteAccount">
+            탈퇴
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script setup>
@@ -107,12 +141,15 @@ import memberAPI from "@/apis/memberAPI";
 const store = useStore();
 const router = useRouter();
 
+const showDeleteAccountModal = ref(false);
+
 let deleteAccount = ref({
   deletePassword: "",
   deleteOptionSelect: "",
   deleteAgreement: "",
 });
 
+// 버튼 활성화 
 const checkDeleteAccountData = computed(() => {
   var result =
     deleteAccount.value.deletePassword !== "" &&
@@ -121,8 +158,10 @@ const checkDeleteAccountData = computed(() => {
   return result;
 });
 
-async function handleSubmit() {
+// form 제출 
+async function handleDeleteSubmit() {
   try {
+
     const data = deleteAccount.value.deletePassword;
     const response = await memberAPI.deleteAccount(data);
     store.dispatch("deleteAuth");
@@ -131,6 +170,22 @@ async function handleSubmit() {
     console.log(error);
   }
 }
+
+// 탈퇴 확인 모달 닫기 
+function closeDeleteAccountModal() {
+  showDeleteAccountModal.value = false;
+}
+
+// 탈퇴 확인 모달 열기 
+function openDeleteAccountModal() {
+  showDeleteAccountModal.value = true;
+}
+
+// 탈퇴 확인 모달에서 탈퇴 버튼 클릭 
+function confirmDeleteAccount() {
+  
+}
+
 </script>
 
 <style scoped>

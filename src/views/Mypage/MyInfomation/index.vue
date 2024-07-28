@@ -137,7 +137,7 @@
             <div class="ms-4">
             <input
               type="text"
-              class="readonly-box ms-2 me-2 ps-2"
+              class="readonly-box me-2 ps-2"
               v-model="arrBrandNumber[0]"
               size="1"
                readonly
@@ -301,7 +301,7 @@
     aria-labelledby="updateInfoDoneModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="updateInfoDoneModalLabel">알림</h5>

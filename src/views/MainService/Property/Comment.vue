@@ -13,12 +13,19 @@
     <div v-if="store.getters.getUserRole === 'MEMBER' 
           && (store.getters.getUemail !== propertyUser.uemail)" 
           class="d-flex mb-4 justify-content-around">
-      <img
+      <img v-if="memberProfile"
         width="60"
         height="60"
         class="rounded-circle"
         :src="memberProfile"
         alt=""
+      />
+      <img v-else
+                src="@/assets/profileImage.png"
+                alt=""
+                class="rounded-circle"
+                width="60"
+                height="60"
       />
       <div class="ms-3 w-75 align-self-center">
         <input
@@ -60,13 +67,20 @@
           <hr />
           <div class="d-flex justify-content-between" :class="comment.ucparentnumber? 'ps-5':''">
             <div v-if="(comment.ucUnumber == userCommonData.unumber || userCommonData.unumber == props.pUnumber) && comment.ucremoved !== true" class="d-flex">
-              <img
+              <img v-if="comment.profile"
                 width="40"
                 height="40"
                 class="align-self-center rounded-circle"
                 :src="comment.profile"
                 alt=""
               />
+              <!-- <img v-else 
+                width="40"
+                height="40"
+                class="align-self-center rounded-circle"
+                src="@/assets/profileImage.png"
+                alt=""
+              /> -->
               <p class="align-self-center fw-bold ms-2 h6 m-0">
                 <span>{{ comment.name }}</span>
               </p>
@@ -375,12 +389,16 @@ const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
   try {
     if (store.getters.getUserRole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(userTypeNumber);
-      const blob = response.data;
-      memberProfile.value = URL.createObjectURL(blob);
+      // if(response.headers["Content-Length"]) {
+        const blob = response.data;
+        memberProfile.value = URL.createObjectURL(blob);
+      // }
     } else if(store.getters.getUserRole === "AGENT") {
       const response = await agentAPI.agentAttachDownload(userTypeNumber);
-      const blob = response.data;
-      memberProfile.value = URL.createObjectURL(blob);
+      // if(response.headers["Content-Length"]) {
+        const blob = response.data;
+        memberProfile.value = URL.createObjectURL(blob);
+      // }
     }
   } catch (error) {
     console.log(error);
