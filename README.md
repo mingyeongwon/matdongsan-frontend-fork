@@ -1,24 +1,7 @@
-# zipeasy_front_end
+# Matdongsan - 부동산 중개 사이트
 
-## Project setup
-```
-npm install
-```
+## 프로젝트 소개
+![프로젝트소개](https://github.com/user-attachments/assets/4eee00fa-b1f5-48df-b067-287fb629363f)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 페이지 구성
+![페이지구성](https://github.com/user-attachments/assets/4948ab9e-b005-4b48-9479-0b9d19bb6432)
