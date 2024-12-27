@@ -31,6 +31,9 @@ jobs:
       
       - name: install npm dependencies
         run: npm install
+
+      - name: Update caniuse-lite
+        run: npx update-browserslist-db@latest
         
       - name: vue build
         run: npm run build
