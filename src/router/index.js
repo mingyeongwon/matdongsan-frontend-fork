@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MyPage from "./MyPage";
 import MainService from "./MainService";
-import Qna from "./Qna.js";
+import Qna from "@/router/Qna.js";
 import Payment from "./Payment";
 import MainPage from "@/views/Mainpage";
 import Signup from "./Signup";
