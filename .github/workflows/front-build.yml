@@ -13,9 +13,9 @@ jobs:
       - name: checkout Github Action
         uses: actions/checkout@v3
       
-      - name : .env setting
+      - name: .env setting
         run: |
-          echo "VUE_APP_API_KEY=${{ secrets.VUE_APP_API_KEY }}" >> .env
+          echo "VUE_APP_KAKAO_API_KEY=${{ secrets.VUE_APP_KAKAO_API_KEY }}" >> .env
 
       - name: Get npm cache directory
         id: npm-cache-dir
