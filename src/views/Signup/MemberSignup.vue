@@ -194,7 +194,6 @@ async function uniqueAndValidCheckUemail() {
     errorMessage.value.emailValid = "사용 가능한 이메일 입니다.";
     emailValidStyle.value = true;
   }
-  console.log("출력", emailValidStyle.value);
 }
 
 function handleImageUpdate(files) {
