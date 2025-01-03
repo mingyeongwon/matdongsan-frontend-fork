@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://api.matdongsan.org/api";
+axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
 function addAuthHeader(accessToken) {
     axios.defaults.headers.common["Authorization"] = "Bearer " + accessToken;

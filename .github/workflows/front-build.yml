@@ -16,6 +16,7 @@ jobs:
       - name: .env setting
         run: |
           echo "VUE_APP_KAKAO_API_KEY=${{ secrets.VUE_APP_KAKAO_API_KEY }}" >> .env
+          echo "VUE_APP_BASE_URL=${{ secrets.VUE_APP_BASE_URL }}" >> .env
 
       - name: Get npm cache directory
         id: npm-cache-dir
