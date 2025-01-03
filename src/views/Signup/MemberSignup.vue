@@ -181,7 +181,6 @@ async function uniqueAndValidCheckUemail() {
     const response = await memberAPI.getEmailUniqueCheck(userCommonData.value.uemail);
     uniqueCheck.value =  response.data;
   } catch (error) {
-    console.log(error);
   }
 
   if (!emailResult.value) {
@@ -251,7 +250,6 @@ async function handleSubmit() {
     nameValidStyle.value = true;
   }
 
-  // console.log(JSON.parse(JSON.stringify(member.value)));
 
   // // 유효성 검사가 모두 통과되면
   if (emailValidStyle.value && passwordValidStyle.value && phoneValidStyle.value && nameValidStyle.value) {
@@ -269,10 +267,8 @@ async function handleSubmit() {
     }
     try {
       const response = await memberAPI.memberJoin(formData);
-      console.log(response);
       router.push("/"); // 홈으로 돌아가기
     } catch(error) {
-      console.log(error);
     }
 
     

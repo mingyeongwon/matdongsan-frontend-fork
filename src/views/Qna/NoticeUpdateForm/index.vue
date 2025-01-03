@@ -65,9 +65,7 @@ async function getNoticeDetail(nnumber){
   try {
     const response = await qnaAPI.getNotice(nnumber);
     notice.value = response.data;
-    console.log(notice.value);
   } catch (error) {
-    console.log("수정 할 공지 안가져와 짐",error);
   }
 }
 // 기존 공지 가져오기
@@ -77,21 +75,17 @@ getNoticeDetail(nnumber)
 async function updateNewNotice(formData){
   try {
     const response = await qnaAPI.updateNotice(formData);
-    console.log("수정 한 데이터",response.data);
-    console.log("공지 수정 됨");
     // router.back();
     router.push({
     path: "/QNA/noticedetail",
     query: {nnumber: nnumber}
   }); // 수정 하면 디테일 페이지로 가기
   } catch (error) {
-    console.log("수정한 공지 수정 안됨",error);
   }
 }
 
 // 수정 제출함수
 function handleSubmit(){
-  console.log(JSON.parse(JSON.stringify(notice.value)));
   // content에 p태그 붙는거 삭제하기
   
   const formData = new FormData();
@@ -107,7 +101,6 @@ function handleSubmit(){
 // 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
   var result = notice.value.ntitle !== "" && notice.value.ncontent !== "";
-  console.log('result: ',result);
   return result;
 });
 

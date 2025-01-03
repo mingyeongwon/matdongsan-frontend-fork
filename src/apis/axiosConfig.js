@@ -4,7 +4,6 @@ axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
 function addAuthHeader(accessToken) {
     axios.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
-    console.log(axios.defaults.headers.common);
     
     const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
     localStorage.setItem('token', accessToken);
@@ -13,7 +12,6 @@ function addAuthHeader(accessToken) {
 
 function removeAuthHeader() {
     delete axios.defaults.headers.common["Authorization"];
-    console.log(axios.defaults.headers.common);
 
     localStorage.removeItem('token');
     localStorage.removeItem('token_expiry');

@@ -83,11 +83,9 @@ async function getListingRemain(){
       } 
   
       else if(response.data.result == "noRemain"){
-        console.log("수량없음");
         router.push("/Payment/PaymentInfo");
       } 
       } catch (error) {
-        console.log(error);
       }
   } else {
     router.push("/Payment/PaymentInfo");

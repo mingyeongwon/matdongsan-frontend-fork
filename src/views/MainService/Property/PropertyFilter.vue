@@ -200,7 +200,6 @@ const warningMessage = ref(""); // 경고 메시지 상태 추가
   }
 
 function searchKeywordInProperty() {
-  console.log("searchKeyword.value : " + searchKeyword.value);
     if(searchKeyword.value == "") {
       warningMessage.value = "한 글자 이상의 단어를 검색해 주세요.";
       const warningModal = new Modal(document.getElementById("warningModal"));
@@ -223,7 +222,6 @@ function submitFilter() {
     warningModal.show();
   } else {
     emits("update:filterData", filters.value);
-    console.log("filters in propertyFilter : " + JSON.stringify(filters));
     
   }
 }

@@ -166,7 +166,6 @@ async function getPropertyUserDataByUnumber(unumber) {
     const response = await memberAPI.getUserDataByUnumber(unumber);
     propertyUser.value = response.data.userCommonData;
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -221,7 +220,6 @@ const postLikeProperty = async () => {
   try {
     await propertyAPI.likeProperty(route.params.id);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -230,7 +228,6 @@ const cancelLikeProperty = async () => {
   try {
     await propertyAPI.cancelLikeProperty(route.params.id);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -241,7 +238,6 @@ const isPropertyLiked = async () => {
       const response = await propertyAPI.isPropertyLiked(route.params.id);
       isClicked.value = response.data; // 서버에서 boolean 값 반환
     } catch (error) {
-      console.log(error);
     }
   }
 };
@@ -268,9 +264,7 @@ const getUserDataByUnumber = async (unumber) => {
       // }
       names.value[unumber] = agent.abrand;
     }
-    console.log("이름: " + names.value[unumber]);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -310,7 +304,6 @@ const getPropertyData = async (pageNo = 1) => {
       }));
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -320,7 +313,6 @@ const getPthumbnail = async (pnumber) => {
     const response = await propertyAPI.propertyAttachDownload(pnumber);
     pthumbnail.value = URL.createObjectURL(response.data);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -331,7 +323,6 @@ const getPattaches = async (ppnumber) => {
     const pattach = URL.createObjectURL(response.data);
     pattaches.value.push(pattach);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -345,8 +336,6 @@ function getPropertyClusterPosition(lat, lng) {
     return;
   }
   propertyClusterPosition.value = { lat, lng };
-  console.log(propertyClusterPosition.value.lat);
-  console.log(propertyClusterPosition.value.lng);
 }
 
 //지도에 표시할 전체 매물 데이터 가져오기
@@ -357,12 +346,9 @@ function getTotalPropertyData(data) {
 //해당 좌표의 디테일 페이지 이동
 async function movePropertyDetailPageByPosition(lat, lng) {
   try {
-    console.log("엑시오스: " + lat + " " + lng);
     const response = await propertyAPI.getPropertyDataByPosition(lat, lng); //pnumber만 가져옴
-    console.log("zmdkdkd" + response.data);
     router.push("/Property/" + response.data);
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -375,7 +361,6 @@ function getPropertyPositionFromMap(lat, lng) {
 
 //지도 초기화 버튼 emit
 function checkResetByMap(data) {
-  console.log(data);
   propertyClusterPosition.value.lat = "";
   propertyClusterPosition.value.lng = "";
   isClickedReset.value = data;
@@ -420,7 +405,6 @@ watch(
 watch(
   () => propertyPositionList.value.length,
   () => {
-    console.log("Property position list updated");
   },
   { deep: true }
 );
@@ -428,7 +412,6 @@ watch(
 watch(
   () => propertyClusterPosition.value,
   () => {
-    console.log("Property position list updated");
   },
   { deep: true }
 );
@@ -436,7 +419,6 @@ watch(
 watch(
   () => propertyTotalList.value,
   () => {
-    console.log("propertyTotalList:", propertyTotalList.value);
   },
   { deep: true }
 );
@@ -444,7 +426,6 @@ watch(
 watch(
   () => isClickedReset.value,
   () => {
-    console.log("리셋클릭!");
   }
 );
 </script>

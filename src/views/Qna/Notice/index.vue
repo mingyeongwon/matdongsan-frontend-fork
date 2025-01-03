@@ -56,7 +56,6 @@ const pageNo = ref(1);
 pageNo.value = route.query.pageNo;
 
 if(pageNo.value){
-  console.log("공지사항 쿼리 값 있음");
   currentPage.value = pageNo.value;
 } 
 
@@ -76,7 +75,6 @@ watch(
   noticeFilter,
   (newNoticeFilter) => {
     // noticeFilter 변경 시 필요한 동작 수행
-    console.log("필터 변경:", noticeFilter.value);
     currentPage.value = 1; // 첫 페이지로 이동
     getAllNoticeList(currentPage.value, noticeFilter.value.searchKeyword, noticeFilter.value.sort);
     // 필터 변경 시 리스트 다시 요청
@@ -93,15 +91,11 @@ const handlePageChange = (page) => {
 
 // 페이지가 변하면 게시물 가져오는 메소드 실행하기
 watch(currentPage, () => {
-  console.log("페이지가 변하면 게시물 가져오는 메소드 실행");
-  console.log("index 현재 페이지", currentPage.value);
   getAllNoticeList(currentPage.value, noticeFilter.value.searchKeyword, noticeFilter.value.sort);
 })
 
 // // 페이지가 변하면 게시물 가져오는 메소드 실행하기
 // watch(pageNo, () => {
-//   console.log("페이지가 변하면 게시물 가져오는 메소드 실행");
-//   console.log("index 현재 페이지", currentPage.value);
 //   getAllNoticeList(currentPage.value, noticeFilter.value.searchKeyword, noticeFilter.value.sort);
 // })
 
@@ -120,9 +114,7 @@ async function getAllNoticeList(pageNo, searchKeyword, sort){
     page.value.notice = response.data.notice;
     page.value.pager = response.data.pager;
     totalPageNo.value = page.value.pager.totalPageNo;
-    console.log("공지 첫번째: ",page.value.notice[0]);
   } catch (error) {
-    console.log("공지 리스트 안 가져옴",error);
   }
 }
 

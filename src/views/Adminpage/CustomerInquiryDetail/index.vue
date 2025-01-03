@@ -154,9 +154,7 @@ async function getQuestion(){
   try {
     const response = await qnaAPI.readQuestion(qnumber,qunumber);  
     customerInquiry.value = response.data;
-    console.log("가져온 문의 객체: ",customerInquiry.value);
   } catch (error) {
-    console.log(error);
   }
   
 }
@@ -171,9 +169,7 @@ async function getWriter(){
   try {
     const responseWriter = await qnaAPI.getWriter(qunumber);
     qWriter.value = responseWriter.data;
-    console.log("작성자: ", qWriter.value);
   } catch (error) {
-    console.log(error);
   }
   
 }
@@ -181,15 +177,11 @@ async function getWriter(){
 // 첨부파일 가져오기
 async function getAttach(){
   try {
-    console.log("실행 첨부");
     const responseAttach = await qnaAPI.getAttach(qnumber);
     const blob = responseAttach.data;
     qAttach.value = URL.createObjectURL(blob);
-    console.log("첨부파일: ", qAttach.value);
   } catch (error) {
-    console.log("실행 첨부 실패");
 
-    console.log(error);
   } 
 }
 
@@ -233,7 +225,6 @@ const checkForm = computed(() => {
 
   // 답변 제출 
 async function handleInsertSubmit(){
-  console.log("생성 폼 제출 함수 실행");
   try {
     const formData = new FormData();
     // const pattern = /<[^>]*>/g;
@@ -241,10 +232,8 @@ async function handleInsertSubmit(){
     formData.append("acontent",answer.value.content);
     formData.append("aQnumber",qnumber);
     await qnaAPI.createAnswer(formData);
-    console.log("답변 생성 성공");
     router.go(0) // 새로고침 -> 추후 수정
   } catch (error) {
-    console.log("답변 생성 실패",error);
   }
 }
 
@@ -253,10 +242,7 @@ async function readAnswer(aQnumber){
   try {
     const response = await qnaAPI.getAnswerByQnumber(aQnumber);
     getAnswer.value = response.data;
-    console.log("답변 가져오기 성공");
-    console.log(getAnswer.value);
   } catch (error) {
-    console.log("답변 가져오기 실패",error);
   }
 }
 
@@ -277,7 +263,6 @@ function updateAnswer(){
 
 // 수정 할 답변 제출 
 async function handleUpdateSubmit(){
-  console.log("수정 폼 제출 함수 실행");
   try {
     
     const formData = new FormData();
@@ -286,10 +271,8 @@ async function handleUpdateSubmit(){
     formData.append("acontent",answer.value.content);
     formData.append("aQnumber",qnumber);
     await qnaAPI.updateAnswer(formData);
-    console.log("수정답변 생성 성공");
     router.go(0) // 새로고침 -> 추후 수ㅈ정
   } catch (error) {
-    console.log("수정답변 생성 실패",error);
   }
 }
 
@@ -313,15 +296,12 @@ function deleteAnswer(){
 
 // 모달에서도 최종적으로 삭제버튼을 누를 경우 삭제 실행
 async function agreeDeleteAnswer(){
-  console.log("매개변수 값 확인 anumber: ",getAnswer.value.anumber,"qnumber: ", getAnswer.value.aqnumber);
   // 삭제 하는 axios 작성
   try {
     await qnaAPI.deleteAnswerByAQnumber(getAnswer.value.anumber, getAnswer.value.aqnumber);
-    console.log("삭제 완료");
     hideAnswerModal();
     goBack();
   } catch (error) {
-    console.log("삭제 실패",error);
   }
 }
 
@@ -357,7 +337,6 @@ async function agreeDeleteQuestion(){
     hideQuestionModal();
     router.back()
   } catch (error) {
-    console.log(error);
   }
 }
 

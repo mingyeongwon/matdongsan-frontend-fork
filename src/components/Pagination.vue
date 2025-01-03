@@ -46,10 +46,8 @@ const emit = defineEmits(['update:currentPage']);
 
 const currentPageGroup = ref(0);
 
-console.log("페이지네이션 현재 페이지밖", props.currentPage);
 
 watch(() => props.currentPage, (newPage) => {
-  console.log("페이지네이션 현재 페이지 변함 감지", props.currentPage);
   currentPageGroup.value = Math.floor((newPage - 1) / props.maxVisiblePages);
 });
 

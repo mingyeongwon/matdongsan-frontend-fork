@@ -84,18 +84,12 @@ let sort = ref({
 
   //게시물 가져오는 메소드 정의
   async function getQuestionList(pageNo, filter, isAnswer, sort){
-      console.log("// 게시물 가져오기 실행");
     try {
       const response = await qnaAPI.getAllQuestionListWithFilter(pageNo, filter, isAnswer, sort);
       page.value.question = response.data.question;
       page.value.pager = response.data.pager;
       totalPages.value = page.value.pager.totalPageNo
-      console.log("문의",page.value.question[0]);
-      console.log("페이저",page.value.pager);
-      console.log("총 페이지 수 ",page.value.pager.totalPageNo);
-      console.log("현재 페이지", currentPage.value);
     } catch (error) {
-      console.log("게시물 가져오기 실패",error);
     }
   }
   // 처음 페이지 들어갈 때 실행
@@ -103,28 +97,24 @@ let sort = ref({
 
   // 페이지가 변하면 게시물 가져오는 메소드 실행하기
   watch(currentPage, () => {
-    console.log("페이지가 변하면 게시물 가져오는 메소드 실행");
     getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
   },{deep:true})
 
   
   // 필터가 변하면 게시물 가져오는 메소드 실행하기
   watch(filter, () => {
-    console.log("필터가 변하면 게시물 가져오는 메소드 실행");
     currentPage.value = 1; // 첫 페이지로 이동
     getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
   },{deep:true});
 
   // 답변여부가 변하면 게시물 가져오는 메소드 실행하기
   watch(isAnswer, () => {
-  console.log("답변여부가 변하면 게시물 가져오는 메소드 실행");
   currentPage.value = 1; // 첫 페이지로 이동
   getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
 },{deep:true});
 
   // 정렬이 변하면 게시물 가져오는 메소드 실행하기
   watch(sort, () => {
-  console.log("정렬이 변하면 게시물 가져오는 메소드 실행");
   currentPage.value = 1; // 첫 페이지로 이동
   getQuestionList(currentPage.value, filter.value.filter, isAnswer.value.isAnswer, sort.value.sort );
 },{deep:true});

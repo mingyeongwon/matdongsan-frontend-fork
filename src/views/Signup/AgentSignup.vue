@@ -303,7 +303,6 @@ async function uniqueAndValidCheckUemail() {
     const response = await memberAPI.getEmailUniqueCheck(agentSignup.value.agentEmail);
     uniqueCheck.value =  response.data;
   } catch (error) {
-    console.log(error);
   }
 
   if (!emailResult.value) {
@@ -316,7 +315,6 @@ async function uniqueAndValidCheckUemail() {
     errorMessage.value.emailValid = "사용 가능한 이메일 입니다.";
     emailValidStyle.value = true;
   }
-  console.log("출력", emailValidStyle.value);
 }
 
 // 휴대폰 번호 하이픈 자동으로 붙이기
@@ -412,16 +410,13 @@ async function handleSubmit() {
   
     formData.append("agentDetail.adbrandnumber", agentSignup.value.agentBrandNum);
     for (let pair of formData.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
     }
   
     try {
       const response = await memberAPI.signup(formData);
   
-      console.log(response);
       router.push("/");
     } catch (error) {
-      console.log(error.response ? error.response.data : error.message);
     }
   }
 }

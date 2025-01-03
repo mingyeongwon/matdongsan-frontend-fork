@@ -186,7 +186,6 @@ const getMattach = async (memberId) => {
       memberProfiles.value[memberId] = URL.createObjectURL(blob);
     // }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -218,7 +217,6 @@ const getAgentData = async (pageNo = 1) => {
 
     await getAttach(route.params.id);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -229,7 +227,6 @@ const getAttach = async (argAnumber) => {
     const blob = response.data;
     agentProfile.value = URL.createObjectURL(blob);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -265,7 +262,6 @@ watch(
 watch(
   () => agentPositionList.value.length,
   () => {
-    console.log("Agent position list updated");
     // KakaoMap 컴포넌트는 이미 agentPositionList를 prop으로 받고 있으므로 자동으로 업데이트.
   },
 );
@@ -293,18 +289,13 @@ watch(
 async function moveAgentDetailByPosition(lat, lng) {
   try {
     const response = await agentAPI.getAgentDataByPosition(lat, lng);
-    console.log(response.data);
     router.push("/Agent/" + response.data);
   } catch (error) {
-    console.log(error);
   }
 }
 
 //지도에서 클릭된 마커의 좌표 값 가져오기
 function getClickAgentPosition(lat, lng) {
-  console.log("좌표 가져오기 함수 실행");
-  console.log(lat);
-  console.log(lng);
   if (lat && lng) {
     moveAgentDetailByPosition(lat, lng);
   }

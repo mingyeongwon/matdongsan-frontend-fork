@@ -16,7 +16,6 @@ import { useRoute } from "vue-router";
 import { ref, watch } from "vue";
 const route = useRoute();
 const path = ref("");
-console.log(route.path);
 watch(
   () => route.path,
   (newPath) => {

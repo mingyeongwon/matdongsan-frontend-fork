@@ -283,7 +283,6 @@ async function getUserDataByUnumber() {
     const response = await memberAPI.getUserDataByUnumber(props.pUnumber);
     propertyUser.value = response.data.userCommonData;
   } catch(error) {
-      console.log(error);
   }
 }
 
@@ -306,15 +305,11 @@ function submitComment() {
 const postPropertyComment = async () => {
   try {
     const data = JSON.parse(JSON.stringify(userComment.value));
-    console.log("userComment.value.uccomment : " + userComment.value.uccomment);
-    console.log("userComment.value.ucPnumber : " + userComment.value.ucPnumber);
-    console.log("userComment.value.ucparentnumber : " + userComment.value.ucparentnumber);
     
     await propertyAPI.postPropertyComment(data);
     emits("update-property-data"); // 데이터 다시 가져오기
     userComment.value.uccomment = "";
   } catch(error) {
-    console.log(error);
   }
 }
 
@@ -330,7 +325,6 @@ async function submitEditComment() {
     emits("update-property-data");
     editingComment.value = "";
   } catch(error) {
-    console.log(error);
   }
 }
 
@@ -347,7 +341,6 @@ function toggleReplyForm(index) {
 
 //대댓글 제출
 function submitReply(ucparentnumber, index) {
-  console.log("댓글의 부모 아이디: ", ucparentnumber);
   userComment.value.ucparentnumber = ucparentnumber;
   userComment.value.uccomment = replyComment.value[index];
   postPropertyComment(userComment);
@@ -370,7 +363,6 @@ function closeDeleteModal() {
 }
 //삭제 확인 버튼 
 function confirmDelete() {
-  console.log("삭제되었습니다.");
   deletePropertyComment(route.params.id, clickedModalId.value);
   closeDeleteModal();
 }
@@ -380,7 +372,6 @@ const deletePropertyComment = async (pnumber, ucnumber) => {
     await propertyAPI.deletePropertyComment(pnumber, ucnumber);
     emits("update-property-data"); // 데이터 다시 가져오기
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -401,7 +392,6 @@ const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
       // }
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -411,7 +401,6 @@ const getUserData = async(uemail) => {
     const response = await memberAPI.getUserDataByUemail(uemail);
     userCommonData.value = response.data
   } catch(error) {
-    console.log(error);
   }
 }
 

@@ -158,7 +158,6 @@ const selectedRate = ref("");
 
 function submitFilter() {
   if (!selectedDate.value && !selectedComment.value && !selectedRate.value) {
-    console.log("No filters selected");
     const warningModal = new Modal(document.getElementById("warningModal"));
     warningModal.show();
   } else {

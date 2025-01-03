@@ -454,7 +454,6 @@ watch(checkedAgreements, (newCheckedAgreements, oldCheckedAgreements) => {
     allAgreementCheckbox.value = false;
     flag.value = false;
   }
-  console.log(
     "newCheckedAgreements  : " +
       JSON.parse(JSON.stringify(newCheckedAgreements))
   );

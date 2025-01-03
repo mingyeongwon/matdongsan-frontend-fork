@@ -107,7 +107,6 @@ async function getUserDataByUnumber() {
     const response = await memberAPI.getUserDataByUnumber(props.pUnumber);
     propertyUser.value = response.data.userCommonData;
   } catch(error) {
-      console.log(error);
   }
 }
 
@@ -116,7 +115,6 @@ async function showReportFalseModal() {
   try {
     const response = await propertyAPI.checkIsReported(props.pnumber);
     isReported.value = response.data
-    console.log("isReported.value : " + isReported.value);
 
     if(isReported.value) {
       const warningModal = new Modal(document.getElementById("warningModalInReport"));
@@ -126,7 +124,6 @@ async function showReportFalseModal() {
       reportFalseModal.show();
     }
   } catch(error) {
-    console.log(error);
   }
 }
 
@@ -148,7 +145,6 @@ const checkReportFalseData = computed(() => {
 async function handleReportSubmit() {
   try {
     const data = JSON.parse(JSON.stringify(report.value));
-    console.log("test: " + data);
     await propertyAPI.postReportProperty(data);
     // 모달 닫기
     const reportFalseModal = Modal.getInstance(document.getElementById("ReportFalseModal"));
@@ -156,7 +152,6 @@ async function handleReportSubmit() {
     report.value.rcontent="";
     report.value.checkbox="";
   } catch (error) {
-    console.log(error);
   }
 }
 </script>

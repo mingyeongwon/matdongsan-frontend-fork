@@ -128,7 +128,6 @@ const loadMoreItems = async () => {
       displayedProperties.value.push(...response.data.property);
       displayedTotalProperties.value = response.data.propertyTotalList;
       emit("getTotalPropertyListData", displayedTotalProperties.value);
-      console.log(displayedProperties.value.length + " 길이");
       if (dataLength < limit) {
         allLoaded.value = true;
       }
@@ -152,7 +151,6 @@ const loadMoreItems = async () => {
     else if (props.type === "favorite") {
       const response = await propertyAPI.getFavoriteList(offset.value, limit);
       const dataLength = response.data.favorite.length;
-      console.log(dataLength);
       displayedFavorites.value.push(...response.data.favorite);
       emit("getFavoriteListData", displayedFavorites.value);
       if (dataLength < limit) {
@@ -193,7 +191,6 @@ watch(
   () => props.type, // 타입이 변경이 되면 값 초기화
   () => {
     // 밑에는 타입이 변경되면 실행될 내용들
-    console.log(props.type);
     displayedProperties.value = [];
     displayedFavorites.value = [];
     displayedAgents.value = [];
@@ -284,8 +281,6 @@ watch(
 watch(
   () => props.propertyPosition,
   (newValue) => {
-    console.log("좌표 변경");
-    console.log("타입:" + props.type);
     displayedProperties.value = [];
     displayedFavorites.value = [];
     displayedAgents.value = [];

@@ -124,7 +124,6 @@ const imageURL = ref(null);
 // 문의 타입, 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
 var result = customerInquiry.value.qcategory !== "" && customerInquiry.value.qtitle !== "" && customerInquiry.value.content !== "";
-console.log('result: ',result);
 return result;
 });
 
@@ -152,15 +151,12 @@ if(qattach.value != null){
 //     formData.append("qattach", elAttach.files[i]);
 //   }
 // }
-console.log("FileList로 나옴",qattach.value);
-console.log("customerInquiry: ", customerInquiry.value);
 
 // 고객문의 insert 요청
 try {
   await qnaAPI.createQuestion(formData);
   router.back();  
 } catch (error) {
-  console.log(error);
 }
 }
 
@@ -178,10 +174,7 @@ try {
 
 // // input태그에 이미지 들어오면 실행
 // const changeAttach = async (event) => {
-//   console.log("profile실행");
 //   const file = qattach.value.files[0]; // 선택된 파일 가져오기
-//   console.log("나와",qattach.value);
-//   console.log("나와1",qattach.value.files[0]);
 
 //   if (file) {
 //     try {
@@ -194,13 +187,10 @@ try {
 // };
 // 
 function handleSingleImageUpdate(files) {
-  console.log('Received single image files:', files);
   if(files.length == 0){
     qattach.value = null;
-    console.log("첨부파일 없음");
   }else{
     qattach.value = files;  // 단일 이미지 파일 정보 저장
-    console.log(" DB업로드 할 파일",qattach.value);
   }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////

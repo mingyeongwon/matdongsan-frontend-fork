@@ -664,7 +664,6 @@ async function changePasswordHandleSubmit() {
   // 바꿀 비밀번호 정규식 검사
   if (!passwordResult.value) {
     errorMessage.value.newPassword1 = "유효하지 않은 비밀번호 입니다.";
-    console.log("비밀번호 패턴 틀림 여부", passwordValidStyle.value);
     pattern.value = false;
   } else {
     errorMessage.value.newPassword1 = "";
@@ -674,11 +673,9 @@ async function changePasswordHandleSubmit() {
   if (changePassword.value.newPassword1 !== changePassword.value.newPassword2) {
     errorMessage.value.newPassword2 = "비밀번호와 비밀번호 확인이 다릅니다.";
     doubleCheck.value = false;
-    console.log("비밀번호 다름 여부", passwordValidStyle.value);
   } else {
     errorMessage.value.newPassword2 = "비밀번호가 같습니다.";
     doubleCheck.value = true;
-    console.log("비밀번호 맞음", passwordValidStyle.value);
   }
 
   if (pattern.value && doubleCheck.value) {
@@ -699,7 +696,6 @@ async function changePasswordHandleSubmit() {
       }
       
     } catch (error) {
-      console.log(error);
       // checkStatus.value = "resultPassword";
       errorMessageChangePassword.value = "알 수 없는 오류로 실패 했습니다.";
     }
@@ -708,7 +704,6 @@ async function changePasswordHandleSubmit() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // // 이메일 찾기 폼 제출하면 실행하는 함수
 async function findEmailHandleSubmit() {
-  console.log("이메일 찾기 제출 실행");
   if (findEmail.value.type == "Agent") {
     const formData = new FormData();
     try {
@@ -716,8 +711,6 @@ async function findEmailHandleSubmit() {
       formData.append("aphone", findEmail.value.uphone);
       const response = await memberAPI.findAgentEmail(formData);
       getEmail.value = response.data.success;
-      console.log("중개인 이메일 찾기 성공", getEmail.value);
-      console.log("해당하는 회원이 없으면 반환", response.data.fail);
       if (response.data.fail == null) {
         checkStatus.value = "findEmail";
       } else {
@@ -725,7 +718,6 @@ async function findEmailHandleSubmit() {
         errorMessageFindEmail.value = response.data.fail;
       }
     } catch (error) {
-      console.log("이메일 찾기 실패", error);
       // checkStatus.value = "missEmail";
       errorMessageFindEmail.value = "알 수 없는 이유로 실패 하였습니다 다시 시도해 주세요.";
 
@@ -737,8 +729,6 @@ async function findEmailHandleSubmit() {
     try {
       const response = await memberAPI.findMemberEmail(formData);
       getEmail.value = response.data.success;
-      console.log("해당하는 회원이 없으면 반환", response.data.fail);
-      console.log("가져온 이메일: ",getEmail.value);
       if (response.data.fail == null) {
         checkStatus.value = "findEmail";
       } else {
@@ -746,7 +736,6 @@ async function findEmailHandleSubmit() {
         errorMessageFindEmail.value = response.data.fail;
       }
     } catch (error) {
-      console.log("이메일 찾기 실패", error);
       // checkStatus.value = "missEmail";
       errorMessageFindEmail.value = "알 수 없는 이유로 실패 하였습니다 다시 시도해 주세요.";
     }
@@ -829,7 +818,6 @@ function resetVar(){
 }
 
 watch(checkStatus, () => {
-  console.log("v-if 상태 바뀜");
   resetVar() // v-if 상태 바뀌면 변수 초기화
 })
 

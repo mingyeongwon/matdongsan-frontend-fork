@@ -5,7 +5,6 @@ import qs from "qs";
 const getPropertyList = (pageNo, size, filter, keyword, lat, lng) => {
   //GET: http://localhost/board/list?pageNo=1
 
-  console.log("FILTER IN AXIOS : " + JSON.stringify(filter));
 
   return axios.get("/Property", { params: { 
     pageNo, 
@@ -56,7 +55,7 @@ const getPropertyData = (pnumber, date, pageNo) => {
 
 // 댓글 작성
 const postPropertyComment = (userComment) => {
-  console.log("userComment.ucPnumber : " + userComment.ucPnumber);
+
   return axios.post(
     "/Property/" + userComment.ucPnumber,
     qs.stringify(userComment)
@@ -78,8 +77,7 @@ const deletePropertyComment = (pnumber, ucnumber) => {
 
 // 매물 신고
 const postReportProperty = (report) => {
-  console.log("report : " + report.rcontent);
-  console.log("report : " + report.rPnumber);
+
   return axios.post(
     "/Property/createPropertyReport/" + report.rPnumber,
     qs.stringify(report)
@@ -92,7 +90,6 @@ const getReportList = (pageNo,filterKeyword) => {
 };
 // 매물 신고 삭제
 const deletePropertyReport = (pnumber) => {
-  console.log("pnumber : " + pnumber);
   return axios.delete("/Property/deletePropertyReport/" + pnumber);
 };
 
@@ -123,7 +120,6 @@ const updateProperty = (pnumber, formData) => {
 
 // 매물 상태 수정
 const updatePropertyStatus = (pnumber, pstatus) => {
-  console.log("pstatus + pnumber in axios : " + pnumber + pstatus);
   return axios.put(
     "/Property/updatePropertyStatus/" + pnumber,
     qs.stringify({ pstatus })
@@ -132,7 +128,6 @@ const updatePropertyStatus = (pnumber, pstatus) => {
 
 // 해당 좌표 매물 번호 가져오기
 const getPropertyDataByPosition = (lat, lng) => {
-  console.log("lat: " + lat + " lng: " + lng);
   return axios.get("/Property/Position", { params: { lat, lng } });
 };
 // 좋아요

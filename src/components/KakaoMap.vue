@@ -99,7 +99,6 @@ const displayMarker = (markerPositions, type = 'default') => {
 
 // 즐겨찾기 페이지 마커 표시
 const displayFavorites = (favoriteDataList) => {
-  console.log(favoriteDataList);
   displayMarker(favoriteDataList.map(fav => [fav.property.platitude, fav.property.plongitude]), 'favorite');
 };
 
@@ -121,7 +120,6 @@ const setupPropertyMarkers = () => {
 // 현재 지도 레벨에서 1레벨 확대한 레벨
 var level = map.getLevel()-1;
 if(map.getLevel()===2){
-  console.log("click: " +cluster.getCenter().getLat());
   emits("getPropertyClusterPosition",cluster.getCenter().getLat(),cluster.getCenter().getLng()) //지도에서 클러스터로 일정부분 확대가 되면 클릭 이벤트 작동
   checkReset.value=true;
 }

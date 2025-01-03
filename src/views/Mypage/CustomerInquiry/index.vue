@@ -85,7 +85,6 @@ if(pageNo != null){
 }
 
 let qattach = ref({});
-console.log("index 현재 페이지", currentPage.value);
 
 // DB에서 가져온 리스트
 const page = ref({
@@ -100,7 +99,6 @@ async function getImage(qnumber){
   
     const response = await qnaAPI.getAttach(qnumber);
     qattach.value[qnumber] = URL.createObjectURL(response.data);
-    console.log("실행은 됨");
   
 
 }
@@ -111,7 +109,6 @@ function handlePageChange(page){
 
 // 고객의 문의 리스트 가져오기 함수 정의
 async function getList(){
-  console.log("고객의 문의 리스트 가져오기 실행");
   try {
     const response = await qnaAPI.getQuestionListForUser(currentPage.value);
     page.value.question = response.data.question;
@@ -125,12 +122,9 @@ async function getList(){
 
     page.value.pager = response.data.pager;
     totalPages.value = page.value.pager.totalPageNo
-    console.log("가져온 첫번째 문의 객체", page.value.question[0].qattach);
   } catch (error) {
-    console.log(error);
   }
 
-  console.log("뭐나옴",page.value.question);
 }
 
 // 리스트 가져오기
@@ -147,7 +141,6 @@ function goDetail(qnumber, qunumber){
 
 // 페이지가 변하면 게시물 가져오는 메소드 실행하기
 watch(currentPage, () => {
-  console.log("페이지 변함 감지");
   getList();
 })
 

@@ -96,7 +96,6 @@ const getPropertyData = async () => {
       // }));
   
     } catch (error) {
-      console.log(error);
     }
   }
 };
@@ -107,7 +106,6 @@ const getPthumbnail = async (pnumber) => {
     const response = await propertyAPI.propertyAttachDownload(pnumber);
     initialImages.value = URL.createObjectURL(response.data);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -118,7 +116,6 @@ const getPthumbnail = async (pnumber) => {
 //     const pattach = URL.createObjectURL(response.data);
 //     pattaches.value.push(pattach);
 //   } catch (error) {
-//     console.log(error);
 //   }
 // };
 
@@ -237,20 +234,16 @@ const propertyDetail = reactive({
 
 // 이미지 업데이트 핸들러
 // function handleImageUpdate({ single, multi }) {
-//   console.log("Received image data:", { single, multi });
 //   property.pthumbnail = single; // 썸네일 이미지 업데이트
 //   property.ppattach = multi; // 디테일 이미지 업데이트
-//   console.log("Updated propertyInfo:", { pthumbnail: property.pthumbnail, ppattach: property.ppattach });
 // }
 
 
 function handleSingleImageUpdate(files) {
-  console.log('Received single image files:', files);
   property.pthumbnail = files;  // 단일 이미지 파일 정보 저장
 }
 
 function handleMultiImageUpdate(files) {
-  console.log('Received multi image files:', files);
   property.ppattach = files;  // 다중 이미지 파일 정보 저장
 }
 
@@ -334,17 +327,14 @@ try {
     if(route.params.id) {
       formData.append("property.pnumber", route.params.id);
       const response = await propertyAPI.updateProperty(route.params.id, formData);
-      console.log(response);
       router.push("/Mypage/ManageMyProperty");
     } else {
       const response = await propertyAPI.postProperty(formData);
-      console.log(response);
       router.push("/Property");
     }
 
   
   } catch(error) {
-    console.log(error);
   }
 
 }

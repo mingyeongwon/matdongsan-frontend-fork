@@ -136,7 +136,6 @@ function showMap(address) {
 
 function emitUpdate() {
   emit("update:property", { property });
-  console.log(property.value);
 }
 
 watch(

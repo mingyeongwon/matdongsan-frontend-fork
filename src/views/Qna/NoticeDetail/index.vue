@@ -58,9 +58,7 @@ async function getterNotice(nnumber){
   try {
     const response = await qnaAPI.getNotice(nnumber);
     notice.value = response.data
-    console.log("공지 가져옴",notice.value);
   } catch (error) {
-    console.log("공지 가져오기 실패",error);
   }
 }
 
@@ -97,15 +95,12 @@ function deleteNotice() {
 
 // 모달에서도 최종적으로 삭제버튼을 누를 경우
 async function agreeDeleteQuestion(){
-  console.log("nnumber 확인: ",nnumber);
   // 삭제 하는 axios 작성
   try {
     await qnaAPI.deleteDetailNotice(nnumber);
-    console.log("삭제 완료");
     hideModal();
     router.push({path: "/QNA/Notice"}); // 삭제하면 리스트 돌아가기
   } catch (error) {
-    console.log("삭제 실패",error);
   }
 }
 

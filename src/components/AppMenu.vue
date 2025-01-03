@@ -174,7 +174,6 @@ const getUattach = async (argAnumber) => {
         const blob = response.data;
         memberProfile.value = URL.createObjectURL(blob);
       // }
-      console.log("memberProfile : " + memberProfile.value);
     } else if(store.getters.getUserRole === 'AGENT'){
       const response = await agentAPI.agentAttachDownload(argAnumber);
       // if(response.headers["Content-Length"]) {
@@ -183,7 +182,6 @@ const getUattach = async (argAnumber) => {
       // }
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -205,7 +203,6 @@ async function checkPropertyListing() {
     const response = await propertyAPI.checkPropertyListing();
     hasHistory.value = response.data;
   } catch (error) {
-    console.log(error);
     store.dispatch("deleteAuth");
     router.push("/");
   }

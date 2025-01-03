@@ -106,24 +106,18 @@ async function getQuestion(qnumber,qunumber){
   try {
     const response = await qnaAPI.readQuestion(qnumber,qunumber);  
     customerInquiry.value = response.data;
-    console.log("문의 객체: ",customerInquiry.value);
   } catch (error) {
-    console.log(error);
   }
 }
 
 // 첨부파일 가져오기
 async function getAttach(){
 try {
-  console.log("실행 첨부");
   const responseAttach = await qnaAPI.getAttach(qnumber);
   const blob = responseAttach.data;
   getQattach.value = URL.createObjectURL(blob);
-  console.log("첨부파일: ", getQattach.value);
 } catch (error) {
-  console.log("실행 첨부 실패");
 
-  console.log(error);
 } 
 }
 
@@ -134,7 +128,6 @@ getAttach();
 // 문의 타입, 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
   var result = customerInquiry.value.type !== "" && customerInquiry.value.title !== "" && customerInquiry.value.content !== "";
-  console.log('result: ',result);
   return result;
 });
 
@@ -143,7 +136,6 @@ async function handleSubmit(){
   //multipartFile 분해 해서 문자 데이터랑 같이 담을 formData 객체 생성
   const formData = new FormData();
 
-  console.log("제출 시작때 문의 객체 검사: ",customerInquiry.value);
 
   // content에 p태그 붙는거 삭제하기
   
@@ -160,7 +152,6 @@ async function handleSubmit(){
     formData.append("qattach", qattach.value[0]);
   }
   // const elAttach = qattach.value;
-  // console.log("첨부 데이터",elAttach);
 
   // // 파일 데이터 formData에 넣기
   // if(elAttach != null){
@@ -168,20 +159,13 @@ async function handleSubmit(){
   //   for(var i=0; i<qattach.value.files.length; i++){
   //     formData.append("qattach", elAttach.files[i]);
   //   }
-  //   //console.log("attach에 파일 들어옴", qattach.value.files[0].name); // 이름만 추출(바이트 배열은 file객체 자체에 저장되어있음)
   // }
-  // console.log("FileList로 나옴",qattach.value.files.length);
-  console.log("FileList로 나옴",qattach.value);
-  console.log("customerInquiry: ", customerInquiry.value);
 
   // 고객문의 수정
   try {
     await qnaAPI.updateQuestion(formData);
-    console.log("수정 성공");
     router.back();  
   } catch (error) {
-    console.log("수정 실패");
-    console.log(error);
   }
 
 }
@@ -200,7 +184,6 @@ async function handleSubmit(){
 
 // // input태그에 이미지 들어오면 실행
 // const changeAttach = async (event) => {
-//   console.log("profile실행");
 //   const file = qattach.value.files[0]; // 선택된 파일 가져오기
 
 //   if (file) {
@@ -214,13 +197,10 @@ async function handleSubmit(){
 // };
 
 function handleSingleImageUpdate(files) {
-  console.log('Received single image files:', files);
   if(files.length == 0){
     qattach.value = null;
-    console.log("첨부파일 없음");
   }else{
     qattach.value = files;  // 단일 이미지 파일 정보 저장
-    console.log(" DB업로드 할 파일",qattach.value);
   }
 }
 

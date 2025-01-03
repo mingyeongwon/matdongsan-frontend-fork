@@ -64,13 +64,11 @@ async function insertNotice(formData){
     await qnaAPI.createNotice(formData);
     router.back();
   } catch (error) {
-    console.log("공지 생성 안됨",error);
   }
 }
 
 // 제출함수
 function handleSubmit(){
-  console.log(JSON.parse(JSON.stringify(notice.value)));
   // content에 p태그 붙는거 삭제하기
   const formData = new FormData();
   formData.append("ntitle",notice.value.title);
@@ -84,7 +82,6 @@ function handleSubmit(){
 // 제목, 내용이 없으면 제출버튼 비활성화
 const checkForm = computed(() => {
   var result = notice.value.title !== "" && notice.value.content !== "";
-  console.log('result: ',result);
   return result;
 });
 

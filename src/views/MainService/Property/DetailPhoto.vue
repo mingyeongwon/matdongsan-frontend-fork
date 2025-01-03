@@ -121,7 +121,6 @@ import { Modal } from "bootstrap";
 
 const props = defineProps(["pthumbnail", "pattaches"]);
 
-console.log("props.pattaches.length : " + props.pattaches.length);
 
 // 모달 열기
 function showDetailPhotoModal() {

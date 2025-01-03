@@ -65,12 +65,10 @@ async function getPropertiesByAgent() {
   try {
     const response = await agentAPI.getAgentProperty(route.params.id, 1);
     agentProperiesData.value = response.data.agentProperty;
-    console.log("매물 데이터: ", agentProperiesData.value);
     agentProperiesData.value.forEach((property) => {
       getPthumbnail(property.pnumber);
     });
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -82,7 +80,6 @@ const getPthumbnail = async (pnumber) => {
       pthumbnails.value[pnumber] = URL.createObjectURL(response.data);
     }
   } catch (error) {
-    console.log(error);
   }
 };
 

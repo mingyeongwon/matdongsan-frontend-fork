@@ -219,7 +219,6 @@ function openDeleteReportModal(pnumber) {
   );
   deleteReportModal.show();
   selectedRpnumber.value = pnumber;
-  console.log("selectedRpnumber : " + selectedRpnumber.value);
 }
 
 // 허위 매물 리스트
@@ -234,7 +233,6 @@ async function getUserReportList(pageNo = 1,filterKeyword) {
     });
     pager.value = response.data.pager;
   } catch (error) {
-    console.log(error);
   }
 }
 // 매물 제목 가져오기
@@ -242,9 +240,7 @@ async function getPropertyTitle(pnumber) {
   try {
     const response = await propertyAPI.getPropertyDataByPnumber(pnumber);
     propertyTitles.value[pnumber] = response.data;
-    console.log(propertyTitles.value[pnumber]);
   } catch (error) {
-    console.log(error);
   }
 }
 // 사진 출력
@@ -253,7 +249,6 @@ const getPthumbnail = async (pnumber) => {
     const response = await propertyAPI.propertyAttachDownload(pnumber);
     pthumbnails.value[pnumber] = URL.createObjectURL(response.data);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -263,7 +258,6 @@ onMounted(() => {
 
 // 모달에서 삭제 버튼 클릭 시 실행
 const confirmDeleteReport = () => {
-  console.log("received selectedRpnumber : " + selectedRpnumber.value);
   deleteReportProperty(selectedRpnumber.value);
   // 모달 닫기
   const deleteReportModal = Modal.getInstance(
@@ -278,7 +272,6 @@ const deleteReportProperty = async (pnumber) => {
     await propertyAPI.deletePropertyReport(pnumber);
     await getUserReportList(); // 삭제 후 리스트 갱신
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -288,12 +281,10 @@ function openRepotyDetailModal(number) {
   );
   reportData.value = reports.value[number];
   getPropertyTitle(number);
-  console.log("숫자는" + reportData.value);
   reportDetailModal.show();
 }
 //필터값 바뀌면 실행
 function SelectedFilter() {
-  console.log(filterKeyword.value);
   getUserReportList(1,filterKeyword.value);
 }
 </script>

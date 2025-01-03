@@ -337,14 +337,12 @@ function submitComment() {
 // 리뷰 데이터 전송
 const postReviewData = async () => {
   try {
-    console.log("리뷰데이터 " + reviewData.value.arrate);
     const data = JSON.parse(JSON.stringify(reviewData.value));
     await agentAPI.postAgentReview(data);
     emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
     reviewData.value.arcontent = "";
     score.value = 0;
   } catch (error) {
-    console.log("에러 발생");
   }
 };
 
@@ -365,7 +363,6 @@ async function submitEditReview() {
     emits("update-agent-data"); // 댓글 수정 후 에이전트 데이터 다시 가져오기
     editingReview.value = null;
   } catch (error) {
-    console.log("에러 발생");
   }
 }
 
@@ -376,7 +373,6 @@ const deleteReviewData = async (pageId, reviewId) => {
 
     emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
   } catch (error) {
-    console.log("에러 발생");
   }
 };
 
@@ -392,7 +388,6 @@ function closeDeleteModal() {
 
 // 삭제 확인 버튼
 function confirmDelete() {
-  console.log(clickedModalId.value + "가 삭제되었습니다.");
   deleteReviewData(route.params.id, clickedModalId.value);
   closeDeleteModal();
 }
@@ -414,7 +409,6 @@ const getUattach = async (argAnumber) => {
       // }
     }
   } catch (error) {
-    console.log(error);
   }
 };
 

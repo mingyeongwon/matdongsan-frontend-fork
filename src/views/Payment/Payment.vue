@@ -170,7 +170,6 @@ function submitPaymentData() {
     modalMessage.value = "상품을 선택해주세요.";
     modal.show();
   } else {
-    console.log("올바른 데이터");
     // 결제 처리 로직
     //등록권 소유 유무 체크
     checkPropertyListing();
@@ -190,7 +189,6 @@ async function purchasePropertyListing() {
   try {
     await propertyAPI.purchasePropertyListing(product.value);
   } catch (error) {
-    console.log(error);
   }
 }
 //등록권 유무 확인
@@ -203,7 +201,6 @@ async function checkPropertyListing() {
       hasPropertyListing.value = false;
     }
   } catch (error) {
-    console.log(error);
   }
 }
 </script>

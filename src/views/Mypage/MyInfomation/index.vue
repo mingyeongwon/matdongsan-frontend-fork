@@ -368,7 +368,6 @@ async function getUserData() {
       arrPhone.value = memberData.value.mphone.split("-");
     }
   } catch (error) {
-    console.log(error);
   }
 }
 const getUattach = async (argAnumber) => {
@@ -383,7 +382,6 @@ const getUattach = async (argAnumber) => {
       memberProfile.value = URL.createObjectURL(blob);
     }
   } catch (error) {
-    console.log(error);
   }
 };
 onMounted(() => {
@@ -456,7 +454,6 @@ function openPostSearch() {
 }
 // input태그에 이미지 들어오면 실행
 const previewImagesProfile = async (event) => {
-  console.log("profile실행");
   const file = fileInputProfile.value.files[0]; // 선택된 파일 가져오기
 
   if (file) {
@@ -488,19 +485,14 @@ async function validOldPassword() {
     formData.append("uemail", store.state.uemail);
     formData.append("upassword", changePassword.value.oldPassword);
     const response = await memberAPI.checkOldPassword(formData)
-    console.log("결과: ",response.data.result);
     if (response.data.result == "틀림") {
-      console.log("입력값 보여주기 else",changePassword.value.oldPassword);
       errorMessage.value.oldPassword = "비밀번호가 틀렸습니다.";
       oldPasswordValidStyle.value = false;
-      console.log("비밀번호 틀림 여부", oldPasswordValidStyle.value);
     } else {
-      console.log("입력값 보여주기 else",changePassword.value.oldPassword);
       oldPasswordValidStyle.value = true;
       errorMessage.value.oldPassword = "비밀번호가 일치합니다.";
     }
   } catch (error) {
-    console.log(error);
     oldPasswordValidStyle.value = false;
   }
 }
@@ -520,11 +512,9 @@ function validNew2Password() {
   if (changePassword.value.newPassword1 !== changePassword.value.newPassword2) {
     errorMessage.value.newPassword2 = "비밀번호와 비밀번호 확인이 다릅니다.";
     new2PasswordValidStyle.value = false;
-    console.log("비밀번호 다름 여부", new2PasswordValidStyle.value);
   } else {
     errorMessage.value.newPassword2 = "같은 비밀번호 입니다.";
     new2PasswordValidStyle.value = true;
-    console.log("비밀번호 맞음", new2PasswordValidStyle.value);
   }
 }
 // 비밀번호 변경
@@ -545,7 +535,6 @@ async function changePasswordSubmit(){
       updateInfoDoneModal.show();
     }
   } catch (error) {
-    console.log(error);
     updateMessage.value = "알 수 없는 오류로 실패 했습니다."; 
     updateInfoDoneModal.show();
   }
@@ -557,13 +546,10 @@ async function changePasswordSubmit(){
   // 변경되었다는 모달 창 띄우기
 
 
-  // console.log(JSON.parse(JSON.stringify(changePassword.value)));
-  console.log("비밀번호 변경 폼 제출");
 }
 ////////////////////////////////////////////////////////////////////////////////
 // 내 정보 수정 제출 메소드 정의
 async function updateForm() {
-  console.log("제출 함수 실행");
   //중개인 제출 데이터 폼
   if (store.getters.getUserRole === "AGENT") {
     const formData = new FormData();
@@ -591,7 +577,6 @@ async function updateForm() {
       changeAgentCount.value = 0; // 변경 감지하는 변수 초기화
       changeMemberCount.value = 0;
     } catch (error) {
-      console.log(error.response ? error.response.data : error.message);
     }
   } else{
     const formData = new FormData();
@@ -610,7 +595,6 @@ async function updateForm() {
       changeMemberCount.value = 0;
 
     } catch (error) {
-      console.log(error.response ? error.response.data : error.message);
     }
   }
 
@@ -647,7 +631,6 @@ function PhoneValidate(phone) {
   // // 휴대폰 번호 배열 유효성 검사
   arrPhone.value.forEach(phone => {
     var result = phonePattern.test(phone);
-    console.log(phone,result,phone.length);
     if(!result){
       errorMessage.value.phone = "숫자만 입력하세요";
       validResultPhone.value=false;
@@ -701,42 +684,30 @@ function resetInfoBtn(){
 // 정보 수정에서 수정된 값 감지(Agent)
 const changeAgentCount = ref(-2); // 처음 불러올 때 기본적으로 2번 변경되기에 -2를 기본값으로 함
 watch(agentData,()=>{
-  console.log("agent객체 변경 감지");
   changeAgentCount.value += 1;
-  console.log("agent 객체 변경 횟수",changeAgentCount.value);
 },{deep:true});
 watch(arrPhone,()=>{
-  console.log("agent객체 변경 감지");
   changeAgentCount.value += 1;
-  console.log("agent 객체 변경 횟수",changeAgentCount.value);
 },{deep:true});
 watch(imageFilesProfile,()=>{
   // 이미지가 들어오는 값만 사용
   if(imageFilesProfile.value != null){
-    console.log("member객체 변경 감지");
     changeMemberCount.value += 1;
-    console.log("member 객체 변경 횟수",changeMemberCount.value);
   }
 },{deep:true});
 
 // 정보 수정에서 수정된 값 감지(member)
 const changeMemberCount = ref(-2);
 watch(memberData,()=>{
-  console.log("member객체 변경 감지");
   changeMemberCount.value += 1;
-  console.log("member 객체 변경 횟수",changeMemberCount.value);
 },{deep:true});
 watch(arrPhone,()=>{
-  console.log("member객체 변경 감지");
   changeMemberCount.value += 1;
-  console.log("member 객체 변경 횟수",changeMemberCount.value);
 },{deep:true});
 watch(imageFilesProfile,()=>{
   // 이미지가 들어오는 값만 사용
   if(imageFilesProfile.value != null){
-    console.log("member객체 변경 감지");
     changeMemberCount.value += 1;
-    console.log("member 객체 변경 횟수",changeMemberCount.value);
   }
 },{deep:true});
 

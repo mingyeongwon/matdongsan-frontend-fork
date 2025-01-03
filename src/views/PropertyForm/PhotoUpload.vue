@@ -35,19 +35,16 @@ const images = reactive({
 const emit = defineEmits(["updateImages"]);
 
 function handleSingleImageUpdate(files) {
-  console.log('Received single image files:', files);
   images.single = files;  // 단일 이미지 파일 정보 저장
   updateParent();
 }
 
 function handleMultiImageUpdate(files) {
-  console.log('Received multi image files:', files);
   images.multi = files;  // 다중 이미지 파일 정보 저장
   updateParent();
 }
 
 function updateParent() {
-  console.log('Emitting updateImages event with:', { single: images.single, multi: images.multi });
   emit('updateImages', { single: images.single, multi: images.multi });
 }
 </script>
