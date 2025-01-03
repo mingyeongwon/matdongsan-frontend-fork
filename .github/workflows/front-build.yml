@@ -52,7 +52,8 @@ jobs:
         run: |
           aws s3 cp \
             ./dist s3://$BUCKET_NAME \
-      
+            --recursive
+            
       - name: CloudFront Invalidation
         env:
           CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID}}
