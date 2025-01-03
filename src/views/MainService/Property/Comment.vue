@@ -283,6 +283,7 @@ async function getUserDataByUnumber() {
     const response = await memberAPI.getUserDataByUnumber(props.pUnumber);
     propertyUser.value = response.data.userCommonData;
   } catch(error) {
+    console.error(error.message);
   }
 }
 
@@ -310,6 +311,7 @@ const postPropertyComment = async () => {
     emits("update-property-data"); // 데이터 다시 가져오기
     userComment.value.uccomment = "";
   } catch(error) {
+    console.error(error.message);
   }
 }
 
@@ -325,6 +327,7 @@ async function submitEditComment() {
     emits("update-property-data");
     editingComment.value = "";
   } catch(error) {
+    console.error(error.message);
   }
 }
 
@@ -372,6 +375,7 @@ const deletePropertyComment = async (pnumber, ucnumber) => {
     await propertyAPI.deletePropertyComment(pnumber, ucnumber);
     emits("update-property-data"); // 데이터 다시 가져오기
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -392,6 +396,7 @@ const getUattach = async (userTypeNumber) => { // mnumber 또는 anumber
       // }
     }
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -401,6 +406,7 @@ const getUserData = async(uemail) => {
     const response = await memberAPI.getUserDataByUemail(uemail);
     userCommonData.value = response.data
   } catch(error) {
+    console.error(error.message);
   }
 }
 

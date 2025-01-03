@@ -46,6 +46,7 @@ async function getPopularPropertyList() {
             }
         });
     } catch(error) {
+        console.error(error.message);
     }
 }
 
@@ -56,6 +57,7 @@ async function getPthumbnail(pnumber) {
         const response = await propertyAPI.propertyAttachDownload(pnumber);
         pthumbnails.value[pnumber] = URL.createObjectURL(response.data);
     } catch (error) {
+        console.error(error.message);
     }
 }
 

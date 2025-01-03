@@ -181,6 +181,7 @@ async function uniqueAndValidCheckUemail() {
     const response = await memberAPI.getEmailUniqueCheck(userCommonData.value.uemail);
     uniqueCheck.value =  response.data;
   } catch (error) {
+    console.error(error.message);
   }
 
   if (!emailResult.value) {
@@ -269,6 +270,7 @@ async function handleSubmit() {
       const response = await memberAPI.memberJoin(formData);
       router.push("/"); // 홈으로 돌아가기
     } catch(error) {
+      console.error(error.message);
     }
 
     

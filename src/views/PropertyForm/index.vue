@@ -96,6 +96,7 @@ const getPropertyData = async () => {
       // }));
   
     } catch (error) {
+      console.error(error.message);
     }
   }
 };
@@ -106,6 +107,7 @@ const getPthumbnail = async (pnumber) => {
     const response = await propertyAPI.propertyAttachDownload(pnumber);
     initialImages.value = URL.createObjectURL(response.data);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -247,23 +249,6 @@ function handleMultiImageUpdate(files) {
   property.ppattach = files;  // 다중 이미지 파일 정보 저장
 }
 
-  // 필수 값이 빈값이 아닌지 검사
-  // for (let key in property) {
-  //   let value = property[key];
-  //   if (!Array.isArray(value) && value === "") {
-  //     validForm.value = false;
-  //   } else {
-  //     if(!propertyDetail.pdmoveindate === "" && !propertyDetail.pdbath === ""
-  //       && !propertyDetail.pdlift === "" && !propertyDetail.pdlot === "" 
-  //       && !propertyDetail.pdheating === "" && !propertyDetail.pdcooling === ""
-  //     ) {
-  //       validForm.value = true;
-  //     } else {
-  //       validForm.value = false;
-  //     }
-  //   }
-  // }
-
 
 // 폼 제출 핸들러
 // propertyForm 데이터 전송
@@ -317,12 +302,6 @@ Object.entries(propertyDetail).forEach(([key, value]) => {
   formData.append(`propertyDetail.${key}`, value);
 });
 
-  // 필수 값이 모두 들어오지 않으면 모달 표시
-  // if (!validForm.value) {
-  //   showLoginModal();
-  // }
-
-
 try {
     if(route.params.id) {
       formData.append("property.pnumber", route.params.id);
@@ -335,6 +314,7 @@ try {
 
   
   } catch(error) {
+    console.error(error.message);
   }
 
 }

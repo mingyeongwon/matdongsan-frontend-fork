@@ -107,6 +107,7 @@ async function getUserDataByUnumber() {
     const response = await memberAPI.getUserDataByUnumber(props.pUnumber);
     propertyUser.value = response.data.userCommonData;
   } catch(error) {
+    console.error(error.message);
   }
 }
 
@@ -124,6 +125,7 @@ async function showReportFalseModal() {
       reportFalseModal.show();
     }
   } catch(error) {
+    console.error(error.message);
   }
 }
 
@@ -152,6 +154,7 @@ async function handleReportSubmit() {
     report.value.rcontent="";
     report.value.checkbox="";
   } catch (error) {
+    console.error(error.message);
   }
 }
 </script>
