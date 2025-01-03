@@ -66,6 +66,7 @@ async function getNoticeDetail(nnumber){
     const response = await qnaAPI.getNotice(nnumber);
     notice.value = response.data;
   } catch (error) {
+    console.error(error.message);
   }
 }
 // 기존 공지 가져오기
@@ -81,6 +82,7 @@ async function updateNewNotice(formData){
     query: {nnumber: nnumber}
   }); // 수정 하면 디테일 페이지로 가기
   } catch (error) {
+    console.error(error.message);
   }
 }
 

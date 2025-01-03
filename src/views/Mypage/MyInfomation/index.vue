@@ -368,6 +368,7 @@ async function getUserData() {
       arrPhone.value = memberData.value.mphone.split("-");
     }
   } catch (error) {
+    console.error(error.message);
   }
 }
 const getUattach = async (argAnumber) => {
@@ -382,6 +383,7 @@ const getUattach = async (argAnumber) => {
       memberProfile.value = URL.createObjectURL(blob);
     }
   } catch (error) {
+    console.error(error.message);
   }
 };
 onMounted(() => {
@@ -461,7 +463,7 @@ const previewImagesProfile = async (event) => {
       const newImage = await readFile(file); // 파일 읽기
       imageFilesProfile.value = newImage; // imageFiles에 할당
     } catch (error) {
-      console.error("파일을 읽는 중 오류 발생:", error);
+      console.error(error.message);
     }
   }
 };
@@ -577,6 +579,7 @@ async function updateForm() {
       changeAgentCount.value = 0; // 변경 감지하는 변수 초기화
       changeMemberCount.value = 0;
     } catch (error) {
+      console.error(error.message);
     }
   } else{
     const formData = new FormData();
@@ -595,6 +598,7 @@ async function updateForm() {
       changeMemberCount.value = 0;
 
     } catch (error) {
+      console.error(error.message);
     }
   }
 

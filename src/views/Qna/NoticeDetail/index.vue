@@ -59,6 +59,7 @@ async function getterNotice(nnumber){
     const response = await qnaAPI.getNotice(nnumber);
     notice.value = response.data
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -101,6 +102,7 @@ async function agreeDeleteQuestion(){
     hideModal();
     router.push({path: "/QNA/Notice"}); // 삭제하면 리스트 돌아가기
   } catch (error) {
+    console.error(error.message);
   }
 }
 

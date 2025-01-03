@@ -69,6 +69,7 @@ async function getPropertiesByAgent() {
       getPthumbnail(property.pnumber);
     });
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -80,6 +81,7 @@ const getPthumbnail = async (pnumber) => {
       pthumbnails.value[pnumber] = URL.createObjectURL(response.data);
     }
   } catch (error) {
+    console.error(error.message);
   }
 };
 

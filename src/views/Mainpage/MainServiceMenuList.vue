@@ -86,6 +86,7 @@ async function getListingRemain(){
         router.push("/Payment/PaymentInfo");
       } 
       } catch (error) {
+        console.error(error.message);
       }
   } else {
     router.push("/Payment/PaymentInfo");

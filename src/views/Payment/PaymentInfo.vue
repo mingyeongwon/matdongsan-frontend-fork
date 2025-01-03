@@ -105,6 +105,7 @@ async function getListingRemain(){
         router.push("/Payment");
       } 
       } catch (error) {
+        console.error(error.message);
       }
   
     }

@@ -166,6 +166,7 @@ async function getPropertyUserDataByUnumber(unumber) {
     const response = await memberAPI.getUserDataByUnumber(unumber);
     propertyUser.value = response.data.userCommonData;
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -220,6 +221,7 @@ const postLikeProperty = async () => {
   try {
     await propertyAPI.likeProperty(route.params.id);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -228,6 +230,7 @@ const cancelLikeProperty = async () => {
   try {
     await propertyAPI.cancelLikeProperty(route.params.id);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -238,6 +241,7 @@ const isPropertyLiked = async () => {
       const response = await propertyAPI.isPropertyLiked(route.params.id);
       isClicked.value = response.data; // 서버에서 boolean 값 반환
     } catch (error) {
+      console.error(error.message);
     }
   }
 };
@@ -265,6 +269,7 @@ const getUserDataByUnumber = async (unumber) => {
       names.value[unumber] = agent.abrand;
     }
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -304,6 +309,7 @@ const getPropertyData = async (pageNo = 1) => {
       }));
     }
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -313,6 +319,7 @@ const getPthumbnail = async (pnumber) => {
     const response = await propertyAPI.propertyAttachDownload(pnumber);
     pthumbnail.value = URL.createObjectURL(response.data);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -323,6 +330,7 @@ const getPattaches = async (ppnumber) => {
     const pattach = URL.createObjectURL(response.data);
     pattaches.value.push(pattach);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -349,6 +357,7 @@ async function movePropertyDetailPageByPosition(lat, lng) {
     const response = await propertyAPI.getPropertyDataByPosition(lat, lng); //pnumber만 가져옴
     router.push("/Property/" + response.data);
   } catch (error) {
+    console.error(error.message);
   }
 }
 

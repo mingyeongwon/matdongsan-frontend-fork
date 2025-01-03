@@ -123,6 +123,7 @@ async function getList(){
     page.value.pager = response.data.pager;
     totalPages.value = page.value.pager.totalPageNo
   } catch (error) {
+    console.error(error.message);
   }
 
 }

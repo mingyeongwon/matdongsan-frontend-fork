@@ -115,6 +115,7 @@ async function getAllNoticeList(pageNo, searchKeyword, sort){
     page.value.pager = response.data.pager;
     totalPageNo.value = page.value.pager.totalPageNo;
   } catch (error) {
+    console.error(error.message);
   }
 }
 

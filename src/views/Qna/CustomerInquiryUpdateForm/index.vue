@@ -107,6 +107,7 @@ async function getQuestion(qnumber,qunumber){
     const response = await qnaAPI.readQuestion(qnumber,qunumber);  
     customerInquiry.value = response.data;
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -117,6 +118,7 @@ try {
   const blob = responseAttach.data;
   getQattach.value = URL.createObjectURL(blob);
 } catch (error) {
+  console.error(error.message);
 
 } 
 }
@@ -166,6 +168,7 @@ async function handleSubmit(){
     await qnaAPI.updateQuestion(formData);
     router.back();  
   } catch (error) {
+    console.error(error.message);
   }
 
 }

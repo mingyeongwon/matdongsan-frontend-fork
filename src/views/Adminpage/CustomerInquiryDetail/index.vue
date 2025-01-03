@@ -155,6 +155,7 @@ async function getQuestion(){
     const response = await qnaAPI.readQuestion(qnumber,qunumber);  
     customerInquiry.value = response.data;
   } catch (error) {
+    console.error(error.message);
   }
   
 }
@@ -170,6 +171,7 @@ async function getWriter(){
     const responseWriter = await qnaAPI.getWriter(qunumber);
     qWriter.value = responseWriter.data;
   } catch (error) {
+    console.error(error.message);
   }
   
 }
@@ -181,7 +183,7 @@ async function getAttach(){
     const blob = responseAttach.data;
     qAttach.value = URL.createObjectURL(blob);
   } catch (error) {
-
+    console.error(error.message);
   } 
 }
 
@@ -234,6 +236,7 @@ async function handleInsertSubmit(){
     await qnaAPI.createAnswer(formData);
     router.go(0) // 새로고침 -> 추후 수정
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -243,6 +246,7 @@ async function readAnswer(aQnumber){
     const response = await qnaAPI.getAnswerByQnumber(aQnumber);
     getAnswer.value = response.data;
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -273,6 +277,7 @@ async function handleUpdateSubmit(){
     await qnaAPI.updateAnswer(formData);
     router.go(0) // 새로고침 -> 추후 수ㅈ정
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -302,6 +307,7 @@ async function agreeDeleteAnswer(){
     hideAnswerModal();
     goBack();
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -337,6 +343,7 @@ async function agreeDeleteQuestion(){
     hideQuestionModal();
     router.back()
   } catch (error) {
+    console.error(error.message);
   }
 }
 

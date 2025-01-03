@@ -233,6 +233,7 @@ async function getUserReportList(pageNo = 1,filterKeyword) {
     });
     pager.value = response.data.pager;
   } catch (error) {
+    console.error(error.message);
   }
 }
 // 매물 제목 가져오기
@@ -241,6 +242,7 @@ async function getPropertyTitle(pnumber) {
     const response = await propertyAPI.getPropertyDataByPnumber(pnumber);
     propertyTitles.value[pnumber] = response.data;
   } catch (error) {
+    console.error(error.message);
   }
 }
 // 사진 출력
@@ -249,6 +251,7 @@ const getPthumbnail = async (pnumber) => {
     const response = await propertyAPI.propertyAttachDownload(pnumber);
     pthumbnails.value[pnumber] = URL.createObjectURL(response.data);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -272,6 +275,7 @@ const deleteReportProperty = async (pnumber) => {
     await propertyAPI.deletePropertyReport(pnumber);
     await getUserReportList(); // 삭제 후 리스트 갱신
   } catch (error) {
+    console.error(error.message);
   }
 };
 

@@ -189,6 +189,7 @@ async function purchasePropertyListing() {
   try {
     await propertyAPI.purchasePropertyListing(product.value);
   } catch (error) {
+    console.error(error.message);
   }
 }
 //등록권 유무 확인
@@ -201,6 +202,7 @@ async function checkPropertyListing() {
       hasPropertyListing.value = false;
     }
   } catch (error) {
+    console.error(error.message);
   }
 }
 </script>

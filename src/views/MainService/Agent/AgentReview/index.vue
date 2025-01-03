@@ -343,6 +343,7 @@ const postReviewData = async () => {
     reviewData.value.arcontent = "";
     score.value = 0;
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -363,6 +364,7 @@ async function submitEditReview() {
     emits("update-agent-data"); // 댓글 수정 후 에이전트 데이터 다시 가져오기
     editingReview.value = null;
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -373,6 +375,7 @@ const deleteReviewData = async (pageId, reviewId) => {
 
     emits("update-agent-data"); // 댓글 작성 후 에이전트 데이터 다시 가져오기
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -409,6 +412,7 @@ const getUattach = async (argAnumber) => {
       // }
     }
   } catch (error) {
+    console.error(error.message);
   }
 };
 

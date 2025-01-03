@@ -90,6 +90,7 @@ let sort = ref({
       page.value.pager = response.data.pager;
       totalPages.value = page.value.pager.totalPageNo
     } catch (error) {
+      console.error(error.message);
     }
   }
   // 처음 페이지 들어갈 때 실행

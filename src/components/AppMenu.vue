@@ -182,6 +182,7 @@ const getUattach = async (argAnumber) => {
       // }
     }
   } catch (error) {
+    console.error(error.message);
   }
 };
 

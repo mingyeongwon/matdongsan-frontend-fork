@@ -303,6 +303,7 @@ async function uniqueAndValidCheckUemail() {
     const response = await memberAPI.getEmailUniqueCheck(agentSignup.value.agentEmail);
     uniqueCheck.value =  response.data;
   } catch (error) {
+    console.error(error.message);
   }
 
   if (!emailResult.value) {
@@ -409,14 +410,13 @@ async function handleSubmit() {
     formData.append("agentDetail.adattach", agentSignup.value.documentImage[0]);
   
     formData.append("agentDetail.adbrandnumber", agentSignup.value.agentBrandNum);
-    for (let pair of formData.entries()) {
-    }
   
     try {
       const response = await memberAPI.signup(formData);
   
       router.push("/");
     } catch (error) {
+      console.error(error.message);
     }
   }
 }

@@ -64,6 +64,7 @@ async function insertNotice(formData){
     await qnaAPI.createNotice(formData);
     router.back();
   } catch (error) {
+    console.error(error.message);
   }
 }
 

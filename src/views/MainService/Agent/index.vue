@@ -186,6 +186,7 @@ const getMattach = async (memberId) => {
       memberProfiles.value[memberId] = URL.createObjectURL(blob);
     // }
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -217,6 +218,7 @@ const getAgentData = async (pageNo = 1) => {
 
     await getAttach(route.params.id);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -227,6 +229,7 @@ const getAttach = async (argAnumber) => {
     const blob = response.data;
     agentProfile.value = URL.createObjectURL(blob);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -291,6 +294,7 @@ async function moveAgentDetailByPosition(lat, lng) {
     const response = await agentAPI.getAgentDataByPosition(lat, lng);
     router.push("/Agent/" + response.data);
   } catch (error) {
+    console.error(error.message);
   }
 }
 

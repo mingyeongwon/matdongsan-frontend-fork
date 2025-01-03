@@ -157,6 +157,7 @@ try {
   await qnaAPI.createQuestion(formData);
   router.back();  
 } catch (error) {
+  console.error(error.message);
 }
 }
 

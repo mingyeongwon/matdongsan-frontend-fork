@@ -177,6 +177,7 @@ const getAttach = async (argAnumber) => {
     const blob = response.data;
     aattach.value = URL.createObjectURL(blob);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -186,6 +187,7 @@ const getAgentReviewData = async (argAnumber) => {
     const response = await agentAPI.getAgentReviewData(argAnumber);
     agentDetailData.value = response.data;
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -196,6 +198,7 @@ const getPttach = async (argPnumber) => {
     const blob = response.data;
     pattach.value = URL.createObjectURL(blob);
   } catch (error) {
+    console.error(error.message);
   }
 };
 // 관심상품 첨부 사진 가져오기
@@ -205,6 +208,7 @@ const getFttach = async (argPnumber) => {
     const blob = response.data;
     fattach.value = URL.createObjectURL(blob);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
