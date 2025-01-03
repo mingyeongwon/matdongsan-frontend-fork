@@ -17,6 +17,11 @@ jobs:
         run: |
           echo "VUE_APP_KAKAO_API_KEY=${{ secrets.VUE_APP_KAKAO_API_KEY }}" >> .env
 
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+            echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
       - uses: actions/cache@v3
         id: npm-cache
         with:
@@ -24,11 +29,6 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: |
-            echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
       
       - name: install npm dependencies
         run: npm install
