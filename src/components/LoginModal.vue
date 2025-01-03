@@ -588,38 +588,7 @@ let errorMessage = ref({
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 로그인 폼 제출하면 실행하는 함수
 async function loginHandleSubmit() {
-  console.log("로그인 제출 함수 실행");
   checkValid.value.passwordValid = "";
-
-  // // 아이디 확인
-  // if (loginUser.value.email !== tempUser.email) {
-  //   checkValid.value.emailValid = "가입한 회원이 아닙니다.";
-  //   emailValidStyle.value = false;
-  // } else {
-  //   checkValid.value.emailValid = "";
-  //   emailValidStyle.value = true;
-  //   // 이메일이 맞으면 비밀번호와 유저타입이 맞는지 확인
-
-  //   // 비밀번호 확인
-  //   if (loginUser.value.password !== tempUser.password) {
-  //     checkValid.value.passwordValid = "비밀번호가 틀렸습니다.";
-  //     passwordValidStyle.value = false;
-  //   } else {
-  //     checkValid.value.passwordValid = "";
-  //     passwordValidStyle.value = true;
-  //   }
-  //   // 유저 타입 확인
-  //   if (loginUser.value.type !== tempUser.type) {
-  //     checkValid.value.typeValid = "해당 회원이 아닙니다.";
-  //   } else {
-  //     checkValid.value.typeValid = "";
-  //   }
-  // }
-
-  // 로그인 정보가 맞으면 실행
-  // if (emailValidStyle.value && passwordValidStyle.value) {
-  //   router.push("/"); // 유효성 검사를 통과하면 홈으로 가기 -> 모달이 안 없어지는 문제 발생
-  // }
   try {
     const data = JSON.parse(JSON.stringify(loginUser.value));
     const response = await memberAPI.login(data);
@@ -645,13 +614,11 @@ async function loginHandleSubmit() {
       }
       
     } else if(response.data.result === "removed"){
-      console.log("탈퇴한 회원");
       checkValid.value.passwordValid = "탈퇴한 회원입니다. 다시 회원가입 하세요";
     }  else if(response.data.result === "fail"){
       checkValid.value.passwordValid = "비밀번호가 틀렸습니다.";
     }
   } catch (error) {
-    console.log("에러 발생");
     checkValid.value.passwordValid = "아이디와 비밀번호가 맞지 않습니다.";
   }
 }
