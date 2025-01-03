@@ -454,9 +454,6 @@ watch(checkedAgreements, (newCheckedAgreements, oldCheckedAgreements) => {
     allAgreementCheckbox.value = false;
     flag.value = false;
   }
-    "newCheckedAgreements  : " +
-      JSON.parse(JSON.stringify(newCheckedAgreements))
-  );
 });
 
 watch(

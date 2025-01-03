@@ -202,6 +202,7 @@ async function getUserPropertyList(pageNo = 1, filterKeyword) {
     });
     pager.value = response.data.pager;
   } catch (error) {
+    console.error(error.message);
   }
 }
 
@@ -265,6 +266,7 @@ const getPthumbnail = async (pnumber) => {
     const response = await propertyAPI.propertyAttachDownload(pnumber);
     pthumbnails.value[pnumber] = URL.createObjectURL(response.data);
   } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -277,19 +279,20 @@ const deleteProperty = async () => {
     await propertyAPI.deleteProperty(selectedPnumber.value);
     await getUserPropertyList(); // 삭제 후 리스트 갱신
   } catch (error) {
+    console.error(error.message);
   }
 };
 
 const changePropertyStatus = async () => {
   try {
       "pstatus + pnumber in index : " + selectedPnumber.value + pstatus.value
-    );
     await propertyAPI.updatePropertyStatus(
       selectedPnumber.value,
       pstatus.value
     );
     await getUserPropertyList(); // 수정 후 리스트 갱신
   } catch (error) {
+    console.error(error.message);
   }
 };
 </script>
