@@ -50,7 +50,7 @@ jobs:
         env:
           BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME}}
         run: |
-          aws s3 sync \
+          aws s3 cp \
             ./dist s3://$BUCKET_NAME \
             --delete
       
