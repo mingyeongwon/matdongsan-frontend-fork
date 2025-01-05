@@ -48,20 +48,18 @@
           </li>
         </ul>
         <ul class="navbar-nav pe-5 mb-2 mb-lg-0">
-          <li class="nav-item" v-if="hasHistory">
-            <RouterLink class="nav-link fw-bold" to="/PropertyForm"
-              ><div class="btn1 btn text-light fw-bold">
-                등록하기
-              </div></RouterLink
-            >
+          <li class="nav-item" v-if="store.state.uemail">
+            <div class="btn1 btn text-light fw-bold" @click="requestAddress">
+              등록하기
+            </div>
           </li>
-          <li class="nav-item" v-if="!hasHistory">
+          <!-- <li class="nav-item" v-if="!hasHistory">
             <RouterLink class="nav-link fw-bold" to="/Payment/PaymentInfo"
               ><div class="btn1 btn text-light fw-bold">
                 등록하기
               </div></RouterLink
             >
-          </li>
+          </li> -->
           <li class="nav-item">
             <button
               v-if="$store.getters.getUemail === ''"
@@ -83,14 +81,16 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <img v-if="memberProfile"
+              <img
+                v-if="memberProfile"
                 :src="memberProfile"
                 alt=""
                 class="me-1 rounded-circle align-self-center"
                 width="35"
                 height="35"
               />
-              <img v-else
+              <img
+                v-else
                 src="@/assets/profileImage.png"
                 alt=""
                 class="me-1 rounded-circle align-self-center"
@@ -101,9 +101,7 @@
             </RouterLink>
             <ul class="dropdown-menu" aria-labelledby="navbarSubDropdown">
               <li>
-                <RouterLink
-                  class="dropdown-item"
-                  to="/Mypage/MyInfomation"
+                <RouterLink class="dropdown-item" to="/Mypage/MyInfomation"
                   >내 정보</RouterLink
                 >
               </li>
@@ -171,20 +169,38 @@ const getUattach = async (argAnumber) => {
     if (store.getters.getUserRole === "MEMBER") {
       const response = await memberAPI.memberAttachDownload(argAnumber);
       // if(response.headers["Content-Length"]) {
-        const blob = response.data;
-        memberProfile.value = URL.createObjectURL(blob);
+      const blob = response.data;
+      memberProfile.value = URL.createObjectURL(blob);
       // }
-    } else if(store.getters.getUserRole === 'AGENT'){
+    } else if (store.getters.getUserRole === "AGENT") {
       const response = await agentAPI.agentAttachDownload(argAnumber);
       // if(response.headers["Content-Length"]) {
-        const blob = response.data;
-        memberProfile.value = URL.createObjectURL(blob);
+      const blob = response.data;
+      memberProfile.value = URL.createObjectURL(blob);
       // }
     }
   } catch (error) {
     console.error(error.message);
   }
 };
+
+function requestAddress() {
+  getListingRemain();
+}
+
+// 등록권 수량 가져오기
+async function getListingRemain() {
+  try {
+    const response = await propertyAPI.getListingRemain(store.state.uemail);
+    if (response.data.remain != null) {
+      router.push("/PropertyForm");
+    } else if (response.data.result == "noRemain") {
+      router.push("/Payment");
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 
 function showLoginModal() {
   loginModal.show();
@@ -222,11 +238,11 @@ watch(
 
 // 내 정보에서 프로필 사진이 수정될 때 마다 사진 불러오기 호출
 watch(
-  () => store.getters["changeProfileImage/getChangeProfile"], () => {
+  () => store.getters["changeProfileImage/getChangeProfile"],
+  () => {
     getUattach(store.getters.getUserRoleNumber);
   }
-)
-
+);
 </script>
 
 <style scoped>
