@@ -1,8 +1,10 @@
 <template>
   <div class="overflow-hidden w-75 mx-auto">
-    <PropertyFilter @update:filterData="getFilterData" 
-                    @update:keywordData="getKeywordData"
-                    class="w-100 mt-2" />
+    <PropertyFilter
+      @update:filterData="getFilterData"
+      @update:keywordData="getKeywordData"
+      class="w-100 mt-2"
+    />
     <ul class="nav nav-pills mt-3 ms-4">
       <li class="nav-item">
         <RouterLink
@@ -72,8 +74,17 @@
         <div class="right-box col h-100 p-3" v-if="route.params.id">
           <DetailPhoto :pthumbnail="pthumbnail" :pattaches="pattaches" />
           <DetailInfo :property="property" :propertyDetail="propertyDetail" />
-          <ReportFalse v-if="property.punumber && (store.getters.getUemail != propertyUser.uemail)" :pUnumber="property.punumber" :pnumber="route.params.id" />
-          <Comment v-if="property.punumber"
+          <ReportFalse
+            v-if="
+              property.punumber &&
+              store.getters.getUemail != propertyUser.uemail &&
+              store.state.uemail
+            "
+            :pUnumber="property.punumber"
+            :pnumber="route.params.id"
+          />
+          <Comment
+            v-if="property.punumber"
             :pager="pagerData"
             :userComment="userComment"
             :pUnumber="property.punumber"
@@ -236,7 +247,7 @@ const cancelLikeProperty = async () => {
 
 // 좋아요 여부
 const isPropertyLiked = async () => {
-  if (store.getters.getUserRole == 'MEMBER') {
+  if (store.getters.getUserRole == "MEMBER") {
     try {
       const response = await propertyAPI.isPropertyLiked(route.params.id);
       isClicked.value = response.data; // 서버에서 boolean 값 반환
@@ -254,17 +265,19 @@ const getUserDataByUnumber = async (unumber) => {
     const member = response.data.member;
     const agent = response.data.agent;
     if (userCommonData.urole === "MEMBER") {
-      const memberResponse = await memberAPI.memberAttachDownload(member.mnumber);
+      const memberResponse = await memberAPI.memberAttachDownload(
+        member.mnumber
+      );
       // if(memberResponse.headers["Content-Length"]) {
-        const memberBlob = memberResponse.data;
-        userProfiles.value[unumber] = URL.createObjectURL(memberBlob);
+      const memberBlob = memberResponse.data;
+      userProfiles.value[unumber] = URL.createObjectURL(memberBlob);
       // }
       names.value[unumber] = member.mname;
     } else {
       const agentResponse = await agentAPI.agentAttachDownload(agent.anumber);
       // if(agentResponse.headers["Content-Length"]) {
-        const agentBlob = agentResponse.data;
-        userProfiles.value[unumber] = URL.createObjectURL(agentBlob);
+      const agentBlob = agentResponse.data;
+      userProfiles.value[unumber] = URL.createObjectURL(agentBlob);
       // }
       names.value[unumber] = agent.abrand;
     }
@@ -276,15 +289,23 @@ const getUserDataByUnumber = async (unumber) => {
 // property 데이터 가져오기
 const getPropertyData = async (pageNo = 1) => {
   try {
-    const response = await propertyAPI.getPropertyData(route.params.id, propertyCommentFilter.value, pageNo);
+    const response = await propertyAPI.getPropertyData(
+      route.params.id,
+      propertyCommentFilter.value,
+      pageNo
+    );
     property.value = response.data.totalProperty.property;
     propertyDetail.value = response.data.totalProperty.propertyDetail;
     pagerData.value = response.data.pager;
     propertyPhotos.value = response.data.propertyPhotos;
     pattaches.value = [];
 
-    property.value.formattedDate = dayjs(property.value.pdate).format("YYYY-MM-DD");
-    propertyDetail.value.formattedDate = dayjs(propertyDetail.value.pdmoveindate).format("YYYY-MM-DD");
+    property.value.formattedDate = dayjs(property.value.pdate).format(
+      "YYYY-MM-DD"
+    );
+    propertyDetail.value.formattedDate = dayjs(
+      propertyDetail.value.pdmoveindate
+    ).format("YYYY-MM-DD");
 
     await getPthumbnail(route.params.id);
     await getPropertyUserDataByUnumber(property.value.punumber);
@@ -340,7 +361,10 @@ function getPropertyCommentFilter(data) {
 
 // 매물 포지션 리스트 가져오기
 function getPropertyClusterPosition(lat, lng) {
-  if (propertyClusterPosition.value.lat === lat && propertyClusterPosition.value.lng === lng) {
+  if (
+    propertyClusterPosition.value.lat === lat &&
+    propertyClusterPosition.value.lng === lng
+  ) {
     return;
   }
   propertyClusterPosition.value = { lat, lng };
@@ -413,29 +437,25 @@ watch(
 
 watch(
   () => propertyPositionList.value.length,
-  () => {
-  },
+  () => {},
   { deep: true }
 );
 
 watch(
   () => propertyClusterPosition.value,
-  () => {
-  },
+  () => {},
   { deep: true }
 );
 
 watch(
   () => propertyTotalList.value,
-  () => {
-  },
+  () => {},
   { deep: true }
 );
 
 watch(
   () => isClickedReset.value,
-  () => {
-  }
+  () => {}
 );
 </script>
 
