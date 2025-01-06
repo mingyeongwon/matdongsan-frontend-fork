@@ -78,7 +78,7 @@
             v-if="
               property.punumber &&
               store.getters.getUemail != propertyUser.uemail &&
-              store.state.uemail
+              store.getters.getUemail
             "
             :pUnumber="property.punumber"
             :pnumber="route.params.id"
