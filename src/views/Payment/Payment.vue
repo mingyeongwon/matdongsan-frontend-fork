@@ -196,11 +196,7 @@ async function purchasePropertyListing() {
 async function checkPropertyListing() {
   try {
     const response = await propertyAPI.checkPropertyListing();
-    if (response.data > 0) {
-      hasPropertyListing.value = true;
-    } else {
-      hasPropertyListing.value = false;
-    }
+    hasPropertyListing.value = response.data > 0;
   } catch (error) {
     console.error(error.message);
   }
