@@ -165,7 +165,7 @@ function getProductPrice(price, productName) {
 }
 
 // 결제 진행 함수
-function submitPaymentData() {
+async function submitPaymentData() {
   if (productPrice.value == 0 || product.value == "") {
     const modal = new Modal(document.getElementById("productModal"));
     modalMessage.value = "상품을 선택해주세요.";
@@ -174,7 +174,7 @@ function submitPaymentData() {
   }
   // 결제 처리 로직
   //등록권 소유 유무 체크
-  checkPropertyListing();
+  await checkPropertyListing();
   if (!hasPropertyListing.value) {
     //등록권 없다면 계속 진행
     purchasePropertyListing();
