@@ -164,24 +164,25 @@ function getProductPrice(price, productName) {
   product.value = productName;
 }
 
+// 결제 진행 함수
 function submitPaymentData() {
   if (productPrice.value == 0 || product.value == "") {
     const modal = new Modal(document.getElementById("productModal"));
     modalMessage.value = "상품을 선택해주세요.";
     modal.show();
+    return;
+  }
+  // 결제 처리 로직
+  //등록권 소유 유무 체크
+  checkPropertyListing();
+  if (!hasPropertyListing.value) {
+    //등록권 없다면 계속 진행
+    purchasePropertyListing();
+    router.push("/Payment/PaymentResult/" + product.value);
   } else {
-    // 결제 처리 로직
-    //등록권 소유 유무 체크
-    checkPropertyListing();
-    if (!hasPropertyListing.value) {
-      //등록권 없다면 계속 진행
-      purchasePropertyListing();
-      router.push("/Payment/PaymentResult/"+product.value);
-    } else {
-      const modal = new Modal(document.getElementById("productModal"));
-      modalMessage.value = "등록권을 이미 소유 하고 있습니다.";
-      modal.show();
-    }
+    const modal = new Modal(document.getElementById("productModal"));
+    modalMessage.value = "등록권을 이미 소유 하고 있습니다.";
+    modal.show();
   }
 }
 //등록권 구매
