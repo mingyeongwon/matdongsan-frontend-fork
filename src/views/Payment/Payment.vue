@@ -180,13 +180,16 @@ async function submitPaymentData() {
   //   purchasePropertyListing();
   //   router.push("/Payment/PaymentResult/" + product.value);
   // } else {
-    if (hasPropertyListing.value) {
-      const modal = new Modal(document.getElementById("productModal"));
-      modalMessage.value = "등록권을 이미 소유 하고 있습니다.";
-      modal.show();
-      return;
-    }
+  if (hasPropertyListing.value) {
+    const modal = new Modal(document.getElementById("productModal"));
+    modalMessage.value = "등록권을 이미 소유 하고 있습니다.";
+    modal.show();
+    return;
+  }
   // }
+  // iamport
+  const IMP  = window;
+  IMP.init(process.env.VUE_APP_IAMPORT_KEY);
 }
 //등록권 구매
 async function purchasePropertyListing() {
