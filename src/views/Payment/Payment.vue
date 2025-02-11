@@ -154,6 +154,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { Modal } from "bootstrap";
 import propertyAPI from "@/apis/propertyAPI";
+import store from "@/store";
 const router = useRouter();
 const productPrice = ref(0); //상품 가격
 const product = ref(""); //상품
@@ -190,6 +191,16 @@ async function submitPaymentData() {
   // iamport
   const IMP  = window;
   IMP.init(process.env.VUE_APP_IAMPORT_KEY);
+
+  // 결제 데이터 정의 
+  const data = {
+    merchant_uid: `mid_${new Date().getTime()}`,
+    name: '등록권 구매',
+    amount: productPrice.value,
+    buyer_email: store.getters.getUemail,
+    buyer_userRole: store.getters.getUserRoleNumber
+  }
+
 }
 //등록권 구매
 async function purchasePropertyListing() {
