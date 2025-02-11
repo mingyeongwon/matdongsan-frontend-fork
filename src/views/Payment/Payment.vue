@@ -175,15 +175,18 @@ async function submitPaymentData() {
   // 결제 처리 로직
   //등록권 소유 유무 체크
   await checkPropertyListing();
-  if (!hasPropertyListing.value) {
-    //등록권 없다면 계속 진행
-    purchasePropertyListing();
-    router.push("/Payment/PaymentResult/" + product.value);
-  } else {
-    const modal = new Modal(document.getElementById("productModal"));
-    modalMessage.value = "등록권을 이미 소유 하고 있습니다.";
-    modal.show();
-  }
+  // if (!hasPropertyListing.value) {
+  //   //등록권 없다면 계속 진행
+  //   purchasePropertyListing();
+  //   router.push("/Payment/PaymentResult/" + product.value);
+  // } else {
+    if (hasPropertyListing.value) {
+      const modal = new Modal(document.getElementById("productModal"));
+      modalMessage.value = "등록권을 이미 소유 하고 있습니다.";
+      modal.show();
+      return;
+    }
+  // }
 }
 //등록권 구매
 async function purchasePropertyListing() {
