@@ -206,18 +206,14 @@ async function submitPaymentData() {
   IMP.request_pay(data, async function(response) {
     if (response.success) {
       try {
-        const res = await axios.post(`/api/payment/validate/${response.imp_uid}`);
+        await axios.post(`/api/payment/validate/${response.imp_uid}`);
         await purchasePropertyListing();
         router.push("/Payment/PaymentResult/" + product.value);
       } catch (error) {
-        const modal = new Modal(document.getElementById("productModal"));
-        modalMessage.value = `결제에 실패하였습니다. 에러 내용: ${response.error_msg}`;
-        modal.show();
+        alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
       }
     } else {
-      const modal = new Modal(document.getElementById("productModal"));
-      modalMessage.value = `결제에 실패하였습니다. 에러 내용: ${response.error_msg}`;
-      modal.show();
+      alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
     }  
   });
 }
