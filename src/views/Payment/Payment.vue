@@ -155,6 +155,7 @@ import { useRouter } from "vue-router";
 import { Modal } from "bootstrap";
 import propertyAPI from "@/apis/propertyAPI";
 import store from "@/store";
+import axios from "axios";
 const router = useRouter();
 const productPrice = ref(0); //상품 가격
 const product = ref(""); //상품
@@ -199,9 +200,28 @@ async function submitPaymentData() {
     amount: productPrice.value,
     buyer_email: store.getters.getUemail,
     buyer_userRole: store.getters.getUserRoleNumber
-  }
+  };
 
+  // 결제 창 호출
+  IMP.request_pay(data, async function(response) {
+    if (response.success) {
+      try {
+        const res = await axios.post(`/api/payment/validate/${response.imp_uid}`);
+        await purchasePropertyListing();
+        router.push("/Payment/PaymentResult/" + product.value);
+      } catch (error) {
+        const modal = new Modal(document.getElementById("productModal"));
+        modalMessage.value = `결제에 실패하였습니다. 에러 내용: ${response.error_msg}`;
+        modal.show();
+      }
+    } else {
+      const modal = new Modal(document.getElementById("productModal"));
+      modalMessage.value = `결제에 실패하였습니다. 에러 내용: ${response.error_msg}`;
+      modal.show();
+    }  
+  });
 }
+
 //등록권 구매
 async function purchasePropertyListing() {
   try {
