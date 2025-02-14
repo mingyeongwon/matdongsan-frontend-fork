@@ -191,6 +191,7 @@ async function submitPaymentData() {
   // }
   // iamport
   const { IMP }  = window;
+  console.log("IAMPORT KEY:", process.env.VUE_APP_IAMPORT_KEY);
   IMP.init(process.env.VUE_APP_IAMPORT_KEY);
 
   // 결제 데이터 정의 
