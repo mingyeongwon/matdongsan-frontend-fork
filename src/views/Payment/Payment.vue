@@ -200,7 +200,7 @@ async function submitPaymentData() {
     name: '등록권 구매',
     amount: productPrice.value,
     buyer_email: store.getters.getUemail,
-    buyer_userRole: store.getters.getUserRoleNumber
+    // buyer_userRole: store.getters.getUserRoleNumber
   };
 
   // 결제 창 호출
