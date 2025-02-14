@@ -195,6 +195,7 @@ async function submitPaymentData() {
 
   // 결제 데이터 정의 
   const data = {
+    pg: 'html5_inicis',
     merchant_uid: `mid_${new Date().getTime()}`,
     name: '등록권 구매',
     amount: productPrice.value,
