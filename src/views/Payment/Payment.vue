@@ -190,7 +190,7 @@ async function submitPaymentData() {
   }
   // }
   // iamport
-  const IMP  = window;
+  const { IMP }  = window;
   IMP.init(process.env.VUE_APP_IAMPORT_KEY);
 
   // 결제 데이터 정의 
