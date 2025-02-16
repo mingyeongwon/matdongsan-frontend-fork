@@ -166,10 +166,6 @@ function getProductPrice(price, productName) {
   product.value = productName;
 }
 
-onMounted(() => {
-  console.log("IAMPORT KEY at onmounted:", process.env.VUE_APP_IAMPORT_KEY);
-});
-
 
 // 결제 진행 함수
 async function submitPaymentData() {
