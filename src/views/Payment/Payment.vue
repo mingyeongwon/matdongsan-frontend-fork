@@ -151,7 +151,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, onMounted } from "vue-router";
 import { Modal } from "bootstrap";
 import propertyAPI from "@/apis/propertyAPI";
 import store from "@/store";
@@ -165,6 +165,11 @@ function getProductPrice(price, productName) {
   productPrice.value = price;
   product.value = productName;
 }
+
+onMounted(() => {
+  console.log("IAMPORT KEY at onmounted:", process.env.VUE_APP_IAMPORT_KEY);
+});
+
 
 // 결제 진행 함수
 async function submitPaymentData() {
