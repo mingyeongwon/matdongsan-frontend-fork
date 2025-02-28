@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="main-container text-center p-5">
+    <!-- <section class="main-container text-center p-5">
         <div class="h-100 align-content-center">
             <h2 class="text-light fw-bold">어떤 집을 찾고 계신가요?</h2>
             <div class="input-group mb-3 w-50 mt-4">
@@ -19,7 +19,7 @@
               </button>
             </div>
         </div>
-    </section>
+    </section> -->
     <div class="d-flex p-3 justify-content-center mx-auto pe-5 w-75 mainFirstSection-second">
       <div class="align-self-center col-4">
         <h2 class="fw-bold text-center">당신의 집을 직접 팔거나 <br> 직접 거래를 해보세요</h2>
